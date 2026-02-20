@@ -1,0 +1,25 @@
+{
+  "version": "0.1.0",
+  "project": {
+    "name": "",
+    "type": "",
+    "created": ""
+  },
+  "preferences": {
+    "platform": "web",
+    "tech_stack": "React + Tailwind",
+    "accessibility_level": "WCAG 2.2 AA",
+    "design_tool": "Figma",
+    "auto_review": true
+  },
+  "phases": {
+    "research": { "status": "pending", "output": ".design/research/" },
+    "brand": { "status": "pending", "output": ".design/brand/" },
+    "system": { "status": "pending", "output": ".design/system/" },
+    "design": { "status": "pending", "output": ".design/screens/" },
+    "spec": { "status": "pending", "output": ".design/specs/" },
+    "review": { "status": "pending", "output": ".design/review/" },
+    "build": { "status": "pending", "output": ".design/build/" },
+    "launch": { "status": "pending", "output": ".design/launch/" }
+  }
+}
