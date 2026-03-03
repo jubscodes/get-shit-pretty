@@ -53,3 +53,57 @@ Write critique to `.design/review/CRITIQUE.md`:
 8. **Alternative Directions** — 2 redesign approaches with descriptions
 9. **What Works Well** — Specific strengths to preserve
 </output>
+
+<chunked-exports>
+## Chunked Exports
+
+After writing CRITIQUE.md, generate an agent-consumable fix list.
+
+### Output
+
+Write `.design/review/exports/review-fixes.md` (~50-100 lines):
+
+```markdown
+# Review Fixes
+
+> Phase: Review | Source: [CRITIQUE.md](../CRITIQUE.md) | Generated: {DATE}
+
+---
+
+## Critical Fixes
+
+- **[Screen/Component]:** {Issue} → {Concrete fix}
+
+## Important Fixes
+
+- **[Screen/Component]:** {Issue} → {Concrete fix}
+
+---
+
+## Related
+
+- [CRITIQUE.md](../CRITIQUE.md) — full critique with heuristic scores
+- [accessibility-fixes.md](./accessibility-fixes.md) — WCAG violations
+```
+
+### Rules
+
+- Only include Critical and Important severity — skip Polish items
+- Every fix must name the specific screen or component affected
+- Every fix must include a concrete remediation (not just "improve X")
+- Preserve exact issue descriptions from CRITIQUE.md
+- See `references/chunk-format.md` for standard header, footer, naming, and size rules
+
+### Update INDEX.md
+
+Replace `<!-- BEGIN:review -->` … `<!-- END:review -->` in `.design/exports/INDEX.md` with:
+
+```markdown
+<!-- BEGIN:review -->
+| Section | File |
+|---------|------|
+| Review Fixes | [review-fixes.md](../review/exports/review-fixes.md) |
+| Accessibility Fixes | [accessibility-fixes.md](../review/exports/accessibility-fixes.md) |
+<!-- END:review -->
+```
+</chunked-exports>

@@ -57,3 +57,72 @@ Write screens to `.design/screens/SCREENS.md`:
    - **New (local)** — Screen-specific components
 8. **Designer's Notes** — Key decisions and rationale
 </output>
+
+<chunked-exports>
+## Chunked Exports
+
+After writing SCREENS.md, generate agent-consumable chunks.
+
+### Output structure
+
+```
+.design/screens/exports/
+├── screen-01-{name}.md       (~150-200 lines each)
+├── screen-02-{name}.md
+├── ...
+├── screen-08-{name}.md
+└── shared/
+    ├── personas.md
+    ├── information-architecture.md
+    ├── navigation.md
+    ├── micro-interactions.md
+    ├── responsive.md
+    └── component-plan.md     (omit when target is figma)
+```
+
+### Chunk format
+
+See `references/chunk-format.md` for standard header, footer, naming, and size rules.
+
+### Rules
+
+- **Preserve exact content** from SCREENS.md — do not summarize, rewrite, or omit details
+- **Screen chunks** include: purpose, flow position, layout, components used, all 4 states (default, empty, loading, error), interactions, accessibility
+- **Screen naming:** `screen-{NN}-{kebab-case-name}.md` (e.g., `screen-01-home.md`, `screen-03-user-profile.md`)
+- **Shared chunks** extract global sections (personas, IA, navigation, responsive, etc.)
+- **Size target:** 150-200 lines per screen chunk, 50-100 lines per shared chunk
+- **Self-contained:** each chunk must be understandable without loading other chunks
+- **Screen chunks** link to component chunks in `../../system/exports/components/{name}.md`
+- **Shared chunks** link to related shared chunks and relevant screen chunks
+- **Omit** `component-plan.md` when `implementation_target` is `figma`
+
+### Update INDEX.md
+
+After generating chunks, update `.design/exports/INDEX.md`:
+
+1. If INDEX.md doesn't exist, copy it from `templates/exports-index.md`
+2. Replace everything between `<!-- BEGIN:screens -->` and `<!-- END:screens -->` with populated tables:
+
+```markdown
+<!-- BEGIN:screens -->
+### Screens
+
+| # | Screen | File | Components Used |
+|---|--------|------|-----------------|
+| 01 | Home | [screen-01-home.md](../screens/exports/screen-01-home.md) | Button, Card, Navigation |
+| 02 | Dashboard | [screen-02-dashboard.md](../screens/exports/screen-02-dashboard.md) | Chart, Table, Card |
+| ... | ... | ... | ... |
+
+### Shared
+
+| Section | File |
+|---------|------|
+| Personas | [personas.md](../screens/exports/shared/personas.md) |
+| Information Architecture | [information-architecture.md](../screens/exports/shared/information-architecture.md) |
+| Navigation | [navigation.md](../screens/exports/shared/navigation.md) |
+| Micro-interactions | [micro-interactions.md](../screens/exports/shared/micro-interactions.md) |
+| Responsive | [responsive.md](../screens/exports/shared/responsive.md) |
+| Component Plan | [component-plan.md](../screens/exports/shared/component-plan.md) |
+<!-- END:screens -->
+```
+</chunked-exports>

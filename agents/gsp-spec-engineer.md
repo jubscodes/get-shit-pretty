@@ -119,3 +119,66 @@ Write specs to `.design/specs/SPECS.md`:
 5. **Accessibility Specs** — ARIA roles, keyboard navigation, focus management
 6. **Implementation Notes** — Key decisions, patterns, and constraints
 </output>
+
+<chunked-exports>
+## Chunked Exports
+
+After writing SPECS.md, generate agent-consumable chunks.
+
+### Output structure
+
+```
+.design/specs/exports/
+├── component-mapping.md
+├── token-mapping.md
+├── install-manifest.md       (shadcn/rn-reusables only)
+├── gap-analysis.md           (existing target only)
+├── file-references.md        (existing target only)
+└── screens/
+    ├── screen-01-spec.md
+    ├── screen-02-spec.md
+    └── ...
+```
+
+### Chunk format
+
+See `references/chunk-format.md` for standard header, footer, naming, and size rules.
+
+### Rules
+
+- **Preserve exact content** from SPECS.md — do not summarize, rewrite, or omit details
+- **Chunk structure varies by `implementation_target`** — use the same conditionals already in your output section
+- **Per-screen spec chunks** link to the corresponding screen design chunk (`../../screens/exports/screen-{NN}-{name}.md`) and component chunks (`../../system/exports/components/{name}.md`)
+- **`install-manifest.md`** only generated for `shadcn` and `rn-reusables` targets
+- **For `existing` target:** generate `gap-analysis.md` and `file-references.md` instead of `install-manifest.md`
+- **Naming:** singular, kebab-case, lowercase
+- **Size target:** 50-200 lines per chunk
+- **Self-contained:** each chunk must be understandable without loading other chunks
+
+### Update INDEX.md
+
+After generating chunks, update `.design/exports/INDEX.md`:
+
+1. If INDEX.md doesn't exist, copy it from `templates/exports-index.md`
+2. Replace everything between `<!-- BEGIN:specs -->` and `<!-- END:specs -->` with populated tables:
+
+```markdown
+<!-- BEGIN:specs -->
+### Specs
+
+| Section | File |
+|---------|------|
+| Component Mapping | [component-mapping.md](../specs/exports/component-mapping.md) |
+| Token Mapping | [token-mapping.md](../specs/exports/token-mapping.md) |
+| Install Manifest | [install-manifest.md](../specs/exports/install-manifest.md) |
+
+### Per-Screen Specs
+
+| # | Screen | File |
+|---|--------|------|
+| 01 | Home | [screen-01-spec.md](../specs/exports/screens/screen-01-spec.md) |
+| 02 | Dashboard | [screen-02-spec.md](../specs/exports/screens/screen-02-spec.md) |
+| ... | ... | ... |
+<!-- END:specs -->
+```
+</chunked-exports>
