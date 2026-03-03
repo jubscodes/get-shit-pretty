@@ -36,9 +36,9 @@
 ## Phase 5: Spec
 **Status:** pending
 **Command:** `/gsp:spec`
-**Input:** SCREENS.md + SYSTEM.md
-**Output:** `.design/specs/FIGMA-SPECS.md`
-**Goal:** Generate Figma-ready specifications with auto-layout and tokens.
+**Input:** SCREENS.md + SYSTEM.md + config.json
+**Output:** `.design/specs/SPECS.md`
+**Goal:** Map design decisions to implementation target (UI kit, existing DS, or code specs).
 
 ## Phase 6: Review
 **Status:** pending
@@ -50,7 +50,7 @@
 ## Phase 7: Build
 **Status:** pending
 **Command:** `/gsp:build`
-**Input:** FIGMA-SPECS.md + SYSTEM.md
+**Input:** SPECS.md + SYSTEM.md (or SCREENS.md + SYSTEM.md when spec is skipped)
 **Output:** `.design/build/CODE.md` + `components/`
 **Goal:** Translate design into production-ready frontend code.
 

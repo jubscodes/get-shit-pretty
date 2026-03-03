@@ -8,13 +8,13 @@ allowed-tools:
   - Task
 ---
 <context>
-Phase 7 of the GSP design pipeline. Uses the Design-to-Code Translator prompt to convert Figma specs and design system into production-ready frontend components.
+Phase 7 of the GSP design pipeline. Uses the Design-to-Code Translator prompt to convert implementation specs and design system into production-ready frontend components.
 </context>
 
 <objective>
 Translate designs into production-ready frontend code.
 
-**Input:** `.design/specs/FIGMA-SPECS.md` + `.design/system/SYSTEM.md`
+**Input:** `.design/specs/SPECS.md` (or SCREENS.md + SYSTEM.md if spec was skipped) + `.design/system/SYSTEM.md`
 **Output:** `.design/build/CODE.md` + `.design/build/components/`
 **Agent:** `gsp-design-engineer`
 </objective>
@@ -27,24 +27,33 @@ Translate designs into production-ready frontend code.
 <process>
 ## Step 1: Load context
 
+Read `.design/config.json` to get `implementation_target`.
+
 Read:
-- `.design/specs/FIGMA-SPECS.md` — component specs
+- `.design/specs/SPECS.md` — implementation specs (primary input)
 - `.design/system/SYSTEM.md` — design system
 - `.design/system/tokens.json` — design tokens
 - `.design/BRIEF.md` — tech stack preference
 - `.design/review/CRITIQUE.md` — any fixes to incorporate
 
-If FIGMA-SPECS.md doesn't exist, tell the user to run `/gsp:spec` first.
+If SPECS.md doesn't exist, check if `implementation_target` is `skip`:
+- **If `skip`:** Read `.design/screens/SCREENS.md` + `.design/system/SYSTEM.md` as primary input instead
+- **If not `skip`:** Tell the user to run `/gsp:spec` first
 
 Determine tech stack from BRIEF.md config (default: React + Tailwind).
 
 ## Step 2: Spawn design engineer
 
 Spawn the `gsp-design-engineer` agent with:
-- All specs, system, and token files
+- All specs/screens, system, and token files
 - The Design-to-Code Translator prompt (09)
 - The build output template
 - The target tech stack
+- The `implementation_target` value
+
+**When `shadcn`:** Agent should use `npx shadcn@latest add` for components, extend with custom variants as defined in SPECS.md.
+
+**When `rn-reusables`:** Agent should use `npx @react-native-reusables/cli add` for components, configure NativeWind theming.
 
 The agent should deliver:
 1. Component hierarchy with props, state, data flow

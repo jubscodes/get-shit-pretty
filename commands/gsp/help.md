@@ -30,7 +30,7 @@ DESIGN PIPELINE (run in order)
   /gsp:brand           Phase 2 — Brand identity (strategy, logo, color, type)
   /gsp:system          Phase 3 — Design system foundations + tokens
   /gsp:design          Phase 4 — UI/UX screens & interaction flows
-  /gsp:spec            Phase 5 — Figma-ready specifications
+  /gsp:spec            Phase 5 — Implementation specifications
   /gsp:review          Phase 6 — Design critique + accessibility audit
   /gsp:build           Phase 7 — Design-to-code translation
   /gsp:launch          Phase 8 — Marketing campaign assets
@@ -52,7 +52,7 @@ PROJECT STRUCTURE
   ├── system/SYSTEM.md            Design system
   ├── system/tokens.json          Design tokens
   ├── screens/SCREENS.md          UI/UX screens
-  ├── specs/FIGMA-SPECS.md        Figma specifications
+  ├── specs/SPECS.md              Implementation specifications
   ├── review/CRITIQUE.md          Design critique
   ├── review/ACCESSIBILITY.md     WCAG audit
   ├── build/CODE.md               Implementation guide

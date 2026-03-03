@@ -29,7 +29,7 @@ Read `.design/STATE.md` and `.design/BRIEF.md`.
 
 ## Step 3: Calculate prettiness
 
-Count completed phases out of 8. Calculate percentage.
+Count completed and skipped phases out of 8. Both count toward progress. Calculate percentage.
 
 ## Step 4: Display progress
 
@@ -52,7 +52,7 @@ Phase Progress:
 Review Loops: {COUNT}
 ```
 
-Use ✅ for complete, 🔄 for in-progress/needs-revision, ⬜ for pending.
+Use ✅ for complete, ⏭️ for skipped, 🔄 for in-progress/needs-revision, ⬜ for pending.
 
 ## Step 5: Route next
 

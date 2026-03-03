@@ -10,6 +10,7 @@
     "tech_stack": "React + Tailwind",
     "accessibility_level": "WCAG 2.2 AA",
     "design_tool": "Figma",
+    "implementation_target": "code",
     "auto_review": true
   },
   "phases": {

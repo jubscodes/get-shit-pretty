@@ -15,7 +15,7 @@
 | 2 | Brand | pending | — | — |
 | 3 | System | pending | — | — |
 | 4 | Design | pending | — | — |
-| 5 | Spec | pending | — | — |
+| 5 | Spec | pending/skipped | — | — |
 | 6 | Review | pending | — | — |
 | 7 | Build | pending | — | — |
 | 8 | Launch | pending | — | — |
@@ -25,6 +25,10 @@
 
 | Loop | Date | Issues Found | Issues Fixed | Resubmitted |
 |------|------|-------------|-------------|-------------|
+
+## Status Values
+<!-- pending | in-progress | complete | needs-revision | skipped -->
+<!-- Skipped phases count as complete for prettiness calculation -->
 
 ## Decisions
 <!-- Key design decisions and rationale -->

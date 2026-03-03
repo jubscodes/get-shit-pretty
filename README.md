@@ -115,15 +115,15 @@ Designs your screens and interaction flows following Apple HIG patterns. Layout,
 
 ---
 
-### 6. Figma Specs
+### 6. Implementation Specs
 
 ```
 /gsp:spec
 ```
 
-Converts screen designs into Figma-ready specifications — auto-layout rules, exact spacing, component variants, token references. Skip the handoff. Specs that both designers and AI can consume.
+Maps your screen designs to your implementation target — shadcn/ui components, React Native Reusables, an existing design system, Figma specs, or lightweight code specs. Bridges design decisions to whatever UI framework your project uses.
 
-**Creates:** `.design/specs/FIGMA-SPECS.md`
+**Creates:** `.design/specs/SPECS.md`
 
 ---
 
@@ -180,7 +180,7 @@ Creates marketing campaign assets — landing page copy, social media content, l
        ↓
 /gsp:design      → .design/screens/SCREENS.md
        ↓
-/gsp:spec        → .design/specs/FIGMA-SPECS.md
+/gsp:spec        → .design/specs/SPECS.md
        ↓
 /gsp:review      → .design/review/CRITIQUE.md + ACCESSIBILITY.md
        ↓  (loop back if issues found)
@@ -202,7 +202,7 @@ All artifacts live in `.design/` within your project directory.
 | `/gsp:brand` | Create brand identity (strategy, logo, color, type) |
 | `/gsp:system` | Build design system foundations + tokens |
 | `/gsp:design` | Design UI/UX screens and flows |
-| `/gsp:spec` | Generate Figma-ready specifications |
+| `/gsp:spec` | Generate implementation specifications |
 | `/gsp:review` | Design critique + accessibility audit |
 | `/gsp:build` | Translate designs to production code |
 | `/gsp:launch` | Create marketing campaign assets |
@@ -221,7 +221,7 @@ GSP ships with 9 specialized agents, each modeled after a real design discipline
 | **Brand Identity Creator** | Full brand identities (Pentagram Creative Director level) |
 | **UI/UX Pattern Master** | App UI design following Apple HIG |
 | **Marketing Asset Factory** | Campaign asset libraries |
-| **Figma Auto-Layout Expert** | Figma-ready specifications with tokens |
+| **Implementation Spec Engineer** | Implementation specifications for any UI target |
 | **Design Critique Partner** | Structured critiques using Nielsen's 10 heuristics |
 | **Design Trend Synthesizer** | Industry trend analysis and competitive research |
 | **Accessibility Auditor** | WCAG 2.2 AA compliance auditing |

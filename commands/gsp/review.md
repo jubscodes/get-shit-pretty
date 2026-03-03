@@ -30,14 +30,18 @@ Critique design quality and audit accessibility compliance.
 <process>
 ## Step 1: Load context
 
+Read `.design/config.json` to get `implementation_target`.
+
 Read all prior artifacts:
 - `.design/BRIEF.md`
 - `.design/brand/IDENTITY.md`
 - `.design/system/SYSTEM.md`
 - `.design/screens/SCREENS.md`
-- `.design/specs/FIGMA-SPECS.md`
+- `.design/specs/SPECS.md` (if it exists)
 
-If SCREENS.md or FIGMA-SPECS.md don't exist, tell the user to complete design and spec phases first.
+If SCREENS.md doesn't exist, tell the user to complete the design phase first.
+
+If SPECS.md doesn't exist and `implementation_target` is not `skip`, tell the user to run `/gsp:spec` first. When target is `skip`, review SCREENS.md + SYSTEM.md without requiring SPECS.md.
 
 ## Step 2: Spawn critics (parallel)
 

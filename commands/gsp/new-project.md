@@ -54,6 +54,13 @@ Use the questioning techniques from the reference. Ask in 3 conversational round
 **Round 2 — Scope & Constraints:**
 - Platforms (web, iOS, Android)?
 - Tech stack preferences?
+- Implementation target — how will designs become code?
+  - Using a UI kit? (shadcn/ui → `shadcn`, React Native Reusables → `rn-reusables`)
+  - Existing design system already in the codebase? (`existing`)
+  - Need Figma handoff? (`figma`)
+  - Straight to code with no specific UI kit? (`code`)
+  - Skip specs entirely, build directly from screen designs? (`skip`)
+  - Default: `code`
 - Key screens/pages needed?
 - Accessibility level (default: WCAG 2.2 AA)?
 - Timeline and constraints?
@@ -76,7 +83,7 @@ Using the templates, fill in the gathered information:
 1. Write `.design/BRIEF.md` from the project template with all gathered info
 2. Write `.design/ROADMAP.md` from the roadmap template with project name and date
 3. Write `.design/STATE.md` from the state template
-4. Write `.design/config.json` from the config template with preferences
+4. Write `.design/config.json` from the config template with preferences (including `implementation_target` from Round 2)
 
 ## Step 5: Confirm and route
 

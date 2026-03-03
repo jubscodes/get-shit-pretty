@@ -1,60 +1,46 @@
-# Figma Specifications
+# Implementation Specifications
 
 ## Project: {PROJECT_NAME}
 **Date:** {DATE}
+**Implementation Target:** {TARGET}
 
 ---
 
-## Frame Structure
-<!-- Page organization and frame hierarchy -->
+<!-- Output sections vary by implementation_target. See agent instructions for target-specific sections. -->
 
-## Grid & Constraints
-- **Grid:** {GRID_SPEC}
-- **Constraints:** {CONSTRAINTS}
-- **Responsive rules:** {RULES}
+## Component Mapping
+<!-- Maps design components to implementation target primitives -->
 
-## Auto-Layout Specs
-
-### {COMPONENT_NAME}
-- **Direction:** Vertical/Horizontal
-- **Padding:** {TOP} {RIGHT} {BOTTOM} {LEFT}
-- **Spacing:** {GAP}px
-- **Alignment:** {ALIGNMENT}
-- **Resizing:** {HORIZONTAL_RESIZE} / {VERTICAL_RESIZE}
-
-<!-- Repeat for each component -->
-
-## Component Architecture
-<!-- Variants, properties, and slot definitions -->
-
-| Component | Variants | Properties |
-|-----------|----------|------------|
+| Design Component | Target Primitive | Notes |
+|-----------------|-----------------|-------|
 | | | |
 
-## Design Tokens
+## Token Mapping
+<!-- Maps GSP design tokens to target's theming format -->
 
 ### Colors
-| Token | Value | Usage |
-|-------|-------|-------|
+| GSP Token | Target Variable | Value |
+|-----------|----------------|-------|
 | | | |
 
-### Text Styles
-| Token | Font | Size | Weight | Line Height |
-|-------|------|------|--------|-------------|
+### Typography
+| GSP Token | Target Variable | Font | Size | Weight |
+|-----------|----------------|------|------|--------|
 | | | | | |
 
-### Effects
-| Token | Type | Value |
-|-------|------|-------|
+### Spacing & Effects
+| GSP Token | Target Variable | Value |
+|-----------|----------------|-------|
 | | | |
 
-## Prototype Flows
-| Flow | Trigger | Animation | Duration |
-|------|---------|-----------|----------|
-| | | | |
+## Component Architecture
+<!-- Component hierarchy, props, state, composition -->
 
-## Dev Handoff
-- **Naming convention:** {CONVENTION}
-- **Export formats:** {FORMATS}
-- **CSS mapping:** {CSS}
-- **Accessibility notes:** {A11Y}
+## Responsive Specs
+<!-- Breakpoints, layout shifts, component adaptations -->
+
+## Interaction Specs
+<!-- Triggers, state transitions, animations -->
+
+## Implementation Notes
+<!-- Target-specific setup, installation, and integration notes -->
