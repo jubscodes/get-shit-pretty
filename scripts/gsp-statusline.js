@@ -106,6 +106,57 @@ process.stdin.on('end', () => {
       } catch (e) {}
     }
 
+    // ── Update check ──
+    let updateTag = '';
+    try {
+      const gspDir = path.join(homeDir, '.claude', 'get-shit-pretty');
+      const versionFile = path.join(gspDir, 'VERSION');
+      const cacheFile = path.join(gspDir, '.update-cache.json');
+
+      if (fs.existsSync(versionFile)) {
+        const installed = fs.readFileSync(versionFile, 'utf8').trim();
+        let latest = null;
+        let shouldCheck = true;
+
+        // Read cache (check once per 24h)
+        if (fs.existsSync(cacheFile)) {
+          try {
+            const cache = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
+            const age = Date.now() - (cache.ts || 0);
+            if (age < 86400000) {
+              latest = cache.latest || null;
+              shouldCheck = false;
+            }
+          } catch (e) {}
+        }
+
+        // Background check if cache is stale
+        if (shouldCheck) {
+          const { execFile } = require('child_process');
+          execFile('npm', ['view', 'get-shit-pretty', 'version', '--json'], { timeout: 5000 }, (err, stdout) => {
+            if (!err && stdout) {
+              try {
+                const ver = JSON.parse(stdout.trim());
+                fs.writeFileSync(cacheFile, JSON.stringify({ latest: ver, ts: Date.now() }));
+              } catch (e) {}
+            }
+          });
+        }
+
+        // Compare versions if we have cached latest
+        if (latest && latest !== installed) {
+          const iParts = installed.split('.').map(Number);
+          const lParts = latest.split('.').map(Number);
+          const isNewer = lParts[0] > iParts[0] ||
+            (lParts[0] === iParts[0] && lParts[1] > iParts[1]) ||
+            (lParts[0] === iParts[0] && lParts[1] === iParts[1] && lParts[2] > iParts[2]);
+          if (isNewer) {
+            updateTag = ` \x1b[33m\u2191 v${latest}\x1b[0m`;
+          }
+        }
+      }
+    } catch (e) {}
+
     // ── Output ──
     const dirname = path.basename(dir);
     const parts = [`\x1b[2m${model}\x1b[0m`];
@@ -125,7 +176,7 @@ process.stdin.on('end', () => {
       parts.push(`\x1b[2m${dirname}\x1b[0m`);
     }
 
-    process.stdout.write(parts.join(' \u2502 ') + ctx);
+    process.stdout.write(parts.join(' \u2502 ') + ctx + updateTag);
   } catch (e) {
     // Silent fail
   }
