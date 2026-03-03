@@ -17,7 +17,7 @@ Phase 4 of the GSP design pipeline. Uses the UI/UX Pattern Master prompt to desi
 Design core UI/UX screens and interaction flows.
 
 **Input:** `.design/system/SYSTEM.md` + `.design/BRIEF.md`
-**Output:** `.design/screens/SCREENS.md`
+**Output:** `.design/screens/SCREENS.md` + `.design/screens/exports/` + `.design/exports/INDEX.md` (updated)
 **Agent:** `gsp-ui-designer`
 </objective>
 
@@ -77,6 +77,21 @@ The agent should deliver:
 ## Step 4: Write output
 
 Write screens to `.design/screens/SCREENS.md`.
+
+## Step 4.5: Generate chunked exports
+
+After writing SCREENS.md, the agent generates agent-consumable chunks:
+
+1. Create `.design/screens/exports/` with one file per screen:
+   - `screen-01-{name}.md`, `screen-02-{name}.md`, etc. (~150-200 lines each)
+2. Create `.design/screens/exports/shared/` with global sections:
+   - `personas.md`, `information-architecture.md`, `navigation.md`, `micro-interactions.md`, `responsive.md`
+   - `component-plan.md` (omit when `implementation_target` is `figma`)
+3. Update `.design/exports/INDEX.md` — replace the `<!-- BEGIN:screens -->` … `<!-- END:screens -->` section with populated screen and shared tables
+
+Each chunk follows the standard format: header with phase/source/date, exact content from monolith (no summarization), and `## Related` footer with links to related chunks.
+
+Screen chunks' `## Related` section links to component chunks in `../../system/exports/components/{name}.md`.
 
 ## Step 5: Update state
 

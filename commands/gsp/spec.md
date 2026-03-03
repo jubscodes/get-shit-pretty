@@ -17,7 +17,7 @@ Phase 5 of the GSP design pipeline. Converts screen designs into implementation 
 Generate implementation specifications from screen designs.
 
 **Input:** `.design/screens/SCREENS.md` + `.design/system/SYSTEM.md` + `.design/config.json`
-**Output:** `.design/specs/SPECS.md`
+**Output:** `.design/specs/SPECS.md` + `.design/specs/exports/` + `.design/exports/INDEX.md` (updated)
 **Agent:** `gsp-spec-engineer`
 </objective>
 
@@ -74,6 +74,23 @@ Spawn the `gsp-spec-engineer` agent with:
 ## Step 5: Write output
 
 Write specs to `.design/specs/SPECS.md`.
+
+## Step 5.5: Generate chunked exports
+
+After writing SPECS.md, the agent generates agent-consumable chunks:
+
+1. Create `.design/specs/exports/` with:
+   - `component-mapping.md` — component-to-target mapping table
+   - `token-mapping.md` — design tokens to target format mapping
+   - `install-manifest.md` — install commands (only for `shadcn` and `rn-reusables` targets)
+2. Create `.design/specs/exports/screens/` with one spec per screen:
+   - `screen-01-spec.md`, `screen-02-spec.md`, etc.
+3. For `existing` target: generate `gap-analysis.md` + `file-references.md` instead of `install-manifest.md`
+4. Update `.design/exports/INDEX.md` — replace the `<!-- BEGIN:specs -->` … `<!-- END:specs -->` section with populated tables
+
+Each chunk follows the standard format: header with phase/source/date, exact content from monolith (no summarization), and `## Related` footer with links to related chunks.
+
+Per-screen spec chunks link to corresponding screen design chunk and component chunks.
 
 ## Step 6: Update state
 

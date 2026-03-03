@@ -29,6 +29,22 @@ Translate designs into production-ready frontend code.
 
 Read `.design/config.json` to get `implementation_target`.
 
+**Check for chunked exports:**
+If `.design/exports/INDEX.md` exists, chunked exports are available.
+
+**When building a specific screen** (user specifies which) and chunks are available:
+1. Read `.design/exports/INDEX.md` — find chunk file paths
+2. Load screen chunk: `.design/screens/exports/screen-{NN}-{name}.md`
+3. Load screen spec: `.design/specs/exports/screens/screen-{NN}-spec.md`
+4. Load referenced component chunks from `.design/system/exports/components/`
+5. Load `.design/specs/exports/token-mapping.md`
+6. Load `.design/specs/exports/install-manifest.md` (shadcn/rn-reusables targets)
+6b. Load `.design/specs/exports/gap-analysis.md` + `.design/specs/exports/file-references.md` (existing target)
+7. Load `.design/system/tokens.json`
+8. Read `.design/BRIEF.md` — tech stack preference
+9. Load `.design/review/exports/review-fixes.md` (if available) or `.design/review/CRITIQUE.md` — fixes to incorporate
+
+**When building all screens** (or no chunks available):
 Read:
 - `.design/specs/SPECS.md` — implementation specs (primary input)
 - `.design/system/SYSTEM.md` — design system
