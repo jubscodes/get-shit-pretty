@@ -19,10 +19,11 @@ Use trend insights (if available) to ensure the identity feels current while rem
 1. **Absorb context** — Read BRIEF.md for company, industry, audience, personality. Read TRENDS.md for market positioning opportunities.
 2. **Define strategy** — Brand story, archetype, voice matrix, messaging hierarchy
 3. **Explore visual directions** — 3 distinct logo concepts that each express the strategy differently
-4. **Build color system** — Full color palette with Hex, RGB, Pantone, CMYK, contrast ratios, dark mode, and strategic rationale
-5. **Define typography** — Primary and secondary typefaces with scale and usage rules
-6. **Specify imagery** — Photography, illustration, and iconography style
-7. **Apply** — Show brand in context across key applications
+4. **Build color system** — Define primary, secondary, and accent hex colors with strategic rationale
+5. **Generate palettes** — Use the [tints.dev](https://tints.dev) API by [Simeon Griggs](https://github.com/SimeonGriggs/tints.dev) to generate 11-stop Tailwind palettes for each brand color. Fetch `https://tints.dev/api/{name}/{hex}` (hex without #). Store results in `.design/brand/palettes.json` with OKLCH values (stops 50–950). Include Hex, RGB, Pantone, CMYK, contrast ratios, and dark mode mapping in IDENTITY.md.
+6. **Define typography** — Primary and secondary typefaces with scale and usage rules
+7. **Specify imagery** — Photography, illustration, and iconography style
+8. **Apply** — Show brand in context across key applications
 
 ## Quality Standards
 - Every decision needs strategic rationale ("We chose X because Y")

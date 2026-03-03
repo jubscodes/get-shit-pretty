@@ -1,10 +1,15 @@
 #!/bin/bash
 set -e
 
+# NOTE: This is the legacy bash installer for Claude Code only.
+# The recommended method is: npx get-shit-pretty
+# The npm installer supports Claude Code, OpenCode, Gemini, and Codex.
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CLAUDE_DIR="$HOME/.claude"
 
-echo "🎨 Installing GSP — Get Shit Pretty"
+echo "🎨 Installing GSP — Get Shit Pretty (legacy bash installer)"
+echo "  Tip: Use 'npx get-shit-pretty' for multi-runtime support"
 echo ""
 
 # Create target directories

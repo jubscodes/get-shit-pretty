@@ -30,9 +30,11 @@ Build a complete design system from the brand identity.
 
 Read:
 - `.design/brand/IDENTITY.md` — brand colors, type, personality
+- `.design/brand/palettes.json` — tints.dev generated color palettes (11-stop OKLCH scales)
 - `.design/BRIEF.md` — platforms, tech stack, constraints
 
 If IDENTITY.md doesn't exist, tell the user to run `/gsp:brand` first.
+If palettes.json exists, use its OKLCH values as the foundation for the color system tokens.
 
 ## Step 2: Spawn system architect
 

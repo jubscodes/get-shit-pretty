@@ -51,17 +51,43 @@ The agent should deliver:
 6. Brand applications
 7. Brand book structure
 
-## Step 3: Write output
+## Step 3: Generate color palettes via tints.dev
+
+For each brand color defined in the identity (primary, secondary, accent), generate a full 11-stop Tailwind palette using the [tints.dev](https://tints.dev) API by [Simeon Griggs](https://github.com/SimeonGriggs/tints.dev):
+
+```
+WebFetch: https://tints.dev/api/{colorName}/{hexWithout#}
+```
+
+Example: For primary color `#2522FC` → fetch `https://tints.dev/api/primary/2522FC`
+
+The API returns OKLCH values for stops 50–950. Store the raw palettes in `.design/brand/palettes.json` with this structure:
+
+```json
+{
+  "$schema": "tints.dev",
+  "$generator": "https://tints.dev by Simeon Griggs (https://github.com/SimeonGriggs/tints.dev)",
+  "primary": { "50": "oklch(...)", "100": "oklch(...)", ... "950": "oklch(...)" },
+  "secondary": { ... },
+  "accent": { ... }
+}
+```
+
+Also generate palette preview links for the user:
+- `https://tints.dev/primary/{hex}` — interactive palette editor
+
+## Step 4: Write output
 
 Write the completed identity to `.design/brand/IDENTITY.md`.
+Write the generated palettes to `.design/brand/palettes.json`.
 
-## Step 4: Update state
+## Step 5: Update state
 
 Update `.design/STATE.md`:
 - Set Phase 2 (Brand) status to `complete`
 - Record completion date
 
-## Step 5: Route next
+## Step 6: Route next
 
 Display brand identity summary and end with:
 "Run `/gsp:system` to build the design system from this identity."

@@ -1,0 +1,38 @@
+{
+  "name": "get-shit-pretty",
+  "version": "0.2.0",
+  "description": "A design engineering system for Claude Code, OpenCode, Gemini, and Codex. Research → Brand → System → Design → Spec → Review → Build → Launch.",
+  "bin": {
+    "get-shit-pretty": "bin/install.js"
+  },
+  "files": [
+    "bin",
+    "scripts",
+    "commands",
+    "agents",
+    "prompts",
+    "templates",
+    "references"
+  ],
+  "keywords": [
+    "design",
+    "design-system",
+    "brand",
+    "ui-ux",
+    "claude",
+    "claude-code",
+    "opencode",
+    "gemini",
+    "codex",
+    "ai",
+    "design-engineering",
+    "shadcn",
+    "figma"
+  ],
+  "author": "jubscodes",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jubscodes/get-shit-pretty.git"
+  }
+}
