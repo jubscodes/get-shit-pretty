@@ -24,6 +24,7 @@ PROJECT SETUP
   /gsp:new-project     Initialize design brief through guided Q&A
   /gsp:help            Show this command reference
   /gsp:progress        Check project status — "How pretty are we?"
+  /gsp:doctor          Diagnose project health — check for issues
 
 DESIGN PIPELINE (run in order)
   /gsp:research        Phase 1 — Trend analysis & competitive landscape
@@ -63,6 +64,7 @@ TIPS
   • Run phases in order — each builds on the previous
   • /gsp:review loops back if critical issues are found
   • /gsp:progress shows your prettiness meter
+  • /gsp:doctor checks project health and detects stale outputs
   • You can skip phases if you already have the artifacts
 ```
 </process>
