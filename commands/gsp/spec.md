@@ -30,7 +30,7 @@ Generate implementation specifications from screen designs.
 ## Step 1: Load context
 
 Read:
-- `.design/config.json` — get `implementation_target` (default: `code`)
+- `.design/config.json` — get `implementation_target` (default: `code`), `design_scope`
 - `.design/screens/SCREENS.md` — screen designs to convert
 - `.design/system/SYSTEM.md` — design system (tokens, components)
 - `.design/system/tokens.json` — token values
@@ -39,13 +39,17 @@ If SCREENS.md doesn't exist, tell the user to run `/gsp:design` first.
 
 ## Step 2: Check for skip
 
-If `implementation_target` is `skip`:
+If `implementation_target` is `skip` OR `design_scope` is `tokens`:
 1. Update `.design/STATE.md` — set Phase 5 (Spec) status to `skipped`
-2. Display: "Spec phase skipped — implementation target is set to `skip`. Designs will feed directly into build."
+2. Display: "Spec phase skipped — implementation target is set to `skip` or design scope is `tokens`. Designs will feed directly into build."
 3. Route: "Run `/gsp:review` for design critique and accessibility audit."
 4. Stop here.
 
 ## Step 3: Gather target context
+
+**If `.design/codebase/INVENTORY.md` exists**, read it and pass as target context to the agent. This provides component paths, token files, architecture patterns, and conventions.
+
+**If INVENTORY.md doesn't exist** (legacy projects without codebase analysis), fall back to scanning:
 
 **When `existing`:** Scan the codebase for existing design system files:
 - Look for `components/`, `src/components/`, `components/ui/`, `lib/components/`

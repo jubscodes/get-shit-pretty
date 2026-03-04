@@ -11,6 +11,9 @@
     "accessibility_level": "WCAG 2.2 AA",
     "design_tool": "Figma",
     "implementation_target": "code",
+    "codebase_type": "greenfield",
+    "design_scope": "full",
+    "system_strategy": "generate",
     "auto_review": true
   },
   "phases": {
