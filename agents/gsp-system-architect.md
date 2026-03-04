@@ -54,3 +54,67 @@ Complete W3C Design Tokens format JSON with:
 - Border radius tokens
 - Breakpoint tokens
 </output>
+
+<chunked-exports>
+## Chunked Exports
+
+After writing SYSTEM.md and tokens.json, generate agent-consumable chunks.
+
+### Output structure
+
+```
+.design/system/exports/
+├── foundations/
+│   ├── color-system.md       (~100-150 lines)
+│   ├── typography.md
+│   ├── spacing.md
+│   ├── grid.md
+│   ├── elevation.md
+│   └── border-radius.md
+├── components/
+│   ├── button.md             (~50 lines each)
+│   ├── input.md
+│   ├── card.md
+│   └── ... (one per component, singular kebab-case)
+└── principles.md
+```
+
+### Chunk format
+
+See `references/chunk-format.md` for standard header, footer, naming, and size rules.
+
+### Rules
+
+- **Preserve exact content** from SYSTEM.md — do not summarize, rewrite, or omit details
+- **Naming:** singular, kebab-case, lowercase. "Buttons" → `button.md`, "Date Picker" → `date-picker.md`
+- **Size target:** 50-200 lines per chunk
+- **Self-contained:** each chunk must be understandable without loading other chunks
+- **Component chunks** must cross-reference the foundations they use (e.g., button.md links to color-system.md, typography.md, spacing.md)
+- **Foundation chunks** link to related foundations (e.g., spacing.md links to grid.md)
+
+### Update INDEX.md
+
+After generating chunks, update `.design/exports/INDEX.md`:
+
+1. If INDEX.md doesn't exist, copy it from `templates/exports-index.md`
+2. Replace everything between `<!-- BEGIN:system -->` and `<!-- END:system -->` with populated tables:
+
+```markdown
+<!-- BEGIN:system -->
+### Foundations
+
+| Foundation | File | Tokens |
+|------------|------|--------|
+| Color System | [color-system.md](../system/exports/foundations/color-system.md) | primary, secondary, semantic, neutral |
+| Typography | [typography.md](../system/exports/foundations/typography.md) | font-family, font-size, line-height |
+| ... | ... | ... |
+
+### Components
+
+| Component | File | States | Variants |
+|-----------|------|--------|----------|
+| Button | [button.md](../system/exports/components/button.md) | default, hover, active, disabled, focus, loading | primary, secondary, ghost, destructive |
+| ... | ... | ... | ... |
+<!-- END:system -->
+```
+</chunked-exports>

@@ -3,6 +3,13 @@
 ## Project: {PROJECT_NAME}
 **Date:** {DATE}
 
+## System Strategy
+- **Approach:** {GENERATE | EXTEND | REFACTOR}
+- **Codebase type:** {greenfield | boilerplate | existing}
+- **Design scope:** {full | partial | tokens}
+- **Existing token source:** {path or "none"}
+- **Existing component count:** {N or 0}
+
 ---
 
 ## Foundations
@@ -51,6 +58,13 @@
 | lg | | |
 | full | 9999px | Pills, avatars |
 
+<!-- When strategy is EXTEND, include Component Audit before Components -->
+<!-- ## Component Audit
+| Existing Component | Path | Action | Rationale |
+|-------------------|------|--------|-----------|
+| {name} | {path} | KEEP / RESTYLE / REFACTOR / REPLACE | {why} |
+-->
+
 ## Components
 
 ### Buttons
@@ -69,6 +83,20 @@
 <!-- Structure and behavior -->
 
 <!-- Continue for 30+ components -->
+
+<!-- When strategy is REFACTOR, include Migration Mapping after Components -->
+<!-- ## Migration Mapping
+
+### Token Migration
+| Old Token | New Token | Change | Breaking? |
+|-----------|-----------|--------|-----------|
+| {old} | {new} | {what changed} | {yes/no} |
+
+### Component Migration
+| Old Component | New Component | Change | Files Affected |
+|--------------|---------------|--------|---------------|
+| {old} | {new} | {replaced/redesigned/merged} | {paths} |
+-->
 
 ## Design Tokens
 See `tokens.json` for machine-readable token export.

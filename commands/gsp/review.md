@@ -76,6 +76,19 @@ Should deliver:
 1. Write critique to `.design/review/CRITIQUE.md`
 2. Write audit to `.design/review/ACCESSIBILITY.md`
 
+## Step 3.5: Generate chunked exports
+
+After writing CRITIQUE.md and ACCESSIBILITY.md, generate agent-consumable chunks:
+
+1. Create `.design/review/exports/review-fixes.md` — Critical and Important fixes only, each with:
+   - Which screen/component is affected
+   - The specific issue
+   - Concrete remediation
+2. Create `.design/review/exports/accessibility-fixes.md` — Violations table and remediation steps
+3. If `.design/exports/INDEX.md` exists, replace the `<!-- BEGIN:review -->` … `<!-- END:review -->` section with populated tables
+
+Each chunk follows the standard chunk format (see `references/chunk-format.md`).
+
 ## Step 4: Assess results
 
 Count critical and important issues across both reports.

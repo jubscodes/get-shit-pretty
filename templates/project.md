@@ -29,6 +29,12 @@
 - **Budget:** {BUDGET}
 - **Accessibility:** WCAG 2.2 AA (default)
 
+## Scope
+- **Design scope:** {full | partial | tokens}
+- **Target screens:** {ALL or list of specific screens/flows}
+- **Codebase type:** {greenfield | boilerplate | existing}
+- **Implementation target:** {code | shadcn | rn-reusables | existing | figma | skip}
+
 ## Inspiration
 - **Brands admired:** {BRANDS}
 - **Styles liked:** {STYLES}
