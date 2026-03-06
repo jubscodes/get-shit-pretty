@@ -44,5 +44,28 @@
 - **Tablet:** {BEHAVIOR}
 - **Desktop:** {BEHAVIOR}
 
+## Component Plan
+<!-- Omit this section when implementation_target is figma -->
+
+### Reuse (as-is)
+| Component | Source | Screens Used |
+|-----------|--------|-------------|
+| | | |
+
+### Refactor (needs changes)
+| Component | Source | Changes Needed | Screens Used |
+|-----------|--------|---------------|-------------|
+| | | | |
+
+### New (shared)
+| Component | Purpose | Screens Used |
+|-----------|---------|-------------|
+| | | |
+
+### New (local)
+| Component | Screen | Purpose |
+|-----------|--------|---------|
+| | | |
+
 ## Designer's Notes
 {NOTES}

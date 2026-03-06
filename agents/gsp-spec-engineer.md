@@ -74,7 +74,7 @@ Your output adapts based on the `implementation_target` from `.design/config.jso
 </methodology>
 
 <output>
-Write specs to `.design/specs/SPECS.md`:
+Write specs to the project's specs directory (path provided by the command that spawned you) as `SPECS.md`:
 
 ### When `figma`:
 1. **Frame Structure** — Page names, frame hierarchy, naming convention
@@ -128,7 +128,7 @@ After writing SPECS.md, generate agent-consumable chunks.
 ### Output structure
 
 ```
-.design/specs/exports/
+specs/exports/
 ├── component-mapping.md
 ├── token-mapping.md
 ├── install-manifest.md       (shadcn/rn-reusables only)
@@ -157,7 +157,7 @@ See `references/chunk-format.md` for standard header, footer, naming, and size r
 
 ### Update INDEX.md
 
-After generating chunks, update `.design/exports/INDEX.md`:
+After generating chunks, update the project's `exports/INDEX.md`:
 
 1. If INDEX.md doesn't exist, copy it from `templates/exports-index.md`
 2. Replace everything between `<!-- BEGIN:specs -->` and `<!-- END:specs -->` with populated tables:

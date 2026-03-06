@@ -79,6 +79,12 @@
 - [ ] Touch targets ≥ 44x44pt
 - [ ] Reachable UI elements
 
+### Cognitive Accessibility
+- [ ] Reading level appropriate for target audience
+- [ ] Consistent navigation and layout patterns
+- [ ] No content flashing more than 3 times per second
+- [ ] No time limits (or user can extend/disable)
+
 ### Violations Found
 | # | Issue | Severity | WCAG Criterion | Remediation |
 |---|-------|----------|----------------|-------------|

@@ -38,7 +38,7 @@ Accessibility is not optional polish — it's a core quality requirement. Be tho
 </methodology>
 
 <output>
-Write audit to `.design/review/ACCESSIBILITY.md`:
+Write audit to the project's review directory (path provided by the command that spawned you) as `ACCESSIBILITY.md`:
 
 1. **Perceivable Checklist** — Pass/fail for each criterion with notes
 2. **Operable Checklist** — Pass/fail for each criterion with notes

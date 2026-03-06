@@ -621,6 +621,109 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix, runtime, isCommand
   }
 }
 
+/**
+ * Check if we're running a local install inside the GSP source repo.
+ * When true, we symlink instead of copying so edits to agents/ and commands/
+ * are immediately reflected in .claude/ — no sync needed.
+ */
+function isGspSourceRepo(dir) {
+  try {
+    const p = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8'));
+    return p.name === 'get-shit-pretty';
+  } catch { return false; }
+}
+
+/**
+ * Create a symlink, removing any existing file/symlink at the destination.
+ */
+function forceSymlink(target, linkPath) {
+  try { fs.unlinkSync(linkPath); } catch {}
+  fs.symlinkSync(target, linkPath);
+}
+
+/**
+ * Install using symlinks for Claude Code local installs in the GSP source repo.
+ * Returns true if symlink install was performed, false if caller should fall back to copy.
+ */
+function installLocalSymlinks(targetDir, src) {
+  const cwd = process.cwd();
+  if (!isGspSourceRepo(cwd)) return false;
+
+  const failures = [];
+
+  // ── Agent symlinks (per-file, since agents/ dir is shared with other tools) ──
+  const agentsDest = path.join(targetDir, 'agents');
+  fs.mkdirSync(agentsDest, { recursive: true });
+
+  // Clean old GSP agent files/symlinks
+  for (const file of fs.readdirSync(agentsDest)) {
+    if (file.startsWith('gsp-') && file.endsWith('.md')) {
+      fs.unlinkSync(path.join(agentsDest, file));
+    }
+  }
+
+  const agentsSrc = path.join(cwd, 'agents');
+  let agentCount = 0;
+  for (const file of fs.readdirSync(agentsSrc)) {
+    if (file.startsWith('gsp-') && file.endsWith('.md')) {
+      forceSymlink(path.join('..', '..', 'agents', file), path.join(agentsDest, file));
+      agentCount++;
+    }
+  }
+  if (agentCount > 0) {
+    console.log(`  ${green}+${reset} Symlinked ${agentCount} agents`);
+  } else { failures.push('agents'); }
+
+  // ── Command symlink (whole gsp/ directory) ──
+  const commandsDir = path.join(targetDir, 'commands');
+  fs.mkdirSync(commandsDir, { recursive: true });
+  const gspCommandsDest = path.join(commandsDir, 'gsp');
+  try { fs.rmSync(gspCommandsDest, { recursive: true }); } catch {}
+  forceSymlink(path.join('..', '..', 'commands', 'gsp'), gspCommandsDest);
+  console.log(`  ${green}+${reset} Symlinked commands/gsp`);
+
+  // ── Bundle symlinks (prompts, templates, references → get-shit-pretty/) ──
+  const bundleDest = path.join(targetDir, 'get-shit-pretty');
+  if (fs.existsSync(bundleDest)) {
+    fs.rmSync(bundleDest, { recursive: true });
+  }
+  fs.mkdirSync(bundleDest, { recursive: true });
+
+  for (const dir of ['prompts', 'templates', 'references']) {
+    if (fs.existsSync(path.join(cwd, dir))) {
+      forceSymlink(path.join('..', '..', dir), path.join(bundleDest, dir));
+      console.log(`  ${green}+${reset} Symlinked get-shit-pretty/${dir}`);
+    }
+  }
+
+  // VERSION is a real file (not in source repo as a standalone file)
+  fs.writeFileSync(path.join(bundleDest, 'VERSION'), pkg.version);
+  console.log(`  ${green}+${reset} Wrote VERSION (${pkg.version})`);
+
+  // ── Statusline ──
+  const hooksDest = path.join(targetDir, 'hooks');
+  fs.mkdirSync(hooksDest, { recursive: true });
+  const statuslineSrc = path.join(src, 'scripts', 'gsp-statusline.js');
+  if (fs.existsSync(statuslineSrc)) {
+    let content = fs.readFileSync(statuslineSrc, 'utf8');
+    content = content.replace(/'\.claude'/g, getConfigDirFromHome('claude', false));
+    fs.writeFileSync(path.join(hooksDest, 'gsp-statusline.js'), content);
+    console.log(`  ${green}+${reset} Installed GSP statusline`);
+  }
+  const dispatcherSrc = path.join(src, 'scripts', 'statusline-dispatcher.js');
+  if (fs.existsSync(dispatcherSrc)) {
+    fs.copyFileSync(dispatcherSrc, path.join(hooksDest, 'statusline-dispatcher.js'));
+    console.log(`  ${green}+${reset} Installed statusline dispatcher`);
+  }
+
+  if (failures.length > 0) {
+    console.error(`\n  ${yellow}Installation incomplete!${reset} Failed: ${failures.join(', ')}`);
+    process.exit(1);
+  }
+
+  return true;
+}
+
 function verifyInstalled(dirPath, description) {
   if (!fs.existsSync(dirPath)) {
     console.error(`  ${yellow}!${reset} Failed to install ${description}: directory not created`);
@@ -663,6 +766,15 @@ function install(isGlobal, runtime = 'claude') {
 
   const runtimeLabel = getRuntimeLabel(runtime);
   console.log(`  Installing for ${cyan}${runtimeLabel}${reset} to ${cyan}${locationLabel}${reset}\n`);
+
+  // Local Claude install in GSP source repo → use symlinks
+  if (!isGlobal && runtime === 'claude' && installLocalSymlinks(targetDir, src)) {
+    console.log(`  ${dim}(symlinked — edits to agents/ and commands/ are reflected immediately)${reset}`);
+    const settingsPath = path.join(targetDir, 'settings.json');
+    const settings = readSettings(settingsPath);
+    const statuslineCommand = `node ${dirName}/hooks/statusline-dispatcher.js`;
+    return { settingsPath, settings, statuslineCommand, runtime };
+  }
 
   const failures = [];
 

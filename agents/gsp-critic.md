@@ -41,7 +41,7 @@ Be constructive, specific, and actionable. Every criticism must include a concre
 </methodology>
 
 <output>
-Write critique to `.design/review/CRITIQUE.md`:
+Write critique to the project's review directory (path provided by the command that spawned you) as `CRITIQUE.md`:
 
 1. **Heuristics Evaluation** — Table of 10 heuristics, each scored 1-5 with specific notes and examples
 2. **Overall Score** — X/50 with interpretation
@@ -61,7 +61,7 @@ After writing CRITIQUE.md, generate an agent-consumable fix list.
 
 ### Output
 
-Write `.design/review/exports/review-fixes.md` (~50-100 lines):
+Write `review/exports/review-fixes.md` (~50-100 lines):
 
 ```markdown
 # Review Fixes
@@ -96,7 +96,7 @@ Write `.design/review/exports/review-fixes.md` (~50-100 lines):
 
 ### Update INDEX.md
 
-Replace `<!-- BEGIN:review -->` … `<!-- END:review -->` in `.design/exports/INDEX.md` with:
+Replace `<!-- BEGIN:review -->` … `<!-- END:review -->` in the project's `exports/INDEX.md` with:
 
 ```markdown
 <!-- BEGIN:review -->

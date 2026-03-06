@@ -36,7 +36,7 @@ When an **Existing Components** inventory is provided (for `shadcn`, `rn-reusabl
 </methodology>
 
 <output>
-Write screens to `.design/screens/SCREENS.md`:
+Write screens to the project's screens directory (path provided by the command that spawned you) as `SCREENS.md`:
 
 1. **User Persona** — Name, demographics, goals, pain points, usage context
 2. **Information Architecture** — Content hierarchy and grouping
@@ -66,7 +66,7 @@ After writing SCREENS.md, generate agent-consumable chunks.
 ### Output structure
 
 ```
-.design/screens/exports/
+screens/exports/
 ├── screen-01-{name}.md       (~150-200 lines each)
 ├── screen-02-{name}.md
 ├── ...
@@ -98,7 +98,7 @@ See `references/chunk-format.md` for standard header, footer, naming, and size r
 
 ### Update INDEX.md
 
-After generating chunks, update `.design/exports/INDEX.md`:
+After generating chunks, update the project's `exports/INDEX.md`:
 
 1. If INDEX.md doesn't exist, copy it from `templates/exports-index.md`
 2. Replace everything between `<!-- BEGIN:screens -->` and `<!-- END:screens -->` with populated tables:

@@ -45,13 +45,13 @@ Write real, copy-paste-ready code. Not pseudocode. Not "implementation left as e
 <output>
 Write two outputs:
 
-### `.design/build/CODE.md`
-Implementation guide with:
+### `build/CODE.md`
+Write to the project's build directory (path provided by the command that spawned you):
 1. **Component Hierarchy** — Tree diagram with props and state
 2. **Setup** — Token configuration, theme provider, global styles
 3. **Component Index** — List of all components with file paths
 
-### `.design/build/components/`
+### `build/components/`
 Individual component files, each containing:
 - Full implementation code
 - Props interface / types
