@@ -34,54 +34,38 @@ Every asset should be ready to brief to a production team. Exact copy, specific 
 </methodology>
 
 <output>
-Write campaign to the project's launch directory (path provided by the command that spawned you) as `CAMPAIGN.md`:
+Write your campaign as chunks to the project's launch directory (path provided by the command that spawned you):
 
-1. **Campaign Strategy** — Objective, audience, key message, tone, channels
-2. **Google Ads** — Per format: headline, description, CTA, visual direction, A/B variant
-3. **Meta / Instagram** — Per format: copy, visual direction, CTA, A/B variant
-4. **TikTok** — Per format: hook, copy, visual direction
-5. **Email Sequences** — Welcome (3 emails), Promo, Nurture, Re-engagement with subject lines, body copy, CTAs
-6. **Landing Page** — Full structure: headline, subhead, hero, sections, CTA, social proof
-7. **Social Media** — Per platform: post type, copy, visual direction, hashtags
-8. **Sales Enablement** — Key materials and talking points
-9. **Content Marketing** — Blog posts, case studies with outlines
-</output>
+### Chunk files
 
-<chunked-exports>
-## Chunked Exports
+Write each chunk following the format in `references/chunk-format.md`:
 
-After writing CAMPAIGN.md, generate agent-consumable chunks.
+1. **`campaign-strategy.md`** (~50-80 lines) — Objective, audience, key message, tone, channels
+2. **`digital-ads.md`** (~80-120 lines) — Google Ads + Meta/Instagram + TikTok (all formats and A/B variants)
+3. **`email-sequences.md`** (~80-120 lines) — All sequences with subject lines, body copy, CTAs
+4. **`landing-page.md`** (~60-100 lines) — Full page structure with above-fold and sections
+5. **`social-media.md`** (~50-80 lines) — Per-platform posts with copy, visual direction, hashtags
+6. **`sales-content.md`** (~60-100 lines) — Sales Enablement + Content Marketing combined
 
-### Output structure
+### `INDEX.md`
 
+After writing all chunks, write `INDEX.md` in the launch directory:
+
+```markdown
+# Launch
+> Phase: launch | Project: {name} | Generated: {DATE}
+
+| Chunk | File | ~Lines |
+|-------|------|--------|
+| Campaign Strategy | [campaign-strategy.md](./campaign-strategy.md) | ~{N} |
+| Digital Ads | [digital-ads.md](./digital-ads.md) | ~{N} |
+| Email Sequences | [email-sequences.md](./email-sequences.md) | ~{N} |
+| Landing Page | [landing-page.md](./landing-page.md) | ~{N} |
+| Social Media | [social-media.md](./social-media.md) | ~{N} |
+| Sales & Content | [sales-content.md](./sales-content.md) | ~{N} |
 ```
-launch/exports/
-├── campaign-strategy.md        (~50-80 lines)
-├── digital-ads.md              (~80-120 lines — Google + Meta + TikTok)
-├── email-sequences.md          (~80-120 lines)
-├── landing-page.md             (~60-100 lines)
-├── social-media.md             (~50-80 lines)
-└── sales-content.md            (~60-100 lines — Sales Enablement + Content Marketing)
-```
 
-### Chunk format
-
-See `references/chunk-format.md` for standard header, footer, naming, and size rules.
-
-### Rules
-
-- **Preserve exact content** from CAMPAIGN.md — do not summarize, rewrite, or omit details
-- **campaign-strategy.md** — Objective, audience, key message, tone, channels
-- **digital-ads.md** — Google Ads + Meta/Instagram + TikTok (all formats and A/B variants)
-- **email-sequences.md** — All sequences with subject lines, body copy, CTAs
-- **landing-page.md** — Full page structure with above-fold and sections
-- **social-media.md** — Per-platform posts with copy, visual direction, hashtags
-- **sales-content.md** — Sales Enablement + Content Marketing combined
-- **Naming:** singular, kebab-case, lowercase
-- **Size target:** 50-120 lines per chunk
-- **Self-contained:** each chunk must be understandable without loading other chunks
-
-### Update INDEX.md
+### Update project exports/INDEX.md
 
 After generating chunks, update the project's `exports/INDEX.md`:
 
@@ -92,12 +76,12 @@ After generating chunks, update the project's `exports/INDEX.md`:
 <!-- BEGIN:launch -->
 | Section | File |
 |---------|------|
-| Campaign Strategy | [campaign-strategy.md](../launch/exports/campaign-strategy.md) |
-| Digital Ads | [digital-ads.md](../launch/exports/digital-ads.md) |
-| Email Sequences | [email-sequences.md](../launch/exports/email-sequences.md) |
-| Landing Page | [landing-page.md](../launch/exports/landing-page.md) |
-| Social Media | [social-media.md](../launch/exports/social-media.md) |
-| Sales & Content | [sales-content.md](../launch/exports/sales-content.md) |
+| Campaign Strategy | [campaign-strategy.md](../launch/campaign-strategy.md) |
+| Digital Ads | [digital-ads.md](../launch/digital-ads.md) |
+| Email Sequences | [email-sequences.md](../launch/email-sequences.md) |
+| Landing Page | [landing-page.md](../launch/landing-page.md) |
+| Social Media | [social-media.md](../launch/social-media.md) |
+| Sales & Content | [sales-content.md](../launch/sales-content.md) |
 <!-- END:launch -->
 ```
-</chunked-exports>
+</output>

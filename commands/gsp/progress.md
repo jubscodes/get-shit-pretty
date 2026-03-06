@@ -29,7 +29,7 @@ For each project: read `STATE.md`, `BRIEF.md`, and `brand.ref`
 
 ## Step 3: Calculate prettiness
 
-Brands: count completed/skipped phases out of 4
+Brands: count completed/skipped phases out of 5
 Projects: count completed/skipped phases out of 6
 
 ## Step 4: Display progress
@@ -40,25 +40,26 @@ Projects: count completed/skipped phases out of 6
 ─── Brands ────────────────────────────
 
   acme-corp
-  ████████████████ 100% (4/4 phases)
-  ✅ Discover  ✅ Strategy  ✅ Verbal  ✅ Identity
+  ████████████████ 100% (5/5 phases)
+  ✅ Discover  ✅ Strategy  ✅ Verbal  ✅ Identity  ✅ System
 
   beta-labs
-  ████████░░░░░░░░ 50% (2/4 phases)
-  ✅ Discover  ✅ Strategy  ⬜ Verbal  ⬜ Identity
-  → Next: /gsp:verbal
+  ██████░░░░░░░░░░ 40% (2/5 phases)
+  ✅ Discover  ✅ Strategy  ⬜ Verbal  ⬜ Identity  ⬜ System
+  → Next: /gsp:brand-verbal
 
 ─── Projects ──────────────────────────
 
   acme-website (brand: acme-corp)
   ██████████░░░░░░ 66% (4/6 phases)
-  ✅ System  ✅ Design  ✅ Spec  ✅ Review  ⬜ Build  ⬜ Launch
+  ✅ Brief  ✅ Research  ✅ Design  ✅ Critique  ⬜ Build  ⬜ Review
   → Next: /gsp:build
 
   acme-mobile (brand: acme-corp)
-  ██░░░░░░░░░░░░░░ 16% (1/6 phases)
-  ✅ System  ⬜ Design  ⬜ Spec  ⬜ Review  ⬜ Build  ⬜ Launch
-  → Next: /gsp:design
+  ███░░░░░░░░░░░░░ 16% (1/6 phases)
+  ✅ Brief  ⬜ Research  ⬜ Design  ⬜ Critique  ⬜ Build  ⬜ Review
+  → Next: /gsp:research
+  📦 Launch: complete
 
 ─── Overall ───────────────────────────
 
@@ -67,6 +68,8 @@ Projects: count completed/skipped phases out of 6
 ```
 
 Use ✅ for complete, ⏭️ for skipped, 🔄 for in-progress/needs-revision, ⬜ for pending.
+
+Show Launch status separately if present (not counted in phase progress).
 
 ## Step 5: Route next
 

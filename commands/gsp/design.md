@@ -10,17 +10,17 @@ allowed-tools:
   - Glob
 ---
 <context>
-Phase 2 of the GSP project diamond. Uses the UI/UX Pattern Master prompt to design core screens following Apple HIG and the project's design system.
+Phase 3 of the GSP project diamond. Uses the UI/UX Pattern Master prompt to design core screens following Apple HIG and the brand's design system.
 
-Works with the dual-diamond architecture: reads brand context from `.design/branding/{brand}/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
+Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/system/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 </context>
 
 <objective>
 Design core UI/UX screens and interaction flows.
 
-**Input:** `{project}/system/SYSTEM.md` + `{project}/BRIEF.md`
-**Output:** `{project}/screens/SCREENS.md` + exports
-**Agent:** `gsp-ui-designer`
+**Input:** Research + brief + brand system + project BRIEF.md
+**Output:** `{project}/design/` (screen chunks + shared/ + INDEX.md) + exports/INDEX.md update
+**Agent:** `gsp-designer`
 </objective>
 
 <execution_context>
@@ -41,20 +41,40 @@ Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
 
 ## Step 1: Load context
 
-Read:
-- `{PROJECT_PATH}/BRIEF.md` — app type, audience, goals
-- `{PROJECT_PATH}/system/SYSTEM.md` — design system to use
-- `{BRAND_PATH}/identity/IDENTITY.md` — brand personality
-- `{PROJECT_PATH}/config.json` — get `implementation_target`, `design_scope`
+Read `{PROJECT_PATH}/config.json` — get `implementation_target`, `design_scope`.
+Read `{PROJECT_PATH}/BRIEF.md` — app type, audience, goals.
 
-If SYSTEM.md doesn't exist, tell the user to run `/gsp:system` first.
+### Brand system (chunk-first)
+
+Read `{BRAND_PATH}/system/INDEX.md`. If it exists, load all foundation chunks + selective component chunks.
+
+Fallback: read `{BRAND_PATH}/system/SYSTEM.md` (legacy monolith). Log: "⚠️ Legacy system format detected — consider re-running /gsp:brand-system for chunk output."
+
+If neither exists, tell the user to run `/gsp:brand-system` first.
+
+### Brand context (selective)
+
+Read `{BRAND_PATH}/identity/INDEX.md`. If it exists, load `color-system.md` and `typography.md`.
+Fallback: read `{BRAND_PATH}/identity/IDENTITY.md`.
+
+### Brief (chunk-first)
+
+Read `{PROJECT_PATH}/brief/INDEX.md`. If it exists, load `scope.md` and `target-adaptations.md`.
+
+If brief doesn't exist, proceed without it (brief is informative, not blocking).
+
+### Research (chunk-first)
+
+Read `{PROJECT_PATH}/research/INDEX.md`. If it exists, load `ux-patterns.md`, `recommendations.md`, and `reference-specs.md`.
+
+If research doesn't exist, proceed without it (research is informative, not blocking).
 
 ## Step 1.5: Scope check
 
 **If `design_scope` is `tokens`:**
-1. Update `{PROJECT_PATH}/STATE.md` — set Phase 2 (Design) status to `skipped`
+1. Update `{PROJECT_PATH}/STATE.md` — set Phase 3 (Design) status to `skipped`
 2. Display: "Design phase skipped — design scope is `tokens`."
-3. Route: "Run `/gsp:review`."
+3. Route: "Run `/gsp:build`."
 4. Stop here.
 
 **If `design_scope` is `partial`:**
@@ -66,42 +86,26 @@ When `implementation_target` is not `figma`:
 - **If `{PROJECT_PATH}/codebase/INVENTORY.md` exists**, read it. Pass to the agent.
 - **If not**, fall back to scanning the codebase.
 
-## Step 3: Spawn UI designer
+## Step 3: Spawn designer
 
-Spawn the `gsp-ui-designer` agent with all prior artifacts, the UI/UX Pattern Master prompt (03), design output template, Apple HIG patterns reference, implementation_target, design_scope, target screens (when partial), and existing components inventory.
+Spawn the `gsp-designer` agent with all prior artifacts, the UI/UX Pattern Master prompt (03), design output template, Apple HIG patterns reference, implementation_target, design_scope, target screens (when partial), and existing components inventory.
 
-The agent should deliver:
-1. User personas
-2. Information architecture
-3. Navigation pattern and gestures
-4. Core screens (8 for full, target list for partial) with all states
-5. Accessibility specs
-6. Micro-interactions and animations
-7. Responsive behavior
-8. Component Plan (when target is not figma)
-9. Designer's notes
+**Output path:** `{PROJECT_PATH}/design/`
 
-## Step 4: Write output
+The agent writes chunks directly:
+- `design/screen-{NN}-{name}.md` (one per screen)
+- `design/shared/` (personas, IA, navigation, micro-interactions, responsive, component-plan)
+- `design/INDEX.md`
+- Updates `{PROJECT_PATH}/exports/INDEX.md` (design section)
 
-Write screens to `{PROJECT_PATH}/screens/SCREENS.md`.
-
-## Step 4.5: Generate chunked exports
-
-1. Create `{PROJECT_PATH}/screens/exports/screen-{NN}-{name}.md` per screen
-2. Create `{PROJECT_PATH}/screens/exports/shared/` with global sections
-3. Update `{PROJECT_PATH}/exports/INDEX.md`
-
-## Step 5: Update state
+## Step 4: Update state
 
 Update `{PROJECT_PATH}/STATE.md`:
-- Set Phase 2 (Design) status to `complete`
+- Set Phase 3 (Design) status to `complete`
 - Record completion date
 
-## Step 6: Route next
+## Step 5: Route next
 
-**When `implementation_target` is `skip`:**
-"Run `/gsp:review` for design critique and accessibility audit."
-
-**Otherwise:**
-"Run `/gsp:spec` to generate implementation specifications."
+"Run `/gsp:critique` for design critique and accessibility audit."
 </process>
+</output>

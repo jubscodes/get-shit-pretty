@@ -21,7 +21,7 @@
 
 ## Phase 3: System
 **Status:** pending
-**Command:** `/gsp:system`
+**Command:** `/gsp:brand-system`
 **Input:** IDENTITY.md
 **Output:** `.design/system/SYSTEM.md` + `tokens.json`
 **Goal:** Build design foundations — color, type, spacing, components, tokens.

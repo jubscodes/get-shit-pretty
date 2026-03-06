@@ -1,71 +1,70 @@
-# UI/UX Screens
+# UI/UX Design
 
 ## Project: {PROJECT_NAME}
 **Date:** {DATE}
 
 ---
 
-## User Personas
+> This phase produces screen chunks (`screen-{NN}-{name}.md`) + shared chunks in `design/shared/` + INDEX.md in the `design/` directory.
 
-### Primary Persona: {NAME}
-- **Demographics:** {DEMOGRAPHICS}
-- **Goals:** {GOALS}
-- **Pain points:** {PAIN_POINTS}
-- **Context:** {USAGE_CONTEXT}
+## Chunk Mapping
 
-## Information Architecture
-<!-- Hierarchy and navigation structure -->
+### Screen Chunks (`design/`)
 
-## Navigation Pattern
-- **Type:** {TAB_BAR/SIDEBAR/HAMBURGER/etc}
-- **Primary nav:** {ITEMS}
-- **Secondary nav:** {ITEMS}
+| Chunk File | Content |
+|-----------|---------|
+| `screen-{NN}-{name}.md` | One per screen — layout, components, states, interactions, accessibility |
 
-## Core Screens
+Naming: `screen-{NN}-{kebab-case-name}.md` (e.g., `screen-01-home.md`, `screen-03-user-profile.md`)
 
-### Screen 1: {SCREEN_NAME}
-- **Purpose:** {PURPOSE}
-- **User flow:** {FLOW}
-- **Layout:** {LAYOUT_DESCRIPTION}
-- **Components used:** {COMPONENTS}
+### Shared Chunks (`design/shared/`)
+
+| Chunk File | Content |
+|-----------|---------|
+| `shared/personas.md` | User personas — demographics, goals, pain points, usage context |
+| `shared/information-architecture.md` | Content hierarchy and grouping |
+| `shared/navigation.md` | Nav pattern, items, responsive behavior |
+| `shared/micro-interactions.md` | Trigger → animation → duration → easing table |
+| `shared/responsive.md` | Mobile, tablet, desktop breakpoint adaptations |
+| `shared/component-plan.md` | Reuse / Refactor / New (shared) / New (local) — omit when target is `figma` |
+
+## Content Reference
+
+Each chunk follows the format in `references/chunk-format.md`. Below is the structural reference for what each chunk should contain:
+
+### screen-{NN}-{name}.md
+- **Purpose:** what this screen does
+- **User flow:** position in the flow
+- **Layout:** wireframe-level description
+- **Components used:** from brand design system
 - **States:** Default, Empty, Loading, Error
-- **Interactions:** {INTERACTIONS}
-- **Accessibility:** {A11Y_NOTES}
+- **Interactions:** gestures, transitions
+- **Accessibility:** VoiceOver order, focus management
 
-<!-- Repeat for 8 core screens -->
+### shared/personas.md
+- 2-3 personas each with: Name, Demographics, Goals, Pain points, Usage context
 
-## Gestures & Micro-interactions
-| Trigger | Animation | Duration | Easing |
-|---------|-----------|----------|--------|
-| | | | |
+### shared/information-architecture.md
+- Hierarchy and navigation structure
+- Content grouping rationale
 
-## Responsive Behavior
-- **Mobile:** {BEHAVIOR}
-- **Tablet:** {BEHAVIOR}
-- **Desktop:** {BEHAVIOR}
+### shared/navigation.md
+- **Type:** Tab bar / Sidebar / Hamburger / etc.
+- **Primary nav:** items
+- **Secondary nav:** items
+- Responsive behavior
 
-## Component Plan
-<!-- Omit this section when implementation_target is figma -->
+### shared/micro-interactions.md
+- Table: Trigger, Animation, Duration, Easing
+- Gesture definitions
 
-### Reuse (as-is)
-| Component | Source | Screens Used |
-|-----------|--------|-------------|
-| | | |
+### shared/responsive.md
+- **Mobile:** behavior
+- **Tablet:** behavior
+- **Desktop:** behavior
 
-### Refactor (needs changes)
-| Component | Source | Changes Needed | Screens Used |
-|-----------|--------|---------------|-------------|
-| | | | |
-
-### New (shared)
-| Component | Purpose | Screens Used |
-|-----------|---------|-------------|
-| | | |
-
-### New (local)
-| Component | Screen | Purpose |
-|-----------|--------|---------|
-| | | |
-
-## Designer's Notes
-{NOTES}
+### shared/component-plan.md
+- **Reuse (as-is):** Component, Source, Screens Used
+- **Refactor (needs changes):** Component, Source, Changes Needed, Screens Used
+- **New (shared):** Component, Purpose, Screens Used
+- **New (local):** Component, Screen, Purpose

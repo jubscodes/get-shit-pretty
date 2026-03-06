@@ -9,7 +9,7 @@ allowed-tools:
   - WebSearch
 ---
 <context>
-Phase 6 of the GSP project diamond. Uses the Marketing Asset Factory prompt to create a full campaign asset library across channels.
+Optional GSP project phase. Uses the Marketing Asset Factory prompt to create a full campaign asset library across channels. Not a mandatory phase — run when needed.
 
 Works with the dual-diamond architecture: reads brand identity from `.design/branding/{brand}/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 </context>
@@ -17,8 +17,8 @@ Works with the dual-diamond architecture: reads brand identity from `.design/bra
 <objective>
 Create marketing campaign assets for product launch.
 
-**Input:** Brand identity (via brand.ref) + `{project}/screens/SCREENS.md`
-**Output:** `{project}/launch/CAMPAIGN.md`
+**Input:** Brand identity + verbal chunks (selective) + screen chunks
+**Output:** `{project}/launch/` (6 chunks + INDEX.md) + exports/INDEX.md update
 **Agent:** `gsp-campaign-director`
 </objective>
 
@@ -42,46 +42,54 @@ Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
 Read `{PROJECT_PATH}/config.json` to get `design_scope`.
 
 **If `design_scope` is `tokens`:**
-1. Set Phase 6 (Launch) status to `skipped` in STATE.md
-2. Display: "Launch phase skipped — tokens-only projects don't need marketing campaign assets."
-3. Set Prettiness Level to 100%
-4. **Stop here**
+1. Display: "Launch phase skipped — tokens-only projects don't need marketing campaign assets."
+2. **Stop here**
 
-Read:
-- `{BRAND_PATH}/identity/IDENTITY.md` — brand voice, visual identity
-- `{BRAND_PATH}/verbal/VERBAL.md` — brand voice, messaging (if available)
-- `{PROJECT_PATH}/screens/SCREENS.md` — product screens for showcase
-- `{PROJECT_PATH}/BRIEF.md` — audience, goals
-- `{PROJECT_PATH}/system/SYSTEM.md` — design system for consistency
+### Identity (selective, chunk-first)
 
-If IDENTITY.md doesn't exist, tell the user to complete the brand identity first.
+Read `{BRAND_PATH}/identity/INDEX.md`. If it exists, load all identity chunks.
+Fallback: read `{BRAND_PATH}/identity/IDENTITY.md`. Log: "⚠️ Legacy identity format detected."
+
+If neither exists, tell the user to complete the brand identity first.
+
+### Verbal (selective, chunk-first)
+
+Read `{BRAND_PATH}/verbal/INDEX.md`. If it exists, load selective chunks (brand-voice, messaging-matrix, brand-narrative).
+Fallback: read `{BRAND_PATH}/verbal/VERBAL.md`.
+
+### Design (chunk-first)
+
+Read `{PROJECT_PATH}/design/INDEX.md`. If it exists, load all screen chunks.
+Fallback: read `{PROJECT_PATH}/screens/INDEX.md` (legacy path).
+
+### Other
+
+Read `{PROJECT_PATH}/BRIEF.md` — audience, goals.
 
 ## Step 2: Spawn campaign director
 
-Spawn the `gsp-campaign-director` agent with brand identity, verbal identity, screens, and brief. The Marketing Asset Factory prompt (04). The launch output template.
+Spawn the `gsp-campaign-director` agent with identity chunks, verbal chunks, screen chunks, and brief. The Marketing Asset Factory prompt (04). The launch output template.
 
-## Step 3: Write output
+**Output path:** `{PROJECT_PATH}/launch/`
 
-Write campaign to `{PROJECT_PATH}/launch/CAMPAIGN.md`.
+The agent writes chunks directly:
+- `launch/campaign-strategy.md`
+- `launch/digital-ads.md`
+- `launch/email-sequences.md`
+- `launch/landing-page.md`
+- `launch/social-media.md`
+- `launch/sales-content.md`
+- `launch/INDEX.md`
+- Updates `{PROJECT_PATH}/exports/INDEX.md` (launch section)
 
-## Step 3.5: Generate chunked exports
-
-1. Create chunks in `{PROJECT_PATH}/launch/exports/`
-2. Update `{PROJECT_PATH}/exports/INDEX.md`
-
-## Step 4: Update state
+## Step 3: Update state
 
 Update `{PROJECT_PATH}/STATE.md`:
-- Set Phase 6 (Launch) status to `complete`
+- Add Launch status to `complete` under the Launch section
 - Record completion date
-- Set Prettiness Level to 100%
 
-## Step 5: Celebrate
+## Step 4: Done
 
 Display campaign summary and:
-```
-🎨 Project is fully pretty! All 6 project phases complete.
-
-Run /gsp:progress to see the full journey.
-```
+"Launch assets complete! Run `/gsp:progress` to see the full journey."
 </process>

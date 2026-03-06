@@ -1,32 +1,31 @@
 ---
 name: gsp:review
-description: Design critique (Nielsen's heuristics) + WCAG accessibility audit
+description: Validate built deliverables — token compliance, screen coverage, acceptance
 allowed-tools:
   - Read
   - Write
   - Bash
   - Task
+  - Grep
+  - Glob
 ---
 <context>
-Phase 4 of the GSP project diamond. Runs two agents in parallel: the Design Critique Partner (Nielsen's 10 heuristics) and the Accessibility Auditor (WCAG 2.2 AA).
+Phase 6 of the GSP project diamond. Validates that built deliverables match the design intent — checking system token usage, screen coverage, component implementation, and accessibility compliance in the actual code.
 
-Works with the dual-diamond architecture: reads brand context from `.design/branding/{brand}/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
+Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/system/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 </context>
 
 <objective>
-Critique design quality and audit accessibility compliance.
+Validate built deliverables against design intent.
 
-**Input:** All prior project artifacts + brand identity
-**Output:** `{project}/review/CRITIQUE.md` + `{project}/review/ACCESSIBILITY.md`
-**Agents:** `gsp-critic` + `gsp-accessibility-auditor`
+**Input:** Built code + design chunks + brand system
+**Output:** `{project}/review/` (acceptance-report.md + issues.md + INDEX.md) + exports/INDEX.md update
+**Agent:** `gsp-reviewer`
 </objective>
 
 <execution_context>
-@/Users/jubs/.claude/get-shit-pretty/prompts/06-design-critique-partner.md
-@/Users/jubs/.claude/get-shit-pretty/prompts/08-accessibility-auditor.md
+@/Users/jubs/.claude/get-shit-pretty/prompts/11-deliverable-reviewer.md
 @/Users/jubs/.claude/get-shit-pretty/templates/phases/review.md
-@/Users/jubs/.claude/get-shit-pretty/references/nielsen-heuristics.md
-@/Users/jubs/.claude/get-shit-pretty/references/wcag-checklist.md
 </execution_context>
 
 <process>
@@ -43,55 +42,75 @@ Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
 
 Read `{PROJECT_PATH}/config.json` to get `implementation_target` and `design_scope`.
 
-Read all prior artifacts:
-- `{PROJECT_PATH}/BRIEF.md`
-- `{BRAND_PATH}/identity/IDENTITY.md`
-- `{PROJECT_PATH}/system/SYSTEM.md`
-- `{PROJECT_PATH}/screens/SCREENS.md`
-- `{PROJECT_PATH}/specs/SPECS.md` (if exists)
+### Load all artifacts
 
-## Step 1.5: Scope check
+**Build output:** Read `{PROJECT_PATH}/build/CODE.md` and scan `{PROJECT_PATH}/build/components/` for implemented components.
 
-**If `design_scope` is `tokens`:**
-1. Review SYSTEM.md only — token foundations, naming, scale consistency
-2. Run accessibility audit on color contrast and token values only
-3. Write results to `{PROJECT_PATH}/review/ACCESSIBILITY.md`
-4. Update STATE.md — set Phase 4 to `complete`
-5. Route: "Run `/gsp:build`."
-6. **Stop here**
+**Design:** Read `{PROJECT_PATH}/design/INDEX.md` → load all screen chunks.
+Fallback: `{PROJECT_PATH}/screens/INDEX.md` (legacy).
 
-**Otherwise:** If SCREENS.md doesn't exist and scope is not `tokens`, tell the user to complete the design phase first.
+**Brand system:** Read `{BRAND_PATH}/system/INDEX.md` → load foundation + component chunks.
+Also read `{BRAND_PATH}/system/tokens.json`.
 
-## Step 2: Spawn critics (parallel)
+**Brief:** Read `{PROJECT_PATH}/brief/INDEX.md` → load scope and adaptations.
 
-**Agent 1: gsp-critic** — Design critique using Nielsen's 10 Heuristics reference + all design artifacts.
+**Research:** Read `{PROJECT_PATH}/research/INDEX.md` → load `reference-specs.md` (to verify specs were followed).
 
-**Agent 2: gsp-accessibility-auditor** — WCAG 2.2 AA audit using WCAG checklist + all design artifacts.
+**Critique:** Read `{PROJECT_PATH}/critique/INDEX.md` → load prioritized-fixes and accessibility-fixes (to verify they were addressed).
 
-## Step 3: Write output
+**Codebase:** Scan actual codebase for implemented components (when `implementation_target` is not `figma`).
 
-1. Write critique to `{PROJECT_PATH}/review/CRITIQUE.md`
-2. Write audit to `{PROJECT_PATH}/review/ACCESSIBILITY.md`
+## Step 2: Spawn reviewer
 
-## Step 3.5: Generate chunked exports
+Spawn the `gsp-reviewer` agent with:
+- Build output (CODE.md + component files)
+- Design chunks
+- Brand system chunks + tokens.json
+- Plan chunks
+- Critique fixes (to verify resolution)
+- The Deliverable Reviewer prompt (11)
+- The review output template
+- **Output path:** `{PROJECT_PATH}/review/`
 
-1. Create `{PROJECT_PATH}/review/exports/review-fixes.md`
-2. Create `{PROJECT_PATH}/review/exports/accessibility-fixes.md`
-3. Update `{PROJECT_PATH}/exports/INDEX.md`
+The agent writes chunks directly:
+- `review/acceptance-report.md`
+- `review/issues.md`
+- `review/INDEX.md`
+
+## Step 3: Write exports
+
+Update `{PROJECT_PATH}/exports/INDEX.md`:
+
+```markdown
+<!-- BEGIN:review -->
+| Section | File |
+|---------|------|
+| Acceptance Report | [acceptance-report.md](../review/acceptance-report.md) |
+| Issues | [issues.md](../review/issues.md) |
+<!-- END:review -->
+```
 
 ## Step 4: Assess results
 
-**If critical issues found:** Display issues, recommend looping back, update STATE.md review loops.
-**If no critical issues:** Display positive summary, proceed.
+Read `review/acceptance-report.md` for the verdict:
+
+**Pass:** All screens implemented, tokens used correctly, accessibility compliant.
+**Conditional Pass:** Minor issues found, but shippable.
+**Fail:** Critical issues — must address before shipping.
 
 ## Step 5: Update state
 
 Update `{PROJECT_PATH}/STATE.md`:
-- Set Phase 4 (Review) status to `complete` or `needs-revision`
-- Record review loop count and completion date
+- Set Phase 6 (Review) status to `complete` or `needs-revision`
+- Record completion date
+- If Pass or Conditional Pass: Set Prettiness Level to 100%
 
 ## Step 6: Route next
 
-If clean: "Run `/gsp:build` to translate designs to code."
-If issues: "Address the critical issues above, then run `/gsp:review` again."
+**If Pass/Conditional Pass:**
+"Project is fully pretty! All 5 project phases complete. Run `/gsp:launch` if you need marketing campaign assets, or `/gsp:progress` to see the full journey."
+
+**If Fail:**
+"Critical issues found. Address the issues in `review/issues.md`, then run `/gsp:review` again."
 </process>
+</output>

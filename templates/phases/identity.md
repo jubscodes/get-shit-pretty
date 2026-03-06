@@ -5,125 +5,62 @@
 
 ---
 
-## Logo System
+> This phase produces 6 chunks + palettes.json + INDEX.md in the `identity/` directory.
 
-### Direction 1: {CONCEPT_NAME}
-- **Concept:** {DESCRIPTION}
-- **Strategic rationale:** {WHY_THIS_DIRECTION}
-- **Variations:** Primary, Secondary, Icon, Monochrome
-- **Clear space:** {RULES}
-- **Minimum size:** {MIN_SIZE}
-- **Usage rules:** {RULES}
+## Chunk Mapping
 
-### Direction 2: {CONCEPT_NAME}
-- **Concept:** {DESCRIPTION}
-- **Strategic rationale:** {WHY_THIS_DIRECTION}
-- **Variations:** Primary, Secondary, Icon, Monochrome
-- **Clear space:** {RULES}
-- **Minimum size:** {MIN_SIZE}
-- **Usage rules:** {RULES}
+| Chunk File | Content |
+|-----------|---------|
+| `logo-directions.md` | 3 logo directions with concept, rationale, variations, usage rules |
+| `color-system.md` | Full palette table, semantic colors, dark mode mapping, contrast ratios |
+| `typography.md` | Primary + secondary typefaces, full type scale, responsive behavior |
+| `imagery-style.md` | Photography, illustration, iconography guidelines |
+| `brand-applications.md` | Key touchpoints showing the brand in use |
+| `brand-book.md` | 20-page brand book outline with section descriptions |
 
-### Direction 3: {CONCEPT_NAME}
-- **Concept:** {DESCRIPTION}
-- **Strategic rationale:** {WHY_THIS_DIRECTION}
-- **Variations:** Primary, Secondary, Icon, Monochrome
-- **Clear space:** {RULES}
-- **Minimum size:** {MIN_SIZE}
-- **Usage rules:** {RULES}
+Also produces `palettes.json` — machine-readable OKLCH color scales.
 
-## Color System
+## Content Reference
 
-| Role | Hex | RGB | Pantone | CMYK | Usage | Rationale |
-|------|-----|-----|---------|------|-------|-----------|
-| Primary | | | | | | |
-| Secondary | | | | | | |
-| Accent | | | | | | |
-| Background | | | | | | |
-| Text | | | | | | |
-| Error | | | | | | |
-| Success | | | | | | |
-| Warning | | | | | | |
+Each chunk follows the format in `references/chunk-format.md`. Below is the structural reference for what each chunk should contain:
 
-### Color Rationale
-<!-- How colors connect to brand strategy and archetype -->
-{COLOR_RATIONALE}
+### logo-directions.md
+- 3 directions each with:
+  - **Concept:** description
+  - **Strategic rationale:** why this direction
+  - **Variations:** Primary, Secondary, Icon, Monochrome
+  - **Clear space:** rules
+  - **Minimum size:** min size
+  - **Usage rules:** rules
 
-### Dark Mode Mapping
-<!-- Map each color to its dark mode equivalent -->
+### color-system.md
+- Full palette table: Role, Hex, RGB, Pantone, CMYK, Usage, Rationale
+- Semantic colors (error, success, warning)
+- Color rationale — how colors connect to brand strategy and archetype
+- Dark mode mapping table: Light Mode → Dark Mode
+- Contrast ratios table: Combination, Ratio, Pass/Fail (WCAG AA)
+- Reference to `./palettes.json` for machine-readable OKLCH scales
 
-| Light Mode | Dark Mode | Notes |
-|------------|-----------|-------|
-| | | |
+### typography.md
+- **Primary typeface:** name, rationale (connect to verbal tone), weights, use cases
+- **Secondary typeface:** name, rationale, weights, use cases
+- Type scale table: Level, Size, Weight, Line Height, Use
+- Responsive behavior notes
 
-### Contrast Ratios
-<!-- WCAG AA compliance -->
+### imagery-style.md
+- **Photography direction:** style, subjects, color treatment, composition, don'ts
+- **Illustration style:** style, complexity, color palette
+- **Iconography:** style, weight, grid, corner radius
 
-| Combination | Ratio | Pass/Fail |
-|------------|-------|-----------|
-| | | |
+### brand-applications.md
+- Key touchpoints showing the brand in use (digital, print, social)
+- Each application with visual direction and design notes
 
-## Typography
-
-### Primary Typeface: {TYPEFACE}
-- **Why:** {RATIONALE — connect to verbal tone}
-- **Weights:** {WEIGHTS}
-- **Use for:** {USE_CASES}
-
-### Secondary Typeface: {TYPEFACE}
-- **Why:** {RATIONALE}
-- **Weights:** {WEIGHTS}
-- **Use for:** {USE_CASES}
-
-### Type Scale
-| Level | Size | Weight | Line Height | Use |
-|-------|------|--------|-------------|-----|
-| | | | | |
-
-## Imagery Style
-
-### Photography Direction
-- **Style:** {STYLE}
-- **Subjects:** {SUBJECTS}
-- **Color treatment:** {TREATMENT}
-- **Composition:** {COMPOSITION}
-- **Don'ts:** {AVOID}
-
-### Illustration Style
-- **Style:** {STYLE}
-- **Complexity:** {COMPLEXITY}
-- **Color palette:** {COLORS}
-
-### Iconography
-- **Style:** {STYLE}
-- **Weight:** {WEIGHT}
-- **Grid:** {GRID}
-- **Corner radius:** {RADIUS}
-
-## Brand Applications
-<!-- Key touchpoints showing the brand in use -->
-- {APPLICATION_1}
-- {APPLICATION_2}
-- {APPLICATION_3}
-
-## Brand Book Structure
-<!-- 20-page outline -->
-1. Cover
-2. Brand Story
-3. Brand Prism
-4. Brand Voice
-5. Logo System
-6. Logo Usage Rules
-7. Color System
-8. Color Applications
-9. Typography
-10. Type in Use
-11. Imagery Direction
-12. Photography Guidelines
-13. Illustration Guidelines
-14. Iconography
-15. Layout & Grid
-16. Brand Applications — Digital
-17. Brand Applications — Print
-18. Brand Applications — Social
-19. Do's and Don'ts
-20. Contact & Resources
+### brand-book.md
+- 20-page outline:
+  1. Cover — 2. Brand Story — 3. Brand Prism — 4. Brand Voice
+  5. Logo System — 6. Logo Usage Rules — 7. Color System — 8. Color Applications
+  9. Typography — 10. Type in Use — 11. Imagery Direction — 12. Photography Guidelines
+  13. Illustration Guidelines — 14. Iconography — 15. Layout & Grid
+  16. Brand Applications (Digital) — 17. Brand Applications (Print)
+  18. Brand Applications (Social) — 19. Do's and Don'ts — 20. Contact & Resources

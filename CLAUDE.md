@@ -4,7 +4,7 @@ Design engineering system for Claude Code, OpenCode, Gemini, and Codex.
 
 ## Architecture
 
-Dual-diamond: **Branding** (discover → strategy → verbal → identity) + **Project** (system → design → spec → review → build → launch).
+Dual-diamond: **Branding** (brand-discover → brand-strategy → brand-verbal → brand-identity → brand-system) + **Project** (brief → research → design → critique → build → review). Optional: launch.
 
 Files live in `agents/`, `commands/gsp/`, `prompts/`, `templates/`, `references/`. The installer copies (or symlinks) these into runtime config dirs (`.claude/`, `.opencode/`, etc.).
 
@@ -25,8 +25,8 @@ To reinstall after adding/removing files: `node bin/install.js --claude --local`
 ## Key files
 
 - `bin/install.js` — multi-runtime installer (symlinks for local Claude, copies for global/other runtimes)
-- `templates/projects/config.json` — project config template (0.4.0)
-- `templates/branding/config.json` — brand config template (0.4.0)
+- `templates/projects/config.json` — project config template (0.5.0)
+- `templates/branding/config.json` — brand config template (0.5.0)
 - `templates/exports-index.md` — chunked exports index with BEGIN/END markers per phase
 - `references/chunk-format.md` — standard chunk format spec
 

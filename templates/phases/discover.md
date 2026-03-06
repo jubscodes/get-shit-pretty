@@ -5,68 +5,51 @@
 
 ---
 
-## Market Landscape
+> This phase produces 7 chunks + INDEX.md in the `discover/` directory.
 
-### Industry Overview
-{INDUSTRY_ANALYSIS}
+## Chunk Mapping
 
-### Market Trends
-{KEY_TRENDS}
+| Chunk File | Content |
+|-----------|---------|
+| `market-landscape.md` | Industry overview, market trends |
+| `competitive-audit.md` | Competitor analysis, positioning map, competitive gaps |
+| `swot-analysis.md` | Strengths, Weaknesses, Opportunities, Threats |
+| `audience-personas.md` | 2-3 personas with demographics, goals, pain points |
+| `trend-analysis.md` | Design and cultural trends, user expectation shifts |
+| `strategic-recommendations.md` | 3 actionable recommendations |
+| `mood-board-direction.md` | Color, typography, imagery direction |
 
-## Competitive Audit
+## Content Reference
 
-### Competitor Analysis
+Each chunk follows the format in `references/chunk-format.md`. Below is the structural reference for what each chunk should contain:
 
-| Competitor | Positioning | Strengths | Weaknesses | Visual Style |
-|-----------|-------------|-----------|------------|--------------|
-| | | | | |
+### market-landscape.md
+- Industry overview and analysis
+- Market size, key players
+- Where the industry is heading
 
-### Positioning Map
-<!-- 2x2 matrix plotting competitors on 2 strategic axes -->
+### competitive-audit.md
+- Competitor table: Positioning, Strengths, Weaknesses, Visual Style
+- 2x2 positioning map on strategic axes
+- Competitive gaps and opportunities
 
-### Competitive Gaps
-{OPPORTUNITIES}
+### swot-analysis.md
+- Strengths / Weaknesses / Opportunities / Threats matrix
+- Design-focused analysis
 
-## SWOT Analysis
+### audience-personas.md
+- 2-3 personas each with: Demographics, Goals, Pain points, Brand expectations, Media habits
 
-| Strengths | Weaknesses |
-|-----------|------------|
-| | |
+### trend-analysis.md
+- 5 macro trends with: definition, visual language, adoption phase, 3 brand examples, risks/opportunities
+- User expectation shifts
+- Platform evolution
 
-| Opportunities | Threats |
-|--------------|---------|
-| | |
+### strategic-recommendations.md
+- 3 specific, actionable recommendations for this brand
 
-## Audience Personas
-
-### Persona 1: {NAME}
-- **Demographics:** {DEMOGRAPHICS}
-- **Goals:** {GOALS}
-- **Pain points:** {PAIN_POINTS}
-- **Brand expectations:** {EXPECTATIONS}
-- **Media habits:** {MEDIA}
-
-### Persona 2: {NAME}
-- **Demographics:** {DEMOGRAPHICS}
-- **Goals:** {GOALS}
-- **Pain points:** {PAIN_POINTS}
-- **Brand expectations:** {EXPECTATIONS}
-- **Media habits:** {MEDIA}
-
-## Trend Analysis
-<!-- Design and cultural trends relevant to the brand -->
-
-| Trend | Relevance | Opportunity | Risk |
-|-------|-----------|-------------|------|
-| | | | |
-
-## Strategic Recommendations
-1. {RECOMMENDATION_1}
-2. {RECOMMENDATION_2}
-3. {RECOMMENDATION_3}
-
-## Mood Board Direction
-- **Color direction:** {COLORS}
-- **Typography direction:** {TYPE}
-- **Imagery direction:** {IMAGERY}
-- **Overall feel:** {FEEL}
+### mood-board-direction.md
+- Color direction (hex values)
+- Typography direction (named typefaces)
+- Imagery direction
+- Overall feel

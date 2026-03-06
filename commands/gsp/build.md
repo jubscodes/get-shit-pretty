@@ -8,17 +8,17 @@ allowed-tools:
   - Task
 ---
 <context>
-Phase 5 of the GSP project diamond. Uses the Design-to-Code Translator prompt to convert implementation specs and design system into production-ready frontend components.
+Phase 5 of the GSP project diamond. Uses the Design-to-Code Translator prompt to convert design, research, and brief into production-ready frontend components.
 
-Works with the dual-diamond architecture: reads/writes project assets in `.design/projects/{project}/`.
+Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/system/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 </context>
 
 <objective>
 Translate designs into production-ready frontend code.
 
-**Input:** `{project}/specs/SPECS.md` (or SCREENS.md + SYSTEM.md if spec skipped) + `{project}/system/SYSTEM.md`
+**Input:** Design chunks + research chunks + brief chunks + brand system chunks
 **Output:** `{project}/build/CODE.md` + `{project}/build/components/`
-**Agent:** `gsp-design-engineer`
+**Agent:** `gsp-builder`
 </objective>
 
 <execution_context>
@@ -27,42 +27,41 @@ Translate designs into production-ready frontend code.
 </execution_context>
 
 <process>
-## Step 0: Resolve project
+## Step 0: Resolve project and brand
 
 Scan `.design/projects/` for project directories. If only one project exists, use it. If multiple, ask the user which project to work on.
 
 Set `PROJECT_PATH` = `.design/projects/{project}`
 
+Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
+- Set `BRAND_PATH` = `.design/branding/{brand}`
+
 ## Step 1: Load context
 
 Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`, `codebase_type`.
 
-**Check for chunked exports:**
-If `{PROJECT_PATH}/exports/INDEX.md` exists, chunked exports are available.
-
 **When building a specific screen** (user specifies which) and chunks are available:
 1. Read `{PROJECT_PATH}/exports/INDEX.md` — find chunk file paths
-2. Load screen chunk: `{PROJECT_PATH}/screens/exports/screen-{NN}-{name}.md`
-3. Load screen spec: `{PROJECT_PATH}/specs/exports/screens/screen-{NN}-spec.md`
-4. Load referenced component chunks from `{PROJECT_PATH}/system/exports/components/`
-5. Load `{PROJECT_PATH}/specs/exports/token-mapping.md`
-6. Load `{PROJECT_PATH}/specs/exports/install-manifest.md` (shadcn/rn-reusables)
-6b. Load `{PROJECT_PATH}/specs/exports/gap-analysis.md` + `file-references.md` (existing target)
-6c. Load `{PROJECT_PATH}/codebase/INVENTORY.md` (when exists)
-7. Load `{PROJECT_PATH}/system/tokens.json`
-8. Read `{PROJECT_PATH}/BRIEF.md` — tech stack preference
-9. Load `{PROJECT_PATH}/review/exports/review-fixes.md` (if available)
+2. Load screen chunk: `{PROJECT_PATH}/design/screen-{NN}-{name}.md`
+3. Load referenced component chunks from `{BRAND_PATH}/system/components/`
+4. Load `{PROJECT_PATH}/brief/target-adaptations.md`
+5. Load `{PROJECT_PATH}/brief/install-manifest.md` (shadcn/rn-reusables)
+5b. Load `{PROJECT_PATH}/brief/gap-analysis.md` + `file-references.md` (existing target)
+5d. Load `{PROJECT_PATH}/research/reference-specs.md` (if exists)
+5e. Load `{PROJECT_PATH}/research/technical-research.md` (if exists)
+5c. Load `{PROJECT_PATH}/codebase/INVENTORY.md` (when exists)
+6. Load `{BRAND_PATH}/system/tokens.json`
+7. Read `{PROJECT_PATH}/BRIEF.md` — tech stack preference
+8. Load `{PROJECT_PATH}/critique/prioritized-fixes.md` (if available)
 
 **When building all screens** (or no chunks available):
-Read full monolith files from `{PROJECT_PATH}/`.
+Read full monolith files from `{PROJECT_PATH}/` as fallback. Log: "⚠️ Legacy format detected — consider re-running phases for chunk output."
 
-If SPECS.md doesn't exist, check if `implementation_target` is `skip`:
-- **If `skip`:** Read SCREENS.md + SYSTEM.md as primary input
-- **If not `skip`:** Tell the user to run `/gsp:spec` first
+If design doesn't exist (no INDEX.md in design/), tell the user to run `/gsp:design` first.
 
-## Step 2: Spawn design engineer
+## Step 2: Spawn builder
 
-Spawn the `gsp-design-engineer` agent with all specs/screens, system, and token files, the Design-to-Code Translator prompt (09), build output template, target tech stack, implementation_target, design_scope, and codebase inventory.
+Spawn the `gsp-builder` agent with all design, plan, system, and token files, the Design-to-Code Translator prompt (09), build output template, target tech stack, implementation_target, design_scope, and codebase inventory.
 
 **When `design_scope` is `tokens`:**
 - Output token files only
@@ -81,5 +80,6 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ## Step 5: Route next
 
-"Run `/gsp:launch` to create marketing campaign assets."
+"Run `/gsp:review` to validate built deliverables against design intent."
 </process>
+</output>

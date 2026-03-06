@@ -12,22 +12,25 @@
 
 | # | Phase | Status | Started | Completed |
 |---|-------|--------|---------|-----------|
-| 1 | System | pending | — | — |
-| 2 | Design | pending | — | — |
-| 3 | Spec | pending/skipped | — | — |
-| 4 | Review | pending | — | — |
+| 1 | Brief | pending | — | — |
+| 2 | Research | pending | — | — |
+| 3 | Design | pending | — | — |
+| 4 | Critique | pending | — | — |
 | 5 | Build | pending | — | — |
-| 6 | Launch | pending | — | — |
+| 6 | Review | pending | — | — |
 
 ## Review Loops
-<!-- Track review → fix → re-review cycles -->
+<!-- Track critique → fix → re-critique cycles -->
 
 | Loop | Date | Issues Found | Issues Fixed | Resubmitted |
 |------|------|-------------|-------------|-------------|
 
 ## Status Values
 <!-- pending | in-progress | complete | needs-revision | skipped -->
-<!-- Skipped phases count as complete for prettiness calculation -->
+
+## Launch
+<!-- Optional — run /gsp:launch when needed -->
+<!-- Status: not started -->
 
 ## Decisions
 <!-- Key design decisions and rationale -->

@@ -5,90 +5,53 @@
 
 ---
 
-## Brand Prism (Kapferer)
+> This phase produces 6 chunks + INDEX.md in the `strategy/` directory.
 
-### Physique
-<!-- The tangible, physical qualities of the brand -->
-{PHYSIQUE}
+## Chunk Mapping
 
-### Personality
-<!-- The brand's character if it were a person -->
-{PERSONALITY}
+| Chunk File | Content |
+|-----------|---------|
+| `brand-prism.md` | Kapferer's 6 facets |
+| `archetype.md` | Primary + secondary Jungian archetypes |
+| `golden-circle.md` | Why / How / What |
+| `positioning.md` | Positioning statement + competitive map |
+| `brand-platform.md` | Purpose, Vision, Mission, Values, Promise |
+| `messaging-hierarchy.md` | Core message, supporting messages, elevator pitch |
 
-### Culture
-<!-- The values and principles driving the brand -->
-{CULTURE}
+## Content Reference
 
-### Relationship
-<!-- The type of relationship brand has with its audience -->
-{RELATIONSHIP}
+Each chunk follows the format in `references/chunk-format.md`. Below is the structural reference for what each chunk should contain:
 
-### Reflection
-<!-- How the target audience sees themselves through the brand -->
-{REFLECTION}
+### brand-prism.md
+- **Physique** — tangible, physical qualities
+- **Personality** — brand's character as a person
+- **Culture** — values and principles
+- **Relationship** — how brand relates to audience
+- **Reflection** — how audience sees themselves through brand
+- **Self-Image** — how audience feels using the brand
 
-### Self-Image
-<!-- How the audience feels about themselves when using the brand -->
-{SELF_IMAGE}
+### archetype.md
+- Primary archetype + secondary influence
+- Rationale for selection
+- Strengths and shadow traits to avoid
+- Communication style
+- Visual tendencies
 
-## Brand Archetype
+### golden-circle.md
+- **Why** — purpose beyond profit
+- **How** — process to deliver on purpose
+- **What** — products/services offered
 
-**Primary archetype:** {ARCHETYPE}
-**Secondary influence:** {SECONDARY}
+### positioning.md
+- Positioning statement: For {audience} who {need}, {brand} is the {category} that {benefit} because {reason}
+- 2-axis positioning map with competitors plotted
+- White space analysis
 
-**Rationale:** {WHY_THIS_ARCHETYPE}
+### brand-platform.md
+- Purpose, Vision, Mission, Values, Promise
+- Each specific and ownable
 
-### Archetype Expression
-- **Strengths:** {STRENGTHS}
-- **Shadow:** {SHADOW_TRAITS_TO_AVOID}
-- **Communication style:** {STYLE}
-- **Visual tendencies:** {VISUAL}
-
-## Golden Circle
-
-### Why
-<!-- Purpose — why does this brand exist beyond making money? -->
-{WHY}
-
-### How
-<!-- Process — how does the brand deliver on its purpose? -->
-{HOW}
-
-### What
-<!-- Product/service — what does the brand actually offer? -->
-{WHAT}
-
-## Positioning
-
-### Positioning Statement
-For {TARGET_AUDIENCE} who {NEED/WANT}, {BRAND} is the {CATEGORY} that {KEY_BENEFIT} because {REASON_TO_BELIEVE}.
-
-### Positioning Map
-<!-- Plot brand vs competitors on 2 strategic axes -->
-- **X-axis:** {DIMENSION_1}
-- **Y-axis:** {DIMENSION_2}
-
-| Brand | X Position | Y Position |
-|-------|-----------|-----------|
-| | | |
-
-## Brand Platform
-
-- **Purpose:** {PURPOSE}
-- **Vision:** {VISION}
-- **Mission:** {MISSION}
-- **Values:** {VALUES}
-- **Promise:** {PROMISE}
-
-## Messaging Hierarchy
-
-### Core Message
-{CORE_MESSAGE}
-
-### Supporting Messages
-1. {MESSAGE_1} — {PROOF_POINT}
-2. {MESSAGE_2} — {PROOF_POINT}
-3. {MESSAGE_3} — {PROOF_POINT}
-
-### Elevator Pitch
-{30_SECOND_PITCH}
+### messaging-hierarchy.md
+- Core message
+- 3 supporting messages with proof points
+- Elevator pitch (30 seconds)

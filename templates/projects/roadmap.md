@@ -4,46 +4,56 @@
 **Brand:** {BRAND_NAME}
 **Created:** {DATE}
 
+> Treat this project as a bounded issue (or set of issues) and a PR. Ship small, ship complete.
+
 ---
 
-## Phase 1: System
+## Phase 1: Brief
 **Status:** pending
-**Command:** `/gsp:system`
-**Input:** Brand identity + BRIEF.md
-**Output:** `system/SYSTEM.md` + `system/tokens.json`
-**Goal:** Build design foundations — color, type, spacing, components, tokens.
+**Command:** `/gsp:brief`
+**Input:** Brand system + BRIEF.md
+**Output:** `brief/` (scope, adaptations, conditionals)
+**Goal:** Scope the project — screen list, priorities, component adaptations, gap analysis.
 
-## Phase 2: Design
+## Phase 2: Research
+**Status:** pending
+**Command:** `/gsp:research`
+**Input:** Brief scope + brand system + BRIEF.md
+**Output:** `research/` (UX patterns, competitor UX, technical research, accessibility patterns)
+**Goal:** Deep project-level research — UX patterns, competitor analysis, technical approaches, accessibility strategies.
+
+## Phase 3: Design
 **Status:** pending
 **Command:** `/gsp:design`
-**Input:** SYSTEM.md + BRIEF.md
-**Output:** `screens/SCREENS.md`
+**Input:** Research + brief + brand system + BRIEF.md
+**Output:** `design/` (screen chunks + shared/)
 **Goal:** Design core screens, flows, and interaction patterns.
 
-## Phase 3: Spec
+## Phase 4: Critique
 **Status:** pending
-**Command:** `/gsp:spec`
-**Input:** SCREENS.md + SYSTEM.md + config.json
-**Output:** `specs/SPECS.md`
-**Goal:** Map design decisions to implementation target.
-
-## Phase 4: Review
-**Status:** pending
-**Command:** `/gsp:review`
+**Command:** `/gsp:critique`
 **Input:** All prior artifacts
-**Output:** `review/CRITIQUE.md` + `review/ACCESSIBILITY.md`
+**Output:** `critique/` (critique + accessibility chunks)
 **Goal:** Critique design quality and audit accessibility compliance.
 
 ## Phase 5: Build
 **Status:** pending
 **Command:** `/gsp:build`
-**Input:** SPECS.md + SYSTEM.md
+**Input:** Design + brief + brand system
 **Output:** `build/CODE.md` + `build/components/`
 **Goal:** Translate design into production-ready frontend code.
 
-## Phase 6: Launch
+## Phase 6: Review
 **Status:** pending
+**Command:** `/gsp:review`
+**Input:** Built deliverables + design intent
+**Output:** `review/` (acceptance report + issues)
+**Goal:** Validate built deliverables against design intent — token compliance, screen coverage, accessibility.
+
+---
+
+## Optional: Launch
 **Command:** `/gsp:launch`
-**Input:** Brand identity + SCREENS.md
-**Output:** `launch/CAMPAIGN.md`
-**Goal:** Create marketing campaign assets for launch.
+**Input:** Brand identity + verbal + design
+**Output:** `launch/` (campaign chunks)
+**Goal:** Create marketing campaign assets for launch. Run when needed.

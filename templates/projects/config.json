@@ -1,5 +1,5 @@
 {
-  "version": "0.4.0",
+  "version": "0.5.0",
   "project_type": "design",
   "project": {
     "name": "",
@@ -14,15 +14,14 @@
     "design_tool": "Figma",
     "implementation_target": "code",
     "codebase_type": "greenfield",
-    "design_scope": "full",
-    "system_strategy": "generate"
+    "design_scope": "full"
   },
   "phases": {
-    "system": { "status": "pending", "output": "system/" },
-    "design": { "status": "pending", "output": "screens/" },
-    "spec": { "status": "pending", "output": "specs/" },
-    "review": { "status": "pending", "output": "review/" },
+    "brief": { "status": "pending", "output": "brief/" },
+    "research": { "status": "pending", "output": "research/" },
+    "design": { "status": "pending", "output": "design/" },
+    "critique": { "status": "pending", "output": "critique/" },
     "build": { "status": "pending", "output": "build/" },
-    "launch": { "status": "pending", "output": "launch/" }
+    "review": { "status": "pending", "output": "review/" }
   }
 }

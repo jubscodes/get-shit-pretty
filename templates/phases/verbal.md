@@ -5,98 +5,50 @@
 
 ---
 
-## Brand Voice
+> This phase produces 7 chunks + INDEX.md in the `verbal/` directory.
 
-### Voice Attributes
-<!-- 3-5 core voice attributes that define how the brand speaks -->
+## Chunk Mapping
 
-| Attribute | Description | Example |
-|-----------|-------------|---------|
-| | | |
+| Chunk File | Content |
+|-----------|---------|
+| `brand-voice.md` | 3-5 voice attributes with means/doesn't mean |
+| `tone-spectrum.md` | 5 scales with default position + context shifts |
+| `voice-chart.md` | Do/Don't per attribute + grammar/style rules |
+| `messaging-matrix.md` | Messages by audience segment |
+| `brand-narrative.md` | Origin story + 4-part story arc |
+| `tagline-directions.md` | 3 distinct tagline directions |
+| `nomenclature.md` | Naming conventions, principles, terminology |
 
-### Voice Personality
-{VOICE_PERSONALITY_DESCRIPTION}
+## Content Reference
 
-## Tone Spectrum
+Each chunk follows the format in `references/chunk-format.md`. Below is the structural reference for what each chunk should contain:
 
-<!-- How voice flexes across contexts. Each scale 1-5. -->
+### brand-voice.md
+- 3-5 voice attributes table: Attribute, Description, Example
+- Voice personality description
+- Each attribute has "means / doesn't mean" + concrete examples
 
-| Dimension | 1 | 2 | 3 | 4 | 5 | Brand Position |
-|-----------|---|---|---|---|---|----------------|
-| Formal ↔ Casual | | | | | | |
-| Serious ↔ Playful | | | | | | |
-| Authoritative ↔ Friendly | | | | | | |
-| Technical ↔ Simple | | | | | | |
-| Reserved ↔ Enthusiastic | | | | | | |
+### tone-spectrum.md
+- 5 scales (Formal↔Casual, Serious↔Playful, Authoritative↔Friendly, Technical↔Simple, Reserved↔Enthusiastic) with brand position
+- Tone by context table: Context, Tone Shift, Example (8-10 contexts)
 
-### Tone by Context
-| Context | Tone Shift | Example |
-|---------|-----------|---------|
-| Marketing | | |
-| Support | | |
-| Error messages | | |
-| Celebrations | | |
-| Onboarding | | |
+### voice-chart.md
+- Do/Don't per attribute with real writing examples
+- Before/after examples
+- Grammar and style rules (contractions, emoji, exclamation marks)
 
-## Voice Chart
+### messaging-matrix.md
+- Table: Audience, Key Message, Tone, Proof Point, Channel
+- At least 3 audience segments
 
-### Do / Don't
+### brand-narrative.md
+- Origin story
+- 4-part story arc: Setup → Tension → Resolution → Transformation
 
-| Trait | Do | Don't |
-|-------|-----|-------|
-| | | |
+### tagline-directions.md
+- 3 directions each with: tagline, approach/rationale, best-use context
 
-### Writing Examples
-<!-- Before/after showing voice application -->
-
-**Before (generic):** {BEFORE}
-**After (on-brand):** {AFTER}
-
-## Messaging Matrix
-
-| Audience | Key Message | Tone | Proof Point | Channel |
-|----------|-------------|------|-------------|---------|
-| | | | | |
-
-## Brand Narrative
-
-### Origin Story
-{ORIGIN}
-
-### Brand Story Arc
-1. **Setup:** {CONTEXT}
-2. **Tension:** {PROBLEM}
-3. **Resolution:** {SOLUTION}
-4. **Transformation:** {OUTCOME}
-
-## Tagline Directions
-
-### Direction 1: {TAGLINE}
-- **Approach:** {RATIONALE}
-- **Best for:** {USE_CASE}
-
-### Direction 2: {TAGLINE}
-- **Approach:** {RATIONALE}
-- **Best for:** {USE_CASE}
-
-### Direction 3: {TAGLINE}
-- **Approach:** {RATIONALE}
-- **Best for:** {USE_CASE}
-
-## Nomenclature
-
-### Naming Conventions
-- **Products:** {CONVENTION}
-- **Features:** {CONVENTION}
-- **Plans/tiers:** {CONVENTION}
-- **Internal tools:** {CONVENTION}
-
-### Naming Principles
-1. {PRINCIPLE_1}
-2. {PRINCIPLE_2}
-3. {PRINCIPLE_3}
-
-### Terminology Guide
-| Use | Don't Use | Reason |
-|-----|-----------|--------|
-| | | |
+### nomenclature.md
+- Naming conventions: Products, Features, Plans/tiers, Internal tools
+- 3 naming principles
+- Terminology guide: Use / Don't Use / Reason

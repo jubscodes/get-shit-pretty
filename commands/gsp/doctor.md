@@ -55,44 +55,51 @@ For each instance, read:
 
 ## Step 3: Run checks per instance
 
-### Per-Brand Checks (4-phase)
+### Per-Brand Checks (5-phase)
 
 **Check B1: Brand Structure**
 Required: config.json, STATE.md, BRIEF.md
-Required dirs: discover/, strategy/, verbal/, identity/
+Required dirs: discover/, strategy/, verbal/, identity/, system/
 Missing → FAIL
 
 **Check B2: Brand Phase Ordering**
-No phase complete if earlier phase is pending (discover < strategy < verbal < identity).
+No phase complete if earlier phase is pending (discover < strategy < verbal < identity < system).
 Exception: strategy can proceed without discover.
 
 **Check B3: Brand Completeness**
-If all 4 phases complete, check:
-- `identity/IDENTITY.md` exists
+If all 5 phases complete, check:
+- `identity/INDEX.md` exists (chunk format)
 - `identity/palettes.json` exists (WARN if missing)
+- `system/INDEX.md` exists (chunk format)
+- `system/tokens.json` exists (WARN if missing)
+- If monolith exists without INDEX.md → WARN: "Legacy monolith format"
+
+**Check B4: Legacy Monolith Detection**
+For each brand phase directory (discover, strategy, verbal, identity, system):
+- If monolith exists but no INDEX.md → WARN: "Legacy format in {phase}/ — re-run /gsp:{phase} for chunk output"
 
 ### Per-Project Checks (6-phase)
 
 **Check P1: Project Structure**
 Required: config.json, STATE.md, BRIEF.md, brand.ref
-Required dirs: system/, screens/, specs/, review/, build/, launch/
+Required dirs: brief/, research/, design/, critique/, build/, review/
 Required when non-greenfield: codebase/INVENTORY.md
+Legacy detection: if system/, screens/, specs/, plan/ dirs exist → WARN: "Legacy v0.4.0 structure detected — project uses old phase layout"
 
 **Check P2: Brand Reference**
 Read brand.ref → check brand exists in `.design/branding/{name}/`
-Check brand identity is complete (identity phase = complete)
-WARN if brand referenced but not complete
+Check brand system is complete (system phase = complete)
+WARN if brand referenced but system not complete
 
 **Check P3: Brand Drift**
 Read `identity_hash` from brand.ref
 If brand identity/IDENTITY.md exists, compute current hash (first 8 chars of md5)
-If hashes differ → WARN: "Brand identity has changed since project consumed it. Consider re-running `/gsp:system`."
+If hashes differ → WARN: "Brand identity has changed since project consumed it. Consider re-running `/gsp:plan`."
 If identity_hash is "pending" → INFO: "Brand identity wasn't complete when project was created."
 
 **Check P4: Phase Ordering**
-Same logic as v0.3.0 but adapted for 6 phases:
-system < design < spec < review < build < launch
-Valid skips: design/spec skipped for tokens scope, spec skipped for skip target
+brief < research < design < critique < build < review
+Valid skips: design skipped for tokens scope, research can proceed without brief
 
 **Check P5: Stale Outputs**
 Same as v0.3.0 checks but reading from project path.
@@ -101,10 +108,12 @@ Same as v0.3.0 checks but reading from project path.
 Same as v0.3.0 but reading from project path.
 
 **Check P7: Missing Chunks**
-Same as v0.3.0 but reading from project path.
+For each completed project phase (brief, research, design, critique, build, review):
+- Check for `{phase}/INDEX.md` — if missing → WARN
+- Legacy path detection: if `screens/` exists instead of `design/` → WARN
 
 **Check P8: Review Status**
-Same as v0.3.0 but reading from project path.
+If review phase complete, check verdict in acceptance-report.md.
 
 ### Cross-Instance Checks
 
@@ -134,7 +143,7 @@ Overall Health: {SCORE}/100 {emoji}
 {health bar}
 
 ─── Brand: {name} ─────────────────────
-  Phases: {N}/4 complete
+  Phases: {N}/5 complete
   ✅ B1. Structure .............. PASS
   ✅ B2. Phase Ordering ......... PASS
   ⚠️  B3. Completeness .......... WARN
@@ -158,7 +167,7 @@ FAIL:
 
 WARN:
   • [acme-corp/B3] No palettes.json found
-    → Fix: Re-run /gsp:identity to generate OKLCH palettes
+    → Fix: Re-run /gsp:brand-identity to generate OKLCH palettes
 
 ─── Summary ───────────────────────────
 {health summary message}
@@ -174,3 +183,4 @@ Health bar: 20-char using █ and ░.
 - **Terminal only** — no file output
 - **Be specific** — every issue names the exact file and suggests the exact command to fix it
 </process>
+</output>

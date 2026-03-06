@@ -13,8 +13,9 @@ allowed-tools:
 You are the GSP (Get Shit Pretty) entry point. You scan the `.design/` directory, detect what exists, and route the user to the right workflow — brand creation, project creation, or continuation.
 
 GSP uses a dual-diamond architecture:
-- **Diamond 1 — Branding** (4 phases): discover → strategy → verbal → identity
-- **Diamond 2 — Project** (6 phases): system → design → spec → review → build → launch
+- **Diamond 1 — Branding** (5 phases): brand-discover → brand-strategy → brand-verbal → brand-identity → brand-system
+- **Diamond 2 — Project** (6 phases): brief → research → design → critique → build → review
+- **Optional:** launch (on request)
 
 Multiple brands and projects can coexist. Projects reference a brand.
 </context>
@@ -62,15 +63,15 @@ Ask the user:
 - "What are you starting?"
   - **Brand identity** → Brand flow (Step 3)
   - **Design project** → Check for brands first. If none, explain they need a brand first. Offer to create one, then auto-transition.
-  - **Full design (brand + project)** → Brand flow, with E2E flag so identity completion auto-transitions to project flow
+  - **Full design (brand + project)** → Brand flow, with E2E flag so system completion auto-transitions to project flow
 
 ### State B: Brands exist, no projects
 
 Show existing brands with status:
 ```
 Existing brands:
-  • acme-corp (4/4 phases complete)
-  • beta-labs (2/4 — strategy complete)
+  • acme-corp (5/5 phases complete)
+  • beta-labs (2/5 — strategy complete)
 ```
 
 Ask:
@@ -86,8 +87,8 @@ Brands:
   • acme-corp (complete)
 
 Projects:
-  • acme-website (brand: acme-corp, 3/6 — spec complete)
-  • acme-mobile (brand: acme-corp, 1/6 — system complete)
+  • acme-website (brand: acme-corp, 4/6 — critique complete)
+  • acme-mobile (brand: acme-corp, 2/6 — research complete)
 ```
 
 Ask:
@@ -113,7 +114,7 @@ Offer to create a new brand or project alongside the legacy structure.
 1. Ask for brand name (kebab-case, e.g., "acme-corp")
 2. Create directory structure:
 ```bash
-mkdir -p .design/branding/{name}/{discover,strategy,verbal,identity,exports}
+mkdir -p .design/branding/{name}/{discover,strategy,verbal,identity,system}
 ```
 
 3. Gather brand brief in 2 rounds:
@@ -140,15 +141,15 @@ Use inference over interrogation — state assumptions and let them correct.
 - `.design/branding/{name}/config.json` from brand config template
 - `.design/branding/{name}/ROADMAP.md` from brand roadmap template
 
-5. Route: "Run `/gsp:discover` to begin brand discovery."
+5. Route: "Run `/gsp:brand-discover` to begin brand discovery."
 
 ## Step 4: Project flow
 
 1. Show available brands:
 ```
 Available brands:
-  • acme-corp (complete — all 4 phases)
-  • beta-labs (in progress — 2/4 phases)
+  • acme-corp (complete — all 5 phases)
+  • beta-labs (in progress — 2/5 phases)
 ```
 
 If no brands exist, explain that a brand is needed first and offer to create one.
@@ -160,7 +161,8 @@ If only one complete brand exists, suggest it as default.
 
 4. Create directory structure:
 ```bash
-mkdir -p .design/projects/{name}/{system,screens,specs,review,build,launch,codebase,exports}
+mkdir -p .design/projects/{name}/{brief,research,design,critique,build,review,codebase,exports}
+
 ```
 
 5. Write `brand.ref`:
@@ -199,5 +201,6 @@ Write to `.design/projects/{name}/brand.ref`
 - `.design/projects/{name}/config.json` from project config template (include `brand_ref` field)
 - `.design/projects/{name}/ROADMAP.md` from project roadmap template
 
-9. Route: "Run `/gsp:system` to build the design system."
+9. Route: "Run `/gsp:brief` to scope the project. Treat this project as a bounded issue (or set of issues) and a PR — ship small, ship complete."
 </process>
+</output>
