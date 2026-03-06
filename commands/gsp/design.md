@@ -10,14 +10,16 @@ allowed-tools:
   - Glob
 ---
 <context>
-Phase 4 of the GSP design pipeline. Uses the UI/UX Pattern Master prompt to design core screens following Apple HIG and the project's design system. Adapts screen count and scope based on project configuration.
+Phase 2 of the GSP project diamond. Uses the UI/UX Pattern Master prompt to design core screens following Apple HIG and the project's design system.
+
+Works with the dual-diamond architecture: reads brand context from `.design/branding/{brand}/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 </context>
 
 <objective>
 Design core UI/UX screens and interaction flows.
 
-**Input:** `.design/system/SYSTEM.md` + `.design/BRIEF.md`
-**Output:** `.design/screens/SCREENS.md` + `.design/screens/exports/` + `.design/exports/INDEX.md` (updated)
+**Input:** `{project}/system/SYSTEM.md` + `{project}/BRIEF.md`
+**Output:** `{project}/screens/SCREENS.md` + exports
 **Agent:** `gsp-ui-designer`
 </objective>
 
@@ -28,96 +30,74 @@ Design core UI/UX screens and interaction flows.
 </execution_context>
 
 <process>
+## Step 0: Resolve project and brand
+
+Scan `.design/projects/` for project directories. If only one project exists, use it. If multiple, ask the user which project to work on.
+
+Set `PROJECT_PATH` = `.design/projects/{project}`
+
+Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
+- Set `BRAND_PATH` = `.design/branding/{brand}`
+
 ## Step 1: Load context
 
 Read:
-- `.design/BRIEF.md` — app type, audience, goals
-- `.design/system/SYSTEM.md` — design system to use
-- `.design/brand/IDENTITY.md` — brand personality
-- `.design/config.json` — get `implementation_target`, `design_scope`
+- `{PROJECT_PATH}/BRIEF.md` — app type, audience, goals
+- `{PROJECT_PATH}/system/SYSTEM.md` — design system to use
+- `{BRAND_PATH}/identity/IDENTITY.md` — brand personality
+- `{PROJECT_PATH}/config.json` — get `implementation_target`, `design_scope`
 
 If SYSTEM.md doesn't exist, tell the user to run `/gsp:system` first.
 
 ## Step 1.5: Scope check
 
 **If `design_scope` is `tokens`:**
-1. Update `.design/STATE.md` — set Phase 4 (Design) status to `skipped`
-2. Display: "Design phase skipped — design scope is `tokens` (system/token refresh only). No screens to design."
-3. Route: "Run `/gsp:review` for design critique and accessibility audit."
+1. Update `{PROJECT_PATH}/STATE.md` — set Phase 2 (Design) status to `skipped`
+2. Display: "Design phase skipped — design scope is `tokens`."
+3. Route: "Run `/gsp:review`."
 4. Stop here.
 
 **If `design_scope` is `partial`:**
-Read BRIEF.md "Target screens" to get the specific screen list. Pass this to the agent instead of "8 core screens".
+Read BRIEF.md "Target screens" to get the specific screen list.
 
 ## Step 2: Load existing components inventory
 
-When `implementation_target` is `shadcn`, `rn-reusables`, `existing`, or `code` (anything except `figma`):
-
-**If `.design/codebase/INVENTORY.md` exists**, read it and use as the Existing Components inventory. Pass to the agent.
-
-**If INVENTORY.md doesn't exist** (legacy projects without codebase analysis), fall back to scanning the codebase:
-- Look for `components/`, `src/components/`, `components/ui/`, `lib/components/`
-- Look for shadcn `components/ui/` or RN Reusables `components/ui/`
-- Look for layout files, page/screen files
-- Build an Existing Components inventory from what's found
-
-Pass this inventory to the agent so screen designs can reference existing components.
+When `implementation_target` is not `figma`:
+- **If `{PROJECT_PATH}/codebase/INVENTORY.md` exists**, read it. Pass to the agent.
+- **If not**, fall back to scanning the codebase.
 
 ## Step 3: Spawn UI designer
 
-Spawn the `gsp-ui-designer` agent with:
-- All prior artifacts
-- The UI/UX Pattern Master prompt (03)
-- The design output template
-- The Apple HIG patterns reference
-- The `implementation_target` value
-- The `design_scope` value
-- The target screens list (when `partial` scope)
-- The existing components inventory (if gathered in Step 2)
-- The INVENTORY.md content (when exists — for referencing existing components and patterns)
+Spawn the `gsp-ui-designer` agent with all prior artifacts, the UI/UX Pattern Master prompt (03), design output template, Apple HIG patterns reference, implementation_target, design_scope, target screens (when partial), and existing components inventory.
 
 The agent should deliver:
-1. User personas with goals and pain points
+1. User personas
 2. Information architecture
-3. Navigation pattern and gesture definitions
-4. Core screens with wireframes, components, interactions:
-   - `full` scope: 8 core screens (default)
-   - `partial` scope: only the target screens specified in the brief
-5. All states: empty, error, loading
-6. Accessibility specs (WCAG, VoiceOver, Dynamic Type)
-7. Micro-interactions and animations
-8. Responsive behavior across breakpoints
-9. **Component Plan** (when target is not `figma`)
-10. Designer's notes
+3. Navigation pattern and gestures
+4. Core screens (8 for full, target list for partial) with all states
+5. Accessibility specs
+6. Micro-interactions and animations
+7. Responsive behavior
+8. Component Plan (when target is not figma)
+9. Designer's notes
 
 ## Step 4: Write output
 
-Write screens to `.design/screens/SCREENS.md`.
+Write screens to `{PROJECT_PATH}/screens/SCREENS.md`.
 
 ## Step 4.5: Generate chunked exports
 
-After writing SCREENS.md, the agent generates agent-consumable chunks:
-
-1. Create `.design/screens/exports/` with one file per screen:
-   - `screen-01-{name}.md`, `screen-02-{name}.md`, etc. (~150-200 lines each)
-2. Create `.design/screens/exports/shared/` with global sections:
-   - `personas.md`, `information-architecture.md`, `navigation.md`, `micro-interactions.md`, `responsive.md`
-   - `component-plan.md` (omit when `implementation_target` is `figma`)
-3. Update `.design/exports/INDEX.md` — replace the `<!-- BEGIN:screens -->` … `<!-- END:screens -->` section with populated screen and shared tables
-
-Each chunk follows the standard format: header with phase/source/date, exact content from monolith (no summarization), and `## Related` footer with links to related chunks.
-
-Screen chunks' `## Related` section links to component chunks in `../../system/exports/components/{name}.md`.
+1. Create `{PROJECT_PATH}/screens/exports/screen-{NN}-{name}.md` per screen
+2. Create `{PROJECT_PATH}/screens/exports/shared/` with global sections
+3. Update `{PROJECT_PATH}/exports/INDEX.md`
 
 ## Step 5: Update state
 
-Update `.design/STATE.md`:
-- Set Phase 4 (Design) status to `complete`
+Update `{PROJECT_PATH}/STATE.md`:
+- Set Phase 2 (Design) status to `complete`
 - Record completion date
 
 ## Step 6: Route next
-
-Display screen summary (screen count, key flows) and end with:
 
 **When `implementation_target` is `skip`:**
 "Run `/gsp:review` for design critique and accessibility audit."

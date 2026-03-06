@@ -8,14 +8,16 @@ allowed-tools:
   - Task
 ---
 <context>
-Phase 6 of the GSP design pipeline. Runs two agents in parallel: the Design Critique Partner (Nielsen's 10 heuristics) and the Accessibility Auditor (WCAG 2.2 AA). If critical issues are found, loops back to design/spec phases.
+Phase 4 of the GSP project diamond. Runs two agents in parallel: the Design Critique Partner (Nielsen's 10 heuristics) and the Accessibility Auditor (WCAG 2.2 AA).
+
+Works with the dual-diamond architecture: reads brand context from `.design/branding/{brand}/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 </context>
 
 <objective>
 Critique design quality and audit accessibility compliance.
 
-**Input:** All prior artifacts
-**Output:** `.design/review/CRITIQUE.md` + `.design/review/ACCESSIBILITY.md`
+**Input:** All prior project artifacts + brand identity
+**Output:** `{project}/review/CRITIQUE.md` + `{project}/review/ACCESSIBILITY.md`
 **Agents:** `gsp-critic` + `gsp-accessibility-auditor`
 </objective>
 
@@ -28,86 +30,65 @@ Critique design quality and audit accessibility compliance.
 </execution_context>
 
 <process>
+## Step 0: Resolve project and brand
+
+Scan `.design/projects/` for project directories. If only one project exists, use it. If multiple, ask the user which project to work on.
+
+Set `PROJECT_PATH` = `.design/projects/{project}`
+
+Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
+- Set `BRAND_PATH` = `.design/branding/{brand}`
+
 ## Step 1: Load context
 
-Read `.design/config.json` to get `implementation_target`.
+Read `{PROJECT_PATH}/config.json` to get `implementation_target` and `design_scope`.
 
 Read all prior artifacts:
-- `.design/BRIEF.md`
-- `.design/brand/IDENTITY.md`
-- `.design/system/SYSTEM.md`
-- `.design/screens/SCREENS.md`
-- `.design/specs/SPECS.md` (if it exists)
+- `{PROJECT_PATH}/BRIEF.md`
+- `{BRAND_PATH}/identity/IDENTITY.md`
+- `{PROJECT_PATH}/system/SYSTEM.md`
+- `{PROJECT_PATH}/screens/SCREENS.md`
+- `{PROJECT_PATH}/specs/SPECS.md` (if exists)
 
-If SCREENS.md doesn't exist, tell the user to complete the design phase first.
+## Step 1.5: Scope check
 
-If SPECS.md doesn't exist and `implementation_target` is not `skip`, tell the user to run `/gsp:spec` first. When target is `skip`, review SCREENS.md + SYSTEM.md without requiring SPECS.md.
+**If `design_scope` is `tokens`:**
+1. Review SYSTEM.md only — token foundations, naming, scale consistency
+2. Run accessibility audit on color contrast and token values only
+3. Write results to `{PROJECT_PATH}/review/ACCESSIBILITY.md`
+4. Update STATE.md — set Phase 4 to `complete`
+5. Route: "Run `/gsp:build`."
+6. **Stop here**
+
+**Otherwise:** If SCREENS.md doesn't exist and scope is not `tokens`, tell the user to complete the design phase first.
 
 ## Step 2: Spawn critics (parallel)
 
-**Agent 1: gsp-critic** — Design critique using:
-- The Design Critique Partner prompt (06)
-- Nielsen's 10 Heuristics reference
-- All design artifacts
+**Agent 1: gsp-critic** — Design critique using Nielsen's 10 Heuristics reference + all design artifacts.
 
-Should deliver:
-1. Nielsen's 10 heuristics scored 1-5 with specific examples
-2. Visual hierarchy analysis
-3. Typography and color assessment
-4. Usability evaluation
-5. Cognitive load analysis
-6. Prioritized fixes (Critical / Important / Polish)
-7. 2 alternative redesign directions
-
-**Agent 2: gsp-accessibility-auditor** — WCAG audit using:
-- The Accessibility Auditor prompt (08)
-- WCAG 2.2 AA checklist
-- All design artifacts
-
-Should deliver:
-1. Perceivable, Operable, Understandable, Robust checklists
-2. Mobile and cognitive accessibility checks
-3. Violations list with severity and WCAG criteria
-4. Remediation steps
-5. Accessibility statement
+**Agent 2: gsp-accessibility-auditor** — WCAG 2.2 AA audit using WCAG checklist + all design artifacts.
 
 ## Step 3: Write output
 
-1. Write critique to `.design/review/CRITIQUE.md`
-2. Write audit to `.design/review/ACCESSIBILITY.md`
+1. Write critique to `{PROJECT_PATH}/review/CRITIQUE.md`
+2. Write audit to `{PROJECT_PATH}/review/ACCESSIBILITY.md`
 
 ## Step 3.5: Generate chunked exports
 
-After writing CRITIQUE.md and ACCESSIBILITY.md, generate agent-consumable chunks:
-
-1. Create `.design/review/exports/review-fixes.md` — Critical and Important fixes only, each with:
-   - Which screen/component is affected
-   - The specific issue
-   - Concrete remediation
-2. Create `.design/review/exports/accessibility-fixes.md` — Violations table and remediation steps
-3. If `.design/exports/INDEX.md` exists, replace the `<!-- BEGIN:review -->` … `<!-- END:review -->` section with populated tables
-
-Each chunk follows the standard chunk format (see `references/chunk-format.md`).
+1. Create `{PROJECT_PATH}/review/exports/review-fixes.md`
+2. Create `{PROJECT_PATH}/review/exports/accessibility-fixes.md`
+3. Update `{PROJECT_PATH}/exports/INDEX.md`
 
 ## Step 4: Assess results
 
-Count critical and important issues across both reports.
-
-**If critical issues found:**
-- Display issues clearly
-- Recommend looping back: "Run `/gsp:design` or `/gsp:spec` to address critical issues, then `/gsp:review` again."
-- Update STATE.md review loop tracking
-
-**If no critical issues:**
-- Display positive summary with any polish items
-- Proceed to build
+**If critical issues found:** Display issues, recommend looping back, update STATE.md review loops.
+**If no critical issues:** Display positive summary, proceed.
 
 ## Step 5: Update state
 
-Update `.design/STATE.md`:
-- Set Phase 6 (Review) status to `complete` (or `needs-revision` if critical issues)
-- Record review loop count
-- Record completion date
+Update `{PROJECT_PATH}/STATE.md`:
+- Set Phase 4 (Review) status to `complete` or `needs-revision`
+- Record review loop count and completion date
 
 ## Step 6: Route next
 

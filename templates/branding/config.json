@@ -1,0 +1,14 @@
+{
+  "version": "0.4.0",
+  "project_type": "brand",
+  "brand": {
+    "name": "",
+    "created": ""
+  },
+  "phases": {
+    "discover": { "status": "pending", "output": "discover/" },
+    "strategy": { "status": "pending", "output": "strategy/" },
+    "verbal": { "status": "pending", "output": "verbal/" },
+    "identity": { "status": "pending", "output": "identity/" }
+  }
+}

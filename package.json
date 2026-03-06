@@ -1,7 +1,7 @@
 {
   "name": "get-shit-pretty",
-  "version": "0.3.0",
-  "description": "A design engineering system for Claude Code, OpenCode, Gemini, and Codex. Research → Brand → System → Design → Spec → Review → Build → Launch.",
+  "version": "0.4.0",
+  "description": "A design engineering system for Claude Code, OpenCode, Gemini, and Codex. Dual-diamond: Branding (discover → strategy → verbal → identity) + Projects (system → design → spec → review → build → launch).",
   "bin": {
     "get-shit-pretty": "bin/install.js"
   },

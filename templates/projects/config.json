@@ -1,0 +1,28 @@
+{
+  "version": "0.4.0",
+  "project_type": "design",
+  "project": {
+    "name": "",
+    "type": "",
+    "created": ""
+  },
+  "brand_ref": "",
+  "preferences": {
+    "platform": "web",
+    "tech_stack": "React + Tailwind",
+    "accessibility_level": "WCAG 2.2 AA",
+    "design_tool": "Figma",
+    "implementation_target": "code",
+    "codebase_type": "greenfield",
+    "design_scope": "full",
+    "system_strategy": "generate"
+  },
+  "phases": {
+    "system": { "status": "pending", "output": "system/" },
+    "design": { "status": "pending", "output": "screens/" },
+    "spec": { "status": "pending", "output": "specs/" },
+    "review": { "status": "pending", "output": "review/" },
+    "build": { "status": "pending", "output": "build/" },
+    "launch": { "status": "pending", "output": "launch/" }
+  }
+}
