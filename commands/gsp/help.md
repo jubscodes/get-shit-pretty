@@ -17,7 +17,7 @@ Output the following reference exactly:
 
 ```
 🎨 GSP — Get Shit Pretty
-Command Reference (v0.5.0 — Dual Diamond)
+Command Reference (v0.4.0 — Dual Diamond)
 ═══════════════════════════════════════
 
 GETTING STARTED

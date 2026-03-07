@@ -9,7 +9,7 @@ Display:
 ```
 🎨 GSP — Redirecting...
 
-/gsp:strategy now redirects to /gsp:brand-strategy in GSP 0.5.0.
+/gsp:strategy now redirects to /gsp:brand-strategy in GSP 0.4.0.
 Brand commands now use the brand- prefix for clarity.
 ```
 

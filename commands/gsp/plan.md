@@ -9,7 +9,7 @@ Display:
 ```
 🎨 GSP — Redirecting...
 
-/gsp:plan now redirects to /gsp:brief in GSP 0.5.0.
+/gsp:plan now redirects to /gsp:brief in GSP 0.4.0.
 The brief phase handles project scoping, adaptations, and gap analysis.
 ```
 

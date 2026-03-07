@@ -9,7 +9,7 @@ Display:
 ```
 🎨 GSP — Redirecting...
 
-/gsp:verbal now redirects to /gsp:brand-verbal in GSP 0.5.0.
+/gsp:verbal now redirects to /gsp:brand-verbal in GSP 0.4.0.
 Brand commands now use the brand- prefix for clarity.
 ```
 

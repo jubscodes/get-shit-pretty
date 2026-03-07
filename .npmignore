@@ -1,0 +1,10 @@
+CLAUDE.md
+install.sh
+.DS_Store
+.planning/
+.design/
+.claude/
+.codex/
+.gemini/
+.opencode/
+VERSION
