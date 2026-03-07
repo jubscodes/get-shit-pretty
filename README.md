@@ -213,19 +213,25 @@ All artifacts live in `.design/` within your project directory.
 
 ## Agents & Prompts
 
-GSP ships with 9 specialized agents, each modeled after a real design discipline:
+GSP ships with 15 specialized agents, each modeled after a real design discipline:
 
 | Agent | Role |
 |-------|------|
 | **Design System Architect** | Complete design systems (Apple Principal Designer level) |
-| **Brand Identity Creator** | Full brand identities (Pentagram Creative Director level) |
-| **UI/UX Pattern Master** | App UI design following Apple HIG |
-| **Marketing Asset Factory** | Campaign asset libraries |
-| **Implementation Spec Engineer** | Implementation specifications for any UI target |
-| **Design Critique Partner** | Structured critiques using Nielsen's 10 heuristics |
-| **Design Trend Synthesizer** | Industry trend analysis and competitive research |
-| **Accessibility Auditor** | WCAG 2.2 AA compliance auditing |
-| **Design-to-Code Translator** | Design to production-ready frontend code |
+| **Brand Strategist** | Full brand strategies (Pentagram Creative Director level) |
+| **Identity Designer** | Visual identity — logo directions, color palettes, typography systems |
+| **Verbal Strategist** | Verbal identity — voice, tone spectrum, messaging, naming |
+| **UI/UX Designer** | App UI design following Apple HIG |
+| **Campaign Director** | Marketing campaign asset libraries |
+| **Project Scoper** | Implementation specifications for any UI target |
+| **Design Critic** | Structured critiques using Nielsen's 10 heuristics |
+| **Trend Researcher** | Industry trend analysis and competitive research |
+| **Project Researcher** | Deep UX patterns, competitor analysis, technical research |
+| **Design-to-Code Builder** | Design to production-ready frontend code |
+| **Deliverable Reviewer** | Deliverable validation — token compliance, screen coverage |
+| **Brand Auditor** | Brand coherence assessment and evolution mapping |
+| **Codebase Scanner** | Codebase inventory and existing design system detection |
+| **Pipeline Auditor** | Pipeline consistency auditing |
 
 Each agent has deep reference material — Apple HIG patterns, Nielsen's heuristics, WCAG checklists, design token standards — baked into its prompts.
 

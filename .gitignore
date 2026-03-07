@@ -1,2 +1,11 @@
 node_modules/
 .DS_Store
+
+# Local runtime dirs (installer-generated symlinks/copies + local config)
+.claude/
+.codex/
+.gemini/
+.opencode/
+
+# Local dev notes
+.planning/

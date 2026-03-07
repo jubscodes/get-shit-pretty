@@ -1,112 +1,90 @@
 # Design System
 
-## Project: {PROJECT_NAME}
+## Brand: {BRAND_NAME}
 **Date:** {DATE}
 
-## System Strategy
-- **Approach:** {GENERATE | EXTEND | REFACTOR}
-- **Codebase type:** {greenfield | boilerplate | existing}
-- **Design scope:** {full | partial | tokens}
-- **Existing token source:** {path or "none"}
-- **Existing component count:** {N or 0}
+> Created once per brand. Reused across all projects.
 
 ---
 
-## Foundations
+> This phase produces foundation chunks in `system/foundations/`, component chunks in `system/components/`, plus `principles.md`, `tokens.json`, and `INDEX.md`.
 
-### Color System
-<!-- Full color palette with semantic mapping -->
+## Inputs
+- identity/color-system.md → foundations/color-system.md
+- identity/palettes.json → token generation
+- identity/typography.md → foundations/typography.md
+- identity/logo-directions.md → clear space tokens
+- strategy/archetype.md + strategy/brand-platform.md → principles.md
+- verbal/brand-voice.md → content component guidelines
+- config.json system_config — tech_stack, system_strategy
 
-### Typography Scale
-| Level | Size | Weight | Line Height | Use |
-|-------|------|--------|-------------|-----|
-| Display | | | | |
-| H1 | | | | |
-| H2 | | | | |
-| H3 | | | | |
-| Body Large | | | | |
-| Body | | | | |
-| Body Small | | | | |
-| Caption | | | | |
-| Overline | | | | |
+## Chunk Mapping
 
-### Grid System
-- **Columns:** 12
-- **Gutter:** {GUTTER}px
-- **Margin:** {MARGIN}px
-- **Breakpoints:** {BREAKPOINTS}
+### Foundations (`system/foundations/`)
 
-### Spacing Scale
-- **Base unit:** 8px
-- **Scale:** 4, 8, 12, 16, 24, 32, 48, 64, 96
+| Chunk File | Content |
+|-----------|---------|
+| `foundations/color-system.md` | Primary, secondary, semantic, neutral scale, dark mode, contrast ratios |
+| `foundations/typography.md` | 9-level type scale (Display → Overline) with all properties |
+| `foundations/spacing.md` | 8px base unit spacing scale |
+| `foundations/grid.md` | 12-column grid with gutters, margins, breakpoints |
+| `foundations/elevation.md` | 5 shadow levels with use cases and values |
+| `foundations/border-radius.md` | Token scale (none, sm, md, lg, xl, full) |
 
-### Elevation / Shadow
-| Level | Use | Value |
-|-------|-----|-------|
-| 0 | Flat | none |
-| 1 | Cards | |
-| 2 | Dropdowns | |
-| 3 | Modals | |
-| 4 | Popovers | |
+### Components (`system/components/`)
 
-### Border Radius
-| Token | Value | Use |
-|-------|-------|-----|
-| none | 0 | |
-| sm | | |
-| md | | |
-| lg | | |
-| full | 9999px | Pills, avatars |
+One chunk per component (`{name}.md`), singular kebab-case naming.
+Each includes: states, anatomy, usage rules, accessibility spec, code hints.
 
-<!-- When strategy is EXTEND, include Component Audit before Components -->
-<!-- ## Component Audit
-| Existing Component | Path | Action | Rationale |
-|-------------------|------|--------|-----------|
-| {name} | {path} | KEEP / RESTYLE / REFACTOR / REPLACE | {why} |
--->
+### Other Files
 
-## Components
+| File | Content |
+|-----------|---------|
+| `principles.md` | 3-5 design principles + do's and don'ts |
+| `tokens.json` | Complete W3C Design Tokens format (color, typography, spacing, shadow, border-radius, breakpoints) |
 
-### Buttons
-<!-- States: default, hover, active, disabled, loading -->
+## Content Reference
 
-### Inputs
-<!-- States: default, focus, error, disabled, filled -->
+Each chunk follows the format in `references/chunk-format.md`. Below is the structural reference for what each chunk should contain:
 
-### Cards
-<!-- Variants and anatomy -->
+### foundations/color-system.md
+- Full color palette with semantic mapping
+- Primary, secondary, accent, background, text colors
+- Semantic colors: error, success, warning, info
+- Neutral scale
+- Dark mode mapping
+- Contrast ratios (WCAG AA)
 
-### Navigation
-<!-- Patterns and responsive behavior -->
+### foundations/typography.md
+- Type scale table: Level, Size, Weight, Line Height, Letter Spacing, Use
+- Levels: Display, H1, H2, H3, Body Large, Body, Body Small, Caption, Overline
 
-### Modals / Dialogs
-<!-- Structure and behavior -->
+### foundations/spacing.md
+- Base unit: 8px
+- Scale: 4, 8, 12, 16, 24, 32, 48, 64, 96
+- Usage guidelines per scale value
 
-<!-- Continue for 30+ components -->
+### foundations/grid.md
+- Columns: 12
+- Gutter, margin values
+- Breakpoint definitions and behavior
 
-<!-- When strategy is REFACTOR, include Migration Mapping after Components -->
-<!-- ## Migration Mapping
+### foundations/elevation.md
+- 5 levels (0–4): Flat, Cards, Dropdowns, Modals, Popovers
+- CSS shadow values per level
 
-### Token Migration
-| Old Token | New Token | Change | Breaking? |
-|-----------|-----------|--------|-----------|
-| {old} | {new} | {what changed} | {yes/no} |
+### foundations/border-radius.md
+- Token scale: none (0), sm, md, lg, xl, full (9999px)
+- Use cases per token
 
-### Component Migration
-| Old Component | New Component | Change | Files Affected |
-|--------------|---------------|--------|---------------|
-| {old} | {new} | {replaced/redesigned/merged} | {paths} |
--->
+### Component chunks
+- States: default, hover, active, disabled, focus, loading
+- Anatomy diagram
+- Usage rules
+- Accessibility spec
+- Code hints
+- Cross-references to foundation chunks
 
-## Design Tokens
-See `tokens.json` for machine-readable token export.
-
-## Principles
-1. {PRINCIPLE_1}
-2. {PRINCIPLE_2}
-3. {PRINCIPLE_3}
-
-## Do's and Don'ts
-| Do | Don't |
-|----|-------|
-| | |
+### principles.md
+- 3-5 design principles with rationale
+- Do's and Don'ts table

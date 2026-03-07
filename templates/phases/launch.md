@@ -5,58 +5,51 @@
 
 ---
 
-## Campaign Strategy
-- **Objective:** {OBJECTIVE}
-- **Target audience:** {AUDIENCE}
-- **Key message:** {MESSAGE}
-- **Tone:** {TONE}
+> This phase produces 6 chunks + INDEX.md in the `launch/` directory.
 
-## Digital Ads
+## Chunk Mapping
 
-### Google Ads
-| Format | Headline | Description | CTA | Visual Direction |
-|--------|----------|-------------|-----|-----------------|
-| | | | | |
+| Chunk File | Content |
+|-----------|---------|
+| `campaign-strategy.md` | Objective, audience, key message, tone, channels |
+| `digital-ads.md` | Google Ads + Meta/Instagram + TikTok (all formats and A/B variants) |
+| `email-sequences.md` | All sequences with subject lines, body copy, CTAs |
+| `landing-page.md` | Full page structure with above-fold and sections |
+| `social-media.md` | Per-platform posts with copy, visual direction, hashtags |
+| `sales-content.md` | Sales enablement + content marketing combined |
 
-### Meta / Instagram
-| Format | Copy | Visual Direction | CTA | A/B Variant |
-|--------|------|-----------------|-----|-------------|
-| | | | | |
+## Content Reference
 
-### TikTok
-| Format | Hook | Copy | Visual Direction |
-|--------|------|------|-----------------|
-| | | | |
+Each chunk follows the format in `references/chunk-format.md`. Below is the structural reference for what each chunk should contain:
 
-## Email Sequences
+### campaign-strategy.md
+- **Objective:** campaign goal
+- **Target audience:** segments
+- **Key message:** core message
+- **Tone:** voice and tone for campaign
+- **Channels:** distribution strategy
 
-### Welcome Series
-1. **Email 1:** {SUBJECT} — {PURPOSE}
-2. **Email 2:** {SUBJECT} — {PURPOSE}
-3. **Email 3:** {SUBJECT} — {PURPOSE}
+### digital-ads.md
+- **Google Ads:** Format, Headline, Description, CTA, Visual Direction
+- **Meta / Instagram:** Format, Copy, Visual Direction, CTA, A/B Variant
+- **TikTok:** Format, Hook, Copy, Visual Direction
 
-### Promotional
-- {EMAIL_SPEC}
+### email-sequences.md
+- **Welcome series:** 3 emails with subject, purpose, body copy, CTA
+- **Promotional:** email specs
+- **Re-engagement:** email specs
 
-### Re-engagement
-- {EMAIL_SPEC}
+### landing-page.md
+- **Headline:** main headline
+- **Subhead:** supporting copy
+- **Hero:** visual direction
+- **CTA:** primary call to action
+- **Social proof:** approach
+- Full section-by-section page structure
 
-## Landing Page
-- **Headline:** {HEADLINE}
-- **Subhead:** {SUBHEAD}
-- **Hero:** {VISUAL_DIRECTION}
-- **CTA:** {CTA}
-- **Social proof:** {APPROACH}
+### social-media.md
+- Per-platform table: Platform, Post Type, Copy, Visual Direction, Hashtags
 
-## Social Media
-| Platform | Post Type | Copy | Visual Direction | Hashtags |
-|----------|-----------|------|-----------------|----------|
-| | | | | |
-
-## Sales Enablement
-- {MATERIAL_1}
-- {MATERIAL_2}
-
-## Content Marketing
-- {CONTENT_1}
-- {CONTENT_2}
+### sales-content.md
+- **Sales enablement:** materials list with descriptions
+- **Content marketing:** content pieces with topics and formats

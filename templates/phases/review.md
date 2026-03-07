@@ -1,88 +1,40 @@
-# Design Review
+# Deliverable Review
 
 ## Project: {PROJECT_NAME}
 **Date:** {DATE}
-**Reviewer:** GSP Design Critic + Accessibility Auditor
+**Reviewer:** GSP Deliverable Reviewer
 
 ---
 
-## Design Critique
+> This phase validates built deliverables against design intent. Produces acceptance chunks + INDEX.md in the `review/` directory.
 
-### Nielsen's Heuristics Evaluation
+## Chunk Mapping
 
-| # | Heuristic | Score (1-5) | Notes |
-|---|-----------|-------------|-------|
-| 1 | Visibility of system status | | |
-| 2 | Match between system and real world | | |
-| 3 | User control and freedom | | |
-| 4 | Consistency and standards | | |
-| 5 | Error prevention | | |
-| 6 | Recognition rather than recall | | |
-| 7 | Flexibility and efficiency of use | | |
-| 8 | Aesthetic and minimalist design | | |
-| 9 | Help users recover from errors | | |
-| 10 | Help and documentation | | |
+### Review Chunks (`review/`)
 
-**Overall Score:** {SCORE}/50
+| Chunk File | Content |
+|-----------|---------|
+| `acceptance-report.md` | Overall pass/fail, implementation checklist, token audit, screen coverage |
+| `issues.md` | Issues found — deviations from design, missing implementations, token violations |
 
-### Visual Hierarchy
-{ASSESSMENT}
+## Content Reference
 
-### Typography & Color
-{ASSESSMENT}
+Each chunk follows the format in `references/chunk-format.md`. Below is the structural reference for what each chunk should contain:
 
-### Usability
-{ASSESSMENT}
+### acceptance-report.md
+- **Overall verdict:** Pass / Conditional Pass / Fail
+- **Implementation checklist:** per-screen implementation status (complete, partial, missing)
+- **Token audit:** design token usage compliance (correct tokens used, magic numbers found, missing tokens)
+- **Screen coverage:** designed screens vs built screens
+- **Component coverage:** designed components vs implemented components
+- **Accessibility compliance:** WCAG 2.2 AA checks on built code (contrast, ARIA, keyboard, focus)
+- **Responsive verification:** breakpoint behavior matches design intent
 
-### Prioritized Fixes
-
-#### Critical (Must Fix)
-1. {FIX}
-
-#### Important (High Priority)
-1. {FIX}
-
-#### Polish (If Time Allows)
-1. {FIX}
-
-### Alternative Directions
-1. **{DIRECTION_1}:** {DESCRIPTION}
-2. **{DIRECTION_2}:** {DESCRIPTION}
-
----
-
-## Accessibility Audit (WCAG 2.2 AA)
-
-### Perceivable
-- [ ] Alt text for images
-- [ ] Captions for media
-- [ ] Color contrast ≥ 4.5:1 (text), ≥ 3:1 (large text)
-- [ ] Text resizable to 200%
-
-### Operable
-- [ ] Full keyboard access
-- [ ] Visible focus indicators
-- [ ] Skip navigation
-- [ ] No motion triggers without alternative
-
-### Understandable
-- [ ] Language declared
-- [ ] Clear error messages
-- [ ] Contextual help available
-
-### Robust
-- [ ] Valid markup
-- [ ] ARIA roles used correctly
-
-### Mobile
-- [ ] Orientation support
-- [ ] Touch targets ≥ 44x44pt
-- [ ] Reachable UI elements
-
-### Violations Found
-| # | Issue | Severity | WCAG Criterion | Remediation |
-|---|-------|----------|----------------|-------------|
-| | | | | |
-
-### Accessibility Statement
-{STATEMENT}
+### issues.md
+- Issues table: Issue, Severity (Critical/Major/Minor), Screen/Component, Expected, Actual, Remediation
+- **Critical:** blocks acceptance — must fix before shipping
+- **Major:** significant deviation from design intent
+- **Minor:** polish items, minor inconsistencies
+- Links to design chunks: `../design/screen-{NN}-{name}.md`
+- Links to build output: `../build/components/{name}`
+- Links to brand system: `{BRAND_PATH}/system/components/{name}.md`

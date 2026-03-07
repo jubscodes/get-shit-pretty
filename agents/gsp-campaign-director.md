@@ -34,15 +34,54 @@ Every asset should be ready to brief to a production team. Exact copy, specific 
 </methodology>
 
 <output>
-Write campaign to `.design/launch/CAMPAIGN.md`:
+Write your campaign as chunks to the project's launch directory (path provided by the command that spawned you):
 
-1. **Campaign Strategy** — Objective, audience, key message, tone, channels
-2. **Google Ads** — Per format: headline, description, CTA, visual direction, A/B variant
-3. **Meta / Instagram** — Per format: copy, visual direction, CTA, A/B variant
-4. **TikTok** — Per format: hook, copy, visual direction
-5. **Email Sequences** — Welcome (3 emails), Promo, Nurture, Re-engagement with subject lines, body copy, CTAs
-6. **Landing Page** — Full structure: headline, subhead, hero, sections, CTA, social proof
-7. **Social Media** — Per platform: post type, copy, visual direction, hashtags
-8. **Sales Enablement** — Key materials and talking points
-9. **Content Marketing** — Blog posts, case studies with outlines
+### Chunk files
+
+Write each chunk following the format in `references/chunk-format.md`:
+
+1. **`campaign-strategy.md`** (~50-80 lines) — Objective, audience, key message, tone, channels
+2. **`digital-ads.md`** (~80-120 lines) — Google Ads + Meta/Instagram + TikTok (all formats and A/B variants)
+3. **`email-sequences.md`** (~80-120 lines) — All sequences with subject lines, body copy, CTAs
+4. **`landing-page.md`** (~60-100 lines) — Full page structure with above-fold and sections
+5. **`social-media.md`** (~50-80 lines) — Per-platform posts with copy, visual direction, hashtags
+6. **`sales-content.md`** (~60-100 lines) — Sales Enablement + Content Marketing combined
+
+### `INDEX.md`
+
+After writing all chunks, write `INDEX.md` in the launch directory:
+
+```markdown
+# Launch
+> Phase: launch | Project: {name} | Generated: {DATE}
+
+| Chunk | File | ~Lines |
+|-------|------|--------|
+| Campaign Strategy | [campaign-strategy.md](./campaign-strategy.md) | ~{N} |
+| Digital Ads | [digital-ads.md](./digital-ads.md) | ~{N} |
+| Email Sequences | [email-sequences.md](./email-sequences.md) | ~{N} |
+| Landing Page | [landing-page.md](./landing-page.md) | ~{N} |
+| Social Media | [social-media.md](./social-media.md) | ~{N} |
+| Sales & Content | [sales-content.md](./sales-content.md) | ~{N} |
+```
+
+### Update project exports/INDEX.md
+
+After generating chunks, update the project's `exports/INDEX.md`:
+
+1. If INDEX.md doesn't exist, copy it from `templates/exports-index.md`
+2. Replace everything between `<!-- BEGIN:launch -->` and `<!-- END:launch -->` with populated tables:
+
+```markdown
+<!-- BEGIN:launch -->
+| Section | File |
+|---------|------|
+| Campaign Strategy | [campaign-strategy.md](../launch/campaign-strategy.md) |
+| Digital Ads | [digital-ads.md](../launch/digital-ads.md) |
+| Email Sequences | [email-sequences.md](../launch/email-sequences.md) |
+| Landing Page | [landing-page.md](../launch/landing-page.md) |
+| Social Media | [social-media.md](../launch/social-media.md) |
+| Sales & Content | [sales-content.md](../launch/sales-content.md) |
+<!-- END:launch -->
+```
 </output>

@@ -1,6 +1,6 @@
 ---
 name: gsp:research
-description: Analyze design trends and competitive landscape for the project
+description: Deep project research — UX patterns, competitor UX, technical approaches
 allowed-tools:
   - Read
   - Write
@@ -8,64 +8,121 @@ allowed-tools:
   - Task
   - WebSearch
   - WebFetch
+  - Grep
+  - Glob
 ---
 <context>
-Phase 1 of the GSP design pipeline. Uses the Design Trend Synthesizer prompt to analyze industry trends, competitor positioning, and user expectation shifts.
+Phase 2 of the GSP project diamond. Deep research phase that investigates UX patterns, competitor experiences, technical approaches, accessibility strategies, and content patterns specific to what this project is building.
+
+This is NOT brand-level discovery (that's `/gsp:brand-discover`). This is project-level research — focused on the product type, user flows, and implementation challenges.
+
+Works with the dual-diamond architecture: reads brand context from `.design/branding/{brand}/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 </context>
 
 <objective>
-Research design trends for the project's industry and produce a comprehensive trends report.
+Deep research into UX patterns, competitor experiences, and technical approaches for this project.
 
-**Input:** `.design/BRIEF.md`
-**Output:** `.design/research/TRENDS.md`
-**Agent:** `gsp-researcher`
+**Input:** Brief scope + brand system + project BRIEF.md
+**Output:** `{project}/research/` (6 research chunks + INDEX.md)
+**Agent:** `gsp-project-researcher`
 </objective>
 
 <execution_context>
-@/Users/jubs/.claude/get-shit-pretty/prompts/07-design-trend-synthesizer.md
+@/Users/jubs/.claude/get-shit-pretty/prompts/12-project-researcher.md
 @/Users/jubs/.claude/get-shit-pretty/templates/phases/research.md
 </execution_context>
 
 <process>
+## Step 0: Resolve project and brand
+
+Scan `.design/projects/` for project directories. If only one project exists, use it. If multiple, ask the user which project to work on.
+
+Set `PROJECT_PATH` = `.design/projects/{project}`
+
+Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
+- Set `BRAND_PATH` = `.design/branding/{brand}`
+
 ## Step 1: Load context
 
-Read `.design/BRIEF.md` to understand:
-- Industry / sector
-- Target audience
-- Brand personality and positioning
-- Competitive landscape (if mentioned)
+### Brief (chunk-first)
 
-If BRIEF.md doesn't exist, tell the user to run `/gsp:new-project` first.
+Read `{PROJECT_PATH}/brief/INDEX.md`. If it exists, load `scope.md` and `target-adaptations.md`.
 
-## Step 2: Spawn researcher
+If brief doesn't exist, tell the user to run `/gsp:brief` first.
 
-Spawn the `gsp-researcher` agent with:
-- The full BRIEF.md content
-- The Design Trend Synthesizer prompt (07)
+### Brand system (selective)
+
+Read `{BRAND_PATH}/system/INDEX.md`. If it exists, load foundation chunks (to understand the design system constraints).
+
+### Brand discovery (selective)
+
+Read `{BRAND_PATH}/discover/INDEX.md`. If it exists, load `competitive-audit.md` and `trend-analysis.md` (to avoid duplicating brand-level research).
+
+### Project context
+
+Read:
+- `{PROJECT_PATH}/BRIEF.md` — what we're building, platforms, audience
+- `{PROJECT_PATH}/config.json` — get `implementation_target`, `platform`, `tech_stack`
+
+## Step 1.5: Scope check
+
+**If `design_scope` is `tokens`:**
+1. Update `{PROJECT_PATH}/STATE.md` — set Phase 2 (Research) status to `skipped`
+2. Display: "Research phase skipped — design scope is `tokens`."
+3. Route: "Run `/gsp:build`."
+4. Stop here.
+
+## Step 2: Spawn project researcher
+
+Spawn the `gsp-project-researcher` agent with:
+- Brief scope chunks
+- Brand system foundation chunks
+- Brand discovery chunks (competitive audit, trends — to build on, not duplicate)
+- BRIEF.md
+- config.json preferences
+- The Project Researcher prompt (12)
 - The research output template
-- Instruction to focus on the project's specific industry
+- `implementation_target`, `platform`, `tech_stack`
+- **Output path:** `{PROJECT_PATH}/research/`
 
-The agent should:
-1. Research current design trends for the industry
-2. Identify 5 macro trends with real brand examples
-3. Map competitor positioning (2x2)
-4. Analyze user expectation shifts
-5. Assess platform evolution (iOS, Material, Web)
-6. Provide strategic recommendations
-7. Define mood board direction
+The agent researches using WebSearch and writes chunks directly:
+- `research/ux-patterns.md`
+- `research/competitor-ux.md`
+- `research/technical-research.md`
+- `research/accessibility-patterns.md`
+- `research/content-strategy.md`
+- `research/reference-specs.md`
+- `research/recommendations.md`
+- `research/INDEX.md`
 
-## Step 3: Write output
+## Step 2.5: Write exports
 
-Write the completed research to `.design/research/TRENDS.md`.
+Update `{PROJECT_PATH}/exports/INDEX.md`:
+- If INDEX.md doesn't exist, copy it from `templates/exports-index.md`
+- Replace everything between `<!-- BEGIN:research -->` and `<!-- END:research -->` with populated table:
 
-## Step 4: Update state
+```markdown
+<!-- BEGIN:research -->
+| Section | File |
+|---------|------|
+| UX Patterns | [ux-patterns.md](../research/ux-patterns.md) |
+| Competitor UX | [competitor-ux.md](../research/competitor-ux.md) |
+| Technical Research | [technical-research.md](../research/technical-research.md) |
+| Accessibility Patterns | [accessibility-patterns.md](../research/accessibility-patterns.md) |
+| Content Strategy | [content-strategy.md](../research/content-strategy.md) |
+| Reference Specs | [reference-specs.md](../research/reference-specs.md) |
+| Recommendations | [recommendations.md](../research/recommendations.md) |
+<!-- END:research -->
+```
 
-Update `.design/STATE.md`:
-- Set Phase 1 (Research) status to `complete`
+## Step 3: Update state
+
+Update `{PROJECT_PATH}/STATE.md`:
+- Set Phase 2 (Research) status to `complete`
 - Record completion date
 
-## Step 5: Route next
+## Step 4: Route next
 
-Display a summary of key findings and end with:
-"Run `/gsp:brand` to create brand identity based on these insights."
+"Run `/gsp:design` to design screens informed by this research."
 </process>
+</output>

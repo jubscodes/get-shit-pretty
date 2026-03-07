@@ -17,54 +17,98 @@ Output the following reference exactly:
 
 ```
 🎨 GSP — Get Shit Pretty
-Command Reference
+Command Reference (v0.4.0 — Dual Diamond)
 ═══════════════════════════════════════
 
-PROJECT SETUP
-  /gsp:new-project     Initialize design brief through guided Q&A
+GETTING STARTED
+  /gsp:new             Smart entry — start a brand or project
   /gsp:help            Show this command reference
-  /gsp:progress        Check project status — "How pretty are we?"
-  /gsp:doctor          Diagnose project health — check for issues
+  /gsp:progress        Check progress — "How pretty are we?"
+  /gsp:doctor          Diagnose health across brands + projects
 
-DESIGN PIPELINE (run in order)
-  /gsp:research        Phase 1 — Trend analysis & competitive landscape
-  /gsp:brand           Phase 2 — Brand identity (strategy, logo, color, type)
-  /gsp:system          Phase 3 — Design system foundations + tokens
-  /gsp:design          Phase 4 — UI/UX screens & interaction flows
-  /gsp:spec            Phase 5 — Implementation specifications
-  /gsp:review          Phase 6 — Design critique + accessibility audit
-  /gsp:build           Phase 7 — Design-to-code translation
-  /gsp:launch          Phase 8 — Marketing campaign assets
+BRANDING DIAMOND (5 commands, 6 phases)
+  /gsp:brand-audit     Phase 0 — Audit: assess existing brand, produce evolution map (optional)
+  /gsp:brand-research  Phase 1 — Research: competitive audit, personas, SWOT, trends
+  /gsp:brand-strategy  Phase 2 — Strategy: archetype, positioning, personality (interactive)
+  /gsp:brand-identity  Phases 3-4 — Identity: verbal + visual identity
+  /gsp:brand-patterns  Phase 5 — Patterns: design system, tokens + brand preview
 
-PIPELINE FLOW
-  new-project → research → brand → system → design → spec → review → build → launch
-                                                        ↑                |
-                                                        └── loop back ───┘
-                                                       (if critical issues)
+  Granular re-runs:
+    /gsp:brand-verbal    Phase 3 only — Voice, tone spectrum, messaging, naming
 
-PROJECT STRUCTURE
+PROJECT DIAMOND (6 phases)
+  /gsp:brief           Phase 1 — Project scoping, adaptations, gap analysis
+  /gsp:research        Phase 2 — UX patterns, competitor UX, technical research, reference specs
+  /gsp:design          Phase 3 — UI/UX screens & interaction flows
+  /gsp:critique        Phase 4 — Design critique + accessibility audit
+  /gsp:build           Phase 5 — Design-to-code translation
+  /gsp:review          Phase 6 — Deliverable validation + acceptance
+
+OPTIONAL
+  /gsp:launch          Marketing campaign assets (on request)
+
+E2E FLOW (5 + 6 phases + optional)
+  [brand-audit] → brand-research → brand-strategy → brand-identity → brand-patterns → brief → research → design → critique → build → review
+  |_ optional _|  |___________________ branding diamond __________________________|  |_____________ project diamond ___________________|
+  Optional: launch (after review)
+
+WORKFLOW
+  Treat each project as a bounded issue (or set of issues) and a PR.
+  Ship small, ship complete. Break large projects into focused deliverables.
+
+ALIASES (backwards compatible)
+  /gsp:new-project     → redirects to /gsp:new
+  /gsp:brand           → redirects to /gsp:brand-identity
+  /gsp:brand-discover  → redirects to /gsp:brand-research
+  /gsp:brand-system    → redirects to /gsp:brand-patterns
+  /gsp:discover        → redirects to /gsp:brand-research
+  /gsp:strategy        → redirects to /gsp:brand-strategy
+  /gsp:verbal          → redirects to /gsp:brand-verbal
+  /gsp:identity        → redirects to /gsp:brand-identity
+  /gsp:system          → redirects to /gsp:brand-patterns
+  /gsp:spec            → redirects to /gsp:brief
+  /gsp:plan            → redirects to /gsp:brief
+
+DIRECTORY STRUCTURE
   .design/
-  ├── BRIEF.md                    Design brief
-  ├── ROADMAP.md                  Phase plan
-  ├── STATE.md                    Progress tracking
-  ├── config.json                 Preferences
-  ├── research/TRENDS.md          Trend analysis
-  ├── brand/IDENTITY.md           Brand identity
-  ├── system/SYSTEM.md            Design system
-  ├── system/tokens.json          Design tokens
-  ├── screens/SCREENS.md          UI/UX screens
-  ├── specs/SPECS.md              Implementation specifications
-  ├── review/CRITIQUE.md          Design critique
-  ├── review/ACCESSIBILITY.md     WCAG audit
-  ├── build/CODE.md               Implementation guide
-  ├── build/components/           Code components
-  └── launch/CAMPAIGN.md          Marketing assets
+  ├── branding/
+  │   └── {brand-name}/
+  │       ├── BRIEF.md              Brand brief
+  │       ├── STATE.md              Brand progress
+  │       ├── config.json           Brand config
+  │       ├── audit/               Audit chunks + INDEX.md (evolve mode only)
+  │       ├── discover/             Research chunks + INDEX.md
+  │       ├── strategy/             Strategy chunks + INDEX.md
+  │       ├── verbal/               Verbal chunks + INDEX.md
+  │       ├── identity/             Identity chunks + palettes.json + INDEX.md
+  │       ├── system/               Foundations + components + tokens.json + INDEX.md
+  │       └── preview.html          Brand preview (generated by brand-patterns)
+  └── projects/
+      └── {project-name}/
+          ├── BRIEF.md              Project brief
+          ├── STATE.md              Project progress
+          ├── config.json           Project config
+          ├── brand.ref             → brand reference
+          ├── brief/                Scope + adaptations + INDEX.md
+          ├── research/             UX patterns + competitor UX + tech research + specs + INDEX.md
+          ├── design/               Screen chunks + shared/ + INDEX.md
+          ├── critique/             Critique + accessibility chunks + INDEX.md
+          ├── build/CODE.md         Implementation guide
+          ├── build/components/     Code components
+          ├── review/               Acceptance report + issues + INDEX.md
+          ├── launch/               Campaign chunks + INDEX.md (optional)
+          └── exports/INDEX.md      Master chunk index
 
 TIPS
-  • Run phases in order — each builds on the previous
-  • /gsp:review loops back if critical issues are found
-  • /gsp:progress shows your prettiness meter
-  • /gsp:doctor checks project health and detects stale outputs
-  • You can skip phases if you already have the artifacts
+  • Start with /gsp:new — it detects what exists and routes you
+  • Multiple brands and projects can coexist
+  • Projects reference a brand via brand.ref
+  • /gsp:brand-identity handles both verbal + visual — skips what's done
+  • /gsp:brand-verbal re-runs phase 3 only if you need to revise voice
+  • /gsp:critique loops back if critical issues found
+  • /gsp:doctor checks brand drift across projects
+  • /gsp:progress shows prettiness across all instances
+  • /gsp:launch is optional — run when you need marketing assets
+  • Treat projects as issues + PRs — bounded scope = higher quality
 ```
 </process>

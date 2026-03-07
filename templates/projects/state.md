@@ -1,6 +1,7 @@
 # Design State
 
 ## Project: {PROJECT_NAME}
+**Brand:** {BRAND_NAME}
 **Started:** {DATE}
 **Current Phase:** 0 (Not started)
 **Prettiness Level:** 0%
@@ -11,24 +12,33 @@
 
 | # | Phase | Status | Started | Completed |
 |---|-------|--------|---------|-----------|
-| 1 | Research | pending | — | — |
-| 2 | Brand | pending | — | — |
-| 3 | System | pending | — | — |
-| 4 | Design | pending | — | — |
-| 5 | Spec | pending/skipped | — | — |
+| 1 | Brief | pending | — | — |
+| 2 | Research | pending | — | — |
+| 3 | Design | pending | — | — |
+| 4 | Critique | pending | — | — |
+| 5 | Build | pending | — | — |
 | 6 | Review | pending | — | — |
-| 7 | Build | pending | — | — |
-| 8 | Launch | pending | — | — |
+
+## Git
+
+| Field | Value |
+|-------|-------|
+| Branch | — |
+| PR | — |
+| Issues | — |
 
 ## Review Loops
-<!-- Track review → fix → re-review cycles -->
+<!-- Track critique → fix → re-critique cycles -->
 
 | Loop | Date | Issues Found | Issues Fixed | Resubmitted |
 |------|------|-------------|-------------|-------------|
 
 ## Status Values
 <!-- pending | in-progress | complete | needs-revision | skipped -->
-<!-- Skipped phases count as complete for prettiness calculation -->
+
+## Launch
+<!-- Optional — run /gsp:launch when needed -->
+<!-- Status: not started -->
 
 ## Decisions
 <!-- Key design decisions and rationale -->

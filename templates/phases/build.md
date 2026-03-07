@@ -1,59 +1,35 @@
-# Design-to-Code
+# Build
 
-## Project: {PROJECT_NAME}
-**Tech Stack:** {TECH_STACK}
-**Date:** {DATE}
+> Phase: build | Project: {PROJECT_NAME} | Generated: {DATE}
 
----
+## Chunks
 
-## Component Hierarchy
-```
-App
-├── Layout
-│   ├── Header
-│   ├── Navigation
-│   ├── Main
-│   └── Footer
-├── Pages
-│   ├── {PAGE_1}
-│   └── {PAGE_2}
-└── Shared
-    ├── {COMPONENT_1}
-    └── {COMPONENT_2}
+### `build/CODE.md`
+
+Main build manifest containing:
+
+1. **Component Hierarchy** — Tree diagram showing app structure with props and state annotations
+2. **Setup** — Token configuration (CSS variables or Tailwind config), theme provider, global styles
+3. **Component Index** — Table of all components with file paths
+
+```markdown
+| Component | File | Props | States |
+|-----------|------|-------|--------|
+| {Component} | [components/{name}.md](./components/{name}.md) | {props} | {states} |
 ```
 
-## Components
+### `build/components/`
 
-### {COMPONENT_NAME}
-- **Props:** {PROPS}
-- **State:** {STATE}
-- **Data flow:** {DATA_FLOW}
-- **Responsive:** {RESPONSIVE_BEHAVIOR}
-- **Accessibility:** {ARIA_ROLES}
-- **States:** Default, Loading, Error, Empty
+Individual component files, one per component:
 
-```{LANGUAGE}
-// Implementation
-```
+| Component | File | ~Lines |
+|-----------|------|--------|
+| {Component} | [{name}.md](./components/{name}.md) | ~{N} |
 
-<!-- Repeat for each component -->
-
-## Styling
-- **Approach:** {CSS_MODULES/TAILWIND/STYLED_COMPONENTS}
-- **Design tokens:** Mapped from `tokens.json`
-- **Dark mode:** {STRATEGY}
-- **Breakpoints:** {BREAKPOINTS}
-
-## Animations
-| Element | Trigger | Animation | Duration | Easing |
-|---------|---------|-----------|----------|--------|
-| | | | | |
-
-## Performance
-- {OPTIMIZATION_1}
-- {OPTIMIZATION_2}
-
-## Testing Strategy
-- **Unit:** {APPROACH}
-- **Visual regression:** {APPROACH}
-- **Accessibility:** {APPROACH}
+Each component file contains:
+- Full implementation code (copy-paste ready)
+- Props interface / types
+- All states (default, loading, error, empty)
+- Responsive behavior
+- Accessibility (ARIA, keyboard, focus)
+- Usage example

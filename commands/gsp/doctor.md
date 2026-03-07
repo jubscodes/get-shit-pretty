@@ -1,6 +1,6 @@
 ---
 name: gsp:doctor
-description: Diagnose project health — check structure, config, outputs, and upgrade status
+description: Diagnose project health — check structure, config, outputs, and brand drift
 allowed-tools:
   - Read
   - Glob
@@ -8,194 +8,200 @@ allowed-tools:
   - Bash
 ---
 <context>
-Diagnostic tool for GSP design projects. Runs 8 deterministic checks against the `.design/` directory and reports health issues with actionable fix suggestions.
+Diagnostic tool for GSP design projects. Runs health checks across all brands in `.design/branding/` and all projects in `.design/projects/`. Reports health issues with actionable fix suggestions.
 
 No agents needed — this is pure pattern matching and file inspection.
 </context>
 
 <objective>
-Run a health check on the current `.design/` project and print a terminal diagnostic.
+Run a health check on the current `.design/` directory and print a terminal diagnostic.
 
-**Input:** `.design/` directory (all artifacts, config, state)
+**Input:** `.design/` directory (all brands, projects, artifacts, config, state)
 **Output:** Terminal-only diagnostic — no files written
 
-**8 checks:** project structure, phase ordering, stale outputs, config drift, missing chunks, broken references, review status, upgrade detection
+**Checks:** project structure, phase ordering, stale outputs, config drift, missing chunks, broken references, review status, brand drift, upgrade detection
 </objective>
 
 <process>
-## Step 0: Find project
+## Step 0: Find design directory
 
-Check for `.design/config.json` in the current directory.
+Check for `.design/` in the current directory.
 
 If not found:
 ```
 🩺 GSP Doctor — No project found
-   No .design/ directory detected. Run /gsp:new-project first.
+   No .design/ directory detected. Run /gsp:new to start.
 ```
 Stop here.
 
-## Step 1: Load project state
+## Step 1: Detect structure type
 
-Read these files (note which are missing — that itself is a finding):
-- `.design/config.json` — project configuration
-- `.design/STATE.md` — phase progress
-- `.design/BRIEF.md` — design brief
-- `.design/ROADMAP.md` — phase plan
-- `.design/codebase/INVENTORY.md` — codebase inventory (may not exist)
-- `.design/exports/INDEX.md` — chunk index (may not exist)
+**New dual-diamond structure:** `.design/branding/` or `.design/projects/` exists
+**Legacy flat structure:** `.design/config.json` exists at root (not inside branding/ or projects/)
+**Empty:** `.design/` exists but has neither
 
-Extract from config.json:
-- `codebase_type` (greenfield | boilerplate | existing)
-- `design_scope` (full | partial | tokens)
-- `system_strategy` (generate | extend | refactor)
-- `implementation_target` (code | shadcn | rn-reusables | existing | figma | skip)
-- `auto_review` (if present)
-- `version` (if present)
+For legacy: run legacy checks (same as v0.3.0 doctor). For new: run multi-instance checks below.
 
-Extract from STATE.md:
-- Phase statuses (pending, in-progress, complete, needs-revision, skipped)
-- Review loop count
-- Current phase number
+## Step 2: Scan all instances
 
-## Step 2: Run 8 checks
+**Brands:** List all directories in `.design/branding/` that have a `config.json` with `project_type: "brand"`
+**Projects:** List all directories in `.design/projects/` that have a `config.json` with `project_type: "design"`
 
-Track results as: PASS, WARN, or FAIL per check. Collect issues with fix suggestions.
+For each instance, read:
+- `config.json` — configuration
+- `STATE.md` — phase progress
+- `BRIEF.md` — brief
+- `brand.ref` — brand reference (projects only)
 
----
+## Step 3: Run checks per instance
 
-### Check 1: Project Structure
+### Per-Brand Checks (5-phase)
+
+**Check B1: Brand Structure**
+Required: config.json, STATE.md, BRIEF.md
+Required dirs: discover/, strategy/, verbal/, identity/, system/
+Missing → FAIL
+
+**Check B2: Brand Phase Ordering**
+No phase complete if earlier phase is pending (discover < strategy < verbal < identity < system).
+Exception: strategy can proceed without discover.
+
+**Check B3: Brand Completeness**
+If all 5 phases complete, check:
+- `identity/INDEX.md` exists (chunk format)
+- `identity/palettes.json` exists (WARN if missing)
+- `system/INDEX.md` exists (chunk format)
+- `system/tokens.json` exists (WARN if missing)
+- If monolith exists without INDEX.md → WARN: "Legacy monolith format"
+
+**Check B4: Legacy Monolith Detection**
+For each brand phase directory (discover, strategy, verbal, identity, system):
+- If monolith exists but no INDEX.md → WARN: "Legacy format in {phase}/ — re-run /gsp:brand-{phase} for chunk output"
+
+### Per-Project Checks (6-phase)
+
+**Check P1: Project Structure**
 
 **What it catches:** Missing core files, incomplete setup.
 
-Required files for ALL projects:
-- `.design/config.json`
-- `.design/STATE.md`
-- `.design/BRIEF.md`
+Required: config.json, STATE.md, BRIEF.md, brand.ref
+Required dirs: brief/, research/, design/, critique/, build/, review/
 
 Required when `codebase_type` is NOT `greenfield`:
-- `.design/codebase/INVENTORY.md`
+- codebase/INVENTORY.md
 
 Check each exists:
 - All present → PASS
-- INVENTORY.md missing for non-greenfield → WARN: "Codebase inventory missing. Re-run `/gsp:new-project` or create `.design/codebase/INVENTORY.md` manually."
-- Core files missing → FAIL: list which are missing, suggest `/gsp:new-project`
+- INVENTORY.md missing for non-greenfield → WARN: "Codebase inventory missing. Re-run `/gsp:new` or create `codebase/INVENTORY.md` manually."
+- Core files missing → FAIL: list which are missing, suggest `/gsp:new`
 
----
+Legacy detection: if system/, screens/, specs/, plan/ dirs exist → WARN: "Legacy structure detected — project uses old phase layout"
 
-### Check 2: Phase Ordering
+**Check P2: Brand Reference**
+Read brand.ref → check brand exists in `.design/branding/{name}/`
+Check brand system is complete (system phase = complete)
+WARN if brand referenced but system not complete
+
+**Check P3: Brand Drift**
+Read `identity_hash` from brand.ref
+If brand identity/IDENTITY.md exists, compute current hash (first 8 chars of md5)
+If hashes differ → WARN: "Brand identity has changed since project consumed it. Consider re-running `/gsp:brief`."
+If identity_hash is "pending" → INFO: "Brand identity wasn't complete when project was created."
+
+**Check P4: Phase Ordering**
 
 **What it catches:** Phases completed out of order, skipped prerequisites.
 
 Read STATE.md phase table. Check ordering rules:
+brief < research < design < critique < build < review
 
 1. No phase should be `complete` if an earlier required phase is still `pending` (not `skipped` or `complete`)
 2. Valid skip scenarios (not violations):
-   - Phase 5 (Spec) skipped when `implementation_target` is `skip` or `design_scope` is `tokens`
-   - Phase 4 (Design) skipped when `design_scope` is `tokens`
-   - Phase 1 (Research) can be skipped (brand can proceed without)
-3. Phase 7 (Build) complete but Phase 6 (Review) pending → WARN: "Build completed without review. Run `/gsp:review` to audit."
+   - design skipped when `design_scope` is `tokens`
+   - research can proceed without brief
+3. build complete but critique pending → WARN: "Build completed without critique. Run `/gsp:critique` to audit."
 4. Any other out-of-order completion → FAIL with specifics
 
 All phases in order (or validly skipped) → PASS
 
----
-
-### Check 3: Stale Outputs
+**Check P5: Stale Outputs**
 
 **What it catches:** Output content that doesn't match current config expectations.
 
-Only check phases that are `complete`:
+Only check phases that are `complete`. All paths relative to the project instance directory.
 
 **When `system_strategy` is `extend`:**
-- Read `.design/system/SYSTEM.md` — search for "Component Audit" or "KEEP" or "RESTYLE" or "REFACTOR" or "REPLACE"
-- If none found → WARN: "Strategy is `extend` but SYSTEM.md lacks component audit table. Re-run `/gsp:system`."
+- Check if brand's `system/` output contains "Component Audit" or "KEEP" or "RESTYLE" or "REFACTOR" or "REPLACE"
+- If none found → WARN: "Strategy is `extend` but system output lacks component audit table. Re-run `/gsp:brand-patterns`."
 
 **When `implementation_target` is `shadcn`:**
-- If Phase 5 (Spec) is complete, read `.design/specs/SPECS.md` — search for "shadcn" or "npx shadcn"
-- If not found → WARN: "Target is `shadcn` but SPECS.md doesn't reference shadcn components. Re-run `/gsp:spec`."
+- If brief phase is complete, check brief/ output for "shadcn" or "npx shadcn"
+- If not found → WARN: "Target is `shadcn` but brief doesn't reference shadcn components."
 
 **When `implementation_target` is `rn-reusables`:**
-- If Phase 5 is complete, read `.design/specs/SPECS.md` — search for "reusables" or "NativeWind"
-- If not found → WARN: "Target is `rn-reusables` but SPECS.md doesn't reference RN Reusables. Re-run `/gsp:spec`."
+- If brief phase is complete, check brief/ output for "reusables" or "NativeWind"
+- If not found → WARN: "Target is `rn-reusables` but brief doesn't reference RN Reusables."
 
 **When `design_scope` is `tokens`:**
-- Phase 4 (Design) should be `skipped`, not `complete`
-- Phase 5 (Spec) should be `skipped`, not `complete`
-- If either is `complete` → WARN: "Scope is `tokens` but design/spec phases ran as full. Outputs may be unnecessary."
+- design phase should be `skipped`, not `complete`
+- If `complete` → WARN: "Scope is `tokens` but design phase ran as full. Outputs may be unnecessary."
 
 No stale outputs detected → PASS
 
----
-
-### Check 4: Config Drift
+**Check P6: Config Drift**
 
 **What it catches:** Config says one thing, outputs reflect another.
 
 **Check `system_strategy` alignment:**
-- Config says `extend` but SYSTEM.md contains "## Components" with 30+ component specs (no audit table) → WARN: "Config says `extend` but SYSTEM.md looks like a full `generate`. Config may be out of sync."
-- Config says `generate` but SYSTEM.md contains "Component Audit" → WARN: "Config says `generate` but SYSTEM.md contains extend-style audit."
+- Config says `extend` but brand system output contains "## Components" with 30+ component specs (no audit table) → WARN: "Config says `extend` but system looks like a full `generate`. Config may be out of sync."
+- Config says `generate` but brand system output contains "Component Audit" → WARN: "Config says `generate` but system contains extend-style audit."
 
 **Check `codebase_type` alignment:**
-- Config says `existing` or `boilerplate` but no INVENTORY.md → WARN (already caught by Check 1, don't double-count)
+- Config says `existing` or `boilerplate` but no INVENTORY.md → WARN (already caught by P1, don't double-count)
 - Config says `greenfield` but INVENTORY.md exists → INFO: "Config says `greenfield` but INVENTORY.md exists. Not an issue, but config may be stale."
 
 **Check `design_scope` alignment:**
-- Config says `tokens` but SCREENS.md exists with full screen designs → WARN: "Scope is `tokens` but SCREENS.md has full screen designs."
+- Config says `tokens` but design/ has full screen designs → WARN: "Scope is `tokens` but design/ has full screen designs."
 - Config says `partial` — check BRIEF.md for "Target screens" section. If missing → WARN: "Scope is `partial` but BRIEF.md doesn't specify target screens."
 
 No drift detected → PASS
 
----
-
-### Check 5: Missing Chunks
+**Check P7: Missing Chunks**
 
 **What it catches:** Chunk directories missing, INDEX.md references broken.
 
-**If any phase >= 3 (System) is complete:**
+For each completed project phase (brief, research, design, critique, build, review):
+- Check for `{phase}/INDEX.md` — if missing → WARN: "Phase {phase} is complete but has no INDEX.md. Re-run `/gsp:{command}` to generate chunks."
 
-Check if chunked export infrastructure exists:
-- `.design/exports/INDEX.md` exists?
-- For each complete phase with chunks:
-  - System (Phase 3): `.design/system/exports/` directory exists with files?
-  - Design (Phase 4): `.design/screens/exports/` directory exists with files?
-  - Spec (Phase 5): `.design/specs/exports/` directory exists with files?
-  - Review (Phase 6): `.design/review/exports/` directory exists with files?
-
-**If INDEX.md exists, check for broken references:**
+**If exports/INDEX.md exists, check for broken references:**
 - Read INDEX.md, extract all file paths from markdown links
 - Check each referenced file exists
 
-Missing export directories for completed phases → WARN: "Phase {N} is complete but has no chunked exports. Re-run `/gsp:{phase}` to generate chunks."
 Broken INDEX.md references → WARN: list broken paths
 INDEX.md has unpopulated BEGIN/END sections for completed phases → WARN: "INDEX.md has empty sections for completed phases."
 
-No chunks expected yet (no phases >= 3 complete) → PASS
+No chunks expected yet (no phases complete) → PASS
 All chunks present and references valid → PASS
 
----
+Legacy path detection: if `screens/` exists instead of `design/` → WARN
 
-### Check 6: Broken References
+**Check P8: Broken References**
 
 **What it catches:** Cross-file references that point to non-existent content.
 
-**SCREENS.md → SYSTEM.md:**
-If both exist, extract component names referenced in SCREENS.md (look for patterns like "Uses: {ComponentName}" or component references in wireframe sections). Check each exists in SYSTEM.md's component section.
+**design/ → brand system:**
+If both exist, extract component names referenced in design chunks (look for patterns like "Uses: {ComponentName}" or component references). Check each exists in the brand's system output.
 
-Components referenced in screens but not in system → WARN: "SCREENS.md references components not defined in SYSTEM.md: {list}. Re-run `/gsp:system` to add them, or update screen designs."
+Components referenced in designs but not in system → WARN: "Design references components not defined in brand system: {list}. Re-run `/gsp:brand-patterns` to add them, or update designs."
 
-**SPECS.md → SCREENS.md:**
-If both exist, extract screen references from SPECS.md. Check each screen name appears in SCREENS.md.
+**critique/ → design/:**
+If both exist, extract screen references from critique chunks. Check each referenced screen exists in design/.
 
-Screens referenced in specs but not in designs → WARN: "SPECS.md references screens not in SCREENS.md: {list}."
-
-**CRITIQUE.md → SCREENS.md:**
-If both exist, extract screen references from CRITIQUE.md. Check each referenced screen exists.
+Screens referenced in critique but not in designs → WARN: "Critique references screens not in design/: {list}."
 
 No broken references → PASS
 
----
-
-### Check 7: Review Status
+**Check P9: Review Status**
 
 **What it catches:** Stuck review loops, unaddressed critical issues.
 
@@ -203,89 +209,94 @@ Read STATE.md review loop table:
 - Count review iterations
 - If > 3 iterations → WARN: "Review has looped {N} times. Consider addressing root causes or accepting current state."
 
-If Phase 6 (Review) status is `needs-revision`:
-- Check if any phase after review (Build, Launch) is `complete` → FAIL: "Build/Launch completed while review still needs revision."
+If critique phase status is `needs-revision`:
+- Check if any later phase (build, review) is `complete` → FAIL: "Build/Review completed while critique still needs revision."
 
-If CRITIQUE.md exists:
-- Search for "Critical" severity items
-- If found and Phase 6 status is `complete` (not `needs-revision`) → INFO: "CRITIQUE.md has critical items but review is marked complete. Verify issues were addressed."
+If critique/ contains chunks with "Critical" severity items:
+- If critique phase status is `complete` (not `needs-revision`) → INFO: "Critique has critical items but phase is marked complete. Verify issues were addressed."
 
 No review issues → PASS
 
----
-
-### Check 8: Upgrade Detection
+**Check P10: Upgrade Detection**
 
 **What it catches:** Project created with older GSP version, missing features now available.
 
-Feature markers to check:
-
-**Codebase awareness (v0.3.0):**
-- INVENTORY.md exists? (for non-greenfield projects)
-- Chunked exports exist? (exports/ directories)
-- INDEX.md exists?
-- If none of these exist for a project with completed phases >= 3 → WARN: "Project may predate codebase-awareness features (v0.3.0). Consider re-running phases to get chunked exports and codebase integration."
-
 **Config version check:**
 - If `version` field exists in config.json, note it
-- If version is older than current (0.3.0) → WARN: "Config version is {version}, current GSP is 0.3.0. Some features may not be active."
+- If version is older than current (0.4.0) → WARN: "Config version is {version}, current GSP is 0.4.0. Some features may not be active."
 - If no `version` field → INFO: "Config has no version stamp. Project may predate versioned configs."
 
+**Chunk format check:**
+- If any phase is complete but has no INDEX.md and no chunk files → WARN: "Project may predate chunked exports. Consider re-running phases to get chunked output."
+
 **palettes.json check:**
-- If Phase 2 (Brand) is complete, check for `.design/brand/palettes.json`
-- If missing → INFO: "No tints.dev palettes found. Re-run `/gsp:brand` to generate OKLCH color palettes."
+- If brand's identity phase is complete, check for `identity/palettes.json`
+- If missing → INFO: "No tints.dev palettes found. Re-run `/gsp:brand-identity` to generate OKLCH color palettes."
 
 No upgrade concerns → PASS
 
----
+### Cross-Instance Checks
 
-## Step 3: Calculate health score
+**Check X1: Multiple projects, same brand**
+If multiple projects reference the same brand, and brand has changed since any project consumed it → WARN with list of affected projects.
 
-Score calculation (100 points total):
+## Step 4: Calculate health score
 
-- Start at 100
+Score per instance (100 points each):
 - Each FAIL: -15 points
 - Each WARN: -5 points
-- Each INFO: -0 points (informational only)
-- Minimum score: 0
+- Each INFO: -0 points
+- Minimum: 0
 
-## Step 4: Display diagnostic
+Overall score: average of all instance scores.
 
-Print the full diagnostic to terminal:
+## Step 5: Display diagnostic
 
 ```
 🩺 GSP Doctor — Project Health Check
 ═══════════════════════════════════════
 
-Project: {PROJECT_NAME}
-Config: codebase_type={X}, scope={X}, strategy={X}, target={X}
-Phases: {N}/8 complete
+Brands: {N} found
+Projects: {N} found
 
-Health Score: {SCORE}/100 {emoji}
+Overall Health: {SCORE}/100 {emoji}
 {health bar}
 
-─── Check Results ─────────────────────
+─── Brand: {name} ─────────────────────
+  Phases: {N}/5 complete
+  ✅ B1. Structure .............. PASS
+  ✅ B2. Phase Ordering ......... PASS
+  ⚠️  B3. Completeness .......... WARN
 
-{For each check, one of:}
-  ✅ 1. Project Structure ........... PASS
-  ⚠️  2. Phase Ordering ............. WARN
-  ❌ 3. Stale Outputs .............. FAIL
+─── Project: {name} (brand: {brand}) ──
+  Phases: {N}/6 complete
+  ✅ P1. Structure .............. PASS
+  ✅ P2. Brand Reference ........ PASS
+  ⚠️  P3. Brand Drift ........... WARN
+  ✅ P4. Phase Ordering ......... PASS
+  ✅ P5. Stale Outputs .......... PASS
+  ✅ P6. Config Drift ........... PASS
+  ✅ P7. Missing Chunks ......... PASS
+  ✅ P8. Broken References ...... PASS
+  ✅ P9. Review Status .......... PASS
+  ✅ P10. Upgrade Detection ..... PASS
+
+─── Cross-Instance ────────────────────
+  ✅ X1. Brand Consistency ...... PASS
 
 ─── Issues Found ──────────────────────
 
-{For each WARN/FAIL, grouped by severity:}
-
 FAIL:
-  • [Check 3] Strategy is extend but SYSTEM.md lacks component audit.
-    → Fix: Re-run /gsp:system
+  • [acme-website/P1] Missing brand.ref
+    → Fix: Re-run /gsp:new to set up project with brand reference
 
 WARN:
-  • [Check 5] Phase 3 complete but no chunked exports.
-    → Fix: Re-run /gsp:system to generate chunks
+  • [acme-corp/B3] No palettes.json found
+    → Fix: Re-run /gsp:brand-identity to generate OKLCH palettes
 
 INFO:
-  • [Check 8] No tints.dev palettes found.
-    → Fix: Re-run /gsp:brand to generate OKLCH palettes
+  • [acme-corp/P10] Config version is 0.3.0, current GSP is 0.4.0
+    → Fix: Re-run /gsp:new to upgrade config
 
 ─── Summary ───────────────────────────
 
@@ -295,19 +306,14 @@ INFO:
 {If score < 50:}  "Project has significant issues. Address failures first."
 ```
 
-Health score emoji:
-- 90-100: 💚
-- 70-89: 💛
-- 50-69: 🟠
-- 0-49: ❤️
-
-Health bar: 20-char bar using █ and ░, proportional to score.
+Health emoji: 90-100: 💚, 70-89: 💛, 50-69: 🟠, 0-49: ❤️
+Health bar: 20-char using █ and ░.
 
 ## Important Notes
 
 - **Read-only** — do NOT modify any files
 - **No agents** — run all checks directly, this is deterministic pattern matching
 - **Terminal only** — no file output, all results printed to terminal
-- **Be specific** — every issue should name the exact file and suggest the exact command to fix it
+- **Be specific** — every issue names the exact file and suggests the exact command to fix it
 - **Don't over-report** — if the same issue is caught by multiple checks, only report it once (in the most specific check)
 </process>
