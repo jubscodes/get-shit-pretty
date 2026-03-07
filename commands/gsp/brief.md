@@ -101,13 +101,33 @@ The agent writes chunks directly:
 - `brief/file-references.md` (existing target)
 - `brief/INDEX.md`
 
-## Step 3: Update state
+## Step 3: Write exports
+
+Update `{PROJECT_PATH}/exports/INDEX.md`:
+- If INDEX.md doesn't exist, copy it from `templates/exports-index.md`
+- Replace everything between `<!-- BEGIN:brief -->` and `<!-- END:brief -->` with populated table:
+
+```markdown
+<!-- BEGIN:brief -->
+| Section | File |
+|---------|------|
+| Scope | [scope.md](../brief/scope.md) |
+| Target Adaptations | [target-adaptations.md](../brief/target-adaptations.md) |
+| Install Manifest | [install-manifest.md](../brief/install-manifest.md) |
+| Gap Analysis | [gap-analysis.md](../brief/gap-analysis.md) |
+| File References | [file-references.md](../brief/file-references.md) |
+<!-- END:brief -->
+```
+
+Only include rows for chunks that were actually produced.
+
+## Step 4: Update state
 
 Update `{PROJECT_PATH}/STATE.md`:
 - Set Phase 1 (Brief) status to `complete`
 - Record completion date
 
-## Step 4: Route next
+## Step 5: Route next
 
 "Run `/gsp:research` to research UX patterns, competitor experiences, and technical approaches for this project."
 </process>

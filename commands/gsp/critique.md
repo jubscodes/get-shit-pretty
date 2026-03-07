@@ -41,7 +41,7 @@ Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
 
 ## Step 1: Load context
 
-Read `{PROJECT_PATH}/config.json` to get `implementation_target` and `design_scope`.
+Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`, and `accessibility_level`.
 
 ### Load all prior chunks (chunk-first with fallbacks)
 
@@ -78,7 +78,7 @@ Fallback: `{PROJECT_PATH}/design/SCREENS.md` or `{PROJECT_PATH}/screens/INDEX.md
 **Agent 1: gsp-critic** — Design critique using Nielsen's 10 Heuristics reference + all design chunks.
 Output path: `{PROJECT_PATH}/critique/`
 
-**Agent 2: gsp-auditor** — WCAG 2.2 AA audit using WCAG checklist + all design chunks.
+**Agent 2: gsp-auditor** — WCAG 2.2 audit using WCAG checklist + all design chunks. Pass `accessibility_level` from config (defaults to "WCAG 2.2 AA") so the auditor adapts its criteria (AA vs AAA).
 Output path: `{PROJECT_PATH}/critique/`
 
 ## Step 3: Write critique INDEX.md

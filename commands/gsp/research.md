@@ -95,6 +95,26 @@ The agent researches using WebSearch and writes chunks directly:
 - `research/recommendations.md`
 - `research/INDEX.md`
 
+## Step 2.5: Write exports
+
+Update `{PROJECT_PATH}/exports/INDEX.md`:
+- If INDEX.md doesn't exist, copy it from `templates/exports-index.md`
+- Replace everything between `<!-- BEGIN:research -->` and `<!-- END:research -->` with populated table:
+
+```markdown
+<!-- BEGIN:research -->
+| Section | File |
+|---------|------|
+| UX Patterns | [ux-patterns.md](../research/ux-patterns.md) |
+| Competitor UX | [competitor-ux.md](../research/competitor-ux.md) |
+| Technical Research | [technical-research.md](../research/technical-research.md) |
+| Accessibility Patterns | [accessibility-patterns.md](../research/accessibility-patterns.md) |
+| Content Strategy | [content-strategy.md](../research/content-strategy.md) |
+| Reference Specs | [reference-specs.md](../research/reference-specs.md) |
+| Recommendations | [recommendations.md](../research/recommendations.md) |
+<!-- END:research -->
+```
+
 ## Step 3: Update state
 
 Update `{PROJECT_PATH}/STATE.md`:

@@ -78,5 +78,26 @@ After writing all chunks, write `INDEX.md` in the brief directory:
 ```
 
 Only include rows for chunks that were actually produced.
+
+### Update project exports/INDEX.md
+
+After generating chunks, update the project's `exports/INDEX.md`:
+
+1. If INDEX.md doesn't exist, copy it from `templates/exports-index.md`
+2. Replace everything between `<!-- BEGIN:brief -->` and `<!-- END:brief -->` with populated table:
+
+```markdown
+<!-- BEGIN:brief -->
+| Section | File |
+|---------|------|
+| Scope | [scope.md](../brief/scope.md) |
+| Target Adaptations | [target-adaptations.md](../brief/target-adaptations.md) |
+| Install Manifest | [install-manifest.md](../brief/install-manifest.md) |
+| Gap Analysis | [gap-analysis.md](../brief/gap-analysis.md) |
+| File References | [file-references.md](../brief/file-references.md) |
+<!-- END:brief -->
+```
+
+Only include rows for chunks that were actually produced.
 </output>
 </output>

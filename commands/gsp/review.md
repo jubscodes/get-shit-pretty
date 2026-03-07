@@ -60,13 +60,24 @@ Also read `{BRAND_PATH}/system/tokens.json`.
 
 **Codebase:** Scan actual codebase for implemented components (when `implementation_target` is not `figma`).
 
+## Step 1.5: Scope check
+
+**If `design_scope` is `tokens`:**
+1. Run token-audit-only review: verify token naming, scale consistency, contrast ratios, and brand alignment. Skip screen coverage and component coverage checks.
+2. Write `{PROJECT_PATH}/review/acceptance-report.md` (token-focused verdict) and `{PROJECT_PATH}/review/issues.md` (token issues only)
+3. Write `{PROJECT_PATH}/review/INDEX.md`
+4. Update `{PROJECT_PATH}/exports/INDEX.md` between `<!-- BEGIN:review -->` and `<!-- END:review -->` with populated table
+5. Update `{PROJECT_PATH}/STATE.md` — set Phase 6 (Review) to `complete` or `needs-revision`
+6. Route: display verdict and suggest `/gsp:launch` or re-run `/gsp:review`
+7. **Stop here**
+
 ## Step 2: Spawn reviewer
 
 Spawn the `gsp-reviewer` agent with:
 - Build output (CODE.md + component files)
 - Design chunks
 - Brand system chunks + tokens.json
-- Plan chunks
+- Brief chunks
 - Critique fixes (to verify resolution)
 - The Deliverable Reviewer prompt (11)
 - The review output template
@@ -108,7 +119,7 @@ Update `{PROJECT_PATH}/STATE.md`:
 ## Step 6: Route next
 
 **If Pass/Conditional Pass:**
-"Project is fully pretty! All 5 project phases complete. Run `/gsp:launch` if you need marketing campaign assets, or `/gsp:progress` to see the full journey."
+"Project is fully pretty! All 6 project phases complete. Run `/gsp:launch` if you need marketing campaign assets, or `/gsp:progress` to see the full journey."
 
 **If Fail:**
 "Critical issues found. Address the issues in `review/issues.md`, then run `/gsp:review` again."

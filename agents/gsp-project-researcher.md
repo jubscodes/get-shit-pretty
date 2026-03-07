@@ -77,5 +77,26 @@ After writing all chunks, write `INDEX.md` in the research directory:
 | Reference Specs | [reference-specs.md](./reference-specs.md) | ~{N} |
 | Recommendations | [recommendations.md](./recommendations.md) | ~{N} |
 ```
+
+### Update project exports/INDEX.md
+
+After generating chunks, update the project's `exports/INDEX.md`:
+
+1. If INDEX.md doesn't exist, copy it from `templates/exports-index.md`
+2. Replace everything between `<!-- BEGIN:research -->` and `<!-- END:research -->` with populated table:
+
+```markdown
+<!-- BEGIN:research -->
+| Section | File |
+|---------|------|
+| UX Patterns | [ux-patterns.md](../research/ux-patterns.md) |
+| Competitor UX | [competitor-ux.md](../research/competitor-ux.md) |
+| Technical Research | [technical-research.md](../research/technical-research.md) |
+| Accessibility Patterns | [accessibility-patterns.md](../research/accessibility-patterns.md) |
+| Content Strategy | [content-strategy.md](../research/content-strategy.md) |
+| Reference Specs | [reference-specs.md](../research/reference-specs.md) |
+| Recommendations | [recommendations.md](../research/recommendations.md) |
+<!-- END:research -->
+```
 </output>
 </output>

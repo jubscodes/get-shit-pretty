@@ -24,7 +24,6 @@ Every chunk follows this structure:
 
 - **Singular, kebab-case, lowercase:** "Buttons" → `button.md`, "Date Picker" → `date-picker.md`
 - **Screen files:** `screen-{NN}-{kebab-case-name}.md` (e.g., `screen-01-home.md`)
-- **Spec files:** `screen-{NN}-spec.md`
 
 ## INDEX.md Format
 

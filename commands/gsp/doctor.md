@@ -76,7 +76,7 @@ If all 5 phases complete, check:
 
 **Check B4: Legacy Monolith Detection**
 For each brand phase directory (discover, strategy, verbal, identity, system):
-- If monolith exists but no INDEX.md → WARN: "Legacy format in {phase}/ — re-run /gsp:{phase} for chunk output"
+- If monolith exists but no INDEX.md → WARN: "Legacy format in {phase}/ — re-run /gsp:brand-{phase} for chunk output"
 
 ### Per-Project Checks (6-phase)
 
@@ -94,7 +94,7 @@ WARN if brand referenced but system not complete
 **Check P3: Brand Drift**
 Read `identity_hash` from brand.ref
 If brand identity/IDENTITY.md exists, compute current hash (first 8 chars of md5)
-If hashes differ → WARN: "Brand identity has changed since project consumed it. Consider re-running `/gsp:plan`."
+If hashes differ → WARN: "Brand identity has changed since project consumed it. Consider re-running `/gsp:brief`."
 If identity_hash is "pending" → INFO: "Brand identity wasn't complete when project was created."
 
 **Check P4: Phase Ordering**
