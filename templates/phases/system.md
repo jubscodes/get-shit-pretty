@@ -9,6 +9,15 @@
 
 > This phase produces foundation chunks in `system/foundations/`, component chunks in `system/components/`, plus `principles.md`, `tokens.json`, and `INDEX.md`.
 
+## Inputs
+- identity/color-system.md → foundations/color-system.md
+- identity/palettes.json → token generation
+- identity/typography.md → foundations/typography.md
+- identity/logo-directions.md → clear space tokens
+- strategy/archetype.md + strategy/brand-platform.md → principles.md
+- verbal/brand-voice.md → content component guidelines
+- config.json system_config — tech_stack, system_strategy
+
 ## Chunk Mapping
 
 ### Foundations (`system/foundations/`)

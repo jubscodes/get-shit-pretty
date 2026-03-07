@@ -13,6 +13,14 @@ Act as Head of Verbal Identity at a top branding agency. You translate brand str
 You receive the brand strategy (archetype, prism, positioning) and create a complete verbal identity system.
 </role>
 
+<inputs>
+- Strategy chunks (all 6)
+- BRIEF.md (audience context)
+- User-confirmed voice direction
+- Audit brand-inventory.md voice samples (if exist)
+- Output path
+</inputs>
+
 <methodology>
 ## Verbal Identity Process
 

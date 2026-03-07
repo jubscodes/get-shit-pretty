@@ -7,6 +7,18 @@
 
 > This phase produces 6 chunks + palettes.json + INDEX.md in the `identity/` directory.
 
+## Inputs
+- BRIEF.md — audience, constraints
+- discover/mood-board-direction.md → color direction (hex), typography (typefaces), imagery
+- strategy/brand-prism.md Physique → logo concept, visual form
+- strategy/archetype.md visual tendencies → color warmth, type energy, imagery style
+- strategy/positioning.md → visual differentiation
+- strategy/brand-platform.md → values as visual language
+- verbal/brand-voice.md → typography warmth, color energy
+- verbal/tone-spectrum.md → visual energy level
+- audit/brand-inventory.md (if exists) → current visual elements as evolution baseline
+- audit/evolution-map.md (if exists) → preserve/evolve/replace decisions
+
 ## Chunk Mapping
 
 | Chunk File | Content |

@@ -41,6 +41,25 @@ Also read BRIEF.md for audience context.
 
 If neither exists, tell the user to run `/gsp:brand-strategy` first.
 
+## Step 1.75: Voice direction (interactive)
+
+Load strategy/archetype.md communication style + strategy/brand-prism.md personality.
+If `.design/branding/{brand}/audit/` exists, load `audit/brand-inventory.md` voice samples.
+
+Present voice direction:
+
+"Your archetype ({archetype}) communicates with {style}.
+ {If evolve: "Your current voice sounds like: {samples from audit}.
+  We're {preserving/evolving} it."}
+
+ Here are two directions:
+ A: {direction} — '{example sentence}'
+ B: {direction} — '{example sentence}'
+
+ Which resonates? Or describe what you hear."
+
+Confirm voice direction. This direction is passed to the verbal strategist agent.
+
 ## Step 2: Spawn verbal strategist
 
 Spawn the `gsp-verbal-strategist` agent with:
@@ -48,6 +67,8 @@ Spawn the `gsp-verbal-strategist` agent with:
 - The BRIEF.md content (for audience context)
 - The verbal identity template
 - The voice-tone reference
+- User-confirmed voice direction from Step 1.75
+- `.design/branding/{brand}/audit/brand-inventory.md` voice samples (if exist)
 - **Output path:** `.design/branding/{brand}/verbal/`
 
 The agent writes chunks directly to the verbal directory:
@@ -69,5 +90,5 @@ Update `.design/branding/{brand}/STATE.md`:
 ## Step 4: Route next
 
 Display verbal identity summary (voice attributes, tone position, tagline directions) and end with:
-"Run `/gsp:brand-identity` to create the visual identity."
+"Verbal identity updated. Run `/gsp:brand-identity` to continue — it will skip verbal and run visual identity."
 </process>

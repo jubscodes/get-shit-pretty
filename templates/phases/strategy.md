@@ -7,6 +7,16 @@
 
 > This phase produces 6 chunks + INDEX.md in the `strategy/` directory.
 
+## Inputs
+- BRIEF.md
+- discover/competitive-audit.md → positioning.md, brand-prism.md
+- discover/audience-personas.md → brand-prism.md (Reflection, Self-Image)
+- discover/swot-analysis.md → brand-platform.md
+- discover/trend-analysis.md → archetype.md (avoid saturated archetypes)
+- discover/mood-board-direction.md → brand-prism.md (Physique)
+- discover/strategic-recommendations.md → brand-platform.md
+- audit/evolution-map.md (if exists) → evaluate current vs proposed
+
 ## Chunk Mapping
 
 | Chunk File | Content |

@@ -11,6 +11,21 @@
 - **Size:** {SIZE}
 - **Existing brand?** {YES_NO}
 
+## Brand Mode
+- **Mode:** {new | evolve}
+- **Reason:** {why — market shift, audience change, product pivot, staleness}
+
+### Existing Brand State (evolve only)
+- **Current brand age:** {years}
+- **Existing guidelines?** {yes — description | no}
+- **Brand equity:** {what's working}
+- **Pain points:** {what's not working}
+
+### Evolution Scope (evolve only)
+- **Preserve:** {elements to keep}
+- **Evolve:** {elements to refresh}
+- **Replace:** {elements to redo}
+
 ## Mission & Vision
 - **Mission:** {MISSION}
 - **Vision:** {VISION}

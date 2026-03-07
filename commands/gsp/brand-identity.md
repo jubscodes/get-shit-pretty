@@ -1,6 +1,6 @@
 ---
 name: gsp:brand-identity
-description: Visual identity — logo system, color, typography, imagery
+description: Brand identity — verbal + visual identity (phases 3-4)
 allowed-tools:
   - Read
   - Write
@@ -10,52 +10,145 @@ allowed-tools:
   - WebFetch
 ---
 <context>
-Phase 4 of the GSP branding diamond. Creates the brand's visual identity — logo system, color, typography, imagery — all grounded in brand strategy and verbal identity.
+Phases 3-4 of the GSP branding diamond. Runs verbal identity (voice, tone, messaging) and visual identity (logo, color, typography) as a single command. Handles skip logic — if one phase is already complete, runs only the remaining one.
 </context>
 
 <objective>
-Create the brand's visual identity.
+Build the brand's verbal and visual identity.
 
-**Input:** Strategy + verbal chunks (selective)
-**Output:** `.design/branding/{brand}/identity/` (6 chunks + palettes.json + INDEX.md)
-**Agent:** `gsp-identity-designer`
+**Input:** Strategy chunks + BRIEF.md
+**Output:** `.design/branding/{brand}/verbal/` + `.design/branding/{brand}/identity/` + `palettes.json`
+**Agents:** `gsp-verbal-strategist` (phase 3), `gsp-identity-designer` (phase 4)
 </objective>
 
 <execution_context>
+@/Users/jubs/.claude/get-shit-pretty/templates/phases/verbal.md
+@/Users/jubs/.claude/get-shit-pretty/references/voice-tone.md
 @/Users/jubs/.claude/get-shit-pretty/prompts/02-brand-identity-creator.md
 @/Users/jubs/.claude/get-shit-pretty/templates/phases/identity.md
 </execution_context>
 
 <process>
-## Step 1: Find brand
+## Step 0: Resolve brand
 
 Scan `.design/branding/` for brand directories. If only one brand exists, use it. If multiple, ask the user which brand to work on.
 
-Read `.design/branding/{brand}/BRIEF.md` — company, audience, inspiration.
+Set `BRAND_PATH` = `.design/branding/{brand}`
 
-## Step 1.5: Load upstream chunks
+If BRAND_PATH doesn't exist, tell the user to run `/gsp:new` first.
 
-**Strategy (selective):**
-Read `.design/branding/{brand}/strategy/INDEX.md`. If it exists, load: `brand-prism.md`, `archetype.md`, `positioning.md`, `brand-platform.md`.
-Fallback: read `.design/branding/{brand}/strategy/STRATEGY.md` (legacy monolith). Log: "⚠️ Legacy strategy format detected."
+## Step 1: Validate prerequisites
 
-If neither exists, tell the user to run `/gsp:brand-strategy` first.
+Read `{BRAND_PATH}/STATE.md`. Strategy (phase 2) must be complete. If not, tell the user: "Strategy isn't complete yet. Run `/gsp:brand-strategy` first."
 
-**Verbal (selective):**
-Read `.design/branding/{brand}/verbal/INDEX.md`. If it exists, load: `brand-voice.md`, `tone-spectrum.md`.
-Fallback: read `.design/branding/{brand}/verbal/VERBAL.md` (legacy monolith). Log: "⚠️ Legacy verbal format detected."
+Load:
+- `{BRAND_PATH}/BRIEF.md` — company, audience, goals
+- `{BRAND_PATH}/strategy/INDEX.md` → load all strategy chunks
+- Fallback: `{BRAND_PATH}/strategy/STRATEGY.md` (legacy monolith). Log: "⚠️ Legacy strategy format detected."
 
-Proceed without verbal if not yet complete.
+## Step 2: Check progress
 
-## Step 2: Spawn identity designer
+Read `{BRAND_PATH}/STATE.md` for phases 3 and 4 status.
+
+- Phase 3 `complete` → skip verbal, go to phase 4
+- Phase 4 `complete` → skip visual, go to summary
+- Both `complete` → show summary and route to next command
+- `pending` or `needs-revision` → run that phase
+
+## Step 2.5: Voice direction (interactive, before verbal agent)
+
+Load `{BRAND_PATH}/strategy/archetype.md` communication style + `{BRAND_PATH}/strategy/brand-prism.md` personality.
+If `{BRAND_PATH}/audit/` exists, load `audit/brand-inventory.md` voice samples.
+
+Present voice direction:
+
+"Your archetype ({archetype}) communicates with {style}.
+ {If evolve: "Your current voice sounds like: {samples from audit}.
+  We're {preserving/evolving} it."}
+
+ Here are two directions:
+ A: {direction} — '{example sentence}'
+ B: {direction} — '{example sentence}'
+
+ Which resonates? Or describe what you hear."
+
+Confirm voice direction. This direction is passed to the verbal strategist agent.
+
+## Step 3: Verbal identity (if needed)
+
+Spawn the `gsp-verbal-strategist` agent with:
+- All strategy chunks (or STRATEGY.md fallback content)
+- The BRIEF.md content (for audience context)
+- The verbal identity template
+- The voice-tone reference
+- User-confirmed voice direction from Step 2.5
+- `{BRAND_PATH}/audit/brand-inventory.md` voice samples (if exist)
+- **Output path:** `{BRAND_PATH}/verbal/`
+
+The agent writes chunks directly to the verbal directory:
+1. `brand-voice.md`
+2. `tone-spectrum.md`
+3. `voice-chart.md`
+4. `messaging-matrix.md`
+5. `brand-narrative.md`
+6. `tagline-directions.md`
+7. `nomenclature.md`
+8. `INDEX.md`
+
+Update `{BRAND_PATH}/STATE.md`:
+- Set Phase 3 (Verbal) status to `complete`
+- Record completion date
+
+Display progress: "Verbal identity complete. Moving to visual identity..."
+
+## Step 3.5: Visual direction (interactive, before identity agent)
+
+Load `{BRAND_PATH}/discover/mood-board-direction.md` + `{BRAND_PATH}/strategy/archetype.md` visual tendencies.
+If `{BRAND_PATH}/audit/` exists, load `audit/brand-inventory.md` (current colors, typography).
+
+Present visual direction:
+
+"Here's where research and strategy point visually:
+
+ From research mood board:
+   Colors: {hex values from mood-board-direction.md}
+   Typography: {typefaces from mood-board-direction.md}
+   Imagery: {style from mood-board-direction.md}
+
+ From archetype ({name}):
+   Visual tendencies: {from archetype.md}
+
+ {If evolve: "Current brand uses {colors, fonts from audit}.
+  Evolution map says: preserve {X}, evolve {Y}, replace {Z}."}
+
+ My recommendation: {direction + reasoning}
+
+ Logo exploration angles:
+ 1. {concept A}
+ 2. {concept B}
+ 3. {concept C}
+
+ Thoughts? Visual references or hard constraints?"
+
+Confirm visual direction. This direction and the mood-board-direction.md content are passed to the identity designer agent.
+
+## Step 4: Visual identity (if needed)
+
+Load verbal chunks (just created or pre-existing):
+- `{BRAND_PATH}/verbal/INDEX.md` → load `brand-voice.md`, `tone-spectrum.md`
+- Fallback: `{BRAND_PATH}/verbal/VERBAL.md` (legacy monolith). Log: "⚠️ Legacy verbal format detected."
 
 Spawn the `gsp-identity-designer` agent with:
 - The BRIEF.md content
-- Selected strategy chunks (or STRATEGY.md fallback)
-- Selected verbal chunks (or VERBAL.md fallback)
+- Selected strategy chunks (brand-prism, archetype, positioning, brand-platform)
+- Selected verbal chunks (brand-voice, tone-spectrum)
 - The Brand Identity Creator prompt (02)
 - The identity output template
-- **Output path:** `.design/branding/{brand}/identity/`
+- `{BRAND_PATH}/discover/mood-board-direction.md` content
+- User-confirmed visual direction from Step 3.5
+- `{BRAND_PATH}/audit/brand-inventory.md` (if exists)
+- `{BRAND_PATH}/audit/evolution-map.md` (if exists)
+- **Output path:** `{BRAND_PATH}/identity/`
 
 The agent writes chunks directly to the identity directory:
 1. `logo-directions.md`
@@ -67,15 +160,41 @@ The agent writes chunks directly to the identity directory:
 7. `palettes.json`
 8. `INDEX.md`
 
-## Step 3: Update state
-
-Update `.design/branding/{brand}/STATE.md`:
+Update `{BRAND_PATH}/STATE.md`:
 - Set Phase 4 (Identity) status to `complete`
 - Record completion date
 - Set Prettiness Level to 80%
 
-## Step 4: Route next
+## Step 4.5: Perspective check
 
-Display identity summary and end with:
-"Visual identity is complete! Run `/gsp:brand-system` to build the design system for this brand."
+Before finalizing, load `{BRAND_PATH}/discover/audience-personas.md` and present stakeholder reactions:
+
+"Before we finalize the identity, let me stress-test from three angles:
+
+ The Customer ({primary persona name from audience-personas.md}):
+ "{reaction to specific visual and verbal elements — would they trust/engage/buy?}"
+
+ The Skeptic (internal stakeholder):
+ "{challenges the boldest visual decision — color gamble, typography risk, logo direction. Raises the 'what if' scenario.}"
+
+ The Competitor ({top competitor name}):
+ "{how they'd respond — is the brand visually differentiated enough? Where's the vulnerability?}"
+
+ Any of these concerns resonate? Want to adjust before we lock in?"
+
+If user wants changes → loop back to adjust identity outputs.
+If confirmed → proceed.
+
+## Step 5: Present identity summary
+
+Display a summary covering both verbal and visual:
+- **Archetype expression** — how the archetype manifests in voice and visuals
+- **Voice attributes** — top 3 voice characteristics
+- **Logo directions** — number of directions and brief descriptions
+- **Color system** — primary palette summary
+- **Typography** — chosen typefaces
+
+## Step 6: Route next
+
+"Run `/gsp:brand-patterns` to build your design system and see the full brand preview."
 </process>

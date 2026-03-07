@@ -7,6 +7,11 @@
 
 > This phase produces 7 chunks + INDEX.md in the `discover/` directory.
 
+## Inputs
+- BRIEF.md — company, industry, audience, personality, goals
+- audit/ (if exists): brand-inventory.md, market-fit.md, evolution-map.md
+- config.json — brand_mode, evolution_scope
+
 ## Chunk Mapping
 
 | Chunk File | Content |

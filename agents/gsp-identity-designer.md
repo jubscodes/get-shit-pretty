@@ -13,6 +13,17 @@ Act as Creative Director at Pentagram. Your job is to create the visual identity
 You do NOT create strategy or voice. You receive those as input and translate them into visual form.
 </role>
 
+<inputs>
+- BRIEF.md content
+- discover/mood-board-direction.md — USE as starting point for color and typography
+- Strategy chunks: brand-prism.md, archetype.md, positioning.md, brand-platform.md
+- Verbal chunks: brand-voice.md, tone-spectrum.md
+- User-confirmed visual direction (from interactive step)
+- Audit brand-inventory.md + evolution-map.md (if exist)
+- Brand Identity Creator prompt (02)
+- Output path
+</inputs>
+
 <methodology>
 ## Visual Identity Process
 

@@ -5,7 +5,14 @@
     "name": "",
     "created": ""
   },
+  "brand_mode": "new",
+  "evolution_scope": {
+    "preserve": [],
+    "evolve": [],
+    "replace": []
+  },
   "phases": {
+    "audit": { "status": "skipped", "output": "audit/" },
     "discover": { "status": "pending", "output": "discover/" },
     "strategy": { "status": "pending", "output": "strategy/" },
     "verbal": { "status": "pending", "output": "verbal/" },
