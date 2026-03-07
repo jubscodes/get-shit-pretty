@@ -116,6 +116,38 @@ Update `{PROJECT_PATH}/STATE.md`:
 - Record completion date
 - If Pass or Conditional Pass: Set Prettiness Level to 100%
 
+### Finalize git tracking
+
+1. If `git.branch` is set in config.json:
+   - Run `gh pr list --head {branch} --json url,number --limit 1` to find an open PR
+   - If found, update `git.pr` in config.json and STATE.md `## Git` table
+   - If not found, note: "No PR found for branch `{branch}`."
+   - If `gh` is not available, skip silently — leave PR field as "—"
+2. Include PR link in the CHANGELOG.md entry if available (see format below)
+
+### Update manifest + changelog
+
+1. Update `{PROJECT_PATH}/codebase/MANIFEST.md`:
+   - Update Status to `complete` (Pass) or `partial` (Conditional Pass)
+   - Populate Branch and PR lines in the manifest header from config.json `git` values
+   - Fix component paths if renamed during implementation
+
+2. Append to `.design/CHANGELOG.md`:
+   - Add entry with project name, date, brand, scope summary
+   - List added/modified components, patterns, file count
+   - Link to manifest for detail
+   - Use this format:
+     ```
+     ## [{project-name}] — {DATE}
+     > Brand: {brand} | Scope: {one-line scope from BRIEF.md}
+
+     **Added:** {component list, comma-separated}
+     **Modified:** {component list, or "—"}
+     **Patterns:** {patterns established, comma-separated, or "—"}
+     **PR:** [{#number}]({url}) or "—"
+     **Files:** {count} files touched → [manifest](./projects/{name}/codebase/MANIFEST.md)
+     ```
+
 ## Step 6: Route next
 
 **If Pass/Conditional Pass:**

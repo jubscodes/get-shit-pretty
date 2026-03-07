@@ -8,6 +8,7 @@ allowed-tools:
   - AskUserQuestion
   - Glob
   - Grep
+  - Agent
 ---
 <context>
 You are the GSP (Get Shit Pretty) entry point — a design lead starting a first call with a client. You scan the codebase and `.design/` directory, greet the user with what you found, and flow naturally into the right workflow.
@@ -49,24 +50,29 @@ Follow these principles throughout all conversations:
 </questioning_principles>
 
 <process>
-## Step 1: Scan silently and greet
+## Step 1: Scan and greet (parallel)
 
-Before asking anything, gather context:
+### Step 1a: Scan `.design/` (sync — fast)
 
-1. **Scan `.design/`** for existing brands and projects:
-   - Check `.design/branding/` for brand directories (each has a `config.json` with `project_type: "brand"`)
-   - Check `.design/projects/` for project directories (each has a `config.json` with `project_type: "design"`)
-   - Check for legacy flat `.design/config.json` at root (pre-0.4.0 structure)
-   - For each brand/project found, read its `config.json` to get phase statuses
+Scan `.design/` for existing brands and projects:
+- Check `.design/branding/` for brand directories (each has a `config.json` with `project_type: "brand"`)
+- Check `.design/projects/` for project directories (each has a `config.json` with `project_type: "design"`)
+- Check for legacy flat `.design/config.json` at root (pre-0.4.0 structure)
+- For each brand/project found, read its `config.json` to get phase statuses
+- If `.design/CHANGELOG.md` doesn't exist, create it from `templates/changelog.md`
 
-2. **Scan codebase** for tech signals:
-   - `package.json` → framework, dependencies, scripts
-   - Config files → `tsconfig.json`, `tailwind.config.*`, `next.config.*`, `vite.config.*`, etc.
-   - Component directories → `src/components/`, `app/`, `pages/`
-   - Classify codebase: **greenfield** (no code) | **boilerplate** (scaffolded, minimal custom) | **existing** (real code, components, pages)
-   - Auto-infer `implementation_target` from what's found
+### Step 1b: Spawn codebase scanner (background)
 
-3. **Then greet** with a single message that acknowledges what you found and invites conversation. No menus, no formal option lists — just talk.
+Spawn the `gsp-codebase-scanner` agent with `run_in_background: true`:
+- Use `subagent_type: "Explore"` with the scanner's methodology
+- Prompt: "Scan this codebase following the gsp-codebase-scanner methodology. Return a structured report with classification, tech stack, components, tokens, architecture patterns, conventions, and key paths. Read `.design/CHANGELOG.md` and scan `.design/projects/*/STATE.md` for sibling project context. If no package.json exists, return a minimal greenfield report."
+- Store the task reference — you'll consume results in Step 3 Round 2 or Step 4.
+
+### Step 1c: Greet
+
+Greet based on `.design/` findings from Step 1a. No menus, no formal option lists — just talk.
+
+If a `package.json` exists (quick check via glob — don't wait for the full scan), add to the greeting: "I'm scanning your codebase in the background — I'll factor in what I find."
 
 Adapt the greeting based on what the scan revealed:
 
@@ -126,6 +132,7 @@ Use inference: if they say "fintech for Gen Z" → infer modern, mobile-first, b
 - Competitive landscape — who are the main competitors?
 - Timeline and budget constraints
 - Any non-negotiables?
+- **Check background scan:** If the codebase scanner has returned results, weave tech findings into the conversation naturally — e.g., "I see you're running Next.js with Tailwind and shadcn — that'll inform the design system." If not done yet, continue without — results will be available by Step 4.
 - State your understanding back: "Here's what I'm hearing: [summary]. Anything I'm missing?"
 
 **Evolve mode additions (when `brand_mode` is `evolve`):**
@@ -175,6 +182,14 @@ If only one complete brand exists, suggest it as default.
 mkdir -p .design/projects/{name}/{brief,research,design,critique,build,review,codebase,exports}
 ```
 
+### Detect git context
+
+1. Run `git branch --show-current` to detect current branch
+2. If a branch is detected, present it: "I see you're on `{branch}` — I'll track this as the project branch."
+3. Let user confirm or provide a different branch name
+4. Store in config.json `git.branch` and STATE.md `## Git` table
+5. If no git repo detected, skip silently — leave fields as "—"
+
 5. Write `brand.ref`:
 ```
 brand: {brand-name}
@@ -184,17 +199,17 @@ identity_hash: {first 8 chars of md5 of IDENTITY.md content, or "pending" if ide
 ```
 Write to `.design/projects/{name}/brand.ref`
 
-6. Analyze codebase (using findings from Step 1 scan):
-- Detect code signals (package.json, config files, components)
-- Classify: greenfield | boilerplate | existing
-- If non-greenfield: write INVENTORY.md to `.design/projects/{name}/codebase/INVENTORY.md`
-- Auto-infer implementation_target
+6. Consume background scan results:
+- Retrieve the codebase scanner's structured report (guaranteed done by now — conversation has been going for multiple rounds)
+- If **greenfield**: no INVENTORY.md needed, note classification for config.json
+- If **boilerplate** or **existing**: write INVENTORY.md to `.design/projects/{name}/codebase/INVENTORY.md` using the scanner's report and the `templates/codebase-inventory.md` template
+- Auto-infer `implementation_target` from the scanner's tech stack and components
 
 7. Gather project brief in 2 rounds:
 
 **Round 1 — What we're building:**
 - What are we building? (app, website, dashboard, etc.)
-- Present codebase findings: "I found a Next.js app with Tailwind and 3 shadcn components. Want to build on that?"
+- Present background scan findings: "I found a {classification} {framework} project with {details}. Want to build on that?"
 - Platforms (web, iOS, Android)?
 - Tech stack preferences? (confirm inferred or ask)
 - Implementation target (present options based on codebase analysis)
@@ -213,8 +228,8 @@ Skip or compress rounds if the user gives enough upfront. Don't over-ask.
 
 8. Write artifacts:
 - `.design/projects/{name}/BRIEF.md` from project brief template
-- `.design/projects/{name}/STATE.md` from project state template
-- `.design/projects/{name}/config.json` from project config template (include `brand_ref` field)
+- `.design/projects/{name}/STATE.md` from project state template — populate `## Git` table with detected/confirmed branch (or "—")
+- `.design/projects/{name}/config.json` from project config template (include `brand_ref` field) — populate `git.branch` with detected/confirmed branch (or empty string)
 - `.design/projects/{name}/ROADMAP.md` from project roadmap template
 - `.design/projects/{name}/exports/INDEX.md` from exports-index template
 

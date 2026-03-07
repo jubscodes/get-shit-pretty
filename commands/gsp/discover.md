@@ -1,6 +1,6 @@
 ---
 name: gsp:discover
-description: Brand discovery (alias for /gsp:brand-discover)
+description: Brand discovery (alias for /gsp:brand-research)
 allowed-tools:
   - Read
 ---
@@ -9,10 +9,9 @@ Display:
 ```
 🎨 GSP — Redirecting...
 
-/gsp:discover now redirects to /gsp:brand-discover in GSP 0.5.0.
+/gsp:discover now redirects to /gsp:brand-research.
 Brand commands now use the brand- prefix for clarity.
 ```
 
-Tell the user to run `/gsp:brand-discover` instead.
+Tell the user to run `/gsp:brand-research` instead.
 </process>
-</output>

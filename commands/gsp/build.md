@@ -72,6 +72,13 @@ Spawn the `gsp-builder` agent with all design, plan, system, and token files, th
 1. Write implementation guide to `{PROJECT_PATH}/build/CODE.md`
 2. Write individual components to `{PROJECT_PATH}/build/components/`
 
+### Write manifest
+
+Write `{PROJECT_PATH}/codebase/MANIFEST.md` from `templates/manifest.md`:
+1. **Components table** — one row per component produced (scan `build/components/`). Action = `added` or `modified` based on INVENTORY.md.
+2. **Patterns table** — patterns established (infer from CODE.md).
+3. **Files Touched** — flat list of all target file paths.
+
 ## Step 4: Update state
 
 Update `{PROJECT_PATH}/STATE.md`:

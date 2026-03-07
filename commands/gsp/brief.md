@@ -65,6 +65,10 @@ Read:
 
 Read `{PROJECT_PATH}/codebase/INVENTORY.md` (if exists) — existing tokens, components, architecture.
 
+Read `.design/CHANGELOG.md` — quick history of what prior projects built.
+For projects with overlapping scope, read their `codebase/MANIFEST.md` for detail.
+Glob `.design/projects/*/STATE.md` — detect active sibling projects.
+
 ## Step 1.5: Scope check
 
 **If `design_scope` is `tokens`:**
@@ -88,10 +92,14 @@ Spawn the `gsp-scoper` agent with:
 - BRIEF.md
 - config.json preferences
 - INVENTORY.md (when exists)
+- CHANGELOG.md + relevant MANIFEST.md files — for overlap detection and provenance
 - The Project Scoper prompt (10)
 - The brief output template
 - `implementation_target`, `design_scope`, `codebase_type`
 - **Output path:** `{PROJECT_PATH}/brief/`
+
+If any sibling project is active and its scope overlaps with this project, flag it: "⚠️ {name} is actively working on {scope}. Coordinate to avoid conflicts."
+If this project modifies components from a sibling's manifest, note provenance.
 
 The agent writes chunks directly:
 - `brief/scope.md`

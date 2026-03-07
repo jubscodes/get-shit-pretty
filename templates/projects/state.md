@@ -19,6 +19,14 @@
 | 5 | Build | pending | — | — |
 | 6 | Review | pending | — | — |
 
+## Git
+
+| Field | Value |
+|-------|-------|
+| Branch | — |
+| PR | — |
+| Issues | — |
+
 ## Review Loops
 <!-- Track critique → fix → re-critique cycles -->
 

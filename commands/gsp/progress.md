@@ -41,12 +41,12 @@ Projects: count completed/skipped phases out of 6
 
   acme-corp
   ████████████████ 100% (5/5 phases)
-  ✅ Discover  ✅ Strategy  ✅ Verbal  ✅ Identity  ✅ System
+  ✅ Research  ✅ Strategy  ✅ Verbal  ✅ Identity  ✅ Patterns
 
   beta-labs
   ██████░░░░░░░░░░ 40% (2/5 phases)
-  ✅ Discover  ✅ Strategy  ⬜ Verbal  ⬜ Identity  ⬜ System
-  → Next: /gsp:brand-verbal
+  ✅ Research  ✅ Strategy  ⬜ Verbal  ⬜ Identity  ⬜ Patterns
+  → Next: /gsp:brand-identity
 
 ─── Projects ──────────────────────────
 
@@ -73,6 +73,21 @@ Show Launch status separately if present (not counted in phase progress).
 
 ## Step 5: Route next
 
-For each in-progress instance, identify the next pending phase and suggest the command.
+For each in-progress instance, identify the next pending phase and suggest the command:
+
+**Brand routing:**
+- Phase 1 (Research) pending → `/gsp:brand-research`
+- Phase 2 (Strategy) pending → `/gsp:brand-strategy`
+- Phase 3 or 4 (Verbal/Identity) pending → `/gsp:brand-identity` (handles both phases with skip logic)
+- Phase 5 (Patterns) pending → `/gsp:brand-patterns`
+
+**Project routing:**
+- Brief pending → `/gsp:brief`
+- Research pending → `/gsp:research`
+- Design pending → `/gsp:design`
+- Critique pending → `/gsp:critique`
+- Build pending → `/gsp:build`
+- Review pending → `/gsp:review`
+
 If everything is complete: "All brands and projects are fully pretty! 🎨"
 </process>

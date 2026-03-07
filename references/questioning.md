@@ -1,7 +1,7 @@
 # Brief-Gathering Techniques
 
 ## Purpose
-Guide the `/gsp:new-project` command to extract a complete design brief through effective questioning.
+Guide brief-gathering conversations — used by `/gsp:new` for both brand briefs and project briefs.
 
 ---
 

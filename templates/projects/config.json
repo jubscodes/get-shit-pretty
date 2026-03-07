@@ -16,6 +16,11 @@
     "codebase_type": "greenfield",
     "design_scope": "full"
   },
+  "git": {
+    "branch": "",
+    "pr": "",
+    "issues": []
+  },
   "phases": {
     "brief": { "status": "pending", "output": "brief/" },
     "research": { "status": "pending", "output": "research/" },
