@@ -9,6 +9,8 @@ const readline = require('readline');
 const cyan = '\x1b[36m';
 const green = '\x1b[32m';
 const yellow = '\x1b[33m';
+const magenta = '\x1b[35m';
+const bold = '\x1b[1m';
 const dim = '\x1b[2m';
 const reset = '\x1b[0m';
 
@@ -26,6 +28,7 @@ const hasCodex = args.includes('--codex');
 const hasAll = args.includes('--all');
 const hasUninstall = args.includes('--uninstall') || args.includes('-u');
 const hasHelp = args.includes('--help') || args.includes('-h');
+const hasQuiet = args.includes('--quiet') || args.includes('-q');
 const forceStatusline = args.includes('--force-statusline');
 
 // Runtime selection
@@ -63,6 +66,19 @@ function parseConfigDirArg() {
 }
 const explicitConfigDir = parseConfigDirArg();
 
+// Taglines
+const taglines = [
+  'opinionated design systems, packaged for agents.',
+  'because "looks like AI made it" is becoming a genre.',
+  'strategy first. pixels second. ship it pretty.',
+  'teach your agent what good design looks like.',
+  'design systems that agents can actually follow.',
+  'your codebase called. it wants a design system.',
+  'stop shipping defaults. start shipping taste.',
+  'same system, different themes, different products.',
+];
+const tagline = taglines[Math.floor(Math.random() * taglines.length)];
+
 // Banner
 const banner = '\n' +
   cyan + '   ██████╗ ███████╗██████╗\n' +
@@ -72,9 +88,8 @@ const banner = '\n' +
   '  ╚██████╔╝███████║██║\n' +
   '   ╚═════╝ ╚══════╝╚═╝' + reset + '\n' +
   '\n' +
-  '  Get Shit Pretty ' + dim + 'v' + pkg.version + reset + '\n' +
-  '  A design engineering system for Claude Code,\n' +
-  '  OpenCode, Gemini, and Codex.\n';
+  '  ' + bold + 'Get Shit Pretty' + reset + ' ' + dim + 'v' + pkg.version + reset + '\n' +
+  '  ' + dim + tagline + reset + '\n';
 
 console.log(banner);
 
@@ -92,6 +107,7 @@ if (hasHelp) {
     ${cyan}-u, --uninstall${reset}           Uninstall GSP (remove GSP files only)
     ${cyan}-c, --config-dir <path>${reset}   Specify custom config directory
     ${cyan}--force-statusline${reset}        Replace existing statusline config
+    ${cyan}-q, --quiet${reset}               Skip onboarding message
     ${cyan}-h, --help${reset}                Show this help message
 
   ${yellow}Examples:${reset}
@@ -1061,6 +1077,8 @@ function handleStatusline(settings, isInteractive, callback) {
   });
 }
 
+let onboardingShown = false;
+
 function finishInstall(settingsPath, settings, statuslineCommand, shouldInstallStatusline, runtime = 'claude', isGlobal = true) {
   const isOpencode = runtime === 'opencode';
   const isCodex = runtime === 'codex';
@@ -1080,8 +1098,34 @@ function finishInstall(settingsPath, settings, statuslineCommand, shouldInstallS
   }
 
   const runtimeLabel = getRuntimeLabel(runtime);
-  const command = isOpencode ? '/gsp-help' : isCodex ? '$gsp-help' : '/gsp:help';
-  console.log(`\n  ${green}Done!${reset} Launch ${runtimeLabel} and run ${cyan}${command}${reset}.\n`);
+  const helpCmd = isOpencode ? '/gsp-help' : isCodex ? '$gsp-help' : '/gsp:help';
+  const newCmd = isOpencode ? '/gsp-new' : isCodex ? '$gsp-new' : '/gsp:new';
+  const brandCmd = isOpencode ? '/gsp-brand' : isCodex ? '$gsp-brand' : '/gsp:brand';
+  console.log(`\n  ${green}Done!${reset} GSP installed for ${cyan}${runtimeLabel}${reset}.`);
+
+  // Show onboarding once (not per-runtime)
+  if (!onboardingShown && !hasQuiet) {
+    onboardingShown = true;
+    console.log(`
+  ${dim}┌──────────────────────────────────────────────────────┐${reset}
+  ${dim}│${reset}                                                      ${dim}│${reset}
+  ${dim}│${reset}  ${bold}The idea${reset}                                            ${dim}│${reset}
+  ${dim}│${reset}                                                      ${dim}│${reset}
+  ${dim}│${reset}  GSP is a design system your agent can follow.       ${dim}│${reset}
+  ${dim}│${reset}  Research before pixels. Brand before screens.       ${dim}│${reset}
+  ${dim}│${reset}  Two pipelines, both opinionated:                    ${dim}│${reset}
+  ${dim}│${reset}                                                      ${dim}│${reset}
+  ${dim}│${reset}  ${magenta}◇${reset} ${bold}Brand${reset}     discover → strategy → identity        ${dim}│${reset}
+  ${dim}│${reset}  ${cyan}◇${reset} ${bold}Project${reset}   brief → design → build → review       ${dim}│${reset}
+  ${dim}│${reset}                                                      ${dim}│${reset}
+  ${dim}│${reset}  ${yellow}Start here:${reset}                                        ${dim}│${reset}
+  ${dim}│${reset}    ${cyan}${newCmd}${reset}     new project                          ${dim}│${reset}
+  ${dim}│${reset}    ${cyan}${brandCmd}${reset}   brand identity                       ${dim}│${reset}
+  ${dim}│${reset}    ${cyan}${helpCmd}${reset}    all commands                         ${dim}│${reset}
+  ${dim}│${reset}                                                      ${dim}│${reset}
+  ${dim}└──────────────────────────────────────────────────────┘${reset}
+`);
+  }
 }
 
 // ──────────────────────────────────────────────────────

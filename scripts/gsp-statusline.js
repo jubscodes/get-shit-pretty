@@ -151,7 +151,7 @@ process.stdin.on('end', () => {
             (lParts[0] === iParts[0] && lParts[1] > iParts[1]) ||
             (lParts[0] === iParts[0] && lParts[1] === iParts[1] && lParts[2] > iParts[2]);
           if (isNewer) {
-            updateTag = ` \x1b[33m\u2191 v${latest}\x1b[0m`;
+            updateTag = ` \x1b[33m\u2191 /gsp:update\x1b[0m`;
           }
         }
       }
