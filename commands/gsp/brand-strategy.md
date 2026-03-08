@@ -6,6 +6,7 @@ allowed-tools:
   - Write
   - Bash
   - Task
+  - AskUserQuestion
   - WebSearch
   - WebFetch
 ---
@@ -59,9 +60,14 @@ Frame the strategic opportunity: "Here's what the research tells us about where 
 
 ## Step 3: Archetype selection
 
-Present 2-3 archetype candidates with strong opinions. Don't just list options — push a recommendation:
+Present 2-3 archetype candidates using `AskUserQuestion`. Push a recommendation but let them choose:
 
-"Based on your market position, I'd push for **The Creator** over **The Sage**. Here's why: [reasoning from research]. The Sage space is crowded in your category — [competitor A] and [competitor B] already own it. The Creator lets you own [specific territory]."
+Each option should have:
+- **Label:** The archetype name (e.g., "The Creator")
+- **Description:** Strategic reasoning — why this archetype fits and what territory it claims
+- **Preview:** Example communication style — "Here's how this archetype would introduce your product: '{sample sentence}'"
+
+Frame with context before the question: "The Sage space is crowded — [competitor A] and [competitor B] already own it. Here's where I see opportunity:"
 
 Let the user choose, adjust, or blend. Confirm the selected archetype.
 
@@ -69,21 +75,25 @@ Let the user choose, adjust, or blend. Confirm the selected archetype.
 
 Show the competitive landscape as a positioning map (two key axes relevant to the industry).
 
-Identify where competitors cluster and where the white space is:
+Identify where competitors cluster and where the white space is. Then use `AskUserQuestion` with 2 options:
 
-"Everyone clusters in the [safe zone]. The white space is [bold position] — that's where you differentiate. It's riskier but ownable."
+- **Safe play** — description: where it sits on the map, which competitors are nearby, why it's lower-risk / preview: the positioning statement
+- **Bold play** — description: the white space opportunity, why it's differentiated, what the risk is / preview: the positioning statement
 
-Present 2 positioning options: the safe play and the bold play. Push for differentiation. Let the user decide.
-
-Confirm the positioning statement.
+Push for the bold play in your framing, but let the user decide. Confirm the positioning statement.
 
 ## Step 5: Brand personality
 
-Reference the personality words from BRIEF.md. Challenge generic choices:
+Reference the personality words from BRIEF.md. Challenge generic choices and present refined options using `AskUserQuestion` with 2-3 personality word sets:
 
-"'Professional' doesn't differentiate — every B2B brand claims it. What about **'precise'** or **'exacting'**? That says the same thing but only you can own it."
+Each option should have:
+- **Label:** The 3-word set (e.g., "Precise · Inventive · Grounded")
+- **Description:** How these words differentiate from competitors and what they signal
+- **Preview:** A sample sentence written in that personality — "Here's how the brand sounds: '{example}'"
 
-Sharpen to 3 distinctive personality words. Confirm with the user.
+Frame with context: "'Professional' doesn't differentiate — every B2B brand claims it. Here are sharper alternatives:"
+
+Confirm the final personality words with the user.
 
 ## Step 6: Spawn brand strategist
 

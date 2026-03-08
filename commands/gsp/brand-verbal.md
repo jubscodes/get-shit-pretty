@@ -6,6 +6,7 @@ allowed-tools:
   - Write
   - Bash
   - Task
+  - AskUserQuestion
   - WebSearch
   - WebFetch
 ---
@@ -46,17 +47,12 @@ If neither exists, tell the user to run `/gsp:brand-strategy` first.
 Load strategy/archetype.md communication style + strategy/brand-prism.md personality.
 If `.design/branding/{brand}/audit/` exists, load `audit/brand-inventory.md` voice samples.
 
-Present voice direction:
+Present context: "Your archetype ({archetype}) communicates with {style}."
+{If evolve: "Your current voice sounds like: {samples from audit}. We're {preserving/evolving} it."}
 
-"Your archetype ({archetype}) communicates with {style}.
- {If evolve: "Your current voice sounds like: {samples from audit}.
-  We're {preserving/evolving} it."}
-
- Here are two directions:
- A: {direction} — '{example sentence}'
- B: {direction} — '{example sentence}'
-
- Which resonates? Or describe what you hear."
+Then use `AskUserQuestion` with 2 voice direction options:
+- **Direction A label** — description: what this direction emphasizes / preview: '{example sentence in this voice}'
+- **Direction B label** — description: what this direction emphasizes / preview: '{example sentence in this voice}'
 
 Confirm voice direction. This direction is passed to the verbal strategist agent.
 

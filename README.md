@@ -58,7 +58,7 @@ The missing half of the bridge.
 ### 1. Start a Project
 
 ```
-/gsp:new-project
+/gsp:new
 ```
 
 Answer questions about your product — what it does, who it's for, the vibe you're going for. GSP creates a design brief that guides everything downstream.
@@ -170,7 +170,7 @@ Creates marketing campaign assets — landing page copy, social media content, l
 ### The Full Pipeline
 
 ```
-/gsp:new-project → BRIEF.md
+/gsp:new → BRIEF.md
        ↓
 /gsp:research    → .design/research/TRENDS.md
        ↓
@@ -197,7 +197,7 @@ All artifacts live in `.design/` within your project directory.
 
 | Command | What it does |
 |---------|--------------|
-| `/gsp:new-project` | Initialize a design brief through guided Q&A |
+| `/gsp:new` | Initialize a design brief through guided Q&A |
 | `/gsp:research` | Analyze design trends for your industry |
 | `/gsp:brand` | Create brand identity (strategy, logo, color, type) |
 | `/gsp:system` | Build design system foundations + tokens |

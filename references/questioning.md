@@ -60,9 +60,15 @@ Don't ask what you can infer:
 - State your inferences and let them correct
 
 ### Handling Vague Answers
-- Offer 2-3 concrete options instead of open-ended re-asks
-- "Would you describe the style as more (A) minimal and clean, (B) bold and expressive, or (C) warm and organic?"
-- Use examples: "Like Stripe's clean approach or more like Duolingo's playful style?"
+- Use `AskUserQuestion` with 2-3 concrete options instead of open-ended re-asks
+- Each option should have a clear **label**, a **description** explaining what it means, and optionally a **preview** showing what it looks like in practice
+- Example: instead of "What style do you want?", use `AskUserQuestion` with options like "Minimal & clean" (description: "Lots of white space, restrained palette") vs "Bold & expressive" (description: "Saturated colors, strong typography")
+- Reserve prose questions for open-ended exploration where you genuinely don't know the option space
+
+### When to Use `AskUserQuestion` vs Prose
+- **Use `AskUserQuestion`** for: picking between defined directions (archetypes, styles, brands), yes/no/which decisions, selecting from existing items (brands, projects), mood/tone/size preferences
+- **Use prose** for: open-ended creative input ("tell me about your brand"), gathering context you can't predict ("what problem does this solve?"), follow-up clarifications where the answer space is unbounded
+- **Rule of thumb:** if you can write 2-4 meaningful options with descriptions, use `AskUserQuestion`. If you'd be guessing at what the options should be, use prose.
 
 ### Knowing When You Have Enough
 A brief is complete when you can answer:

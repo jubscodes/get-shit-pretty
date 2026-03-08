@@ -6,6 +6,7 @@ allowed-tools:
   - Write
   - Bash
   - Task
+  - AskUserQuestion
   - WebSearch
   - WebFetch
 ---
@@ -60,17 +61,12 @@ Read `{BRAND_PATH}/STATE.md` for phases 3 and 4 status.
 Load `{BRAND_PATH}/strategy/archetype.md` communication style + `{BRAND_PATH}/strategy/brand-prism.md` personality.
 If `{BRAND_PATH}/audit/` exists, load `audit/brand-inventory.md` voice samples.
 
-Present voice direction:
+Present context: "Your archetype ({archetype}) communicates with {style}."
+{If evolve: "Your current voice sounds like: {samples from audit}. We're {preserving/evolving} it."}
 
-"Your archetype ({archetype}) communicates with {style}.
- {If evolve: "Your current voice sounds like: {samples from audit}.
-  We're {preserving/evolving} it."}
-
- Here are two directions:
- A: {direction} — '{example sentence}'
- B: {direction} — '{example sentence}'
-
- Which resonates? Or describe what you hear."
+Then use `AskUserQuestion` with 2 voice direction options:
+- **Direction A label** — description: what this direction emphasizes / preview: '{example sentence in this voice}'
+- **Direction B label** — description: what this direction emphasizes / preview: '{example sentence in this voice}'
 
 Confirm voice direction. This direction is passed to the verbal strategist agent.
 
@@ -106,7 +102,7 @@ Display progress: "Verbal identity complete. Moving to visual identity..."
 Load `{BRAND_PATH}/discover/mood-board-direction.md` + `{BRAND_PATH}/strategy/archetype.md` visual tendencies.
 If `{BRAND_PATH}/audit/` exists, load `audit/brand-inventory.md` (current colors, typography).
 
-Present visual direction:
+Present research context:
 
 "Here's where research and strategy point visually:
 
@@ -119,18 +115,14 @@ Present visual direction:
    Visual tendencies: {from archetype.md}
 
  {If evolve: "Current brand uses {colors, fonts from audit}.
-  Evolution map says: preserve {X}, evolve {Y}, replace {Z}."}
+  Evolution map says: preserve {X}, evolve {Y}, replace {Z}."}"
 
- My recommendation: {direction + reasoning}
+Then use `AskUserQuestion` with 2-3 visual direction options:
+- **Direction label** — description: color palette direction, typography feel, overall aesthetic / preview: "Logo concept: {concept description}. Palette: {key colors}. Type: {typeface style}."
 
- Logo exploration angles:
- 1. {concept A}
- 2. {concept B}
- 3. {concept C}
+Each direction should represent a meaningfully different visual path (e.g., minimal vs. expressive vs. heritage).
 
- Thoughts? Visual references or hard constraints?"
-
-Confirm visual direction. This direction and the mood-board-direction.md content are passed to the identity designer agent.
+After selection, ask for any hard constraints or visual references. Confirm visual direction — this and the mood-board-direction.md content are passed to the identity designer agent.
 
 ## Step 4: Visual identity (if needed)
 

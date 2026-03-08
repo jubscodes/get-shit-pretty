@@ -1122,8 +1122,7 @@ function finishInstall(settingsPath, settings, statuslineCommand, shouldInstallS
   ${cyan}◇${reset} ${bold}Project${reset}${dim}   brief → design → build → review${reset}
 
   ${yellow}Get started:${reset}
-    ${cyan}${newCmd}${reset}     new project
-    ${cyan}${brandCmd}${reset}   brand identity
+    ${cyan}${newCmd}${reset}     start here — brand, project, or both
     ${cyan}${helpCmd}${reset}    all commands
 `);
   }

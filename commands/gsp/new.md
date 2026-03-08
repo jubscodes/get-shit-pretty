@@ -70,7 +70,7 @@ Spawn the `gsp-codebase-scanner` agent with `run_in_background: true`:
 
 ### Step 1c: Greet
 
-Greet based on `.design/` findings from Step 1a. No menus, no formal option lists — just talk.
+Greet based on `.design/` findings from Step 1a. Use `AskUserQuestion` with clickable options to guide the user into the right flow.
 
 If a `package.json` exists (quick check via glob — don't wait for the full scan), add to the greeting: "I'm scanning your codebase in the background — I'll factor in what I find."
 
@@ -80,22 +80,32 @@ Adapt the greeting based on what the scan revealed:
 ```
 🎨 GSP — Get Shit Pretty
 
-Looks like a fresh start! Tell me about what you're building — I'll figure out whether we need brand work, a design project, or both.
+Looks like a fresh start!
 ```
+Then use `AskUserQuestion` with options:
+- **Brand identity** — "Define who you are — strategy, voice, visuals"
+- **Design project** — "Design screens and flows for something you're building"
+- **Both (brand + project)** — "Full pipeline — brand first, then design"
 
 **Legacy `.design/` detected (flat structure, pre-0.4.0):**
-Acknowledge the legacy project, note it still works with current commands. Offer to start a new brand or project alongside it using the new dual-diamond structure.
+Acknowledge the legacy project, note it still works with current commands. Use `AskUserQuestion`:
+- **Start fresh brand** — "New dual-diamond brand alongside your legacy project"
+- **Start design project** — "New project using the updated pipeline"
+- **Keep working** — "Continue with the legacy structure"
 
 **Brands exist, no projects:**
-Show existing brands with status. Then: "Want to start a design project with one of these, or create a new brand?"
+Show existing brands with status. Then use `AskUserQuestion` with:
+- One option per existing brand — "Start a project with {brand name}"
+- **Create new brand** — "Start a new brand identity"
 
 **Brands + projects exist:**
-Show a brief overview of brands and projects with status. Then: "Starting something new, or continuing work on one of these?" If continuing → route to `/gsp:progress`.
+Show a brief overview of brands and projects with status. Then use `AskUserQuestion`:
+- **New project** — "Start a new design project"
+- **Continue existing** — "Pick up where you left off" (routes to `/gsp:progress`)
+- **New brand** — "Create a new brand identity"
 
 **Codebase signals found (any state):**
 Weave in what you found: "I see you've got a [Next.js/React Native/etc.] project here with [Tailwind/shadcn/etc.] — I'll factor that into the design scope."
-
-**Important:** Only use `AskUserQuestion` if there's genuine ambiguity that can't be resolved conversationally — e.g., picking between 3+ existing brands. For the initial "what are you building?" — just ask in prose and let them answer naturally.
 
 ## Step 2: Route based on conversation
 
@@ -120,7 +130,10 @@ mkdir -p .design/branding/{name}/{audit,discover,strategy,verbal,identity,system
 **Round 1 — Core:**
 - Company name, industry, founding story
 - Target audience (primary + secondary)
-- Brand personality — how should the brand feel? Offer concrete comparisons: "More like Stripe's precision or Mailchimp's warmth?"
+- Brand personality — use `AskUserQuestion` with 2-3 concrete personality directions as options, each with a description and `preview` showing example brand voice. E.g.:
+  - **Precise & exacting** — "Like Stripe or Linear" / preview: "Your dashboard is ready. Zero errors, zero clutter."
+  - **Warm & human** — "Like Mailchimp or Notion" / preview: "Hey! Your project's looking great. Here's what's next."
+  - **Bold & unapologetic** — "Like Figma or Vercel" / preview: "Ship it. We'll make it beautiful."
 - Mission and vision
 - Brands admired / styles to avoid
 - What the brand should NEVER be
@@ -172,6 +185,7 @@ Available brands:
 
 If no brands exist, explain that a brand is needed first and offer to create one.
 If only one complete brand exists, suggest it as default.
+If multiple brands exist, use `AskUserQuestion` with one option per brand (include status in description).
 
 2. User selects a brand.
 
