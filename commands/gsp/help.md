@@ -23,6 +23,7 @@ Command Reference (v0.4.0 — Dual Diamond)
 GETTING STARTED
   /gsp:new             Smart entry — start a brand or project
   /gsp:help            Show this command reference
+  /gsp:update          Update GSP to latest version
   /gsp:progress        Check progress — "How pretty are we?"
   /gsp:doctor          Diagnose health across brands + projects
 
