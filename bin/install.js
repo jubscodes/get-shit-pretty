@@ -1107,23 +1107,24 @@ function finishInstall(settingsPath, settings, statuslineCommand, shouldInstallS
   if (!onboardingShown && !hasQuiet) {
     onboardingShown = true;
     console.log(`
-  ${dim}┌──────────────────────────────────────────────────────┐${reset}
-  ${dim}│${reset}                                                      ${dim}│${reset}
-  ${dim}│${reset}  ${bold}The idea${reset}                                            ${dim}│${reset}
-  ${dim}│${reset}                                                      ${dim}│${reset}
-  ${dim}│${reset}  GSP is a design system your agent can follow.       ${dim}│${reset}
-  ${dim}│${reset}  Research before pixels. Brand before screens.       ${dim}│${reset}
-  ${dim}│${reset}  Two pipelines, both opinionated:                    ${dim}│${reset}
-  ${dim}│${reset}                                                      ${dim}│${reset}
-  ${dim}│${reset}  ${magenta}◇${reset} ${bold}Brand${reset}     discover → strategy → identity        ${dim}│${reset}
-  ${dim}│${reset}  ${cyan}◇${reset} ${bold}Project${reset}   brief → design → build → review       ${dim}│${reset}
-  ${dim}│${reset}                                                      ${dim}│${reset}
-  ${dim}│${reset}  ${yellow}Start here:${reset}                                        ${dim}│${reset}
-  ${dim}│${reset}    ${cyan}${newCmd}${reset}     new project                          ${dim}│${reset}
-  ${dim}│${reset}    ${cyan}${brandCmd}${reset}   brand identity                       ${dim}│${reset}
-  ${dim}│${reset}    ${cyan}${helpCmd}${reset}    all commands                         ${dim}│${reset}
-  ${dim}│${reset}                                                      ${dim}│${reset}
-  ${dim}└──────────────────────────────────────────────────────┘${reset}
+  ${dim}        *    .              ·    *${reset}
+  ${dim}   .         ·    *              .${reset}
+
+       ${magenta}░▒▓█${reset} ${bold} GET SHIT PRETTY ${reset} ${magenta}█▓▒░${reset}
+
+  ${dim}   ·    *              .         *${reset}
+  ${dim}        ·    *    .         ·${reset}
+
+  ${dim}Design system for your AI agent.${reset}
+  ${dim}Research first, then pixels.${reset}
+
+  ${magenta}◇${reset} ${bold}Brand${reset}${dim}     discover → strategy → identity${reset}
+  ${cyan}◇${reset} ${bold}Project${reset}${dim}   brief → design → build → review${reset}
+
+  ${yellow}Get started:${reset}
+    ${cyan}${newCmd}${reset}     new project
+    ${cyan}${brandCmd}${reset}   brand identity
+    ${cyan}${helpCmd}${reset}    all commands
 `);
   }
 }
