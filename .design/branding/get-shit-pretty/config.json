@@ -1,0 +1,26 @@
+{
+  "version": "0.4.0",
+  "project_type": "brand",
+  "brand": {
+    "name": "get-shit-pretty",
+    "created": "2026-03-08"
+  },
+  "brand_mode": "new",
+  "evolution_scope": {
+    "preserve": [],
+    "evolve": [],
+    "replace": []
+  },
+  "phases": {
+    "audit": { "status": "skipped", "output": "audit/" },
+    "discover": { "status": "complete", "output": "discover/" },
+    "strategy": { "status": "complete", "output": "strategy/" },
+    "verbal": { "status": "complete", "output": "verbal/" },
+    "identity": { "status": "complete", "output": "identity/" },
+    "system": { "status": "complete", "output": "system/" }
+  },
+  "system_config": {
+    "tech_stack": "Node.js CLI (npm package)",
+    "system_strategy": "generate"
+  }
+}

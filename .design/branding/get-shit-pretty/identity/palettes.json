@@ -1,0 +1,53 @@
+{
+  "brand": "get-shit-pretty",
+  "version": "1.0.0",
+  "generated": "2026-03-08",
+  "colors": {
+    "accent": {
+      "name": "Burnt Orange",
+      "base": "#FF6B35",
+      "scale": {
+        "50":  { "oklch": "oklch(0.966 0.017 26.74)", "hex": "#FEF3EE" },
+        "100": { "oklch": "oklch(0.942 0.029 25.61)", "hex": "#FDE5D8" },
+        "200": { "oklch": "oklch(0.877 0.066 28.95)", "hex": "#FAC4A8" },
+        "300": { "oklch": "oklch(0.821 0.101 30.65)", "hex": "#F7A278" },
+        "400": { "oklch": "oklch(0.765 0.141 33.61)", "hex": "#F48148" },
+        "500": { "oklch": "oklch(0.705 0.193 39.23)", "hex": "#FF6B35" },
+        "600": { "oklch": "oklch(0.597 0.181 41.7)",  "hex": "#D4501E" },
+        "700": { "oklch": "oklch(0.481 0.146 41.55)", "hex": "#A33B14" },
+        "800": { "oklch": "oklch(0.366 0.111 41.78)", "hex": "#72290E" },
+        "900": { "oklch": "oklch(0.258 0.079 41.42)", "hex": "#461908" },
+        "950": { "oklch": "oklch(0.194 0.058 42.4)",  "hex": "#2E1005" }
+      }
+    },
+    "surface": {
+      "base":  { "hex": "#000000", "rgb": [0, 0, 0],     "label": "surface-base" },
+      "1":     { "hex": "#0A0A0A", "rgb": [10, 10, 10],  "label": "surface-1" },
+      "2":     { "hex": "#141414", "rgb": [20, 20, 20],  "label": "surface-2" },
+      "3":     { "hex": "#1E1E1E", "rgb": [30, 30, 30],  "label": "surface-3" },
+      "4":     { "hex": "#282828", "rgb": [40, 40, 40],  "label": "surface-4" }
+    },
+    "text": {
+      "primary":   { "hex": "#E0E0E0", "rgb": [224, 224, 224], "label": "text-primary" },
+      "secondary": { "hex": "#A0A0A0", "rgb": [160, 160, 160], "label": "text-secondary" },
+      "tertiary":  { "hex": "#666666", "rgb": [102, 102, 102], "label": "text-tertiary" }
+    },
+    "border": {
+      "subtle":  { "value": "rgba(255, 255, 255, 0.08)", "label": "border-subtle" },
+      "default": { "value": "rgba(255, 255, 255, 0.15)", "label": "border-default" },
+      "strong":  { "value": "rgba(255, 255, 255, 0.25)", "label": "border-strong" },
+      "accent":  { "value": "rgba(255, 107, 53, 0.4)",   "label": "border-accent" }
+    },
+    "semantic": {
+      "success": { "hex": "#22C55E", "rgb": [34, 197, 94],   "oklch": "oklch(0.723 0.191 149.58)" },
+      "warning": { "hex": "#FBBF24", "rgb": [251, 191, 36],  "oklch": "oklch(0.828 0.162 83.7)" },
+      "error":   { "hex": "#EF4444", "rgb": [239, 68, 68],   "oklch": "oklch(0.628 0.209 22.18)" },
+      "info":    { "hex": "#60A5FA", "rgb": [96, 165, 250],  "oklch": "oklch(0.706 0.132 252.72)" }
+    },
+    "ecosystem": {
+      "jubs-studio": { "primary": "#00FF88", "secondary": "#FF6B35", "note": "Parent. Both colors. Cyberpunk." },
+      "gsp":         { "primary": "#FF6B35", "note": "Child. Inherits orange. Structured avant-garde." },
+      "cyphercn":    { "primary": "#00FF88", "note": "Sibling. Inherits green. Retro-terminal." }
+    }
+  }
+}
