@@ -17,7 +17,7 @@ Output the following reference exactly:
 
 ```
 🎨 GSP — Get Shit Pretty
-Command Reference (v0.4.0 — Dual Diamond)
+Command Reference (v0.4.1 — Dual Diamond)
 ═══════════════════════════════════════
 
 GETTING STARTED
@@ -56,19 +56,6 @@ E2E FLOW (5 + 6 phases + optional)
 WORKFLOW
   Treat each project as a bounded issue (or set of issues) and a PR.
   Ship small, ship complete. Break large projects into focused deliverables.
-
-ALIASES (backwards compatible)
-  /gsp:new-project     → redirects to /gsp:new
-  /gsp:brand           → redirects to /gsp:brand-identity
-  /gsp:brand-discover  → redirects to /gsp:brand-research
-  /gsp:brand-system    → redirects to /gsp:brand-patterns
-  /gsp:discover        → redirects to /gsp:brand-research
-  /gsp:strategy        → redirects to /gsp:brand-strategy
-  /gsp:verbal          → redirects to /gsp:brand-verbal
-  /gsp:identity        → redirects to /gsp:brand-identity
-  /gsp:system          → redirects to /gsp:brand-patterns
-  /gsp:spec            → redirects to /gsp:brief
-  /gsp:plan            → redirects to /gsp:brief
 
 DIRECTORY STRUCTURE
   .design/

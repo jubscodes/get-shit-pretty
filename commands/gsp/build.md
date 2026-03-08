@@ -79,13 +79,17 @@ Write `{PROJECT_PATH}/codebase/MANIFEST.md` from `templates/manifest.md`:
 2. **Patterns table** — patterns established (infer from CODE.md).
 3. **Files Touched** — flat list of all target file paths.
 
-## Step 4: Update state
+## Step 4: Update exports index
+
+Update `{PROJECT_PATH}/exports/INDEX.md` — add build phase entries between `<!-- BEGIN:build -->` and `<!-- END:build -->` markers. List all files written to `build/CODE.md` and `build/components/`.
+
+## Step 5: Update state
 
 Update `{PROJECT_PATH}/STATE.md`:
 - Set Phase 5 (Build) status to `complete`
 - Record completion date
 
-## Step 5: Route next
+## Step 6: Route next
 
 "Run `/gsp:review` to validate built deliverables against design intent."
 </process>
