@@ -1,9 +1,9 @@
 ---
 name: gsp:help
-description: Show GSP command reference
+description: Show all commands
 ---
 <objective>
-Display the complete GSP command reference.
+Display the complete GSP command reference with branded ANSI styling.
 
 Output ONLY the reference content below. Do NOT add:
 - Project-specific analysis
@@ -13,90 +13,110 @@ Output ONLY the reference content below. Do NOT add:
 </objective>
 
 <process>
-Output the following reference exactly:
+## Read version
+
+Read the version from `.claude/get-shit-pretty/VERSION` if it exists, otherwise default to `0.4.2`.
+
+## Output the reference
+
+Output the following using ANSI escape codes for color. Each element has a specific color:
+
+- **Brand mark `/gsp:`** — accent + bold: `\x1b[1m\x1b[38;2;255;107;53m`
+- **Diamonds `◇◇`** — tertiary: `\x1b[38;2;102;102;102m`
+- **Version** — dim: `\x1b[2m`
+- **Subtitle "command reference"** — secondary: `\x1b[38;2;160;160;160m`
+- **Divider `───`** — tertiary: `\x1b[38;2;102;102;102m`
+- **Divider label text** — secondary + bold: `\x1b[1m\x1b[38;2;160;160;160m`
+- **Command names** — accent + bold: `\x1b[1m\x1b[38;2;255;107;53m`
+- **Command descriptions** — secondary: `\x1b[38;2;160;160;160m`
+- **Flow phase names** — primary: `\x1b[38;2;224;224;224m`
+- **Flow arrows `→`** — tertiary: `\x1b[38;2;102;102;102m`
+- **Tree connectors** — tertiary: `\x1b[38;2;102;102;102m`
+- **Tree labels** — secondary: `\x1b[38;2;160;160;160m`
+- **Tree descriptions** — tertiary: `\x1b[38;2;102;102;102m`
+- **Footer** — dim: `\x1b[2m`
+- **Reset** — `\x1b[0m`
+
+Command names are left-padded with 4 spaces. Descriptions start at column 27 (4 indent + 23 max command name width).
 
 ```
-🎨 GSP — Get Shit Pretty
-Command Reference (v0.4.1 — Dual Diamond)
-═══════════════════════════════════════
+  /gsp: ◇◇  v{VERSION}
+  command reference
 
-GETTING STARTED
-  /gsp:new             Smart entry — start a brand or project
-  /gsp:help            Show this command reference
-  /gsp:update          Update GSP to latest version
-  /gsp:progress        Check progress — "How pretty are we?"
-  /gsp:doctor          Diagnose health across brands + projects
 
-BRANDING DIAMOND (5 commands, 6 phases)
-  /gsp:brand-audit     Phase 0 — Audit: assess existing brand, produce evolution map (optional)
-  /gsp:brand-research  Phase 1 — Research: competitive audit, personas, SWOT, trends
-  /gsp:brand-strategy  Phase 2 — Strategy: archetype, positioning, personality (interactive)
-  /gsp:brand-identity  Phases 3-4 — Identity: verbal + visual identity
-  /gsp:brand-patterns  Phase 5 — Patterns: design system, tokens + brand preview
+  ─── Getting Started ──────────────────
 
-  Granular re-runs:
-    /gsp:brand-verbal    Phase 3 only — Voice, tone spectrum, messaging, naming
+    /gsp:start             start here — picks up where you left off
+    /gsp:help              this command reference
+    /gsp:progress          how pretty are we?
 
-PROJECT DIAMOND (6 phases)
-  /gsp:brief           Phase 1 — Project scoping, adaptations, gap analysis
-  /gsp:research        Phase 2 — UX patterns, competitor UX, technical research, reference specs
-  /gsp:design          Phase 3 — UI/UX screens & interaction flows
-  /gsp:critique        Phase 4 — Design critique + accessibility audit
-  /gsp:build           Phase 5 — Design-to-code translation
-  /gsp:review          Phase 6 — Deliverable validation + acceptance
+  ─── Branding ─────────────────────────
 
-OPTIONAL
-  /gsp:launch          Marketing campaign assets (on request)
+    /gsp:brand-research    research your market and audience
+    /gsp:brand-strategy    define positioning and personality
+    /gsp:brand-verbal      shape voice and messaging
+    /gsp:brand-identity    create visual identity
+    /gsp:brand-patterns    build design system tokens and components
+    /gsp:brand-audit       audit existing brand before evolving (optional)
 
-E2E FLOW (5 + 6 phases + optional)
-  [brand-audit] → brand-research → brand-strategy → brand-identity → brand-patterns → brief → research → design → critique → build → review
-  |_ optional _|  |___________________ branding diamond __________________________|  |_____________ project diamond ___________________|
-  Optional: launch (after review)
+  ─── Project ──────────────────────────
 
-WORKFLOW
-  Treat each project as a bounded issue (or set of issues) and a PR.
-  Ship small, ship complete. Break large projects into focused deliverables.
+    /gsp:project-brief     scope what you're building
+    /gsp:project-research  research UX patterns and approaches
+    /gsp:project-design    design screens and flows
+    /gsp:project-critique  critique designs + accessibility audit
+    /gsp:project-build     implement designs in the codebase
+    /gsp:project-review    QA validate implementation against designs
+    /gsp:add-reference     add reference material to a project
 
-DIRECTORY STRUCTURE
-  .design/
-  ├── branding/
-  │   └── {brand-name}/
-  │       ├── BRIEF.md              Brand brief
-  │       ├── STATE.md              Brand progress
-  │       ├── config.json           Brand config
-  │       ├── audit/               Audit chunks + INDEX.md (evolve mode only)
-  │       ├── discover/             Research chunks + INDEX.md
-  │       ├── strategy/             Strategy chunks + INDEX.md
-  │       ├── verbal/               Verbal chunks + INDEX.md
-  │       ├── identity/             Identity chunks + palettes.json + INDEX.md
-  │       ├── system/               Foundations + components + tokens.json + INDEX.md
-  │       └── preview.html          Brand preview (generated by brand-patterns)
-  └── projects/
-      └── {project-name}/
-          ├── BRIEF.md              Project brief
-          ├── STATE.md              Project progress
-          ├── config.json           Project config
-          ├── brand.ref             → brand reference
-          ├── brief/                Scope + adaptations + INDEX.md
-          ├── research/             UX patterns + competitor UX + tech research + specs + INDEX.md
-          ├── design/               Screen chunks + shared/ + INDEX.md
-          ├── critique/             Critique + accessibility chunks + INDEX.md
-          ├── build/CODE.md         Implementation guide
-          ├── build/components/     Code components
-          ├── review/               Acceptance report + issues + INDEX.md
-          ├── launch/               Campaign chunks + INDEX.md (optional)
-          └── exports/INDEX.md      Master chunk index
+  ─── Utilities ────────────────────────
 
-TIPS
-  • Start with /gsp:new — it detects what exists and routes you
-  • Multiple brands and projects can coexist
-  • Projects reference a brand via brand.ref
-  • /gsp:brand-identity handles both verbal + visual — skips what's done
-  • /gsp:brand-verbal re-runs phase 3 only if you need to revise voice
-  • /gsp:critique loops back if critical issues found
-  • /gsp:doctor checks brand drift across projects
-  • /gsp:progress shows prettiness across all instances
-  • /gsp:launch is optional — run when you need marketing assets
-  • Treat projects as issues + PRs — bounded scope = higher quality
+    /gsp:doctor            check project health
+    /gsp:update            update GSP to latest version
+    /gsp:launch            create launch and marketing assets (optional)
+
+  ─── Flow ─────────────────────────────
+
+    brand first, then build.
+
+    branding   research → strategy → verbal → identity → patterns
+    project    brief → research → design → critique → build → review
+                                    ↑                    ↑
+                              critique loop         QA loop
+
+    run any command directly — routing is optional.
+
+  ─── Directory Structure ──────────────
+
+    .design/
+    ├── branding/
+    │   └── {brand}/
+    │       ├── config.json       brand config
+    │       ├── STATE.md          progress tracking
+    │       ├── discover/         research chunks
+    │       ├── strategy/         strategy chunks
+    │       ├── verbal/           voice and messaging
+    │       ├── identity/         visual identity
+    │       └── system/           tokens + components
+    └── projects/
+        └── {project}/
+            ├── config.json       project config
+            ├── STATE.md          progress tracking
+            ├── brand.ref         brand reference
+            ├── brief/            scope + adaptations
+            ├── research/         UX + tech research
+            ├── design/           screen specs + preview
+            ├── critique/         design critique
+            ├── build/            BUILD-LOG.md
+            ├── review/           QA acceptance
+            ├── references/       custom reference material
+            └── exports/INDEX.md  chunk index
+
+  get-shit-pretty v{VERSION}
+  github.com/juliuslipp/get-shit-pretty
 ```
+
+Replace `{VERSION}` with the value read from the VERSION file.
+
+Do NOT add any text, commentary, or suggestions after this output.
 </process>

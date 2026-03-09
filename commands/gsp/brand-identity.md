@@ -1,6 +1,6 @@
 ---
 name: gsp:brand-identity
-description: Brand identity — verbal + visual identity (phases 3-4)
+description: Create your voice and visual identity
 allowed-tools:
   - Read
   - Write
@@ -36,7 +36,7 @@ Scan `.design/branding/` for brand directories. If only one brand exists, use it
 
 Set `BRAND_PATH` = `.design/branding/{brand}`
 
-If BRAND_PATH doesn't exist, tell the user to run `/gsp:new` first.
+If BRAND_PATH doesn't exist, tell the user to run `/gsp:start` first.
 
 ## Step 1: Validate prerequisites
 
@@ -186,7 +186,22 @@ Display a summary covering both verbal and visual:
 - **Color system** — primary palette summary
 - **Typography** — chosen typefaces
 
-## Step 6: Route next
+## Step 6: Phase transition output
 
-"Run `/gsp:brand-patterns` to build your design system and see the full brand preview."
+Render the phase transition screen (see `references/phase-transitions.md` for ANSI color tokens):
+
+```
+  ◆ identity complete — visual system designed
+
+    identity/
+    ├── {actual files written}
+    └── INDEX.md
+
+  ──────────────────────────────
+```
+
+Then use `AskUserQuestion` with 3 options:
+- **Continue to patterns** — "build tokens and components"
+- **View progress** — "see the full dashboard"
+- **Done for now** — "pick up later with /gsp:start"
 </process>

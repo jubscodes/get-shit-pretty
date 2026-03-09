@@ -5,14 +5,82 @@ const path = require('path');
 const os = require('os');
 const readline = require('readline');
 
-// Colors
-const cyan = '\x1b[36m';
-const green = '\x1b[32m';
-const yellow = '\x1b[33m';
-const magenta = '\x1b[35m';
-const bold = '\x1b[1m';
-const dim = '\x1b[2m';
-const reset = '\x1b[0m';
+// ── Color tier detection ──
+
+function getColorTier() {
+  if (process.env.NO_COLOR !== undefined) return 'none';
+  if (!process.stdout.isTTY) return 'none';
+  if (process.env.FORCE_COLOR !== undefined) {
+    const level = parseInt(process.env.FORCE_COLOR, 10);
+    if (level >= 3) return 'truecolor';
+    if (level >= 2) return '256';
+    if (level >= 1) return '16';
+    return 'none';
+  }
+  if (process.env.COLORTERM === 'truecolor' || process.env.COLORTERM === '24bit') return 'truecolor';
+  if (process.env.TERM === 'xterm-256color' || process.stdout.hasColors?.(256)) return '256';
+  return '16';
+}
+
+const TRUECOLOR = {
+  accent:    '\x1b[38;2;255;107;53m',
+  primary:   '\x1b[38;2;224;224;224m',
+  secondary: '\x1b[38;2;160;160;160m',
+  tertiary:  '\x1b[38;2;102;102;102m',
+  success:   '\x1b[38;2;34;197;94m',
+  warning:   '\x1b[38;2;251;191;36m',
+  error:     '\x1b[38;2;239;68;68m',
+  info:      '\x1b[38;2;96;165;250m',
+  bold:      '\x1b[1m',
+  dim:       '\x1b[2m',
+  reset:     '\x1b[0m',
+};
+
+const COLOR256 = {
+  accent:    '\x1b[38;5;202m',
+  primary:   '\x1b[38;5;253m',
+  secondary: '\x1b[38;5;247m',
+  tertiary:  '\x1b[38;5;241m',
+  success:   '\x1b[38;5;35m',
+  warning:   '\x1b[38;5;220m',
+  error:     '\x1b[38;5;196m',
+  info:      '\x1b[38;5;69m',
+  bold:      '\x1b[1m',
+  dim:       '\x1b[2m',
+  reset:     '\x1b[0m',
+};
+
+const COLOR16 = {
+  accent:    '\x1b[33m',
+  primary:   '\x1b[37m',
+  secondary: '\x1b[37m',
+  tertiary:  '\x1b[90m',
+  success:   '\x1b[32m',
+  warning:   '\x1b[33m',
+  error:     '\x1b[31m',
+  info:      '\x1b[36m',
+  bold:      '\x1b[1m',
+  dim:       '\x1b[2m',
+  reset:     '\x1b[0m',
+};
+
+const NOCOLOR = {
+  accent: '', primary: '', secondary: '', tertiary: '',
+  success: '', warning: '', error: '', info: '',
+  bold: '', dim: '', reset: '',
+};
+
+const tier = getColorTier();
+const c = tier === 'truecolor' ? TRUECOLOR : tier === '256' ? COLOR256 : tier === '16' ? COLOR16 : NOCOLOR;
+
+// Legacy aliases (used in interactive prompts and error messages)
+const cyan = c.accent;
+const green = c.success;
+const yellow = c.warning;
+const magenta = c.accent;
+const bold = c.bold;
+const dim = c.dim;
+const reset = c.reset;
 
 // Get version from package.json
 const pkg = require('../package.json');
@@ -79,17 +147,41 @@ const taglines = [
 ];
 const tagline = taglines[Math.floor(Math.random() * taglines.length)];
 
-// Banner
-const banner = '\n' +
-  cyan + '   ██████╗ ███████╗██████╗\n' +
-  '  ██╔════╝ ██╔════╝██╔══██╗\n' +
-  '  ██║  ███╗███████╗██████╔╝\n' +
-  '  ██║   ██║╚════██║██╔═══╝\n' +
-  '  ╚██████╔╝███████║██║\n' +
-  '   ╚═════╝ ╚══════╝╚═╝' + reset + '\n' +
+// ── Sparkle field + density ramp banner ──
+
+function sparkleLine(width) {
+  const chars = ['✧', '.', '·'];
+  const line = Array(width).fill(' ');
+  const count = 4 + Math.floor(Math.random() * 5);
+  for (let i = 0; i < count; i++) {
+    const pos = Math.floor(Math.random() * width);
+    line[pos] = chars[Math.floor(Math.random() * chars.length)];
+  }
+  return line.join('');
+}
+
+function center(text, width) {
+  const stripped = text.replace(/\x1b\[[0-9;]*m/g, '');
+  const pad = Math.max(0, Math.floor((width - stripped.length) / 2));
+  return ' '.repeat(pad) + text;
+}
+
+const columns = process.stdout.columns || 80;
+const rampText = `${c.accent}░▒▓█${c.reset} ${c.bold} GET SHIT PRETTY ${c.reset} ${c.accent}█▓▒░${c.reset}`;
+const sparkleWidth = Math.min(34, columns - 4);
+const showSparkles = columns >= 40;
+
+const banner = '\n\n' +
+  (showSparkles ? `${c.dim}  ${sparkleLine(sparkleWidth)}${c.reset}\n` : '') +
+  (showSparkles ? `${c.dim}  ${sparkleLine(sparkleWidth)}${c.reset}\n` : '') +
   '\n' +
-  '  ' + bold + 'Get Shit Pretty' + reset + ' ' + dim + 'v' + pkg.version + reset + '\n' +
-  '  ' + dim + tagline + reset + '\n';
+  center(rampText, columns) + '\n' +
+  '\n' +
+  (showSparkles ? `${c.dim}  ${sparkleLine(sparkleWidth)}${c.reset}\n` : '') +
+  (showSparkles ? `${c.dim}  ${sparkleLine(sparkleWidth)}${c.reset}\n` : '') +
+  '\n' +
+  `  ${c.bold}${c.accent}/gsp:${c.reset} ${c.tertiary}◇◇${c.reset}  ${c.dim}v${pkg.version}${c.reset}\n` +
+  `  ${c.dim}${tagline}${c.reset}\n`;
 
 console.log(banner);
 
@@ -686,8 +778,24 @@ function installLocalSymlinks(targetDir, src) {
       agentCount++;
     }
   }
+
+  // ── Custom agents (agents/custom/) ──
+  const customAgentsSrc = path.join(cwd, 'agents', 'custom');
+  let customAgentCount = 0;
+  if (fs.existsSync(customAgentsSrc)) {
+    for (const file of fs.readdirSync(customAgentsSrc)) {
+      if (file.endsWith('.md') && file !== '.gitkeep') {
+        forceSymlink(path.join('..', '..', 'agents', 'custom', file), path.join(agentsDest, file));
+        customAgentCount++;
+      }
+    }
+  }
+
   if (agentCount > 0) {
-    console.log(`  ${green}+${reset} Symlinked ${agentCount} agents`);
+    const msg = customAgentCount > 0
+      ? `Symlinked ${agentCount} agents + ${customAgentCount} custom`
+      : `Symlinked ${agentCount} agents`;
+    console.log(`  ${c.success}✓${c.reset} ${msg}`);
   } else { failures.push('agents'); }
 
   // ── Command symlink (whole gsp/ directory) ──
@@ -696,7 +804,7 @@ function installLocalSymlinks(targetDir, src) {
   const gspCommandsDest = path.join(commandsDir, 'gsp');
   try { fs.rmSync(gspCommandsDest, { recursive: true }); } catch {}
   forceSymlink(path.join('..', '..', 'commands', 'gsp'), gspCommandsDest);
-  console.log(`  ${green}+${reset} Symlinked commands/gsp`);
+  console.log(`  ${c.success}✓${c.reset} Symlinked commands/gsp`);
 
   // ── Bundle symlinks (prompts, templates, references → get-shit-pretty/) ──
   const bundleDest = path.join(targetDir, 'get-shit-pretty');
@@ -708,13 +816,13 @@ function installLocalSymlinks(targetDir, src) {
   for (const dir of ['prompts', 'templates', 'references']) {
     if (fs.existsSync(path.join(cwd, dir))) {
       forceSymlink(path.join('..', '..', dir), path.join(bundleDest, dir));
-      console.log(`  ${green}+${reset} Symlinked get-shit-pretty/${dir}`);
+      console.log(`  ${c.success}✓${c.reset} Symlinked get-shit-pretty/${dir}`);
     }
   }
 
   // VERSION is a real file (not in source repo as a standalone file)
   fs.writeFileSync(path.join(bundleDest, 'VERSION'), pkg.version);
-  console.log(`  ${green}+${reset} Wrote VERSION (${pkg.version})`);
+  console.log(`  ${c.success}✓${c.reset} Wrote VERSION (${pkg.version})`);
 
   // ── Statusline ──
   const hooksDest = path.join(targetDir, 'hooks');
@@ -724,12 +832,12 @@ function installLocalSymlinks(targetDir, src) {
     let content = fs.readFileSync(statuslineSrc, 'utf8');
     content = content.replace(/'\.claude'/g, getConfigDirFromHome('claude', false));
     fs.writeFileSync(path.join(hooksDest, 'gsp-statusline.js'), content);
-    console.log(`  ${green}+${reset} Installed GSP statusline`);
+    console.log(`  ${c.success}✓${c.reset} Installed GSP statusline`);
   }
   const dispatcherSrc = path.join(src, 'scripts', 'statusline-dispatcher.js');
   if (fs.existsSync(dispatcherSrc)) {
     fs.copyFileSync(dispatcherSrc, path.join(hooksDest, 'statusline-dispatcher.js'));
-    console.log(`  ${green}+${reset} Installed statusline dispatcher`);
+    console.log(`  ${c.success}✓${c.reset} Installed statusline dispatcher`);
   }
 
   if (failures.length > 0) {
@@ -781,11 +889,11 @@ function install(isGlobal, runtime = 'claude') {
     : `./${dirName}/`;
 
   const runtimeLabel = getRuntimeLabel(runtime);
-  console.log(`  Installing for ${cyan}${runtimeLabel}${reset} to ${cyan}${locationLabel}${reset}\n`);
+  console.log(`\n  ${c.secondary}installing for${c.reset} ${c.primary}${runtimeLabel}${c.reset} ${c.secondary}to${c.reset} ${c.primary}${locationLabel}${c.reset}\n`);
 
   // Local Claude install in GSP source repo → use symlinks
   if (!isGlobal && runtime === 'claude' && installLocalSymlinks(targetDir, src)) {
-    console.log(`  ${dim}(symlinked — edits to agents/ and commands/ are reflected immediately)${reset}`);
+    console.log(`  ${c.dim}(symlinked — edits to agents/ and commands/ are reflected immediately)${c.reset}`);
     const settingsPath = path.join(targetDir, 'settings.json');
     const settings = readSettings(settingsPath);
     const statuslineCommand = `node ${dirName}/hooks/statusline-dispatcher.js`;
@@ -801,7 +909,7 @@ function install(isGlobal, runtime = 'claude') {
     copyFlattenedCommands(path.join(src, 'commands', 'gsp'), commandDir, 'gsp', pathPrefix, runtime);
     if (verifyInstalled(commandDir, 'command/gsp-*')) {
       const count = fs.readdirSync(commandDir).filter(f => f.startsWith('gsp-')).length;
-      console.log(`  ${green}+${reset} Installed ${count} commands to command/`);
+      console.log(`  ${c.success}✓${c.reset} Installed ${count} commands to command/`);
     } else { failures.push('commands'); }
   } else if (isCodex) {
     const skillsDir = path.join(targetDir, 'skills');
@@ -809,7 +917,7 @@ function install(isGlobal, runtime = 'claude') {
     copyCodexSkills(path.join(src, 'commands', 'gsp'), skillsDir, 'gsp', pathPrefix);
     if (verifyInstalled(skillsDir, 'skills/gsp-*')) {
       const count = fs.readdirSync(skillsDir).filter(f => f.startsWith('gsp-')).length;
-      console.log(`  ${green}+${reset} Installed ${count} skills to skills/`);
+      console.log(`  ${c.success}✓${c.reset} Installed ${count} skills to skills/`);
     } else { failures.push('skills'); }
   } else {
     const commandsDir = path.join(targetDir, 'commands');
@@ -817,7 +925,7 @@ function install(isGlobal, runtime = 'claude') {
     const gspDest = path.join(commandsDir, 'gsp');
     copyWithPathReplacement(path.join(src, 'commands', 'gsp'), gspDest, pathPrefix, runtime, true);
     if (verifyInstalled(gspDest, 'commands/gsp')) {
-      console.log(`  ${green}+${reset} Installed commands/gsp`);
+      console.log(`  ${c.success}✓${c.reset} Installed commands/gsp`);
     } else { failures.push('commands'); }
   }
 
@@ -852,9 +960,35 @@ function install(isGlobal, runtime = 'claude') {
         fs.writeFileSync(path.join(agentsDest, entry.name), content);
       }
     }
+
+    // ── Custom agents (agents/custom/) ──
+    const customAgentsSrc = path.join(agentsSrc, 'custom');
+    let customAgentCount = 0;
+    if (fs.existsSync(customAgentsSrc)) {
+      for (const entry of fs.readdirSync(customAgentsSrc, { withFileTypes: true })) {
+        if (entry.isFile() && entry.name.endsWith('.md')) {
+          let content = fs.readFileSync(path.join(customAgentsSrc, entry.name), 'utf8');
+          content = content.replace(/~\/\.claude\//g, pathPrefix);
+
+          if (isOpencode) {
+            content = convertClaudeToOpencodeFrontmatter(content);
+          } else if (isGemini) {
+            content = convertClaudeToGeminiAgent(content);
+          } else if (isCodex) {
+            content = convertClaudeToCodexAgent(content);
+          }
+          fs.writeFileSync(path.join(agentsDest, entry.name), content);
+          customAgentCount++;
+        }
+      }
+    }
+
     if (verifyInstalled(agentsDest, 'agents')) {
       const count = fs.readdirSync(agentsDest).filter(f => f.startsWith('gsp-')).length;
-      console.log(`  ${green}+${reset} Installed ${count} agents`);
+      const msg = customAgentCount > 0
+        ? `Installed ${count} agents + ${customAgentCount} custom`
+        : `Installed ${count} agents`;
+      console.log(`  ${c.success}✓${c.reset} ${msg}`);
     } else { failures.push('agents'); }
   }
 
@@ -872,14 +1006,14 @@ function install(isGlobal, runtime = 'claude') {
     if (fs.existsSync(dirSrc)) {
       copyWithPathReplacement(dirSrc, path.join(bundleDest, dir), pathPrefix, runtime);
       if (verifyInstalled(path.join(bundleDest, dir), `get-shit-pretty/${dir}`)) {
-        console.log(`  ${green}+${reset} Installed get-shit-pretty/${dir}`);
+        console.log(`  ${c.success}✓${c.reset} Installed get-shit-pretty/${dir}`);
       } else { failures.push(dir); }
     }
   }
 
   // Write VERSION file
   fs.writeFileSync(path.join(bundleDest, 'VERSION'), pkg.version);
-  console.log(`  ${green}+${reset} Wrote VERSION (${pkg.version})`);
+  console.log(`  ${c.success}✓${c.reset} Wrote VERSION (${pkg.version})`);
 
   // ── Statusline (Claude Code only) ──
   if (runtime === 'claude') {
@@ -892,14 +1026,14 @@ function install(isGlobal, runtime = 'claude') {
       let content = fs.readFileSync(statuslineSrc, 'utf8');
       content = content.replace(/'\.claude'/g, getConfigDirFromHome(runtime, isGlobal));
       fs.writeFileSync(path.join(hooksDest, 'gsp-statusline.js'), content);
-      console.log(`  ${green}+${reset} Installed GSP statusline`);
+      console.log(`  ${c.success}✓${c.reset} Installed GSP statusline`);
     }
 
     // Copy dispatcher (routes to GSP or GSD based on project type)
     const dispatcherSrc = path.join(src, 'scripts', 'statusline-dispatcher.js');
     if (fs.existsSync(dispatcherSrc)) {
       fs.copyFileSync(dispatcherSrc, path.join(hooksDest, 'statusline-dispatcher.js'));
-      console.log(`  ${green}+${reset} Installed statusline dispatcher`);
+      console.log(`  ${c.success}✓${c.reset} Installed statusline dispatcher`);
     }
   }
 
@@ -957,7 +1091,7 @@ function uninstall(isGlobal, runtime = 'claude') {
           removedCount++;
         }
       }
-      if (removedCount > 0) console.log(`  ${green}+${reset} Removed GSP commands from command/`);
+      if (removedCount > 0) console.log(`  ${c.success}✓${c.reset} Removed GSP commands from command/`);
     }
   } else if (isCodex) {
     const skillsDir = path.join(targetDir, 'skills');
@@ -968,14 +1102,14 @@ function uninstall(isGlobal, runtime = 'claude') {
           removedCount++;
         }
       }
-      if (removedCount > 0) console.log(`  ${green}+${reset} Removed GSP skills from skills/`);
+      if (removedCount > 0) console.log(`  ${c.success}✓${c.reset} Removed GSP skills from skills/`);
     }
   } else {
     const gspCommandsDir = path.join(targetDir, 'commands', 'gsp');
     if (fs.existsSync(gspCommandsDir)) {
       fs.rmSync(gspCommandsDir, { recursive: true });
       removedCount++;
-      console.log(`  ${green}+${reset} Removed commands/gsp/`);
+      console.log(`  ${c.success}✓${c.reset} Removed commands/gsp/`);
     }
   }
 
@@ -984,7 +1118,7 @@ function uninstall(isGlobal, runtime = 'claude') {
   if (fs.existsSync(gspDir)) {
     fs.rmSync(gspDir, { recursive: true });
     removedCount++;
-    console.log(`  ${green}+${reset} Removed get-shit-pretty/`);
+    console.log(`  ${c.success}✓${c.reset} Removed get-shit-pretty/`);
   }
 
   // Remove GSP agents
@@ -999,7 +1133,7 @@ function uninstall(isGlobal, runtime = 'claude') {
     }
     if (agentCount > 0) {
       removedCount++;
-      console.log(`  ${green}+${reset} Removed ${agentCount} GSP agents`);
+      console.log(`  ${c.success}✓${c.reset} Removed ${agentCount} GSP agents`);
     }
   }
 
@@ -1009,7 +1143,7 @@ function uninstall(isGlobal, runtime = 'claude') {
     if (fs.existsSync(hookPath)) {
       fs.unlinkSync(hookPath);
       removedCount++;
-      console.log(`  ${green}+${reset} Removed ${hook}`);
+      console.log(`  ${c.success}✓${c.reset} Removed ${hook}`);
     }
   }
 
@@ -1023,7 +1157,7 @@ function uninstall(isGlobal, runtime = 'claude') {
         (settings.statusLine.command.includes('gsp-statusline') || settings.statusLine.command.includes('statusline-dispatcher'))) {
       delete settings.statusLine;
       modified = true;
-      console.log(`  ${green}+${reset} Removed GSP statusline from settings`);
+      console.log(`  ${c.success}✓${c.reset} Removed GSP statusline from settings`);
     }
 
     if (modified) {
@@ -1036,7 +1170,7 @@ function uninstall(isGlobal, runtime = 'claude') {
     console.log(`  ${yellow}!${reset} No GSP files found to remove.`);
   }
 
-  console.log(`\n  ${green}Done!${reset} GSP has been uninstalled from ${runtimeLabel}.\n  Your other files and settings have been preserved.\n`);
+  console.log(`\n  ${c.success}done.${c.reset} ${c.secondary}GSP has been uninstalled from ${runtimeLabel}.${c.reset}\n  ${c.secondary}Your other files and settings have been preserved.${c.reset}\n`);
 }
 
 // ──────────────────────────────────────────────────────
@@ -1089,7 +1223,7 @@ function finishInstall(settingsPath, settings, statuslineCommand, shouldInstallS
       type: 'command',
       command: statuslineCommand
     };
-    console.log(`  ${green}+${reset} Configured statusline`);
+    console.log(`  ${c.success}✓${c.reset} Configured statusline`);
   }
 
   // Write settings for Claude/Gemini (they use settings.json)
@@ -1099,31 +1233,15 @@ function finishInstall(settingsPath, settings, statuslineCommand, shouldInstallS
 
   const runtimeLabel = getRuntimeLabel(runtime);
   const helpCmd = isOpencode ? '/gsp-help' : isCodex ? '$gsp-help' : '/gsp:help';
-  const newCmd = isOpencode ? '/gsp-new' : isCodex ? '$gsp-new' : '/gsp:new';
-  const brandCmd = isOpencode ? '/gsp-brand' : isCodex ? '$gsp-brand' : '/gsp:brand';
-  console.log(`\n  ${green}Done!${reset} GSP installed for ${cyan}${runtimeLabel}${reset}.`);
+  const newCmd = isOpencode ? '/gsp-start' : isCodex ? '$gsp-start' : '/gsp:start';
 
   // Show onboarding once (not per-runtime)
   if (!onboardingShown && !hasQuiet) {
     onboardingShown = true;
     console.log(`
-  ${dim}        *    .              ·    *${reset}
-  ${dim}   .         ·    *              .${reset}
-
-       ${magenta}░▒▓█${reset} ${bold} GET SHIT PRETTY ${reset} ${magenta}█▓▒░${reset}
-
-  ${dim}   ·    *              .         *${reset}
-  ${dim}        ·    *    .         ·${reset}
-
-  ${dim}Design system for your AI agent.${reset}
-  ${dim}Research first, then pixels.${reset}
-
-  ${magenta}◇${reset} ${bold}Brand${reset}${dim}     discover → strategy → identity${reset}
-  ${cyan}◇${reset} ${bold}Project${reset}${dim}   brief → design → build → review${reset}
-
-  ${yellow}Get started:${reset}
-    ${cyan}${newCmd}${reset}     start here — brand, project, or both
-    ${cyan}${helpCmd}${reset}    all commands
+  ${c.bold}Get started:${c.reset}
+    ${c.accent}${newCmd}${c.reset}     ${c.secondary}start here — brand, project, or both${c.reset}
+    ${c.accent}${helpCmd}${c.reset}      ${c.secondary}all commands${c.reset}
 `);
   }
 }

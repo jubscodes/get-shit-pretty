@@ -1,6 +1,6 @@
 ---
 name: gsp:doctor
-description: Diagnose project health — check structure, config, outputs, and brand drift
+description: Check project health
 allowed-tools:
   - Read
   - Glob
@@ -30,7 +30,7 @@ Check for `.design/` in the current directory.
 If not found:
 ```
 🩺 GSP Doctor — No project found
-   No .design/ directory detected. Run /gsp:new to start.
+   No .design/ directory detected. Run /gsp:start to start.
 ```
 Stop here.
 
@@ -92,8 +92,8 @@ Required when `codebase_type` is NOT `greenfield`:
 
 Check each exists:
 - All present → PASS
-- INVENTORY.md missing for non-greenfield → WARN: "Codebase inventory missing. Re-run `/gsp:new` or create `codebase/INVENTORY.md` manually."
-- Core files missing → FAIL: list which are missing, suggest `/gsp:new`
+- INVENTORY.md missing for non-greenfield → WARN: "Codebase inventory missing. Re-run `/gsp:start` or create `codebase/INVENTORY.md` manually."
+- Core files missing → FAIL: list which are missing, suggest `/gsp:start`
 
 Legacy detection: if system/, screens/, specs/, plan/ dirs exist → WARN: "Legacy structure detected — project uses old phase layout"
 
@@ -105,7 +105,7 @@ WARN if brand referenced but system not complete
 **Check P3: Brand Drift**
 Read `identity_hash` from brand.ref
 If brand identity/IDENTITY.md exists, compute current hash (first 8 chars of md5)
-If hashes differ → WARN: "Brand identity has changed since project consumed it. Consider re-running `/gsp:brief`."
+If hashes differ → WARN: "Brand identity has changed since project consumed it. Consider re-running `/gsp:project-brief`."
 If identity_hash is "pending" → INFO: "Brand identity wasn't complete when project was created."
 
 **Check P4: Phase Ordering**
@@ -119,7 +119,7 @@ brief < research < design < critique < build < review
 2. Valid skip scenarios (not violations):
    - design skipped when `design_scope` is `tokens`
    - research can proceed without brief
-3. build complete but critique pending → WARN: "Build completed without critique. Run `/gsp:critique` to audit."
+3. build complete but critique pending → WARN: "Build completed without critique. Run `/gsp:project-critique` to audit."
 4. Any other out-of-order completion → FAIL with specifics
 
 All phases in order (or validly skipped) → PASS
@@ -288,7 +288,7 @@ Overall Health: {SCORE}/100 {emoji}
 
 FAIL:
   • [acme-website/P1] Missing brand.ref
-    → Fix: Re-run /gsp:new to set up project with brand reference
+    → Fix: Re-run /gsp:start to set up project with brand reference
 
 WARN:
   • [acme-corp/B3] No palettes.json found
@@ -296,7 +296,7 @@ WARN:
 
 INFO:
   • [acme-corp/P10] Config version is 0.3.0, current GSP is 0.4.0
-    → Fix: Re-run /gsp:new to upgrade config
+    → Fix: Re-run /gsp:start to upgrade config
 
 ─── Summary ───────────────────────────
 

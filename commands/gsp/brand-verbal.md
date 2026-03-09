@@ -1,6 +1,6 @@
 ---
 name: gsp:brand-verbal
-description: Verbal identity — voice, tone spectrum, messaging matrix, naming
+description: Refine your brand voice and messaging
 allowed-tools:
   - Read
   - Write
@@ -83,8 +83,22 @@ Update `.design/branding/{brand}/STATE.md`:
 - Set Phase 3 (Verbal) status to `complete`
 - Record completion date
 
-## Step 4: Route next
+## Step 4: Phase transition output
 
-Display verbal identity summary (voice attributes, tone position, tagline directions) and end with:
-"Verbal identity updated. Run `/gsp:brand-identity` to continue — it will skip verbal and run visual identity."
+Render the phase transition screen (see `references/phase-transitions.md` for ANSI color tokens):
+
+```
+  ◆ verbal complete — voice and messaging shaped
+
+    verbal/
+    ├── {actual files written}
+    └── INDEX.md
+
+  ──────────────────────────────
+```
+
+Then use `AskUserQuestion` with 3 options:
+- **Continue to identity** — "create visual identity"
+- **View progress** — "see the full dashboard"
+- **Done for now** — "pick up later with /gsp:start"
 </process>

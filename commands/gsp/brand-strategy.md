@@ -1,6 +1,6 @@
 ---
 name: gsp:brand-strategy
-description: Brand strategy — archetype, positioning, personality (interactive)
+description: Define who you are — archetype, positioning, personality
 allowed-tools:
   - Read
   - Write
@@ -36,7 +36,7 @@ Scan `.design/branding/` for brand directories. If only one brand exists, use it
 
 Set `BRAND_PATH` = `.design/branding/{brand}`
 
-If BRAND_PATH doesn't exist, tell the user to run `/gsp:new` first.
+If BRAND_PATH doesn't exist, tell the user to run `/gsp:start` first.
 
 ## Step 1: Load research findings
 
