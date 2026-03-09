@@ -1,10 +1,9 @@
 {
-  "version": "0.4.1",
+  "version": "0.4.2",
   "project": {
     "name": "",
     "created": ""
   },
-  "brand_ref": "",
   "preferences": {
     "platform": "web",
     "tech_stack": "React + Tailwind",

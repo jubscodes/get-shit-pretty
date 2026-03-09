@@ -1,7 +1,7 @@
 # Brief-Gathering Techniques
 
 ## Purpose
-Guide brief-gathering conversations — used by `/gsp:new` for both brand briefs and project briefs.
+Guide brief-gathering conversations — used by `/gsp:start` for both brand briefs and project briefs.
 
 ---
 
