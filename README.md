@@ -58,7 +58,7 @@ The missing half of the bridge.
 ### 1. Start a Project
 
 ```
-/gsp:new
+/gsp:start
 ```
 
 Answer questions about your product — what it does, who it's for, the vibe you're going for. GSP creates a design brief that guides everything downstream.
@@ -70,7 +70,7 @@ Answer questions about your product — what it does, who it's for, the vibe you
 ### 2. Research
 
 ```
-/gsp:research
+/gsp:project-research
 ```
 
 Analyzes design trends in your space — competitor patterns, emerging styles, what's working and what's not. Start with context, not guesses.
@@ -106,7 +106,7 @@ Translates your brand into a functional design system — color scales, type sca
 ### 5. UI Design
 
 ```
-/gsp:design
+/gsp:project-design
 ```
 
 Designs your screens and interaction flows following Apple HIG patterns. Layout, navigation, states, responsive behavior — all documented with enough detail to build from.
@@ -130,7 +130,7 @@ Maps your screen designs to your implementation target — shadcn/ui components,
 ### 7. Review
 
 ```
-/gsp:review
+/gsp:project-review
 ```
 
 Two parallel agents audit your designs:
@@ -146,7 +146,7 @@ If issues are found, loop back to fix before building.
 ### 8. Build
 
 ```
-/gsp:build
+/gsp:project-build
 ```
 
 Translates reviewed designs into production-ready frontend code. Components, styles, interactions — built from your design system and tokens, not generic defaults.
@@ -170,21 +170,21 @@ Creates marketing campaign assets — landing page copy, social media content, l
 ### The Full Pipeline
 
 ```
-/gsp:new → BRIEF.md
+/gsp:start → BRIEF.md
        ↓
-/gsp:research    → .design/research/TRENDS.md
+/gsp:project-research    → .design/research/TRENDS.md
        ↓
 /gsp:brand       → .design/brand/IDENTITY.md
        ↓
 /gsp:system      → .design/system/SYSTEM.md + tokens.json
        ↓
-/gsp:design      → .design/screens/SCREENS.md
+/gsp:project-design      → .design/screens/SCREENS.md
        ↓
 /gsp:spec        → .design/specs/SPECS.md
        ↓
-/gsp:review      → .design/review/CRITIQUE.md + ACCESSIBILITY.md
+/gsp:project-review      → .design/review/CRITIQUE.md + ACCESSIBILITY.md
        ↓  (loop back if issues found)
-/gsp:build       → .design/build/CODE.md + components/
+/gsp:project-build       → .design/build/CODE.md + components/
        ↓
 /gsp:launch      → .design/launch/CAMPAIGN.md
 ```
@@ -197,14 +197,14 @@ All artifacts live in `.design/` within your project directory.
 
 | Command | What it does |
 |---------|--------------|
-| `/gsp:new` | Initialize a design brief through guided Q&A |
-| `/gsp:research` | Analyze design trends for your industry |
+| `/gsp:start` | Initialize a design brief through guided Q&A |
+| `/gsp:project-research` | Analyze design trends for your industry |
 | `/gsp:brand` | Create brand identity (strategy, logo, color, type) |
 | `/gsp:system` | Build design system foundations + tokens |
-| `/gsp:design` | Design UI/UX screens and flows |
+| `/gsp:project-design` | Design UI/UX screens and flows |
 | `/gsp:spec` | Generate implementation specifications |
-| `/gsp:review` | Design critique + accessibility audit |
-| `/gsp:build` | Translate designs to production code |
+| `/gsp:project-review` | Design critique + accessibility audit |
+| `/gsp:project-build` | Translate designs to production code |
 | `/gsp:launch` | Create marketing campaign assets |
 | `/gsp:progress` | Check project status |
 | `/gsp:help` | Show command reference |

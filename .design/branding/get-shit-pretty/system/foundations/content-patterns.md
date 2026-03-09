@@ -108,7 +108,7 @@ Errors get structure: what failed, why, and what to do.
 ```
   ✗ brief validation failed
     Missing required field: audience
-    Run /gsp:brief to add the missing field.
+    Run /gsp:project-brief to add the missing field.
 ```
 
 Fatal error with banner (rare):

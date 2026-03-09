@@ -72,7 +72,7 @@ Inline error:
 ```
   ✗ brief validation failed
     Missing required field: audience
-    Run /gsp:brief to add the missing field.
+    Run /gsp:project-brief to add the missing field.
 ```
 
 Inline with verbose stack:

@@ -18,7 +18,7 @@
 Pattern: `/gsp:{action}` or `/gsp:{phase}`
 
 - `/gsp:brand-discover` — not `/gsp:discover-brand` (object-first)
-- `/gsp:design` — verb for project actions
+- `/gsp:project-design` — verb for project actions
 - `/gsp:doctor` — established CLI convention (borrowed from brew, flutter)
 - `/gsp:update` — standard lifecycle command
 

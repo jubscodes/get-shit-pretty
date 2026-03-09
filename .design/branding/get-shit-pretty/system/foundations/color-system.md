@@ -155,7 +155,7 @@ Error with context:
 ```
   ✗ brief validation failed                            ← error (#EF4444)
     Missing required field: audience                    ← text-primary (#E0E0E0)
-    Run /gsp:brief to complete the brief.              ← text-secondary (#A0A0A0)
+    Run /gsp:project-brief to complete the brief.              ← text-secondary (#A0A0A0)
 ```
 
 Brand mark with accent:

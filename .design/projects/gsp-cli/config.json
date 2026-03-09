@@ -1,0 +1,28 @@
+{
+  "version": "0.4.1",
+  "project": {
+    "name": "gsp-cli",
+    "created": "2026-03-08"
+  },
+  "brand_ref": "get-shit-pretty",
+  "preferences": {
+    "platform": "terminal",
+    "tech_stack": "Node.js + ANSI escape codes",
+    "accessibility_level": "WCAG 2.2 AA",
+    "implementation_target": "code",
+    "codebase_type": "existing",
+    "design_scope": "partial"
+  },
+  "git": {
+    "branch": "feat/v0.4.2-brand-identity-and-ux",
+    "pr": "#8"
+  },
+  "phases": {
+    "brief": { "status": "pending", "output": "brief/" },
+    "research": { "status": "pending", "output": "research/" },
+    "design": { "status": "pending", "output": "design/" },
+    "critique": { "status": "pending", "output": "critique/" },
+    "build": { "status": "pending", "output": "build/" },
+    "review": { "status": "pending", "output": "review/" }
+  }
+}

@@ -92,7 +92,7 @@ Instead of font weight and size variation, terminal typography uses combinatoria
 | **Brand name** | Bold + accent color | `/gsp:` in headers |
 | **Phase name** | Bold + accent color | `strategy`, `identity` |
 | **File path** | Dim | `./foundations/color-system.md` |
-| **Command** | Bold | `/gsp:brief`, `npx get-shit-pretty` |
+| **Command** | Bold | `/gsp:project-brief`, `npx get-shit-pretty` |
 | **Statistic** | Bold + accent color | `6 chunks`, `142 lines` |
 | **Timestamp** | Dim + tertiary | `2.3s` |
 | **Placeholder** | Italic + tertiary | `<project-name>` |
