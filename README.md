@@ -2,9 +2,7 @@
 
 # GET SHIT PRETTY
 
-**Design engineering for AI coding tools.**
-
-**Research, brand, design system, UI, specs, review, build, launch — from your terminal.**
+**Design engineering system for AI coding tools.**
 
 [![npm version](https://img.shields.io/npm/v/get-shit-pretty?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/get-shit-pretty)
 [![npm downloads](https://img.shields.io/npm/dm/get-shit-pretty?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/get-shit-pretty)
@@ -21,11 +19,13 @@ npx get-shit-pretty
 
 <br>
 
-*"Vibe-coded apps work. They also all look the same. GSP fixes that."*
+*"GSD gets shit done. GSP gets shit pretty."*
+
+*Brief to build. In your terminal.*
 
 <br>
 
-[Why GSP Exists](#why-gsp-exists) · [How It Works](#how-it-works) · [Commands](#commands) · [Agents & Prompts](#agents--prompts) · [AI Tool Support](#ai-coding-tool-support)
+[Why GSP Exists](#why-gsp-exists) · [How It Works](#how-it-works) · [Branding Diamond](#-diamond-1--branding) · [Project Diamond](#-diamond-2--project) · [Commands](#commands) · [Agents](#agents) · [AI Tool Support](#ai-coding-tool-support)
 
 </div>
 
@@ -55,185 +55,190 @@ The missing half of the bridge.
 
 ## How It Works
 
-### 1. Start a Project
+GSP follows a **dual-diamond** architecture — two complete design cycles that take you from nothing to shipped.
 
 ```
-/gsp:start
-```
+/gsp:start → picks up where you left off, routes you forward
 
-Answer questions about your product — what it does, who it's for, the vibe you're going for. GSP creates a design brief that guides everything downstream.
-
-**Creates:** `.design/BRIEF.md`
-
----
-
-### 2. Research
-
-```
-/gsp:project-research
-```
-
-Analyzes design trends in your space — competitor patterns, emerging styles, what's working and what's not. Start with context, not guesses.
-
-**Creates:** `.design/research/TRENDS.md`
-
----
-
-### 3. Brand
-
-```
-/gsp:brand
-```
-
-Builds your complete identity — positioning, personality, logo directions, color palette, typography system. Your brand, not a default theme.
-
-**Creates:** `.design/brand/IDENTITY.md`
-
----
-
-### 4. Design System
-
-```
-/gsp:system
-```
-
-Translates your brand into a functional design system — color scales, type scales, spacing, component foundations, and design tokens. Your system, in code.
-
-**Creates:** `.design/system/SYSTEM.md`, `tokens.json`
-
----
-
-### 5. UI Design
-
-```
-/gsp:project-design
-```
-
-Designs your screens and interaction flows following Apple HIG patterns. Layout, navigation, states, responsive behavior — all documented with enough detail to build from.
-
-**Creates:** `.design/screens/SCREENS.md`
-
----
-
-### 6. Implementation Specs
-
-```
-/gsp:spec
-```
-
-Maps your screen designs to your implementation target — shadcn/ui components, React Native Reusables, an existing design system, Figma specs, or lightweight code specs. Bridges design decisions to whatever UI framework your project uses.
-
-**Creates:** `.design/specs/SPECS.md`
-
----
-
-### 7. Review
-
-```
-/gsp:project-review
-```
-
-Two parallel agents audit your designs:
-- **Design Critique** — Structured critique using Nielsen's 10 usability heuristics
-- **Accessibility Audit** — WCAG 2.2 AA compliance check
-
-If issues are found, loop back to fix before building.
-
-**Creates:** `.design/review/CRITIQUE.md`, `ACCESSIBILITY.md`
-
----
-
-### 8. Build
-
-```
-/gsp:project-build
-```
-
-Translates reviewed designs into production-ready frontend code. Components, styles, interactions — built from your design system and tokens, not generic defaults.
-
-**Creates:** `.design/build/CODE.md`, `components/`
-
----
-
-### 9. Launch
-
-```
-/gsp:launch
-```
-
-Creates marketing campaign assets — landing page copy, social media content, launch materials. Your product ships with a story, not just code.
-
-**Creates:** `.design/launch/CAMPAIGN.md`
-
----
-
-### The Full Pipeline
-
-```
-/gsp:start → BRIEF.md
-       ↓
-/gsp:project-research    → .design/research/TRENDS.md
-       ↓
-/gsp:brand       → .design/brand/IDENTITY.md
-       ↓
-/gsp:system      → .design/system/SYSTEM.md + tokens.json
-       ↓
-/gsp:project-design      → .design/screens/SCREENS.md
-       ↓
-/gsp:spec        → .design/specs/SPECS.md
-       ↓
-/gsp:project-review      → .design/review/CRITIQUE.md + ACCESSIBILITY.md
-       ↓  (loop back if issues found)
-/gsp:project-build       → .design/build/CODE.md + components/
-       ↓
-/gsp:launch      → .design/launch/CAMPAIGN.md
+         ◆ Diamond 1 — Branding                  ◆ Diamond 2 — Project
+    ┌──────────────────────────┐           ┌──────────────────────────────┐
+    │  brand-research          │           │  project-brief               │
+    │    ↓                     │           │    ↓                         │
+    │  brand-strategy          │           │  project-research            │
+    │    ↓                     │           │    ↓                         │
+    │  brand-verbal            │           │  project-design              │
+    │    ↓                     │           │    ↓                         │
+    │  brand-identity          │           │  project-critique ←──┐      │
+    │    ↓                     │           │    ↓            loop │      │
+    │  brand-patterns          │           │  project-build       │      │
+    └──────────────────────────┘           │    ↓                 │      │
+                                           │  project-review ─────┘      │
+                                           └──────────────────────────────┘
+                                                      ↓
+                                                  /gsp:launch (optional)
 ```
 
 All artifacts live in `.design/` within your project directory.
 
 ---
 
-## Commands
+### ◆ Diamond 1 — Branding
 
-| Command | What it does |
-|---------|--------------|
-| `/gsp:start` | Initialize a design brief through guided Q&A |
-| `/gsp:project-research` | Analyze design trends for your industry |
-| `/gsp:brand` | Create brand identity (strategy, logo, color, type) |
-| `/gsp:system` | Build design system foundations + tokens |
-| `/gsp:project-design` | Design UI/UX screens and flows |
-| `/gsp:spec` | Generate implementation specifications |
-| `/gsp:project-review` | Design critique + accessibility audit |
-| `/gsp:project-build` | Translate designs to production code |
-| `/gsp:launch` | Create marketing campaign assets |
-| `/gsp:progress` | Check project status |
-| `/gsp:help` | Show command reference |
+Build your brand from research to design system. Each phase feeds the next.
+
+> **Already have a brand?** Start with `/gsp:brand-audit` to assess what you have before evolving it.
+
+#### 1. `/gsp:brand-research` — Market landscape
+
+Research your audience, competitors, and market position. Understand the terrain before making decisions.
+
+**Creates:** `.design/branding/{brand}/research/`
+
+#### 2. `/gsp:brand-strategy` — Who you are
+
+Define your archetype, positioning, and personality using the Kapferer Brand Identity Prism. The strategic foundation everything else builds on.
+
+**Creates:** `.design/branding/{brand}/strategy/`
+
+#### 3. `/gsp:brand-verbal` — How you sound
+
+Craft your voice, tone spectrum, messaging framework, and naming conventions. Words that feel like you.
+
+**Creates:** `.design/branding/{brand}/verbal/`
+
+#### 4. `/gsp:brand-identity` — How you look
+
+Create your visual identity — logo directions, color palette, typography system, imagery style. Design decisions, not decoration.
+
+**Creates:** `.design/branding/{brand}/identity/`
+
+#### 5. `/gsp:brand-patterns` — Your design system
+
+Translate your brand into tokens, components, and a living design system. Everything codified and ready to build with.
+
+**Creates:** `.design/branding/{brand}/system/`
 
 ---
 
-## Agents & Prompts
+### ◆ Diamond 2 — Project
 
-GSP ships with 15 specialized agents, each modeled after a real design discipline:
+Design and build a product using your brand. Critique loops catch issues before they ship.
+
+#### 1. `/gsp:project-brief` — Scope what you're building
+
+Define your project through guided Q&A — what it does, who it's for, what screens it needs. The brief that guides everything downstream.
+
+**Creates:** `.design/projects/{project}/BRIEF.md`
+
+#### 2. `/gsp:project-research` — Patterns and precedents
+
+Deep research into UX patterns, competitor approaches, and technical considerations for your specific project.
+
+**Creates:** `.design/projects/{project}/research/`
+
+#### 3. `/gsp:project-design` — Screens and flows
+
+Design your UI screens and interaction flows following Apple HIG patterns. Layout, navigation, states, responsive behavior — documented to build from.
+
+**Creates:** `.design/projects/{project}/design/`
+
+#### 4. `/gsp:project-critique` — Critique + accessibility
+
+Two parallel audits: structured design critique using Nielsen's 10 usability heuristics, and a WCAG 2.2 AA accessibility check. If issues surface, loop back and fix before building.
+
+**Creates:** `.design/projects/{project}/critique/`
+
+#### 5. `/gsp:project-build` — Designs to code
+
+Translate reviewed designs into production-ready frontend code — written directly into your codebase. Components, styles, interactions built from your design system and tokens.
+
+**Creates:** Components and styles in your codebase
+
+#### 6. `/gsp:project-review` — QA against designs
+
+Validate what was built against the original design intent. Catches drift between design decisions and implementation.
+
+**Creates:** `.design/projects/{project}/review/`
+
+---
+
+### Optional: `/gsp:launch`
+
+Create marketing campaign assets — landing page copy, social media content, launch materials. Your product ships with a story, not just code.
+
+**Creates:** `.design/projects/{project}/launch/`
+
+---
+
+## Commands
+
+### Entry
+
+| Command | What it does |
+|---------|--------------|
+| `/gsp:start` | Pick up where you left off — routes you forward |
+| `/gsp:progress` | Check project status |
+| `/gsp:help` | Show command reference |
+
+### Branding
+
+| Command | What it does |
+|---------|--------------|
+| `/gsp:brand-audit` | Audit an existing brand before evolving it |
+| `/gsp:brand-research` | Research market, audience, competitors |
+| `/gsp:brand-strategy` | Define archetype, positioning, personality |
+| `/gsp:brand-verbal` | Craft voice, tone, messaging, naming |
+| `/gsp:brand-identity` | Create visual identity — logo, color, type |
+| `/gsp:brand-patterns` | Build design system — tokens, components |
+
+### Project
+
+| Command | What it does |
+|---------|--------------|
+| `/gsp:project-brief` | Scope through guided Q&A |
+| `/gsp:project-research` | UX patterns, competitor analysis |
+| `/gsp:project-design` | Design screens and interaction flows |
+| `/gsp:project-critique` | Nielsen's heuristics + WCAG 2.2 AA audit |
+| `/gsp:project-build` | Translate designs to production code |
+| `/gsp:project-review` | QA validation against designs |
+| `/gsp:launch` | Marketing campaign assets |
+
+### Utility
+
+| Command | What it does |
+|---------|--------------|
+| `/gsp:add-reference` | Add reference material to a project |
+| `/gsp:doctor` | Check project health |
+| `/gsp:update` | Update GSP to latest version |
+| `/gsp:art` | Craft ASCII art interactively |
+| `/gsp:pretty` | Surprise ASCII art in the terminal |
+
+---
+
+## Agents
+
+GSP ships with 16 specialized agents, each modeled after a real design discipline:
 
 | Agent | Role |
 |-------|------|
-| **Design System Architect** | Complete design systems (Apple Principal Designer level) |
-| **Brand Strategist** | Full brand strategies (Pentagram Creative Director level) |
-| **Identity Designer** | Visual identity — logo directions, color palettes, typography systems |
-| **Verbal Strategist** | Verbal identity — voice, tone spectrum, messaging, naming |
-| **UI/UX Designer** | App UI design following Apple HIG |
-| **Campaign Director** | Marketing campaign asset libraries |
-| **Project Scoper** | Implementation specifications for any UI target |
-| **Design Critic** | Structured critiques using Nielsen's 10 heuristics |
-| **Trend Researcher** | Industry trend analysis and competitive research |
-| **Project Researcher** | Deep UX patterns, competitor analysis, technical research |
-| **Design-to-Code Builder** | Design to production-ready frontend code |
-| **Deliverable Reviewer** | Deliverable validation — token compliance, screen coverage |
+| **Brand Strategist** | Brand strategy using Kapferer Prism, archetypes, positioning |
+| **Verbal Strategist** | Voice, tone spectrum, messaging, naming conventions |
+| **Identity Designer** | Visual identity — logo, color palettes, typography systems |
+| **Design System Architect** | Complete design systems — tokens, components, foundations |
 | **Brand Auditor** | Brand coherence assessment and evolution mapping |
-| **Codebase Scanner** | Codebase inventory and existing design system detection |
-| **Pipeline Auditor** | Pipeline consistency auditing |
+| **Trend Researcher** | Market landscape, competitor analysis, emerging patterns |
+| **Project Researcher** | Deep UX patterns, competitor UX, technical approaches |
+| **Project Scoper** | Project scope through guided Q&A |
+| **UI/UX Designer** | Screen design and interaction flows following Apple HIG |
+| **Design Critic** | Structured critiques using Nielsen's 10 heuristics |
+| **Accessibility Auditor** | WCAG 2.2 AA compliance auditing |
+| **Design-to-Code Builder** | Designs to production-ready frontend code |
+| **Deliverable Reviewer** | QA validation — implementation against design intent |
+| **Campaign Director** | Marketing campaign asset libraries |
+| **Codebase Scanner** | Tech stack detection and existing pattern inventory |
+| **ASCII Artist** | Terminal ASCII art — context-aware art generation |
 
-Each agent has deep reference material — Apple HIG patterns, Nielsen's heuristics, WCAG checklists, design token standards — baked into its prompts.
+Each agent carries deep reference material — Apple HIG patterns, Nielsen's heuristics, WCAG checklists, design token standards — baked into its prompts.
 
 ---
 
@@ -326,6 +331,6 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 <div align="center">
 
-**Your code works. GSP makes it yours.**
+**Ship a brand, not just code.**
 
 </div>
