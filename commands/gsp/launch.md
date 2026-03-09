@@ -1,6 +1,6 @@
 ---
 name: gsp:launch
-description: Create marketing campaign assets for launch
+description: Create launch and marketing assets
 allowed-tools:
   - Read
   - Write

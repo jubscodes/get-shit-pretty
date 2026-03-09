@@ -28,6 +28,14 @@ Naming: `screen-{NN}-{kebab-case-name}.md` (e.g., `screen-01-home.md`, `screen-0
 | `shared/responsive.md` | Mobile, tablet, desktop breakpoint adaptations |
 | `shared/component-plan.md` | Reuse / Refactor / New (shared) / New (local) — omit when target is `figma` |
 
+### Wireframe Preview (`design/preview.html`)
+
+Self-contained HTML wireframe preview:
+- One section per screen with box-model layout visualization
+- Navigation between screens via sidebar table of contents
+- Brand color accents from tokens.json (or neutral grays)
+- Responsive, no external dependencies
+
 ## Content Reference
 
 Each chunk follows the format in `references/chunk-format.md`. Below is the structural reference for what each chunk should contain:

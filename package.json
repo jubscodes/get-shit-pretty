@@ -1,7 +1,7 @@
 {
   "name": "get-shit-pretty",
-  "version": "0.4.1",
-  "description": "A design engineering system for Claude Code, OpenCode, Gemini, and Codex. Dual-diamond: Branding (discover → strategy → verbal → identity → system) + Projects (brief → research → design → critique → build → review).",
+  "version": "0.4.2",
+  "description": "Design engineering system for AI coding agents. Brand identity + design projects, from strategy to code.",
   "bin": {
     "get-shit-pretty": "bin/install.js"
   },
@@ -12,7 +12,8 @@
     "agents",
     "prompts",
     "templates",
-    "references"
+    "references",
+    "VERSION"
   ],
   "keywords": [
     "design",

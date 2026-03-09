@@ -1,6 +1,6 @@
 ---
 name: gsp:brand-research
-description: Brand research — competitive audit, personas, SWOT, trend analysis
+description: Research your market, audience, and competitors
 allowed-tools:
   - Read
   - Write
@@ -39,7 +39,7 @@ Read `{BRAND_PATH}/BRIEF.md` to understand:
 - Competitive landscape
 - Brand personality and goals
 
-If BRIEF.md doesn't exist, tell the user to run `/gsp:new` first.
+If BRIEF.md doesn't exist, tell the user to run `/gsp:start` first.
 
 Read `{BRAND_PATH}/config.json` to confirm `project_type` is `brand`. Note `brand_mode` value.
 
@@ -92,8 +92,22 @@ Update `.design/branding/{brand}/STATE.md`:
 - Set Phase 1 (Discover) status to `complete`
 - Record completion date
 
-## Step 4: Route next
+## Step 4: Phase transition output
 
-Display a summary of key findings and end with:
-"Run `/gsp:brand-strategy` to define your brand's strategic direction."
+Render the phase transition screen (see `references/phase-transitions.md` for ANSI color tokens):
+
+```
+  ◆ discover complete — market landscape mapped
+
+    discover/
+    ├── {actual files written}
+    └── INDEX.md
+
+  ──────────────────────────────
+```
+
+Then use `AskUserQuestion` with 3 options:
+- **Continue to strategy** — "define positioning and personality"
+- **View progress** — "see the full dashboard"
+- **Done for now** — "pick up later with /gsp:start"
 </process>

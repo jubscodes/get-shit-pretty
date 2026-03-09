@@ -1,11 +1,12 @@
 ---
 name: gsp:brand-verbal
-description: Verbal identity — voice, tone spectrum, messaging matrix, naming
+description: Refine your brand voice and messaging
 allowed-tools:
   - Read
   - Write
   - Bash
   - Task
+  - AskUserQuestion
   - WebSearch
   - WebFetch
 ---
@@ -46,17 +47,12 @@ If neither exists, tell the user to run `/gsp:brand-strategy` first.
 Load strategy/archetype.md communication style + strategy/brand-prism.md personality.
 If `.design/branding/{brand}/audit/` exists, load `audit/brand-inventory.md` voice samples.
 
-Present voice direction:
+Present context: "Your archetype ({archetype}) communicates with {style}."
+{If evolve: "Your current voice sounds like: {samples from audit}. We're {preserving/evolving} it."}
 
-"Your archetype ({archetype}) communicates with {style}.
- {If evolve: "Your current voice sounds like: {samples from audit}.
-  We're {preserving/evolving} it."}
-
- Here are two directions:
- A: {direction} — '{example sentence}'
- B: {direction} — '{example sentence}'
-
- Which resonates? Or describe what you hear."
+Then use `AskUserQuestion` with 2 voice direction options:
+- **Direction A label** — description: what this direction emphasizes / preview: '{example sentence in this voice}'
+- **Direction B label** — description: what this direction emphasizes / preview: '{example sentence in this voice}'
 
 Confirm voice direction. This direction is passed to the verbal strategist agent.
 
@@ -87,8 +83,22 @@ Update `.design/branding/{brand}/STATE.md`:
 - Set Phase 3 (Verbal) status to `complete`
 - Record completion date
 
-## Step 4: Route next
+## Step 4: Phase transition output
 
-Display verbal identity summary (voice attributes, tone position, tagline directions) and end with:
-"Verbal identity updated. Run `/gsp:brand-identity` to continue — it will skip verbal and run visual identity."
+Render the phase transition screen (see `references/phase-transitions.md` for ANSI color tokens):
+
+```
+  ◆ verbal complete — voice and messaging shaped
+
+    verbal/
+    ├── {actual files written}
+    └── INDEX.md
+
+  ──────────────────────────────
+```
+
+Then use `AskUserQuestion` with 3 options:
+- **Continue to identity** — "create visual identity"
+- **View progress** — "see the full dashboard"
+- **Done for now** — "pick up later with /gsp:start"
 </process>

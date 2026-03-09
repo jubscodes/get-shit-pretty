@@ -1,17 +1,48 @@
 ---
 name: gsp:progress
-description: Check design progress — "How pretty are we?"
+description: How pretty are we?
 allowed-tools:
   - Read
   - Glob
 ---
 <context>
-Status check for GSP design projects. Shows progress for all brands and projects with prettiness meters.
+Status check for GSP design projects. Shows progress for all brands and projects with diamond state indicators, pipeline flows, and progress bars. Renders with ANSI color codes.
 </context>
 
 <objective>
-Display current progress across all brands and projects.
+Display current progress across all brands and projects with branded terminal output.
 </objective>
+
+<styling>
+## ANSI Color Tokens
+
+| Element | ANSI Code |
+|---------|-----------|
+| Brand mark `/gsp:` | `\x1b[1m\x1b[38;2;255;107;53m` (accent + bold) |
+| `◆` complete diamond | `\x1b[38;2;224;224;224m` (primary) |
+| `◈` active diamond | `\x1b[38;2;255;107;53m` (accent) |
+| `◇` pending diamond | `\x1b[38;2;102;102;102m` (tertiary) |
+| Labeled divider `───` | `\x1b[38;2;102;102;102m` (tertiary) |
+| Divider label | `\x1b[1m\x1b[38;2;160;160;160m` (secondary + bold) |
+| Instance name | `\x1b[1m\x1b[38;2;224;224;224m` (primary + bold) |
+| Pipeline phase names (complete) | `\x1b[38;2;224;224;224m` (primary) |
+| Pipeline phase names (active) | `\x1b[38;2;255;107;53m` (accent) |
+| Pipeline phase names (pending) | `\x1b[38;2;102;102;102m` (tertiary) |
+| Pipeline connectors `───` | `\x1b[38;2;102;102;102m` (tertiary) |
+| Progress bar filled `█` | `\x1b[38;2;255;107;53m` (accent) |
+| Progress bar empty `░` | `\x1b[38;2;102;102;102m` (tertiary) |
+| Percentage + fraction | `\x1b[38;2;160;160;160m` (secondary) |
+| Table header | `\x1b[1m\x1b[38;2;160;160;160m` (secondary + bold) |
+| Table values | `\x1b[38;2;160;160;160m` (secondary) |
+| Table pending `—` | `\x1b[38;2;102;102;102m` (tertiary) |
+| Next command `→` | `\x1b[38;2;160;160;160m` (secondary) |
+| Next command name | `\x1b[38;2;255;107;53m` (accent) |
+| Summary keys | `\x1b[38;2;160;160;160m` (secondary) |
+| Summary values | `\x1b[38;2;224;224;224m` (primary) |
+| "brand: x" reference | `\x1b[38;2;102;102;102m` (tertiary) |
+| "fully pretty." | `\x1b[38;2;224;224;224m` (primary) |
+| Reset | `\x1b[0m` |
+</styling>
 
 <process>
 ## Step 1: Scan for instances
@@ -19,75 +50,156 @@ Display current progress across all brands and projects.
 Check `.design/branding/` for brand directories and `.design/projects/` for project directories.
 
 If neither found, check for legacy `.design/STATE.md`:
-- If found: show legacy progress (same as v0.3.0)
-- If not: display "No GSP project found. Run `/gsp:new` to start one."
+- If found: show legacy progress
+- If not: display the empty state (see below)
 
 ## Step 2: Read state for each instance
 
-For each brand: read `STATE.md` and `BRIEF.md`
-For each project: read `STATE.md`, `BRIEF.md`, and `brand.ref`
+For each brand: read `STATE.md` and `config.json`
+For each project: read `STATE.md`, `config.json`, and `brand.ref`
+
+Count chunks per phase: count `.md` files in each phase directory (excluding INDEX.md).
 
 ## Step 3: Calculate prettiness
 
 Brands: count completed/skipped phases out of 5
 Projects: count completed/skipped phases out of 6
 
-## Step 4: Display progress
+Determine the Brand Mark diamond states:
+- First diamond = branding status (highest across all brands): `◇` none, `◈` in progress, `◆` all complete
+- Second diamond = project status (highest across all projects): `◇` none, `◈` in progress, `◆` all complete
+
+## Step 4: Validate state integrity
+
+For each phase marked as complete in STATE.md, verify the phase directory contains at least 1 chunk file. If `status === 'complete'` and chunk count is 0, display that phase as `◆!` with note "(empty — may need re-run)".
+
+If `config.json` is missing or unparseable for any instance, show the instance name with "(config error — run /gsp:doctor)" instead of crashing.
+
+## Step 5: Display progress
+
+Output with ANSI color codes using the tokens from the styling section above.
+
+### Empty State
 
 ```
-🎨 GSP — How Pretty Are We?
+  /gsp: ◇◇
 
-─── Brands ────────────────────────────
+  no brands or projects found.
+  run /gsp:start to begin.
+```
+
+### Standard State — render these elements:
+
+**Brand Mark:** `/gsp:` (accent+bold) followed by state diamonds
+
+**Labeled Divider:** `  ─── {Label} ──────────────────` (tertiary `───`, secondary+bold label)
+
+**Pipeline Flow:** Diamond + phase name per phase, connected by `───` (tertiary). Color per phase status.
+
+**Progress Bar:** `████████░░░░░░░░░░░░ 40% (2/5)` — bar width 20 chars, filled = `Math.round(20 * completed / total)`. Filled in accent, empty in tertiary, percentage in secondary.
+
+**Status Table (in-progress items only):**
+```
+    Phase          Status    Chunks    Time
+    discover       ◆         6         2m
+    strategy       ◆         5         4m
+    verbal         ◈         —         —
+```
+Column positions: phase at col 4, status at col 19, chunks at col 29, time at col 39.
+
+**Collapsed complete items:**
+When 100% complete, single-line: `  acme-corp ◆ complete (5/5, 11 chunks)`
+
+**Next Command:** `  → next: /gsp:brand-verbal` (secondary `→ next:`, accent command name)
+
+### Example: Early State (2/5 branding)
+
+```
+  /gsp: ◈◇
+
+
+  ─── Brands ───────────────────────────
 
   acme-corp
-  ████████████████ 100% (5/5 phases)
-  ✅ Research  ✅ Strategy  ✅ Verbal  ✅ Identity  ✅ Patterns
+  ◆ discover ─── ◆ strategy ─── ◈ verbal ─── ◇ identity ─── ◇ patterns
+  ████████░░░░░░░░░░░░ 40% (2/5)
 
-  beta-labs
-  ██████░░░░░░░░░░ 40% (2/5 phases)
-  ✅ Research  ✅ Strategy  ⬜ Verbal  ⬜ Identity  ⬜ Patterns
-  → Next: /gsp:brand-identity
+    Phase          Status    Chunks    Time
+    discover       ◆         6         2m
+    strategy       ◆         5         4m
+    verbal         ◈         —         —
+    identity       ◇         —         —
+    patterns       ◇         —         —
 
-─── Projects ──────────────────────────
+  → next: /gsp:brand-verbal
 
-  acme-website (brand: acme-corp)
-  ██████████░░░░░░ 66% (4/6 phases)
-  ✅ Brief  ✅ Research  ✅ Design  ✅ Critique  ⬜ Build  ⬜ Review
-  → Next: /gsp:build
 
-  acme-mobile (brand: acme-corp)
-  ███░░░░░░░░░░░░░ 16% (1/6 phases)
-  ✅ Brief  ⬜ Research  ⬜ Design  ⬜ Critique  ⬜ Build  ⬜ Review
-  → Next: /gsp:research
-  📦 Launch: complete
+  ─── Overall ──────────────────────────
 
-─── Overall ───────────────────────────
-
-  Brands:   1 complete, 1 in progress
-  Projects: 0 complete, 2 in progress
+    brands      1 in progress
+    projects    0
+    phases      2/5 complete
+    chunks      11 written
 ```
 
-Use ✅ for complete, ⏭️ for skipped, 🔄 for in-progress/needs-revision, ⬜ for pending.
+### Example: Late State (brand complete, 4/6 project)
 
-Show Launch status separately if present (not counted in phase progress).
+```
+  /gsp: ◆◈
 
-## Step 5: Route next
 
-For each in-progress instance, identify the next pending phase and suggest the command:
+  ─── Brands ───────────────────────────
+
+  acme-corp ◆ complete (5/5, 48 chunks)
+
+
+  ─── Projects ─────────────────────────
+
+  acme-website                                       brand: acme-corp
+  ◆ brief ─── ◆ research ─── ◆ design ─── ◆ critique ─── ◈ build ─── ◇ review
+  ████████████████░░░░ 66% (4/6)
+
+    Phase          Status    Chunks    Time
+    brief          ◆         3         1m
+    research       ◆         7         5m
+    design         ◆         8         12m
+    critique       ◆         4         3m
+    build          ◈         —         —
+    review         ◇         —         —
+
+  → next: /gsp:project-build
+
+
+  ─── Overall ──────────────────────────
+
+    brands      1 complete
+    projects    1 in progress
+    phases      9/11 complete
+    chunks      33 written
+```
+
+### All Complete State
+
+After the summary, if everything is 100% complete, add: `  fully pretty.` in primary color.
+
+## Step 6: Route next
+
+For each in-progress instance, identify the next pending phase and suggest the command.
 
 **Brand routing:**
-- Phase 1 (Research) pending → `/gsp:brand-research`
-- Phase 2 (Strategy) pending → `/gsp:brand-strategy`
-- Phase 3 or 4 (Verbal/Identity) pending → `/gsp:brand-identity` (handles both phases with skip logic)
-- Phase 5 (Patterns) pending → `/gsp:brand-patterns`
+- Phase 1 (Research) pending -> `/gsp:brand-research`
+- Phase 2 (Strategy) pending -> `/gsp:brand-strategy`
+- Phase 3 (Verbal) pending -> `/gsp:brand-verbal`
+- Phase 4 (Identity) pending -> `/gsp:brand-identity`
+- Phase 5 (Patterns) pending -> `/gsp:brand-patterns`
 
 **Project routing:**
-- Brief pending → `/gsp:brief`
-- Research pending → `/gsp:research`
-- Design pending → `/gsp:design`
-- Critique pending → `/gsp:critique`
-- Build pending → `/gsp:build`
-- Review pending → `/gsp:review`
+- Brief pending -> `/gsp:project-brief`
+- Research pending -> `/gsp:project-research`
+- Design pending -> `/gsp:project-design`
+- Critique pending -> `/gsp:project-critique`
+- Build pending -> `/gsp:project-build`
+- Review pending -> `/gsp:project-review`
 
-If everything is complete: "All brands and projects are fully pretty! 🎨"
+Output this as a single block. Do NOT add commentary or suggestions beyond the dashboard content.
 </process>

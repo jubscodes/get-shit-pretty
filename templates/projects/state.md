@@ -27,6 +27,14 @@
 | PR | — |
 | Issues | — |
 
+## Screen Build Status
+<!-- Populated during build phase — tracks per-screen implementation -->
+
+| # | Screen | Build Status | Review Status |
+|---|--------|-------------|---------------|
+
+<!-- Status: pending | in-progress | complete | needs-revision -->
+
 ## Review Loops
 <!-- Track critique → fix → re-critique cycles -->
 

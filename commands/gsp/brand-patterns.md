@@ -1,6 +1,6 @@
 ---
 name: gsp:brand-patterns
-description: Design system + brand preview + diamond transition
+description: Build your design system — tokens, components, preview
 allowed-tools:
   - Read
   - Write
@@ -36,7 +36,7 @@ Scan `.design/branding/` for brand directories. If only one brand exists, use it
 
 Set `BRAND_PATH` = `.design/branding/{brand}`
 
-If BRAND_PATH doesn't exist, tell the user to run `/gsp:new` first.
+If BRAND_PATH doesn't exist, tell the user to run `/gsp:start` first.
 
 ## Step 1: Load context
 
@@ -195,29 +195,41 @@ Generate a single self-contained HTML file with:
 
 Tell the user: "Brand preview saved — open it in your browser to see the full brand at a glance."
 
-## Step 5: Diamond transition
+## Step 5: Phase transition output
 
-Display the branding diamond completion summary:
+Render the phase transition screen (see `references/phase-transitions.md` for ANSI color tokens):
 
 ```
-🎨 Brand Complete — {brand-name}
-═══════════════════════════════════════
+  ◆ system complete — design system built
 
-  ✅ Research     — {key finding from discover}
-  ✅ Strategy     — {archetype}, {positioning summary}
-  ✅ Verbal       — voice: {top 3 voice attributes}
-  ✅ Visual       — {N} logo directions, {primary colors}, {typefaces}
-  ✅ Patterns     — {N} foundations, {N} components, tokens.json
+    system/
+    ├── foundations/
+    │   ├── {foundation files}
+    ├── components/
+    │   ├── {component files}
+    ├── principles.md
+    ├── tokens.json
+    └── INDEX.md
 
-  📄 Preview: {BRAND_PATH}/preview.html
-
-───────────────────────────────────────
-
-GSP uses a dual-diamond process. Your brand is Diamond 1.
-
-Diamond 2 is design projects — each uses a brand as foundation.
-You can have multiple projects per brand (website, app, dashboard...).
-
-Ready to start a design project? Run /gsp:new to set one up.
+  ──────────────────────────────
 ```
+
+Then display the brand summary with ANSI styling:
+
+```
+  brand complete — {brand-name}
+
+    discover       {key finding}
+    strategy       {archetype}, {positioning}
+    verbal         {top voice attributes}
+    identity       {colors}, {typefaces}
+    system         {N} foundations, {N} components
+
+    preview: {BRAND_PATH}/preview.html
+```
+
+Then use `AskUserQuestion` with 3 options:
+- **Start a project** — "scope what you're building with this brand"
+- **View progress** — "see the full dashboard"
+- **Done for now** — "pick up later with /gsp:start"
 </process>

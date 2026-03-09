@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>/gsp: ◇◇ — Brand Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #FF6B35;
+    --accent-light: #F48148;
+    --accent-dark: #D4501E;
+    --accent-muted: #A33B14;
+    --accent-dim: #72290E;
+    --surface-base: #000000;
+    --surface-1: #0A0A0A;
+    --surface-2: #141414;
+    --surface-3: #1E1E1E;
+    --surface-4: #282828;
+    --text-primary: #E0E0E0;
+    --text-secondary: #A0A0A0;
+    --text-tertiary: #666666;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-default: rgba(255, 255, 255, 0.15);
+    --border-strong: rgba(255, 255, 255, 0.25);
+    --border-accent: rgba(255, 107, 53, 0.4);
+    --success: #22C55E;
+    --warning: #FBBF24;
+    --error: #EF4444;
+    --info: #60A5FA;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--surface-base);
+    color: var(--text-primary);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 120px 0 80px;
+    text-align: center;
+    border-bottom: 3px solid var(--border-strong);
+  }
+  .hero .sparkle {
+    font-family: var(--mono);
+    color: var(--text-tertiary);
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+  .hero .density-ramp {
+    font-family: var(--mono);
+    font-size: 20px;
+    margin-bottom: 32px;
+  }
+  .hero .density-ramp .ramp { color: var(--accent); }
+  .hero .density-ramp .content { color: var(--text-primary); font-weight: 700; }
+  .hero .mark {
+    font-family: var(--mono);
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+  .hero .mark .slash { color: var(--accent); }
+  .hero .tagline {
+    font-family: var(--sans);
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* Section */
+  section {
+    padding: 64px 0;
+    border-bottom: 3px solid var(--border-strong);
+  }
+  section:last-child { border-bottom: none; }
+
+  h2 {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 32px;
+    letter-spacing: -0.01em;
+  }
+  h3 {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    margin-top: 32px;
+  }
+  p {
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  /* Color Palette */
+  .palette-section { margin-bottom: 48px; }
+  .palette-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+  .palette-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+  }
+  .swatch {
+    flex: 1;
+    aspect-ratio: 1;
+    border-radius: 0;
+    border: 2px solid var(--border-subtle);
+    position: relative;
+    min-width: 40px;
+  }
+  .swatch-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-tertiary);
+    text-align: center;
+    margin-top: 6px;
+  }
+  .swatch-col { display: flex; flex-direction: column; flex: 1; align-items: center; }
+
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .color-card {
+    border: 2px solid var(--border-default);
+    padding: 0;
+    background: var(--surface-1);
+  }
+  .color-card .preview {
+    height: 60px;
+    width: 100%;
+  }
+  .color-card .info {
+    padding: 8px 10px;
+    border-top: 2px solid var(--border-default);
+  }
+  .color-card .name {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+  .color-card .hex {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+  }
+
+  /* Typography */
+  .type-sample {
+    margin-bottom: 24px;
+    padding: 24px;
+    border: 2px solid var(--border-default);
+    background: var(--surface-1);
+  }
+  .type-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-bottom: 8px;
+  }
+
+  /* Voice */
+  .voice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 640px) { .voice-grid { grid-template-columns: 1fr; } }
+  .voice-card {
+    border: 2px solid var(--border-default);
+    padding: 24px;
+    background: var(--surface-1);
+  }
+  .voice-card h4 {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .voice-means {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+  .voice-doesnt {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--text-tertiary);
+  }
+  .voice-means::before { content: "Means: "; font-weight: 600; color: var(--success); }
+  .voice-doesnt::before { content: "Doesn't mean: "; font-weight: 600; color: var(--error); }
+
+  /* Taglines */
+  .tagline-card {
+    border: 2px solid var(--border-default);
+    padding: 24px;
+    margin-bottom: 16px;
+    background: var(--surface-1);
+  }
+  .tagline-card .line {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+  .tagline-card .desc {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  /* Logo */
+  .logo-direction {
+    border: 2px solid var(--border-default);
+    padding: 32px;
+    margin-bottom: 16px;
+    background: var(--surface-1);
+  }
+  .logo-direction .label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+  }
+  .logo-direction .mark {
+    font-family: var(--mono);
+    font-size: 36px;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+  .logo-direction .mark .accent { color: var(--accent); }
+  .logo-direction .rationale {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .logo-states {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .logo-state {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .logo-state .state-mark { font-size: 20px; color: var(--text-primary); display: block; margin-bottom: 4px; }
+
+  /* Archetype */
+  .archetype-block {
+    border: 3px solid var(--accent);
+    padding: 32px;
+    background: var(--surface-1);
+  }
+  .archetype-block .primary {
+    font-family: var(--mono);
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .archetype-block .secondary {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+  .archetype-block .desc {
+    font-family: var(--sans);
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* Terminal Preview */
+  .terminal {
+    background: var(--surface-base);
+    border: 2px solid var(--border-strong);
+    padding: 24px;
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+  .terminal .t-accent { color: var(--accent); }
+  .terminal .t-primary { color: var(--text-primary); }
+  .terminal .t-secondary { color: var(--text-secondary); }
+  .terminal .t-tertiary { color: var(--text-tertiary); }
+  .terminal .t-success { color: var(--success); }
+  .terminal .t-error { color: var(--error); }
+  .terminal .t-warning { color: var(--warning); }
+  .terminal .t-info { color: var(--info); }
+  .terminal .t-bold { font-weight: 700; }
+  .terminal .t-dim { opacity: 0.5; }
+
+  /* Ecosystem */
+  .eco-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 640px) { .eco-grid { grid-template-columns: 1fr; } }
+  .eco-card {
+    border: 2px solid var(--border-default);
+    padding: 24px;
+    background: var(--surface-1);
+  }
+  .eco-card .name {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .eco-card .role {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+  .eco-card .color-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 48px 0;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--text-tertiary);
+  }
+  .footer .mark { color: var(--accent); font-weight: 700; font-size: 18px; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="container">
+    <div class="sparkle">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#10023;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;&nbsp;&#10023;<br>
+      .&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;&nbsp;&#10023;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.
+    </div>
+    <div class="density-ramp">
+      <span class="ramp">░▒▓█</span>&nbsp;&nbsp;<span class="content">GET SHIT PRETTY</span>&nbsp;&nbsp;<span class="ramp">█▓▒░</span>
+    </div>
+    <div class="mark"><span class="slash">/gsp:</span> ◇◇</div>
+    <div class="tagline">Design engineering system for the terminal.<br>Brief to build. No Figma tab required.</div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- Color Palette -->
+<section>
+  <h2>Color System</h2>
+  <p>Dark-only. True black base. Burnt orange signal. Monochrome hierarchy.</p>
+
+  <div class="palette-section">
+    <div class="palette-label">Accent — Burnt Orange #FF6B35</div>
+    <div class="palette-row">
+      <div class="swatch-col"><div class="swatch" style="background:#FEF3EE"></div><div class="swatch-label">50</div></div>
+      <div class="swatch-col"><div class="swatch" style="background:#FDE5D8"></div><div class="swatch-label">100</div></div>
+      <div class="swatch-col"><div class="swatch" style="background:#FAC4A8"></div><div class="swatch-label">200</div></div>
+      <div class="swatch-col"><div class="swatch" style="background:#F7A278"></div><div class="swatch-label">300</div></div>
+      <div class="swatch-col"><div class="swatch" style="background:#F48148"></div><div class="swatch-label">400</div></div>
+      <div class="swatch-col"><div class="swatch" style="background:#FF6B35; border-color:var(--accent)"></div><div class="swatch-label">500</div></div>
+      <div class="swatch-col"><div class="swatch" style="background:#D4501E"></div><div class="swatch-label">600</div></div>
+      <div class="swatch-col"><div class="swatch" style="background:#A33B14"></div><div class="swatch-label">700</div></div>
+      <div class="swatch-col"><div class="swatch" style="background:#72290E"></div><div class="swatch-label">800</div></div>
+      <div class="swatch-col"><div class="swatch" style="background:#461908"></div><div class="swatch-label">900</div></div>
+      <div class="swatch-col"><div class="swatch" style="background:#2E1005"></div><div class="swatch-label">950</div></div>
+    </div>
+  </div>
+
+  <div class="palette-section">
+    <div class="palette-label">Surfaces</div>
+    <div class="color-grid">
+      <div class="color-card"><div class="preview" style="background:#000000"></div><div class="info"><div class="name">base</div><div class="hex">#000000</div></div></div>
+      <div class="color-card"><div class="preview" style="background:#0A0A0A"></div><div class="info"><div class="name">surface-1</div><div class="hex">#0A0A0A</div></div></div>
+      <div class="color-card"><div class="preview" style="background:#141414"></div><div class="info"><div class="name">surface-2</div><div class="hex">#141414</div></div></div>
+      <div class="color-card"><div class="preview" style="background:#1E1E1E"></div><div class="info"><div class="name">surface-3</div><div class="hex">#1E1E1E</div></div></div>
+      <div class="color-card"><div class="preview" style="background:#282828"></div><div class="info"><div class="name">surface-4</div><div class="hex">#282828</div></div></div>
+    </div>
+  </div>
+
+  <div class="palette-section">
+    <div class="palette-label">Text</div>
+    <div class="color-grid">
+      <div class="color-card"><div class="preview" style="background:#E0E0E0"></div><div class="info"><div class="name">primary</div><div class="hex">#E0E0E0</div></div></div>
+      <div class="color-card"><div class="preview" style="background:#A0A0A0"></div><div class="info"><div class="name">secondary</div><div class="hex">#A0A0A0</div></div></div>
+      <div class="color-card"><div class="preview" style="background:#666666"></div><div class="info"><div class="name">tertiary</div><div class="hex">#666666</div></div></div>
+    </div>
+  </div>
+
+  <div class="palette-section">
+    <div class="palette-label">Semantic</div>
+    <div class="color-grid">
+      <div class="color-card"><div class="preview" style="background:#22C55E"></div><div class="info"><div class="name">success</div><div class="hex">#22C55E</div></div></div>
+      <div class="color-card"><div class="preview" style="background:#FBBF24"></div><div class="info"><div class="name">warning</div><div class="hex">#FBBF24</div></div></div>
+      <div class="color-card"><div class="preview" style="background:#EF4444"></div><div class="info"><div class="name">error</div><div class="hex">#EF4444</div></div></div>
+      <div class="color-card"><div class="preview" style="background:#60A5FA"></div><div class="info"><div class="name">info</div><div class="hex">#60A5FA</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Typography -->
+<section>
+  <h2>Typography</h2>
+
+  <div class="type-sample">
+    <div class="type-meta">Display XL — JetBrains Mono 800, 72px, -0.02em</div>
+    <div style="font-family:var(--mono); font-size:72px; font-weight:800; letter-spacing:-0.02em; line-height:1.0; color:var(--text-primary)">/gsp:</div>
+  </div>
+
+  <div class="type-sample">
+    <div class="type-meta">Display — JetBrains Mono 700, 48px, -0.02em</div>
+    <div style="font-family:var(--mono); font-size:48px; font-weight:700; letter-spacing:-0.02em; line-height:1.05; color:var(--text-primary)">Get Shit Pretty</div>
+  </div>
+
+  <div class="type-sample">
+    <div class="type-meta">H1 — JetBrains Mono 700, 36px, -0.01em</div>
+    <div style="font-family:var(--mono); font-size:36px; font-weight:700; letter-spacing:-0.01em; line-height:1.15; color:var(--text-primary)">Design Engineering</div>
+  </div>
+
+  <div class="type-sample">
+    <div class="type-meta">H2 — JetBrains Mono 700, 28px, -0.01em</div>
+    <div style="font-family:var(--mono); font-size:28px; font-weight:700; letter-spacing:-0.01em; line-height:1.2; color:var(--text-primary)">Brief to Build</div>
+  </div>
+
+  <div class="type-sample">
+    <div class="type-meta">Body — Inter 400, 16px</div>
+    <div style="font-family:var(--sans); font-size:16px; font-weight:400; line-height:1.6; color:var(--text-primary)">GSP is a design engineering system for CLI builders. It guides you from a vague idea to a coherent brand system — positioning, voice, visual identity, design tokens, components — all inside your terminal. Your product deserves a brand. GSP is the design journey that builds one.</div>
+  </div>
+
+  <div class="type-sample">
+    <div class="type-meta">Code — JetBrains Mono 400, 14px</div>
+    <div style="font-family:var(--mono); font-size:14px; font-weight:400; line-height:1.6; color:var(--text-primary)">npx get-shit-pretty<br><span style="color:var(--accent)">/gsp:</span>new → <span style="color:var(--accent)">/gsp:</span>brand-research → <span style="color:var(--accent)">/gsp:</span>brand-strategy</div>
+  </div>
+</section>
+
+<!-- Voice Attributes -->
+<section>
+  <h2>Voice</h2>
+  <p>A senior design engineer pairing with you. Direct, warm, craft-obsessed. Two modes: Warm Mentor (default) and Manifesto (key moments).</p>
+
+  <div class="voice-grid">
+    <div class="voice-card">
+      <h4>Precise</h4>
+      <div class="voice-means">Every word earns its place. "Design engineering system" not "AI-powered design platform."</div>
+      <div class="voice-doesnt">Clinical, robotic, or stripped of personality.</div>
+    </div>
+    <div class="voice-card">
+      <h4>Irreverent</h4>
+      <div class="voice-means">The name is Get Shit Pretty. We swear when it clarifies. Confidence, not cynicism.</div>
+      <div class="voice-doesnt">Cruel, mocking, or trying to be edgy. Never at the user's expense.</div>
+    </div>
+    <div class="voice-card">
+      <h4>Warm</h4>
+      <div class="voice-means">We give a damn. We celebrate progress. One honest detail over a paragraph of encouragement.</div>
+      <div class="voice-doesnt">Coddling, vague, or avoiding hard truths. Warm is "redo this, here's why."</div>
+    </div>
+    <div class="voice-card">
+      <h4>Craft-forward</h4>
+      <div class="voice-means">We talk about process, decisions, tradeoffs. We show the work. Making is the point.</div>
+      <div class="voice-doesnt">Gatekeeping or implying "real designers" do it our way. Craft is inclusive.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Taglines -->
+<section>
+  <h2>Tagline Directions</h2>
+
+  <div class="tagline-card">
+    <div class="line">GSD gets shit done. GSP gets shit pretty.</div>
+    <div class="desc">The Counterpart — positions against the universal builder instinct. The flag in the ground.</div>
+  </div>
+  <div class="tagline-card">
+    <div class="line">Brief to build. In your terminal.</div>
+    <div class="desc">The Journey Line — core value prop in 7 words. Process credibility over personality.</div>
+  </div>
+  <div class="tagline-card">
+    <div class="line">Ship a brand, not just code.</div>
+    <div class="desc">The Builder Identity — speaks to aspiration. Expands what "shipping" means.</div>
+  </div>
+</section>
+
+<!-- Logo -->
+<section>
+  <h2>Logo System</h2>
+  <p>The Living Mark — the logo IS the interface. Diamond states reflect pipeline progress.</p>
+
+  <div class="logo-direction">
+    <div class="label">Full Lockup</div>
+    <div class="mark"><span class="accent">/gsp:</span> ◇◇</div>
+    <div class="rationale">The slash command users already type. Terminal-native. Code-native.</div>
+    <div class="logo-states">
+      <div class="logo-state"><span class="state-mark">◇◇</span>starting</div>
+      <div class="logo-state"><span class="state-mark" style="color:var(--accent)">◈</span><span class="state-mark" style="display:inline">◇</span>branding</div>
+      <div class="logo-state"><span class="state-mark">◆◇</span>brand done</div>
+      <div class="logo-state"><span class="state-mark">◆<span style="color:var(--accent)">◈</span></span>project</div>
+      <div class="logo-state"><span class="state-mark">◆◆</span>shipped</div>
+    </div>
+  </div>
+
+  <div class="logo-direction">
+    <div class="label">Wordmark</div>
+    <div class="mark"><span class="accent">/gsp:</span></div>
+    <div class="rationale">Terminal prompts, inline docs, code comments.</div>
+  </div>
+
+  <div class="logo-direction">
+    <div class="label">Symbol</div>
+    <div class="mark">◇◇</div>
+    <div class="rationale">Favicon, avatar, compact contexts. Dual diamonds = dual-diamond methodology.</div>
+  </div>
+</section>
+
+<!-- Archetype -->
+<section>
+  <h2>Archetype</h2>
+
+  <div class="archetype-block">
+    <div class="primary">The Creator (70%)</div>
+    <div class="secondary">+ The Magician (30%)</div>
+    <div class="desc">
+      The Creator builds systems that endure. The Magician transforms what you thought was possible.
+      Together: a developer who never touched brand strategy now has a coherent positioning statement.
+      A designer who never opened a terminal now ships components.
+      The structured journey is the Magician's ritual — each phase transforms the input into something the user didn't know they could produce.
+    </div>
+  </div>
+</section>
+
+<!-- Terminal Preview -->
+<section>
+  <h2>Terminal Output</h2>
+  <p>Every CLI interaction is a brand moment. Real output examples from the design system.</p>
+
+  <div class="terminal">
+<span class="t-tertiary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✧&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;✧</span><br>
+<span class="t-tertiary">&nbsp;.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;✧&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;<span class="t-accent">░▒▓█</span>&nbsp;&nbsp;<span class="t-bold t-primary">GET SHIT PRETTY</span>&nbsp;&nbsp;<span class="t-accent">█▓▒░</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-accent t-bold">/gsp:</span> <span class="t-primary">◇◇</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-secondary">design engineering for the</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-secondary">terminal. brief to build.</span><br>
+<br>
+<br>
+&nbsp;&nbsp;<span class="t-accent t-bold">Strategy</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-accent">◈</span> <span class="t-primary">analyzing brief constraints...</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-success">✓</span> <span class="t-primary">archetype selected — Creator 70% + Magician 30%</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-success">✓</span> <span class="t-primary">brand-prism.md written</span> <span class="t-secondary">(124 lines)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-success">✓</span> <span class="t-primary">positioning.md written</span> <span class="t-secondary">(98 lines)</span><br>
+<br>
+&nbsp;&nbsp;<span class="t-accent">◆</span> <span class="t-accent t-bold">strategy</span> <span class="t-primary">complete — 6 chunks written</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-tertiary">├──</span> <span class="t-secondary">archetype.md</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-tertiary">├──</span> <span class="t-secondary">brand-prism.md</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-tertiary">├──</span> <span class="t-secondary">brand-platform.md</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-tertiary">├──</span> <span class="t-secondary">golden-circle.md</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-tertiary">├──</span> <span class="t-secondary">messaging-hierarchy.md</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-tertiary">└──</span> <span class="t-secondary">positioning.md</span><br>
+<br>
+<br>
+&nbsp;&nbsp;<span class="t-error">✗</span> <span class="t-primary">brief validation failed</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-secondary">Missing required field: audience</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-secondary">Run /gsp:project-brief to add the missing field.</span><br>
+<br>
+<br>
+&nbsp;&nbsp;<span class="t-tertiary">┌──────────────────────────────────────────┐</span><br>
+&nbsp;&nbsp;<span class="t-tertiary">│</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-tertiary">│</span><br>
+&nbsp;&nbsp;<span class="t-tertiary">│</span>&nbsp;&nbsp;<span class="t-accent t-bold">/gsp:</span> <span class="t-primary t-bold">◆◆</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-tertiary">│</span><br>
+&nbsp;&nbsp;<span class="t-tertiary">│</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-tertiary">│</span><br>
+&nbsp;&nbsp;<span class="t-tertiary">│</span>&nbsp;&nbsp;<span class="t-bold">Brand:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-primary">get-shit-pretty</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-tertiary">│</span><br>
+&nbsp;&nbsp;<span class="t-tertiary">│</span>&nbsp;&nbsp;<span class="t-bold">Phases:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-primary">5 of 5 complete</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-tertiary">│</span><br>
+&nbsp;&nbsp;<span class="t-tertiary">│</span>&nbsp;&nbsp;<span class="t-bold">Chunks:</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-primary">42 files written</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-tertiary">│</span><br>
+&nbsp;&nbsp;<span class="t-tertiary">│</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-tertiary">│</span><br>
+&nbsp;&nbsp;<span class="t-tertiary">└──────────────────────────────────────────┘</span><br>
+  </div>
+</section>
+
+<!-- Ecosystem -->
+<section>
+  <h2>Ecosystem</h2>
+  <p>Three brands, same craft DNA, distinct identities. Like Guillermo Rauch → Vercel → Next.js.</p>
+
+  <div class="eco-grid">
+    <div class="eco-card">
+      <div class="name" style="color:#00FF88">jubs.studio</div>
+      <div class="role">Personal brand. Solo design engineering studio. Parent — both colors.</div>
+      <div><span class="color-dot" style="background:#00FF88"></span><span class="color-dot" style="background:#FF6B35"></span><span style="font-family:var(--mono); font-size:12px; color:var(--text-tertiary)">Cyberpunk</span></div>
+    </div>
+    <div class="eco-card" style="border-color:var(--border-accent)">
+      <div class="name" style="color:var(--accent)">get-shit-pretty</div>
+      <div class="role">Design engineering system. Child — inherits orange. Structured avant-garde.</div>
+      <div><span class="color-dot" style="background:#FF6B35"></span><span style="font-family:var(--mono); font-size:12px; color:var(--text-tertiary)">Burnt Orange</span></div>
+    </div>
+    <div class="eco-card">
+      <div class="name" style="color:#00FF88">cyphercn</div>
+      <div class="role">Terminal component library. Sibling — inherits green. Retro-terminal.</div>
+      <div><span class="color-dot" style="background:#00FF88"></span><span style="font-family:var(--mono); font-size:12px; color:var(--text-tertiary)">Neon Green</span></div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="mark">/gsp: ◆◆</div>
+  <div>Brand complete. Enduring craft.</div>
+  <div style="margin-top:8px; color:var(--text-tertiary)">Generated 2026-03-08 by Get Shit Pretty v0.4.1</div>
+</div>
+
+</body>
+</html>

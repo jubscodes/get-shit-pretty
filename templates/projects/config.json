@@ -1,25 +1,20 @@
 {
-  "version": "0.4.0",
-  "project_type": "design",
+  "version": "0.4.2",
   "project": {
     "name": "",
-    "type": "",
     "created": ""
   },
-  "brand_ref": "",
   "preferences": {
     "platform": "web",
     "tech_stack": "React + Tailwind",
     "accessibility_level": "WCAG 2.2 AA",
-    "design_tool": "Figma",
     "implementation_target": "code",
     "codebase_type": "greenfield",
     "design_scope": "full"
   },
   "git": {
     "branch": "",
-    "pr": "",
-    "issues": []
+    "pr": ""
   },
   "phases": {
     "brief": { "status": "pending", "output": "brief/" },

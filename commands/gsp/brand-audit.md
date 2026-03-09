@@ -1,6 +1,6 @@
 ---
 name: gsp:brand-audit
-description: Audit existing brand — assess coherence, market fit, equity, evolution map
+description: Audit an existing brand before evolving it
 allowed-tools:
   - Read
   - Write
@@ -39,7 +39,7 @@ Set `BRAND_PATH` = `.design/branding/{brand}`
 Read `{BRAND_PATH}/BRIEF.md` to understand the brand's aspirational direction.
 Read `{BRAND_PATH}/config.json` to confirm `brand_mode` is `evolve` and get `evolution_scope`.
 
-If BRAND_PATH doesn't exist, tell the user to run `/gsp:new` first.
+If BRAND_PATH doesn't exist, tell the user to run `/gsp:start` first.
 
 ## Step 2: Gather existing brand assets (interactive)
 
