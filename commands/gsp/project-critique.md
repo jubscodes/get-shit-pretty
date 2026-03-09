@@ -1,6 +1,6 @@
 ---
-name: gsp:critique
-description: Design critique (Nielsen's heuristics) + WCAG accessibility audit
+name: gsp:project-critique
+description: Critique your designs + accessibility audit
 allowed-tools:
   - Read
   - Write
@@ -68,7 +68,7 @@ Fallback: `{PROJECT_PATH}/design/SCREENS.md` or `{PROJECT_PATH}/screens/INDEX.md
 3. Write results to `{PROJECT_PATH}/critique/accessibility-audit.md` and `accessibility-fixes.md`
 4. Write `{PROJECT_PATH}/critique/INDEX.md`
 5. Update STATE.md — set Phase 4 to `complete`
-6. Route: "Run `/gsp:build`."
+6. Route: "Run `/gsp:project-build`."
 7. **Stop here**
 
 **Otherwise:** If design chunks don't exist and scope is not `tokens`, tell the user to complete the design phase first.
@@ -123,8 +123,11 @@ Update `{PROJECT_PATH}/exports/INDEX.md`:
 
 ## Step 4: Assess results
 
-**If critical issues found:** Display issues, recommend looping back, update STATE.md review loops.
-**If no critical issues:** Display positive summary, proceed.
+Read `critique/critique.md` for the overall heuristics score and `critique/prioritized-fixes.md` for critical issues. Determine verdict:
+
+**Pass (score ≥ 40/50, no critical fixes):** Design is solid, proceed to build.
+**Conditional Pass (score 30-39/50 or critical fixes are minor):** Shippable with notes, proceed to build.
+**Fail (score < 30/50 or critical fixes affect layout/navigation/IA):** Design needs revision before building.
 
 ## Step 5: Update state
 
@@ -132,9 +135,45 @@ Update `{PROJECT_PATH}/STATE.md`:
 - Set Phase 4 (Critique) status to `complete` or `needs-revision`
 - Record review loop count and completion date
 
-## Step 6: Route next
+### Critique→Design loop — if Fail
 
-If clean: "Run `/gsp:build` to translate designs to code."
-If issues: "Address the critical issues above, then run `/gsp:critique` again."
+If verdict is **Fail**:
+1. Set Phase 4 (Critique) status to `needs-revision`
+2. Set Phase 3 (Design) status to `needs-revision`
+3. Ensure `critique/prioritized-fixes.md` and `critique/accessibility-fixes.md` contain actionable issues
+
+## Step 6: Phase transition output
+
+Render the phase transition screen (see `references/phase-transitions.md` for ANSI color tokens):
+
+**If Pass/Conditional Pass:**
+
+```
+  ◆ critique complete — designs critiqued
+
+    critique/
+    ├── {actual files written}
+    └── INDEX.md
+
+  ──────────────────────────────
+```
+
+Then use `AskUserQuestion` with 3 options:
+- **Continue to build** — "implement designs in the codebase"
+- **View progress** — "see the full dashboard"
+- **Done for now** — "pick up later with /gsp:start"
+
+**If Fail:**
+
+```
+  ◈ critique — critical issues found, revising designs
+
+  ──────────────────────────────
+```
+
+Then use `AskUserQuestion` with 3 options:
+- **Revise designs** — "address critical issues and re-run critique"
+- **Override and continue** — "accept current designs and move to build"
+- **View issues** — "see the full critique report"
 </process>
 </output>

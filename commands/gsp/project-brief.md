@@ -1,6 +1,6 @@
 ---
-name: gsp:brief
-description: Project scoping — screen list, adaptations, gap analysis
+name: gsp:project-brief
+description: Scope what you're building
 allowed-tools:
   - Read
   - Write
@@ -41,7 +41,7 @@ Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
 - Extract `brand` name and `path` from brand.ref
 - Set `BRAND_PATH` = `.design/branding/{brand}`
 
-If brand.ref doesn't exist, tell the user to run `/gsp:new` to set up the project with a brand reference.
+If brand.ref doesn't exist, tell the user to run `/gsp:start` to set up the project with a brand reference.
 
 ## Step 1: Load context
 
@@ -51,7 +51,7 @@ Read `{BRAND_PATH}/system/INDEX.md`. If it exists, load all foundation chunks + 
 
 Fallback: read `{BRAND_PATH}/system/SYSTEM.md` (legacy monolith). Log: "⚠️ Legacy system format detected."
 
-If neither exists, tell the user to run `/gsp:brand-system` first to create the brand's design system.
+If neither exists, tell the user to run `/gsp:brand-patterns` first to create the brand's design system.
 
 Also read `{BRAND_PATH}/system/tokens.json`.
 
@@ -74,7 +74,7 @@ Glob `.design/projects/*/STATE.md` — detect active sibling projects.
 **If `design_scope` is `tokens`:**
 1. Update `{PROJECT_PATH}/STATE.md` — set Phase 1 (Brief) status to `skipped`
 2. Display: "Brief phase skipped — design scope is `tokens`."
-3. Route: "Run `/gsp:build`."
+3. Route: "Run `/gsp:project-build`."
 4. Stop here.
 
 ## Step 1.7: Issue framing
@@ -135,8 +135,23 @@ Update `{PROJECT_PATH}/STATE.md`:
 - Set Phase 1 (Brief) status to `complete`
 - Record completion date
 
-## Step 5: Route next
+## Step 5: Phase transition output
 
-"Run `/gsp:research` to research UX patterns, competitor experiences, and technical approaches for this project."
+Render the phase transition screen (see `references/phase-transitions.md` for ANSI color tokens):
+
+```
+  ◆ brief complete — project scoped
+
+    brief/
+    ├── {actual files written}
+    └── INDEX.md
+
+  ──────────────────────────────
+```
+
+Then use `AskUserQuestion` with 3 options:
+- **Continue to research** — "research UX patterns and approaches"
+- **View progress** — "see the full dashboard"
+- **Done for now** — "pick up later with /gsp:start"
 </process>
 </output>

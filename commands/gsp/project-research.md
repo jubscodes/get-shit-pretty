@@ -1,6 +1,6 @@
 ---
-name: gsp:research
-description: Deep project research — UX patterns, competitor UX, technical approaches
+name: gsp:project-research
+description: Research UX patterns and technical approaches
 allowed-tools:
   - Read
   - Write
@@ -14,7 +14,7 @@ allowed-tools:
 <context>
 Phase 2 of the GSP project diamond. Deep research phase that investigates UX patterns, competitor experiences, technical approaches, accessibility strategies, and content patterns specific to what this project is building.
 
-This is NOT brand-level discovery (that's `/gsp:brand-discover`). This is project-level research — focused on the product type, user flows, and implementation challenges.
+This is NOT brand-level discovery (that's `/gsp:brand-research`). This is project-level research — focused on the product type, user flows, and implementation challenges.
 
 Works with the dual-diamond architecture: reads brand context from `.design/branding/{brand}/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 </context>
@@ -48,7 +48,7 @@ Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
 
 Read `{PROJECT_PATH}/brief/INDEX.md`. If it exists, load `scope.md` and `target-adaptations.md`.
 
-If brief doesn't exist, tell the user to run `/gsp:brief` first.
+If brief doesn't exist, tell the user to run `/gsp:project-brief` first.
 
 ### Brand system (selective)
 
@@ -57,6 +57,10 @@ Read `{BRAND_PATH}/system/INDEX.md`. If it exists, load foundation chunks (to un
 ### Brand discovery (selective)
 
 Read `{BRAND_PATH}/discover/INDEX.md`. If it exists, load `competitive-audit.md` and `trend-analysis.md` (to avoid duplicating brand-level research).
+
+### Custom references
+
+If `{PROJECT_PATH}/references/INDEX.md` exists, load relevant references (competitor screenshots, brand guidelines, design specs). Pass to the researcher agent for context.
 
 ### Project context
 
@@ -69,7 +73,7 @@ Read:
 **If `design_scope` is `tokens`:**
 1. Update `{PROJECT_PATH}/STATE.md` — set Phase 2 (Research) status to `skipped`
 2. Display: "Research phase skipped — design scope is `tokens`."
-3. Route: "Run `/gsp:build`."
+3. Route: "Run `/gsp:project-build`."
 4. Stop here.
 
 ## Step 2: Spawn project researcher
@@ -121,8 +125,23 @@ Update `{PROJECT_PATH}/STATE.md`:
 - Set Phase 2 (Research) status to `complete`
 - Record completion date
 
-## Step 4: Route next
+## Step 4: Phase transition output
 
-"Run `/gsp:design` to design screens informed by this research."
+Render the phase transition screen (see `references/phase-transitions.md` for ANSI color tokens):
+
+```
+  ◆ research complete — patterns and approaches researched
+
+    research/
+    ├── {actual files written}
+    └── INDEX.md
+
+  ──────────────────────────────
+```
+
+Then use `AskUserQuestion` with 3 options:
+- **Continue to design** — "design screens and flows"
+- **View progress** — "see the full dashboard"
+- **Done for now** — "pick up later with /gsp:start"
 </process>
 </output>

@@ -1,6 +1,6 @@
 ---
-name: gsp:review
-description: Validate built deliverables — token compliance, screen coverage, acceptance
+name: gsp:project-review
+description: QA review — validate implementation against designs
 allowed-tools:
   - Read
   - Write
@@ -10,15 +10,15 @@ allowed-tools:
   - Glob
 ---
 <context>
-Phase 6 of the GSP project diamond. Validates that built deliverables match the design intent — checking system token usage, screen coverage, component implementation, and accessibility compliance in the actual code.
+Phase 6 of the GSP project diamond. QA validates that the actual codebase implementation matches the design intent — checking real source files for token usage, screen coverage, component quality, and accessibility compliance.
 
 Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/system/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 </context>
 
 <objective>
-Validate built deliverables against design intent.
+QA validate the codebase implementation against design intent.
 
-**Input:** Built code + design chunks + brand system
+**Input:** BUILD-LOG.md + actual codebase files + `git diff` + design chunks + brand system
 **Output:** `{project}/review/` (acceptance-report.md + issues.md + INDEX.md) + exports/INDEX.md update
 **Agent:** `gsp-reviewer`
 </objective>
@@ -44,7 +44,11 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target` and `design_sco
 
 ### Load all artifacts
 
-**Build output:** Read `{PROJECT_PATH}/build/CODE.md` and scan `{PROJECT_PATH}/build/components/` for implemented components.
+**Build log:** Read `{PROJECT_PATH}/build/BUILD-LOG.md` — what the builder says was implemented (files created, files modified, component map).
+
+**Actual codebase:** Read the files listed in BUILD-LOG.md. Use Grep/Glob to find and verify actual source files.
+
+**Git diff:** Run `git diff` (and `git diff --cached`) to see what actually changed in the codebase. Cross-reference against BUILD-LOG.md.
 
 **Design:** Read `{PROJECT_PATH}/design/INDEX.md` → load all screen chunks.
 Fallback: `{PROJECT_PATH}/screens/INDEX.md` (legacy).
@@ -58,8 +62,6 @@ Also read `{BRAND_PATH}/system/tokens.json`.
 
 **Critique:** Read `{PROJECT_PATH}/critique/INDEX.md` → load prioritized-fixes and accessibility-fixes (to verify they were addressed).
 
-**Codebase:** Scan actual codebase for implemented components (when `implementation_target` is not `figma`).
-
 ## Step 1.5: Scope check
 
 **If `design_scope` is `tokens`:**
@@ -68,13 +70,15 @@ Also read `{BRAND_PATH}/system/tokens.json`.
 3. Write `{PROJECT_PATH}/review/INDEX.md`
 4. Update `{PROJECT_PATH}/exports/INDEX.md` between `<!-- BEGIN:review -->` and `<!-- END:review -->` with populated table
 5. Update `{PROJECT_PATH}/STATE.md` — set Phase 6 (Review) to `complete` or `needs-revision`
-6. Route: display verdict and suggest `/gsp:launch` or re-run `/gsp:review`
+6. Route: display verdict and suggest `/gsp:launch` or re-run `/gsp:project-review`
 7. **Stop here**
 
 ## Step 2: Spawn reviewer
 
 Spawn the `gsp-reviewer` agent with:
-- Build output (CODE.md + component files)
+- BUILD-LOG.md contents
+- Actual codebase file paths (from BUILD-LOG.md)
+- `git diff` output
 - Design chunks
 - Brand system chunks + tokens.json
 - Brief chunks
@@ -82,6 +86,7 @@ Spawn the `gsp-reviewer` agent with:
 - The Deliverable Reviewer prompt (11)
 - The review output template
 - **Output path:** `{PROJECT_PATH}/review/`
+- **Clear instruction:** "Review actual codebase files, not `.design/build/` specs. Use Grep to search for hardcoded values. Use `git diff` to verify changes. Reference actual file paths in issues."
 
 The agent writes chunks directly:
 - `review/acceptance-report.md`
@@ -115,6 +120,14 @@ Update `{PROJECT_PATH}/STATE.md`:
 - Set Phase 6 (Review) status to `complete` or `needs-revision`
 - Record completion date
 - If Pass or Conditional Pass: Set Prettiness Level to 100%
+- Update `## Screen Build Status` table — set Review Status per screen based on acceptance-report.md findings
+
+### QA loop — if Fail
+
+If verdict is **Fail**:
+1. Set Phase 6 (Review) status to `needs-revision`
+2. Set Phase 5 (Build) status to `needs-revision`
+3. Ensure `review/issues.md` is written with actionable issues
 
 ### Finalize git tracking
 
@@ -148,12 +161,40 @@ Update `{PROJECT_PATH}/STATE.md`:
      **Files:** {count} files touched → [manifest](./projects/{name}/codebase/MANIFEST.md)
      ```
 
-## Step 6: Route next
+## Step 6: Phase transition output
+
+Render the phase transition screen (see `references/phase-transitions.md` for ANSI color tokens):
 
 **If Pass/Conditional Pass:**
-"Project is fully pretty! All 6 project phases complete. Run `/gsp:launch` if you need marketing campaign assets, or `/gsp:progress` to see the full journey."
+
+```
+  ◆ review complete — implementation validated
+
+    review/
+    ├── acceptance-report.md
+    ├── issues.md
+    └── INDEX.md
+
+  ──────────────────────────────
+
+  fully pretty.
+```
+
+Then use `AskUserQuestion` with 3 options:
+- **Launch campaign** — "create launch and marketing assets"
+- **View progress** — "see the full dashboard"
+- **Done for now** — "pick up later with /gsp:start"
 
 **If Fail:**
-"Critical issues found. Address the issues in `review/issues.md`, then run `/gsp:review` again."
+
+```
+  ◈ review — QA found issues, needs revision
+
+  ──────────────────────────────
+```
+
+Then use `AskUserQuestion` with 3 options:
+- **Fix and rebuild** — "address issues in review/issues.md"
+- **View issues** — "see the full QA report"
+- **Done for now** — "pick up later with /gsp:start"
 </process>
-</output>

@@ -1,6 +1,6 @@
 ---
-name: gsp:design
-description: Design UI/UX screens, flows, and interaction patterns
+name: gsp:project-design
+description: Design screens and interaction flows
 allowed-tools:
   - Read
   - Write
@@ -44,13 +44,25 @@ Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
 Read `{PROJECT_PATH}/config.json` — get `implementation_target`, `design_scope`.
 Read `{PROJECT_PATH}/BRIEF.md` — app type, audience, goals.
 
+### Revision mode
+
+Check `{PROJECT_PATH}/STATE.md` for design status. If status is `needs-revision`:
+1. Read `{PROJECT_PATH}/critique/prioritized-fixes.md` — design issues to address
+2. Read `{PROJECT_PATH}/critique/accessibility-fixes.md` — accessibility issues to address
+3. Log: "🔄 Revision mode — addressing critique issues from prioritized-fixes.md"
+4. Pass critique fixes to designer agent in Step 3
+
+### Custom references
+
+If `{PROJECT_PATH}/references/` exists, scan for files (images, PDFs, markdown, URLs). Pass any found references to the designer agent as additional context.
+
 ### Brand system (chunk-first)
 
 Read `{BRAND_PATH}/system/INDEX.md`. If it exists, load all foundation chunks + selective component chunks.
 
-Fallback: read `{BRAND_PATH}/system/SYSTEM.md` (legacy monolith). Log: "⚠️ Legacy system format detected — consider re-running /gsp:brand-system for chunk output."
+Fallback: read `{BRAND_PATH}/system/SYSTEM.md` (legacy monolith). Log: "⚠️ Legacy system format detected — consider re-running /gsp:brand-patterns for chunk output."
 
-If neither exists, tell the user to run `/gsp:brand-system` first.
+If neither exists, tell the user to run `/gsp:brand-patterns` first.
 
 ### Brand context (selective)
 
@@ -74,7 +86,7 @@ If research doesn't exist, proceed without it (research is informative, not bloc
 **If `design_scope` is `tokens`:**
 1. Update `{PROJECT_PATH}/STATE.md` — set Phase 3 (Design) status to `skipped`
 2. Display: "Design phase skipped — design scope is `tokens`."
-3. Route: "Run `/gsp:build`."
+3. Route: "Run `/gsp:project-build`."
 4. Stop here.
 
 **If `design_scope` is `partial`:**
@@ -88,13 +100,14 @@ When `implementation_target` is not `figma`:
 
 ## Step 3: Spawn designer
 
-Spawn the `gsp-designer` agent with all prior artifacts, the UI/UX Pattern Master prompt (03), design output template, Apple HIG patterns reference, implementation_target, design_scope, target screens (when partial), and existing components inventory.
+Spawn the `gsp-designer` agent with all prior artifacts, the UI/UX Pattern Master prompt (03), design output template, Apple HIG patterns reference, implementation_target, design_scope, target screens (when partial), existing components inventory, custom references (when available), and critique fixes (when in revision mode).
 
 **Output path:** `{PROJECT_PATH}/design/`
 
 The agent writes chunks directly:
 - `design/screen-{NN}-{name}.md` (one per screen)
 - `design/shared/` (personas, IA, navigation, micro-interactions, responsive, component-plan)
+- `design/preview.html` (self-contained wireframe preview)
 - `design/INDEX.md`
 - Updates `{PROJECT_PATH}/exports/INDEX.md` (design section)
 
@@ -104,8 +117,27 @@ Update `{PROJECT_PATH}/STATE.md`:
 - Set Phase 3 (Design) status to `complete`
 - Record completion date
 
-## Step 5: Route next
+## Step 5: Phase transition output
 
-"Run `/gsp:critique` for design critique and accessibility audit."
+Render the phase transition screen (see `references/phase-transitions.md` for ANSI color tokens):
+
+```
+  ◆ design complete — screens designed
+
+    design/
+    ├── {actual screen chunks}
+    ├── shared/
+    │   ├── {shared chunks}
+    │   └── component-plan.md
+    ├── preview.html
+    └── INDEX.md
+
+  ──────────────────────────────
+```
+
+Then use `AskUserQuestion` with 3 options:
+- **Continue to critique** — "critique designs + accessibility audit"
+- **View progress** — "see the full dashboard"
+- **Done for now** — "pick up later with /gsp:start"
 </process>
 </output>
