@@ -1,6 +1,6 @@
 {
   "name": "get-shit-pretty",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Design engineering system for AI coding agents. Brand identity + design projects, from strategy to code.",
   "bin": {
     "get-shit-pretty": "bin/install.js"
