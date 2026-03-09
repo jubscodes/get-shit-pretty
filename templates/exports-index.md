@@ -43,7 +43,7 @@ This file is the entry point for coding agents consuming GSP design output.
 <!-- BEGIN:brief -->
 | Section | File |
 |---------|------|
-| _(populated by /gsp:brief)_ | |
+| _(populated by /gsp:project-brief)_ | |
 <!-- END:brief -->
 
 ## Project Research
@@ -51,7 +51,7 @@ This file is the entry point for coding agents consuming GSP design output.
 <!-- BEGIN:research -->
 | Section | File |
 |---------|------|
-| _(populated by /gsp:research)_ | |
+| _(populated by /gsp:project-research)_ | |
 <!-- END:research -->
 
 ## Design
@@ -59,7 +59,7 @@ This file is the entry point for coding agents consuming GSP design output.
 <!-- BEGIN:design -->
 | # | Screen | File | Components Used |
 |---|--------|------|-----------------|
-| _(populated by /gsp:design)_ | | | |
+| _(populated by /gsp:project-design)_ | | | |
 
 ### Shared
 
@@ -73,15 +73,23 @@ This file is the entry point for coding agents consuming GSP design output.
 <!-- BEGIN:critique -->
 | Section | File |
 |---------|------|
-| _(populated by /gsp:critique)_ | |
+| _(populated by /gsp:project-critique)_ | |
 <!-- END:critique -->
 
-## Deliverable Review
+## Build
+
+<!-- BEGIN:build -->
+| Section | File |
+|---------|------|
+| _(populated by /gsp:project-build)_ | |
+<!-- END:build -->
+
+## QA Review
 
 <!-- BEGIN:review -->
 | Section | File |
 |---------|------|
-| _(populated by /gsp:review)_ | |
+| _(populated by /gsp:project-review)_ | |
 <!-- END:review -->
 
 ## Launch Campaign (Optional)
