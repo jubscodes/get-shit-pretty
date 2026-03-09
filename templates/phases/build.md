@@ -4,32 +4,48 @@
 
 ## Chunks
 
-### `build/CODE.md`
+### `build/BUILD-LOG.md`
 
-Main build manifest containing:
+Implementation manifest documenting what was built:
 
-1. **Component Hierarchy** — Tree diagram showing app structure with props and state annotations
-2. **Setup** — Token configuration (CSS variables or Tailwind config), theme provider, global styles
-3. **Component Index** — Table of all components with file paths
+1. **Implementation Summary** — What was built, which screens, overall approach taken
+2. **Files Created** — New files added to the codebase
 
 ```markdown
-| Component | File | Props | States |
-|-----------|------|-------|--------|
-| {Component} | [components/{name}.md](./components/{name}.md) | {props} | {states} |
+| File | Purpose |
+|------|---------|
+| {path/to/file} | {what it does} |
 ```
 
-### `build/components/`
+3. **Files Modified** — Existing files edited in the codebase
 
-Individual component files, one per component:
+```markdown
+| File | Changes |
+|------|---------|
+| {path/to/file} | {what was changed} |
+```
 
-| Component | File | ~Lines |
-|-----------|------|--------|
-| {Component} | [{name}.md](./components/{name}.md) | ~{N} |
+4. **Component Map** — How design components map to codebase files
 
-Each component file contains:
-- Full implementation code (copy-paste ready)
-- Props interface / types
-- All states (default, loading, error, empty)
-- Responsive behavior
-- Accessibility (ARIA, keyboard, focus)
-- Usage example
+```markdown
+| Design Component | Codebase File | Status |
+|-----------------|---------------|--------|
+| {component name} | {path/to/file} | complete / partial |
+```
+
+5. **Patterns Applied** — Architecture decisions, naming conventions, design patterns used
+6. **Dependencies Added** — Packages installed during build
+7. **Known Gaps** — What wasn't implemented and why
+
+### Revision sections (when addressing QA issues)
+
+When re-entering build after QA failure, append:
+
+- **Revision Summary** — Issues addressed from `review/issues.md`
+- **Files Changed** — What was modified to fix the issues
+
+### Figma exception
+
+When `implementation_target` is `figma`, build produces specs instead of codebase edits:
+- `build/CODE.md` — Component hierarchy + implementation guide
+- `build/components/` — Individual component spec files

@@ -17,6 +17,16 @@ You are working in an existing codebase. Follow conventions from [INVENTORY]:
 - Use the project's styling approach (cn() utility, className patterns, etc.)
 - When modifying existing components, show the diff rather than full rewrite
 
+## Working Mode
+
+You work directly in the codebase — not in `.design/build/`:
+- Use Edit to modify existing source files
+- Use Write to create new source files in the correct codebase locations
+- Use Bash to install dependencies and verify compilation
+- Follow INVENTORY.md conventions for file placement, naming, and patterns
+- Leave all changes unstaged for the user to review and commit
+- After implementation, write BUILD-LOG.md to `.design/projects/{project}/build/` as a record of what was done
+
 ---
 
 ## Variables
@@ -27,14 +37,10 @@ You are working in an existing codebase. Follow conventions from [INVENTORY]:
 
 ## Expected Output
 
-- Component hierarchy with props, state, and data flow
-- Copy-paste production code
+- Components implemented directly in the codebase
 - Responsive layout implementation
 - ARIA and accessibility implementation
 - Error, loading, and empty states
 - Animations and transitions
 - Styling (CSS/Tailwind with design tokens, dark mode, breakpoints)
-- Asset optimization guidance
-- Performance tips
-- Testing strategy
-- Documentation
+- BUILD-LOG.md documenting what was done
