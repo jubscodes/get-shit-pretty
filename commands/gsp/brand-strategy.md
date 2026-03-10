@@ -1,6 +1,6 @@
 ---
 name: gsp:brand-strategy
-description: Define who you are — archetype, positioning, personality
+description: Define positioning, voice, and messaging
 allowed-tools:
   - Read
   - Write
@@ -11,140 +11,125 @@ allowed-tools:
   - WebFetch
 ---
 <context>
-Phase 2 of the GSP branding diamond. An interactive creative challenge — you present research insights, push opinionated strategic recommendations, and collaborate with the user to lock brand positioning before spawning the strategist agent.
+Phase 2 of the GSP branding diamond. Interactive creative session — present research insights, collaborate on archetype and positioning, then produce full strategy including voice and messaging. This phase replaces the previous separate strategy + verbal phases.
 </context>
 
 <objective>
-Define brand strategy through interactive creative direction, then produce full strategy chunks.
+Define brand strategy and voice through interactive creative direction, then produce strategy chunks.
 
 **Input:** `.design/branding/{brand}/BRIEF.md` + discover chunks
-**Output:** `.design/branding/{brand}/strategy/` (6 chunks + INDEX.md)
+**Output:** `.design/branding/{brand}/strategy/` (5 chunks + INDEX.md)
 **Agent:** `gsp-brand-strategist`
 </objective>
 
 <execution_context>
 @/Users/jubs/.claude/get-shit-pretty/templates/phases/strategy.md
-@/Users/jubs/.claude/get-shit-pretty/references/brand-prism.md
 @/Users/jubs/.claude/get-shit-pretty/references/brand-archetypes.md
 @/Users/jubs/.claude/get-shit-pretty/references/positioning-frameworks.md
+@/Users/jubs/.claude/get-shit-pretty/references/voice-tone.md
 </execution_context>
+
+<rules>
+- Always use `AskUserQuestion` for user-facing questions — never raw text prompts
+- Push opinionated recommendations but let the user decide
+- Quality gate: if you could swap in a competitor's name and it still works, it's too generic
+- Artifacts must balance human readability with agent consumption for downstream phases
+</rules>
 
 <process>
 ## Step 0: Resolve brand
 
-Scan `.design/branding/` for brand directories. If only one brand exists, use it. If multiple, ask the user which brand to work on.
+Scan `.design/branding/` for brand directories. One brand → use it. Multiple → use `AskUserQuestion`.
 
 Set `BRAND_PATH` = `.design/branding/{brand}`
+If missing, tell user to run `/gsp:start` first.
 
-If BRAND_PATH doesn't exist, tell the user to run `/gsp:start` first.
+## Step 1: Load context
 
-## Step 1: Load research findings
+Read `{BRAND_PATH}/BRIEF.md` — business, personas, brand essence, competitive landscape.
 
-Read `{BRAND_PATH}/BRIEF.md` — company, audience, personality, goals.
+**Chunk-first:** Read `{BRAND_PATH}/discover/INDEX.md`. If it exists, load all 4 discover chunks.
+**Fallback:** If INDEX.md doesn't exist, proceed without — strategy can run on BRIEF.md alone.
 
-**Chunk-first:** Read `{BRAND_PATH}/discover/INDEX.md`. If it exists, load all 7 discover chunks.
+## Step 2: Present strategic opportunity
 
-**Fallback:** If INDEX.md doesn't exist, read `{BRAND_PATH}/discover/DISCOVER.md` (legacy monolith). Log: "⚠️ Legacy discover format detected — consider re-running /gsp:brand-research for chunk output."
+Synthesize research + brief into a focused insight:
+- **Competitive gaps** — where the market underserves
+- **White space** — unoccupied positions
+- **Persona tension** — unmet needs from BRIEF.md personas
 
-Proceed without discover output if neither exists (strategy can run independently).
-
-## Step 2: Present research highlights
-
-Synthesize and present the most strategically relevant findings:
-- **Competitive gaps** — where the market is underserving or homogeneous
-- **White space** — unoccupied positions in the competitive landscape
-- **Audience tension points** — unmet needs, frustrations, aspirations
-- **Key trends** — relevant shifts that create strategic opportunity
-
-Frame the strategic opportunity: "Here's what the research tells us about where this brand can win."
+Frame as: "Here's where this brand can win." Keep it to 4-6 lines.
 
 ## Step 3: Archetype selection
 
-Present 2-3 archetype candidates using `AskUserQuestion`. Push a recommendation but let them choose:
+Use `AskUserQuestion` with 2-3 archetype candidates. Each option:
+- **Label:** archetype name
+- **Description:** strategic reasoning — why it fits the personas and gaps
+- **Preview:** example sentence in that archetype's voice
 
-Each option should have:
-- **Label:** The archetype name (e.g., "The Creator")
-- **Description:** Strategic reasoning — why this archetype fits and what territory it claims
-- **Preview:** Example communication style — "Here's how this archetype would introduce your product: '{sample sentence}'"
-
-Frame with context before the question: "The Sage space is crowded — [competitor A] and [competitor B] already own it. Here's where I see opportunity:"
-
-Let the user choose, adjust, or blend. Confirm the selected archetype.
+Push a recommendation. Let user choose, adjust, or blend.
 
 ## Step 4: Positioning challenge
 
-Show the competitive landscape as a positioning map (two key axes relevant to the industry).
+Show competitive landscape on 2 axes. Use `AskUserQuestion` with 2 options:
+- **Safe play** — description: where it sits, nearby competitors, lower risk / preview: positioning statement
+- **Bold play** — description: white space, differentiation, what the risk is / preview: positioning statement
 
-Identify where competitors cluster and where the white space is. Then use `AskUserQuestion` with 2 options:
+Push for bold. Let user decide.
 
-- **Safe play** — description: where it sits on the map, which competitors are nearby, why it's lower-risk / preview: the positioning statement
-- **Bold play** — description: the white space opportunity, why it's differentiated, what the risk is / preview: the positioning statement
+## Step 5: Voice direction
 
-Push for the bold play in your framing, but let the user decide. Confirm the positioning statement.
+Reference brand essence from BRIEF.md. Use `AskUserQuestion` with 2-3 voice directions:
+- **Label:** 3-word voice set (e.g. "Precise, Inventive, Grounded")
+- **Description:** how these words differentiate and what they signal
+- **Preview:** example sentence in that voice
 
-## Step 5: Brand personality
+## Step 6: Spawn strategist
 
-Reference the personality words from BRIEF.md. Challenge generic choices and present refined options using `AskUserQuestion` with 2-3 personality word sets:
-
-Each option should have:
-- **Label:** The 3-word set (e.g., "Precise · Inventive · Grounded")
-- **Description:** How these words differentiate from competitors and what they signal
-- **Preview:** A sample sentence written in that personality — "Here's how the brand sounds: '{example}'"
-
-Frame with context: "'Professional' doesn't differentiate — every B2B brand claims it. Here are sharper alternatives:"
-
-Confirm the final personality words with the user.
-
-## Step 6: Spawn brand strategist
-
-With confirmed strategic choices (archetype, positioning, personality), spawn the `gsp-brand-strategist` agent with:
-- The full BRIEF.md content
-- All discover chunks (or DISCOVER.md fallback content)
-- The confirmed archetype, positioning, and personality decisions
-- The strategy output template
-- The brand-prism reference
-- The brand-archetypes reference
-- The positioning-frameworks reference
-- `{BRAND_PATH}/audit/evolution-map.md` (if exists)
-- `{BRAND_PATH}/audit/equity-analysis.md` (if exists)
+With confirmed archetype, positioning, and voice direction, spawn the `gsp-brand-strategist` agent with:
+- BRIEF.md content
+- All discover chunks
+- Confirmed archetype, positioning, voice direction
+- Strategy output template
+- Brand archetypes reference
+- Positioning frameworks reference
+- Voice-tone reference
+- Audit chunks if they exist: `evolution-map.md`, `equity-analysis.md`
 - `brand_mode` from config.json
 - **Output path:** `{BRAND_PATH}/strategy/`
 
-The agent writes chunks directly to the strategy directory:
-1. `brand-prism.md`
+The agent writes 5 chunks + INDEX.md:
+1. `positioning.md`
 2. `archetype.md`
-3. `golden-circle.md`
-4. `positioning.md`
-5. `brand-platform.md`
-6. `messaging-hierarchy.md`
-7. `INDEX.md`
+3. `brand-platform.md`
+4. `voice-and-tone.md`
+5. `messaging.md`
+6. `INDEX.md`
 
-## Step 6.5: Perspective check
+## Step 7: Perspective check
 
-Before finalizing strategy, load `{BRAND_PATH}/discover/audience-personas.md` and present stakeholder reactions:
+Load BRIEF.md personas. Present brief stress-test:
 
-"Before we lock this in, let me stress-test from three angles:
+"Stress-testing from three angles:
 
- The Customer ({primary persona name from audience-personas.md}):
- "{reaction to the positioning, archetype, and messaging — would they trust/engage/buy?}"
+ {Primary persona name}: {1-line reaction — would they trust this?}
+ Skeptic: {1-line challenge to the boldest decision}
+ {Top competitor}: {1-line — is the brand differentiated enough?}
 
- The Skeptic (internal stakeholder):
- "{challenges the boldest decision — archetype choice, positioning gamble, messaging risk. Raises the 'what if' scenario.}"
+ Concerns?"
 
- The Competitor ({top competitor name from discover/competitive-audit.md}):
- "{how they'd respond — is the brand differentiated enough to threaten them? Where's the vulnerability?}"
+Use `AskUserQuestion`:
+- **Lock it in** — "Strategy looks solid"
+- **Adjust** — "I want to change something"
 
- Any of these concerns resonate? Want to adjust before we lock in?"
+If adjust → loop back. If confirmed → proceed.
 
-If user wants changes → loop back to adjust strategy outputs.
-If confirmed → proceed to state update.
+## Step 8: Update state and route
 
-## Step 7: Update state and route
+Update `{BRAND_PATH}/STATE.md`: set Phase 2 (Strategy) to `complete`.
 
-Update `{BRAND_PATH}/STATE.md`:
-- Set Phase 2 (Strategy) status to `complete`
-- Record completion date
-
-Display strategy summary (archetype, positioning, core message) and end with:
-"Strategy locked. Run `/gsp:brand-identity` to bring this to life."
+Render phase transition, then use `AskUserQuestion`:
+- **Continue to identity** — "create visual identity"
+- **View progress** — "see the full dashboard"
+- **Done for now** — "pick up later with /gsp:start"
 </process>
