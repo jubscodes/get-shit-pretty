@@ -1,5 +1,5 @@
 {
-  "version": "0.4.2",
+  "version": "0.5.0",
   "project_type": "brand",
   "brand": {
     "name": "",
@@ -10,14 +10,6 @@
     "preserve": [],
     "evolve": [],
     "replace": []
-  },
-  "phases": {
-    "audit": { "status": "skipped", "output": "audit/" },
-    "discover": { "status": "pending", "output": "discover/" },
-    "strategy": { "status": "pending", "output": "strategy/" },
-    "verbal": { "status": "pending", "output": "verbal/" },
-    "identity": { "status": "pending", "output": "identity/" },
-    "system": { "status": "pending", "output": "system/" }
   },
   "system_config": {
     "tech_stack": "",

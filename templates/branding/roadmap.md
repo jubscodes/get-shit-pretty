@@ -18,26 +18,25 @@
 **Command:** `/gsp:brand-research`
 **Input:** BRIEF.md
 **Output:** `discover/`
-**Goal:** Research market landscape, audience personas, competitive positioning, trends.
+**Goal:** Research market landscape, competitive positioning, design trends.
 
 ## Phase 2: Strategy
 **Status:** pending
 **Command:** `/gsp:brand-strategy`
 **Input:** BRIEF.md + discover/
 **Output:** `strategy/`
-**Goal:** Define brand positioning — archetype, positioning map, personality, messaging.
+**Goal:** Define positioning, archetype, platform, voice, and messaging.
 
-## Phases 3-4: Identity (Verbal + Visual)
+## Phase 3: Identity
 **Status:** pending
 **Command:** `/gsp:brand-identity`
 **Input:** BRIEF.md + strategy/
-**Output:** `verbal/` + `identity/` + `palettes.json`
-**Goal:** Build verbal and visual identity — voice, tone, logo, color, typography.
-**Granular re-run:** `/gsp:brand-verbal` (phase 3 only)
+**Output:** `identity/` + `palettes.json`
+**Goal:** Create visual identity — logo, color, typography, imagery.
 
-## Phase 5: Patterns (Design System)
+## Phase 4: Patterns (Design System)
 **Status:** pending
 **Command:** `/gsp:brand-patterns`
-**Input:** Identity + Strategy + Verbal + BRIEF.md
+**Input:** Identity + Strategy + BRIEF.md
 **Output:** `system/` (foundations, components, tokens.json) + `preview.html`
 **Goal:** Build design system, generate brand preview, transition to project diamond.

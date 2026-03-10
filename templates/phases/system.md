@@ -15,7 +15,7 @@
 - identity/typography.md → foundations/typography.md
 - identity/logo-directions.md → clear space tokens
 - strategy/archetype.md + strategy/brand-platform.md → principles.md
-- verbal/brand-voice.md → content component guidelines
+- strategy/voice-and-tone.md → content component guidelines
 - config.json system_config — tech_stack, system_strategy
 
 ## Chunk Mapping

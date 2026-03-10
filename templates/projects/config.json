@@ -15,13 +15,5 @@
   "git": {
     "branch": "",
     "pr": ""
-  },
-  "phases": {
-    "brief": { "status": "pending", "output": "brief/" },
-    "research": { "status": "pending", "output": "research/" },
-    "design": { "status": "pending", "output": "design/" },
-    "critique": { "status": "pending", "output": "critique/" },
-    "build": { "status": "pending", "output": "build/" },
-    "review": { "status": "pending", "output": "review/" }
   }
 }

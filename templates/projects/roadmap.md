@@ -54,6 +54,6 @@
 
 ## Optional: Launch
 **Command:** `/gsp:launch`
-**Input:** Brand identity + verbal + design
+**Input:** Brand identity + strategy + design
 **Output:** `launch/` (campaign chunks)
 **Goal:** Create marketing campaign assets for launch. Run when needed.

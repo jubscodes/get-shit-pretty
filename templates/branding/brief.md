@@ -9,6 +9,7 @@
 - **Industry:** {INDUSTRY}
 - **Founded:** {YEAR}
 - **Size:** {SIZE}
+- **Stage:** {idea | mvp | growing | established}
 - **Existing brand?** {YES_NO}
 
 ## Brand Mode
@@ -26,21 +27,38 @@
 - **Evolve:** {elements to refresh}
 - **Replace:** {elements to redo}
 
-## Mission & Vision
-- **Mission:** {MISSION}
-- **Vision:** {VISION}
-- **Values:** {VALUES}
+## Business
+- **Problem:** {what problem does this business solve?}
+- **Solution:** {how does it solve it differently?}
+- **Business model:** {how it makes money}
+- **Defensibility:** {what makes it hard to copy — network effects, technology, brand, data}
 
-## Audience
-- **Primary:** {PRIMARY_AUDIENCE}
-- **Secondary:** {SECONDARY_AUDIENCE}
-- **Demographics:** {DEMOGRAPHICS}
-- **Psychographics:** {PSYCHOGRAPHICS}
+## Personas
 
-## Personality
-- **Brand personality:** {PERSONALITY}
-- **Tone:** {TONE}
-- **How should the brand feel?** {FEELING}
+### Primary: {PERSONA_NAME}
+- **Role:** {job title or life role}
+- **Age range:** {range}
+- **Day-in-the-life:** {2-3 sentences — what does a typical day look like for this person? what tools do they use? what pressures do they face?}
+- **Frustration:** {what's broken in their current experience with products like yours?}
+- **Aspiration:** {what do they wish existed? what outcome would make them loyal?}
+- **Discovery:** {how do they find and evaluate new products? who do they trust?}
+- **Trust signals:** {what makes them trust a brand? what makes them distrust?}
+
+### Secondary: {PERSONA_NAME} (optional)
+- **Role:** {job title or life role}
+- **Age range:** {range}
+- **Day-in-the-life:** {2-3 sentences}
+- **Frustration:** {what's broken}
+- **Aspiration:** {what they wish existed}
+- **Discovery:** {how they find products}
+- **Trust signals:** {trust / distrust triggers}
+
+## Brand Essence
+- **Personality:** {3 words — e.g. precise, inventive, grounded}
+- **Personality reference:** {brand comparison — "like Stripe meets Notion"}
+- **Emotional outcome:** {how should someone feel after interacting with this brand?}
+- **Never be:** {what the brand should never feel like — e.g. corporate, cold, try-hard}
+- **Tone:** {default communication tone}
 
 ## Competitive Landscape
 - **Direct competitors:** {COMPETITORS}
@@ -65,10 +83,9 @@
 
 ## Deliverables
 - [ ] Discovery & research
-- [ ] Brand strategy
-- [ ] Verbal identity
+- [ ] Brand strategy & voice
 - [ ] Visual identity
-- [ ] Color palettes
+- [ ] Design system
 
 ## Notes
 {ADDITIONAL_NOTES}

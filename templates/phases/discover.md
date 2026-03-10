@@ -5,10 +5,10 @@
 
 ---
 
-> This phase produces 7 chunks + INDEX.md in the `discover/` directory.
+> This phase produces 4 chunks + INDEX.md in the `discover/` directory.
 
 ## Inputs
-- BRIEF.md — company, industry, audience, personality, goals
+- BRIEF.md — business, personas, personality, goals, competitive landscape
 - audit/ (if exists): brand-inventory.md, market-fit.md, evolution-map.md
 - config.json — brand_mode, evolution_scope
 
@@ -16,45 +16,32 @@
 
 | Chunk File | Content |
 |-----------|---------|
-| `market-landscape.md` | Industry overview, market trends |
-| `competitive-audit.md` | Competitor analysis, positioning map, competitive gaps |
-| `swot-analysis.md` | Strengths, Weaknesses, Opportunities, Threats |
-| `audience-personas.md` | 2-3 personas with demographics, goals, pain points |
-| `trend-analysis.md` | Design and cultural trends, user expectation shifts |
-| `strategic-recommendations.md` | 3 actionable recommendations |
-| `mood-board-direction.md` | Color, typography, imagery direction |
+| `market-landscape.md` | Industry overview, market size, key players, where the industry is heading |
+| `competitive-audit.md` | Competitor positioning map, visual language analysis, competitive gaps |
+| `trend-analysis.md` | 3-5 relevant design trends with brand examples and adoption phase |
+| `mood-board-direction.md` | Color direction (hex), typography (typefaces), imagery style |
 
 ## Content Reference
 
-Each chunk follows the format in `references/chunk-format.md`. Below is the structural reference for what each chunk should contain:
+Each chunk follows the format in `references/chunk-format.md`.
 
 ### market-landscape.md
-- Industry overview and analysis
-- Market size, key players
-- Where the industry is heading
+- Industry overview and trajectory
+- Market size and key players
+- User expectation shifts relevant to this brand's personas
 
 ### competitive-audit.md
 - Competitor table: Positioning, Strengths, Weaknesses, Visual Style
 - 2x2 positioning map on strategic axes
-- Competitive gaps and opportunities
-
-### swot-analysis.md
-- Strengths / Weaknesses / Opportunities / Threats matrix
-- Design-focused analysis
-
-### audience-personas.md
-- 2-3 personas each with: Demographics, Goals, Pain points, Brand expectations, Media habits
+- Competitive gaps and white space
 
 ### trend-analysis.md
-- 5 macro trends with: definition, visual language, adoption phase, 3 brand examples, risks/opportunities
-- User expectation shifts
-- Platform evolution
-
-### strategic-recommendations.md
-- 3 specific, actionable recommendations for this brand
+- 3-5 macro trends relevant to this brand's industry and audience
+- Each with: definition, visual language, adoption phase, 3 brand examples, risks/opportunities
+- Platform evolution notes
 
 ### mood-board-direction.md
 - Color direction (hex values)
 - Typography direction (named typefaces)
 - Imagery direction
-- Overall feel
+- Overall feel — connects to brand essence from BRIEF.md

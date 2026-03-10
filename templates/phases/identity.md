@@ -8,15 +8,13 @@
 > This phase produces 6 chunks + palettes.json + INDEX.md in the `identity/` directory.
 
 ## Inputs
-- BRIEF.md — audience, constraints
-- discover/mood-board-direction.md → color direction (hex), typography (typefaces), imagery
-- strategy/brand-prism.md Physique → logo concept, visual form
-- strategy/archetype.md visual tendencies → color warmth, type energy, imagery style
-- strategy/positioning.md → visual differentiation
+- BRIEF.md — personas, constraints
+- discover/mood-board-direction.md → color direction, typography, imagery
+- strategy/archetype.md → visual tendencies, color warmth, type energy
+- strategy/positioning.md → visual differentiation from competitors
 - strategy/brand-platform.md → values as visual language
-- verbal/brand-voice.md → typography warmth, color energy
-- verbal/tone-spectrum.md → visual energy level
-- audit/brand-inventory.md (if exists) → current visual elements as evolution baseline
+- strategy/voice-and-tone.md → typography warmth, visual energy level
+- audit/brand-inventory.md (if exists) → current visual elements as baseline
 - audit/evolution-map.md (if exists) → preserve/evolve/replace decisions
 
 ## Chunk Mapping
@@ -34,30 +32,29 @@ Also produces `palettes.json` — machine-readable OKLCH color scales.
 
 ## Content Reference
 
-Each chunk follows the format in `references/chunk-format.md`. Below is the structural reference for what each chunk should contain:
+Each chunk follows the format in `references/chunk-format.md`.
 
 ### logo-directions.md
 - 3 directions each with:
   - **Concept:** description
-  - **Strategic rationale:** why this direction
+  - **Strategic rationale:** connects to archetype + positioning
   - **Variations:** Primary, Secondary, Icon, Monochrome
-  - **Clear space:** rules
-  - **Minimum size:** min size
-  - **Usage rules:** rules
+  - **Clear space and minimum size**
+  - **Usage rules**
 
 ### color-system.md
 - Full palette table: Role, Hex, RGB, Pantone, CMYK, Usage, Rationale
 - Semantic colors (error, success, warning)
-- Color rationale — how colors connect to brand strategy and archetype
-- Dark mode mapping table: Light Mode → Dark Mode
-- Contrast ratios table: Combination, Ratio, Pass/Fail (WCAG AA)
+- Color rationale — connects to archetype and brand essence
+- Dark mode mapping table
+- Contrast ratios table (WCAG AA)
 - Reference to `./palettes.json` for machine-readable OKLCH scales
 
 ### typography.md
-- **Primary typeface:** name, rationale (connect to verbal tone), weights, use cases
+- **Primary typeface:** name, rationale (connect to voice), weights, use cases
 - **Secondary typeface:** name, rationale, weights, use cases
 - Type scale table: Level, Size, Weight, Line Height, Use
-- Responsive behavior notes
+- Responsive behavior
 
 ### imagery-style.md
 - **Photography direction:** style, subjects, color treatment, composition, don'ts
@@ -69,10 +66,5 @@ Each chunk follows the format in `references/chunk-format.md`. Below is the stru
 - Each application with visual direction and design notes
 
 ### brand-book.md
-- 20-page outline:
-  1. Cover — 2. Brand Story — 3. Brand Prism — 4. Brand Voice
-  5. Logo System — 6. Logo Usage Rules — 7. Color System — 8. Color Applications
-  9. Typography — 10. Type in Use — 11. Imagery Direction — 12. Photography Guidelines
-  13. Illustration Guidelines — 14. Iconography — 15. Layout & Grid
-  16. Brand Applications (Digital) — 17. Brand Applications (Print)
-  18. Brand Applications (Social) — 19. Do's and Don'ts — 20. Contact & Resources
+- 20-page outline covering: Brand Story, Strategy, Voice, Logo System,
+  Color, Typography, Imagery, Layout, Applications, Do's and Don'ts
