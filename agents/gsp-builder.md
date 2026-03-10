@@ -2,7 +2,16 @@
 name: gsp-builder
 description: Implements designs in the codebase as production-ready frontend code. Spawned by /gsp:project-build.
 tools: Read, Write, Edit, Bash, Grep, Glob
-color: magenta
+maxTurns: 100
+permissionMode: acceptEdits
+memory: project
+hooks:
+  PostToolUse:
+    - matcher: "Edit|Write"
+      hooks:
+        - type: command
+          command: "${CLAUDE_PLUGIN_ROOT}/scripts/lint-check.sh"
+color: cyan
 ---
 
 <role>
@@ -90,6 +99,12 @@ After implementation, write a build log to the project's build directory (path p
 When in **revision mode** (addressing QA issues), append a revision section:
 - **Revision Summary** — Issues addressed from `review/issues.md`
 - **Files Changed** — What was modified to fix the issues
+
+### `build/INDEX.md`
+
+After writing BUILD-LOG.md, write `build/INDEX.md` following the standard chunk INDEX format (see `references/chunk-format.md`). Reference BUILD-LOG.md (and CODE.md + components/ in figma mode).
+
+> **Note:** `codebase/MANIFEST.md` is written by the command (`project-build.md`), not by this agent.
 
 ### Figma exception
 

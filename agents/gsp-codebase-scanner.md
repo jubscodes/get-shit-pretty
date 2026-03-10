@@ -2,6 +2,10 @@
 name: gsp-codebase-scanner
 description: Scans codebase for tech stack, components, patterns, and conventions. Spawned by /gsp:start as a background agent. Returns structured report — does NOT write files.
 tools: Read, Bash, Grep, Glob
+disallowedTools: Edit, Write
+maxTurns: 30
+permissionMode: dontAsk
+background: true
 color: cyan
 ---
 

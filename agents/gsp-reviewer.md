@@ -2,7 +2,11 @@
 name: gsp-reviewer
 description: QA validates actual codebase implementation against design intent. Spawned by /gsp:project-review.
 tools: Read, Write, Bash, Grep, Glob
-color: magenta
+disallowedTools: Edit
+maxTurns: 60
+permissionMode: acceptEdits
+memory: project
+color: cyan
 ---
 
 <role>

@@ -1,8 +1,11 @@
 ---
 name: gsp-auditor
 description: Audits designs for WCAG 2.2 AA compliance. Spawned by /gsp:project-critique.
-tools: Read, Write, Bash
-color: magenta
+tools: Read, Write, Grep, Glob
+disallowedTools: Edit, Bash
+maxTurns: 40
+permissionMode: acceptEdits
+color: cyan
 ---
 
 <role>

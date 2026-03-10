@@ -1,7 +1,10 @@
 ---
 name: gsp-system-architect
 description: Builds complete design systems with foundations, components, and tokens. Spawned by /gsp:brand-patterns.
-tools: Read, Write, Bash
+tools: Read, Write, Bash, Grep, Glob
+disallowedTools: Edit
+maxTurns: 60
+permissionMode: acceptEdits
 color: magenta
 ---
 
@@ -16,7 +19,7 @@ The system is created once per brand and reused across all projects. It should b
 <inputs>
 - Identity chunks + palettes.json
 - BRIEF.md
-- Strategy + verbal chunks (for principles)
+- Strategy chunks including voice-and-tone.md (for principles)
 - system_strategy and tech_stack from config.json
 - Execution mode: "foundations" | "components" | "full" (default: full for backward compat)
 - Confirmed component scope (for components mode)

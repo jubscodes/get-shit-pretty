@@ -1,8 +1,11 @@
 ---
 name: gsp-campaign-director
 description: Creates marketing campaign asset libraries for product launch. Spawned by /gsp:launch.
-tools: Read, Write, Bash, WebSearch
-color: magenta
+tools: Read, Write, Bash, Grep, Glob, WebSearch, WebFetch
+disallowedTools: Edit
+maxTurns: 50
+permissionMode: acceptEdits
+color: yellow
 ---
 
 <role>
@@ -12,6 +15,16 @@ Act as Creative Director at a top agency. Your job is to create a complete marke
 
 Every asset should be ready to brief to a production team. Exact copy, specific visual direction, clear CTAs.
 </role>
+
+<inputs>
+- Brand identity chunks (from identity/)
+- Strategy voice-and-tone.md + messaging.md
+- Design screen chunks (from design/)
+- BRIEF.md content (audience, goals, project context)
+- Marketing Asset Factory prompt
+- Launch output template
+- Output path
+</inputs>
 
 <methodology>
 ## Campaign Process

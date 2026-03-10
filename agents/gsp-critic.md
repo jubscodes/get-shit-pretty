@@ -1,8 +1,11 @@
 ---
 name: gsp-critic
 description: Provides structured design critiques using Nielsen's heuristics. Spawned by /gsp:project-critique.
-tools: Read, Write, Bash
-color: magenta
+tools: Read, Write, Grep, Glob
+disallowedTools: Edit, Bash
+maxTurns: 40
+permissionMode: acceptEdits
+color: cyan
 ---
 
 <role>

@@ -2,7 +2,10 @@
 name: gsp-scoper
 description: Scopes projects — screen list, priorities, component adaptations, gap analysis. Spawned by /gsp:project-brief.
 tools: Read, Write, Bash, Grep, Glob
-color: magenta
+disallowedTools: Edit
+maxTurns: 40
+permissionMode: acceptEdits
+color: cyan
 ---
 
 <role>

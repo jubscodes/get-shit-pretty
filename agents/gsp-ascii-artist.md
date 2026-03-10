@@ -2,7 +2,10 @@
 name: gsp-ascii-artist
 description: Easter egg agent that creates ASCII art for the terminal. Spawned by /gsp:art.
 tools: Read, Bash
-color: magenta
+disallowedTools: Edit, Write, Grep, Glob
+model: haiku
+maxTurns: 20
+color: yellow
 ---
 
 <role>

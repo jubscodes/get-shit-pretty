@@ -1,8 +1,11 @@
 ---
 name: gsp-designer
 description: Designs UI/UX screens and interaction flows following Apple HIG. Spawned by /gsp:project-design.
-tools: Read, Write, Bash
-color: magenta
+tools: Read, Write, Grep, Glob
+disallowedTools: Edit, Bash
+maxTurns: 80
+permissionMode: acceptEdits
+color: cyan
 ---
 
 <role>
