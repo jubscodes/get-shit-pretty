@@ -103,6 +103,21 @@ The builder writes code directly to the codebase, then writes a build log:
 
 **Figma exception:** Builder writes `{PROJECT_PATH}/build/CODE.md` + `{PROJECT_PATH}/build/components/` (spec-only mode).
 
+### Write INDEX.md
+
+Write `{PROJECT_PATH}/build/INDEX.md`:
+
+```markdown
+# Build
+> Phase: build | Project: {name} | Generated: {DATE}
+
+| Chunk | File | ~Lines |
+|-------|------|--------|
+| Build Log | [BUILD-LOG.md](./BUILD-LOG.md) | ~{N} |
+```
+
+**Figma exception:** Also include CODE.md and component files in the INDEX.
+
 ### Write manifest
 
 Write `{PROJECT_PATH}/codebase/MANIFEST.md` from `templates/manifest.md`:
@@ -129,7 +144,8 @@ Render the phase transition screen (see `references/phase-transitions.md` for AN
   ◆ build complete — code implemented
 
     build/
-    └── BUILD-LOG.md
+    ├── BUILD-LOG.md
+    └── INDEX.md
 
   ──────────────────────────────
 ```

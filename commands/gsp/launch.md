@@ -17,7 +17,7 @@ Works with the dual-diamond architecture: reads brand identity from `.design/bra
 <objective>
 Create marketing campaign assets for product launch.
 
-**Input:** Brand identity + verbal chunks (selective) + screen chunks
+**Input:** Brand identity + strategy/voice-and-tone.md + strategy/messaging.md + screen chunks
 **Output:** `{project}/launch/` (6 chunks + INDEX.md) + exports/INDEX.md update
 **Agent:** `gsp-campaign-director`
 </objective>
@@ -52,10 +52,9 @@ Fallback: read `{BRAND_PATH}/identity/IDENTITY.md`. Log: "⚠️ Legacy identity
 
 If neither exists, tell the user to complete the brand identity first.
 
-### Verbal (selective, chunk-first)
+### Voice and Messaging (from strategy)
 
-Read `{BRAND_PATH}/verbal/INDEX.md`. If it exists, load selective chunks (brand-voice, messaging-matrix, brand-narrative).
-Fallback: read `{BRAND_PATH}/verbal/VERBAL.md`.
+Read `{BRAND_PATH}/strategy/voice-and-tone.md` and `{BRAND_PATH}/strategy/messaging.md`.
 
 ### Design (chunk-first)
 
@@ -68,7 +67,7 @@ Read `{PROJECT_PATH}/BRIEF.md` — audience, goals.
 
 ## Step 2: Spawn campaign director
 
-Spawn the `gsp-campaign-director` agent with identity chunks, verbal chunks, screen chunks, and brief. The Marketing Asset Factory prompt (04). The launch output template.
+Spawn the `gsp-campaign-director` agent with identity chunks, strategy voice-and-tone + messaging chunks, screen chunks, and brief. The Marketing Asset Factory prompt (04). The launch output template.
 
 **Output path:** `{PROJECT_PATH}/launch/`
 

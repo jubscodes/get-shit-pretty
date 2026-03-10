@@ -40,7 +40,7 @@ Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
 
 ## Step 1: Load context
 
-Read `{PROJECT_PATH}/config.json` to get `implementation_target` and `design_scope`.
+Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`, `codebase_type`.
 
 ### Load all artifacts
 
@@ -61,6 +61,8 @@ Also read `{BRAND_PATH}/system/tokens.json`.
 **Research:** Read `{PROJECT_PATH}/research/INDEX.md` → load `reference-specs.md` (to verify specs were followed).
 
 **Critique:** Read `{PROJECT_PATH}/critique/INDEX.md` → load prioritized-fixes and accessibility-fixes (to verify they were addressed).
+
+**Codebase context:** Read `{PROJECT_PATH}/codebase/INVENTORY.md` (if exists) — what existed before build. Read `{PROJECT_PATH}/codebase/MANIFEST.md` (if exists) — what build claims it produced. Cross-reference both against BUILD-LOG.md and actual git diff.
 
 ## Step 1.5: Scope check
 
@@ -83,6 +85,9 @@ Spawn the `gsp-reviewer` agent with:
 - Brand system chunks + tokens.json
 - Brief chunks
 - Critique fixes (to verify resolution)
+- INVENTORY.md (when exists — to verify existing components weren't broken)
+- MANIFEST.md (when exists — to verify build claims match reality)
+- `codebase_type` from config.json
 - The Deliverable Reviewer prompt (11)
 - The review output template
 - **Output path:** `{PROJECT_PATH}/review/`

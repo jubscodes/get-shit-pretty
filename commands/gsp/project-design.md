@@ -41,7 +41,7 @@ Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
 
 ## Step 1: Load context
 
-Read `{PROJECT_PATH}/config.json` — get `implementation_target`, `design_scope`.
+Read `{PROJECT_PATH}/config.json` — get `implementation_target`, `design_scope`, `codebase_type`.
 Read `{PROJECT_PATH}/BRIEF.md` — app type, audience, goals.
 
 ### Revision mode
@@ -100,7 +100,7 @@ When `implementation_target` is not `figma`:
 
 ## Step 3: Spawn designer
 
-Spawn the `gsp-designer` agent with all prior artifacts, the UI/UX Pattern Master prompt (03), design output template, Apple HIG patterns reference, implementation_target, design_scope, target screens (when partial), existing components inventory, custom references (when available), and critique fixes (when in revision mode).
+Spawn the `gsp-designer` agent with all prior artifacts, the UI/UX Pattern Master prompt (03), design output template, Apple HIG patterns reference, implementation_target, design_scope, codebase_type, target screens (when partial), existing components inventory, custom references (when available), and critique fixes (when in revision mode).
 
 **Output path:** `{PROJECT_PATH}/design/`
 
