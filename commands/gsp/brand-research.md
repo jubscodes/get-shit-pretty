@@ -1,113 +1,82 @@
 ---
 name: gsp:brand-research
-description: Research your market, audience, and competitors
+description: Research your market and competitors
 allowed-tools:
   - Read
   - Write
   - Bash
   - Task
+  - AskUserQuestion
   - WebSearch
   - WebFetch
 ---
 <context>
-Phase 1 of the GSP branding diamond. Researches the market landscape, builds audience personas, runs competitive audit, and performs SWOT analysis to inform brand strategy.
+Phase 1 of the GSP branding diamond. Researches market landscape, competitive positioning, and design trends to inform brand strategy. Personas are already defined in BRIEF.md — this phase validates and enriches the market context around them.
 </context>
 
 <objective>
-Research and discover insights that will inform brand strategy.
+Research market context that will inform brand strategy.
 
 **Input:** `.design/branding/{brand}/BRIEF.md`
-**Output:** `.design/branding/{brand}/discover/` (7 chunks + INDEX.md)
+**Output:** `.design/branding/{brand}/discover/` (4 chunks + INDEX.md)
 **Agent:** `gsp-researcher`
 </objective>
 
 <execution_context>
-@/Users/jubs/.claude/get-shit-pretty/prompts/07-design-trend-synthesizer.md
 @/Users/jubs/.claude/get-shit-pretty/templates/phases/discover.md
-@/Users/jubs/.claude/get-shit-pretty/references/design-trends.md (index — load specific trend files from references/trends/ as needed)
+@/Users/jubs/.claude/get-shit-pretty/references/design-trends.md (index only — agent loads specific trend files only after open research validates relevance)
 </execution_context>
 
-<process>
-## Step 1: Find brand
+<rules>
+- Always use `AskUserQuestion` for user-facing questions — never raw text prompts
+- Keep interactions concise — 1-2 exchanges max before spawning the agent
+- Artifacts must balance human readability with agent consumption for downstream phases
+</rules>
 
-Scan `.design/branding/` for brand directories. If only one brand exists, use it. If multiple, ask the user which brand to work on.
+<process>
+## Step 1: Resolve brand
+
+Scan `.design/branding/` for brand directories. One brand → use it. Multiple → use `AskUserQuestion` with one option per brand.
 
 Set `BRAND_PATH` = `.design/branding/{brand}`
 
-Read `{BRAND_PATH}/BRIEF.md` to understand:
-- Company, industry, audience
-- Competitive landscape
-- Brand personality and goals
+Read `{BRAND_PATH}/BRIEF.md`. If missing, tell user to run `/gsp:start` first.
+Read `{BRAND_PATH}/config.json` for `brand_mode`.
 
-If BRIEF.md doesn't exist, tell the user to run `/gsp:start` first.
+## Step 2: Confirm research scope
 
-Read `{BRAND_PATH}/config.json` to confirm `project_type` is `brand`. Note `brand_mode` value.
+Load BRIEF.md personas and competitive landscape. If `{BRAND_PATH}/audit/` exists, also load `audit/evolution-map.md` and `audit/market-fit.md`.
 
-## Step 1.5: Research direction (interactive)
+Present a compact research plan, then use `AskUserQuestion`:
+- **Looks good** — "Start research with this scope"
+- **Adjust** — "I want to add competitors or shift emphasis"
 
-Load BRIEF.md context. If `{BRAND_PATH}/audit/` exists, also load `audit/evolution-map.md` and `audit/market-fit.md`.
-
-Present the research plan:
-
-"Here's my research plan:
- Market focus: {industry from BRIEF.md}
- Competitors to analyze: {3-5 from brief + audit}
- Audience segments: {from brief}
- Research emphasis: {competitive gaps / audience pain / trends}
- {If evolve mode: "I'll benchmark your current brand against these competitors to validate what's working."}
-
- Any competitors I'm missing? Emphasis you'd shift?"
-
-Wait for user input. Incorporate their additions/adjustments.
-
-## Step 2: Spawn researcher
+## Step 3: Spawn researcher
 
 Spawn the `gsp-researcher` agent with:
-- The full BRIEF.md content
-- The Design Trend Synthesizer prompt (07)
-- The discover output template
-- Instruction to focus on the brand's specific industry
-- User-confirmed research scope from Step 1.5
+- BRIEF.md content
+- Discover output template
+- Design trends index (reference only — agent loads specific trend files only after open research validates them)
+- User-confirmed scope adjustments
 - `brand_mode` from config.json
-- Audit chunks if they exist: `{BRAND_PATH}/audit/brand-inventory.md`, `{BRAND_PATH}/audit/market-fit.md`, `{BRAND_PATH}/audit/evolution-map.md`
+- Audit chunks if they exist
 - **Output path:** `{BRAND_PATH}/discover/`
 
-## Step 2.5: Confirm scope
-
-After confirming the research scope with the user, proceed to spawn the researcher agent with the confirmed parameters.
-
-The agent writes chunks directly to the discover directory:
+The agent writes 4 chunks + INDEX.md:
 1. `market-landscape.md`
 2. `competitive-audit.md`
-3. `swot-analysis.md`
-4. `audience-personas.md`
-5. `trend-analysis.md`
-6. `strategic-recommendations.md`
-7. `mood-board-direction.md`
-8. `INDEX.md`
+3. `trend-analysis.md`
+4. `mood-board-direction.md`
+5. `INDEX.md`
 
-## Step 3: Update state
+## Step 4: Update state
 
-Update `.design/branding/{brand}/STATE.md`:
-- Set Phase 1 (Discover) status to `complete`
-- Record completion date
+Update `{BRAND_PATH}/STATE.md`: set Phase 1 (Discover) to `complete`.
 
-## Step 4: Phase transition output
+## Step 5: Phase transition
 
-Render the phase transition screen (see `references/phase-transitions.md` for ANSI color tokens):
-
-```
-  ◆ discover complete — market landscape mapped
-
-    discover/
-    ├── {actual files written}
-    └── INDEX.md
-
-  ──────────────────────────────
-```
-
-Then use `AskUserQuestion` with 3 options:
-- **Continue to strategy** — "define positioning and personality"
+Render phase transition screen, then use `AskUserQuestion`:
+- **Continue to strategy** — "define positioning, voice, and messaging"
 - **View progress** — "see the full dashboard"
 - **Done for now** — "pick up later with /gsp:start"
 </process>

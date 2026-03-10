@@ -10,7 +10,7 @@ allowed-tools:
   - Glob
 ---
 <context>
-Phase 5 of the GSP branding diamond. Builds the design system (foundations, components, tokens), generates a self-contained brand preview HTML, and transitions the user from the branding diamond to the project diamond.
+Phase 4 of the GSP branding diamond. Builds the design system (foundations, components, tokens), generates a self-contained brand preview HTML, and transitions the user from the branding diamond to the project diamond.
 
 Adapts strategy based on codebase context — generates from scratch, extends an existing system, or redesigns with migration mapping.
 </context>
@@ -18,7 +18,7 @@ Adapts strategy based on codebase context — generates from scratch, extends an
 <objective>
 Build the design system, generate brand preview, and complete the branding diamond.
 
-**Input:** Brand identity + strategy + verbal + BRIEF.md
+**Input:** Brand identity + strategy + BRIEF.md
 **Output:** `{brand}/system/` (foundations/, components/, principles.md, tokens.json, INDEX.md) + `{brand}/preview.html`
 **Agent:** `gsp-system-architect`
 </objective>
@@ -48,18 +48,15 @@ Fallback: read `{BRAND_PATH}/identity/IDENTITY.md` (legacy monolith) + `palettes
 
 If neither exists, check if identity phase is complete in brand STATE.md. If not, tell the user to complete brand identity first (run `/gsp:brand-identity`).
 
-### Strategy + Verbal (selective, chunk-first)
+### Strategy (selective, chunk-first)
 
-Read `{BRAND_PATH}/strategy/INDEX.md`. If it exists, load selective chunks.
+Read `{BRAND_PATH}/strategy/INDEX.md`. If it exists, load selective chunks (voice-and-tone.md, brand-platform.md).
 Fallback: read `{BRAND_PATH}/strategy/STRATEGY.md`.
-
-Read `{BRAND_PATH}/verbal/INDEX.md`. If it exists, load selective chunks.
-Fallback: read `{BRAND_PATH}/verbal/VERBAL.md`.
 
 ### Brand context
 
 Read:
-- `{BRAND_PATH}/BRIEF.md` — company, audience, goals
+- `{BRAND_PATH}/BRIEF.md` — business, personas, goals
 - `{BRAND_PATH}/config.json` — get `system_config.system_strategy`, `system_config.tech_stack`
 
 ## Step 1.5: Codebase awareness
@@ -130,11 +127,11 @@ Wait for user input. If adjustments needed, update the relevant foundation chunk
 
 ## Step 3.75: Perspective check
 
-Before building components, load `{BRAND_PATH}/discover/audience-personas.md` and present stakeholder reactions:
+Before building components, load persona profiles from `{BRAND_PATH}/BRIEF.md` and present stakeholder reactions:
 
 "Before we build the component library on these foundations:
 
- The Customer ({primary persona name from audience-personas.md}):
+ The Customer ({primary persona name from BRIEF.md}):
  "{would a user recognize this as {brand}? Does the system feel like the brand?}"
 
  The Skeptic (internal stakeholder):
@@ -153,7 +150,7 @@ If confirmed → proceed to components pass.
 Spawn the `gsp-system-architect` agent with:
 - The existing foundations from Pass 1
 - All identity chunks + palettes.json
-- Strategy + verbal chunks (for content component guidelines)
+- Strategy chunks (voice-and-tone.md for content component guidelines)
 - **Execution mode:** `"components"`
 - Confirmed component scope from Step 1.5
 - **Output path:** `{BRAND_PATH}/system/`
@@ -166,7 +163,7 @@ The agent writes components:
 ## Step 4.5: Update state
 
 Update `{BRAND_PATH}/STATE.md`:
-- Set Phase 5 (System) status to `complete`
+- Set Phase 4 (System) status to `complete`
 - Record completion date
 - Set Prettiness Level to 100%
 
@@ -178,8 +175,8 @@ Read all available brand outputs:
 - `{BRAND_PATH}/identity/palettes.json` — color palette data
 - `{BRAND_PATH}/identity/color-system.md` — color roles and usage
 - `{BRAND_PATH}/identity/typography.md` — type scale and families
-- `{BRAND_PATH}/verbal/brand-voice.md` — voice attributes (means / doesn't mean)
-- `{BRAND_PATH}/verbal/tagline-directions.md` — tagline candidates
+- `{BRAND_PATH}/strategy/voice-and-tone.md` — voice attributes (means / doesn't mean)
+- `{BRAND_PATH}/strategy/messaging.md` — tagline directions
 - `{BRAND_PATH}/identity/logo-directions.md` — logo direction descriptions
 - `{BRAND_PATH}/strategy/archetype.md` — brand archetype
 
@@ -220,8 +217,7 @@ Then display the brand summary with ANSI styling:
   brand complete — {brand-name}
 
     discover       {key finding}
-    strategy       {archetype}, {positioning}
-    verbal         {top voice attributes}
+    strategy       {archetype}, {positioning}, {top voice attributes}
     identity       {colors}, {typefaces}
     system         {N} foundations, {N} components
 
