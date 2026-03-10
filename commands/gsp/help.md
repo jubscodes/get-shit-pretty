@@ -15,7 +15,7 @@ Output ONLY the reference content below. Do NOT add:
 <process>
 ## Read version
 
-Read the version from `.claude/get-shit-pretty/VERSION` if it exists, otherwise default to `0.4.2`.
+Read the version from `.claude/get-shit-pretty/VERSION` if it exists, otherwise default to `0.4.3`.
 
 ## Output the reference
 
@@ -53,8 +53,7 @@ Command names are left-padded with 4 spaces. Descriptions start at column 27 (4 
   ─── Branding ─────────────────────────
 
     /gsp:brand-research    research your market and audience
-    /gsp:brand-strategy    define positioning and personality
-    /gsp:brand-verbal      shape voice and messaging
+    /gsp:brand-strategy    define positioning, personality, voice and messaging
     /gsp:brand-identity    create visual identity
     /gsp:brand-patterns    build design system tokens and components
     /gsp:brand-audit       audit existing brand before evolving (optional)
@@ -75,11 +74,16 @@ Command names are left-padded with 4 spaces. Descriptions start at column 27 (4 
     /gsp:update            update GSP to latest version
     /gsp:launch            create launch and marketing assets (optional)
 
+  ─── Easter Eggs ────────────────────
+
+    /gsp:art               ASCII art studio
+    /gsp:pretty            surprise terminal art
+
   ─── Flow ─────────────────────────────
 
     brand first, then build.
 
-    branding   research → strategy → verbal → identity → patterns
+    branding   research → strategy → identity → patterns
     project    brief → research → design → critique → build → review
                                     ↑                    ↑
                               critique loop         QA loop
@@ -94,8 +98,7 @@ Command names are left-padded with 4 spaces. Descriptions start at column 27 (4 
     │       ├── config.json       brand config
     │       ├── STATE.md          progress tracking
     │       ├── discover/         research chunks
-    │       ├── strategy/         strategy chunks
-    │       ├── verbal/           voice and messaging
+    │       ├── strategy/         strategy + voice and messaging
     │       ├── identity/         visual identity
     │       └── system/           tokens + components
     └── projects/

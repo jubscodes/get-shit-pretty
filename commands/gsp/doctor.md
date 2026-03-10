@@ -8,18 +8,13 @@ allowed-tools:
   - Bash
 ---
 <context>
-Diagnostic tool for GSP design projects. Runs health checks across all brands in `.design/branding/` and all projects in `.design/projects/`. Reports health issues with actionable fix suggestions.
-
-No agents needed — this is pure pattern matching and file inspection.
+Diagnostic tool for GSP design projects. Pure pattern matching — no agents, no file writes.
 </context>
 
 <objective>
-Run a health check on the current `.design/` directory and print a terminal diagnostic.
+Health check on `.design/` — all brands and projects. Terminal-only output.
 
-**Input:** `.design/` directory (all brands, projects, artifacts, config, state)
-**Output:** Terminal-only diagnostic — no files written
-
-**Checks:** project structure, phase ordering, stale outputs, config drift, missing chunks, broken references, review status, brand drift, upgrade detection
+**Checks:** structure, phase ordering, stale outputs, config drift, missing chunks, broken references, review status, brand drift, upgrade detection
 </objective>
 
 <process>
@@ -55,19 +50,19 @@ For each instance, read:
 
 ## Step 3: Run checks per instance
 
-### Per-Brand Checks (5-phase)
+### Per-Brand Checks (4-phase)
 
 **Check B1: Brand Structure**
 Required: config.json, STATE.md, BRIEF.md
-Required dirs: discover/, strategy/, verbal/, identity/, system/
+Required dirs: discover/, strategy/, identity/, system/
 Missing → FAIL
 
 **Check B2: Brand Phase Ordering**
-No phase complete if earlier phase is pending (discover < strategy < verbal < identity < system).
+No phase complete if earlier phase is pending (discover < strategy < identity < system).
 Exception: strategy can proceed without discover.
 
 **Check B3: Brand Completeness**
-If all 5 phases complete, check:
+If all 4 phases complete, check:
 - `identity/INDEX.md` exists (chunk format)
 - `identity/palettes.json` exists (WARN if missing)
 - `system/INDEX.md` exists (chunk format)
@@ -75,7 +70,7 @@ If all 5 phases complete, check:
 - If monolith exists without INDEX.md → WARN: "Legacy monolith format"
 
 **Check B4: Legacy Monolith Detection**
-For each brand phase directory (discover, strategy, verbal, identity, system):
+For each brand phase directory (discover, strategy, identity, system):
 - If monolith exists but no INDEX.md → WARN: "Legacy format in {phase}/ — re-run /gsp:brand-{phase} for chunk output"
 
 ### Per-Project Checks (6-phase)
@@ -223,7 +218,7 @@ No review issues → PASS
 
 **Config version check:**
 - If `version` field exists in config.json, note it
-- If version is older than current (0.4.0) → WARN: "Config version is {version}, current GSP is 0.4.0. Some features may not be active."
+- If version is older than current (0.5.0) → WARN: "Config version is {version}, current GSP is 0.5.0. Some features may not be active."
 - If no `version` field → INFO: "Config has no version stamp. Project may predate versioned configs."
 
 **Chunk format check:**
@@ -263,7 +258,7 @@ Overall Health: {SCORE}/100 {emoji}
 {health bar}
 
 ─── Brand: {name} ─────────────────────
-  Phases: {N}/5 complete
+  Phases: {N}/4 complete
   ✅ B1. Structure .............. PASS
   ✅ B2. Phase Ordering ......... PASS
   ⚠️  B3. Completeness .......... WARN
@@ -295,7 +290,7 @@ WARN:
     → Fix: Re-run /gsp:brand-identity to generate OKLCH palettes
 
 INFO:
-  • [acme-corp/P10] Config version is 0.3.0, current GSP is 0.4.0
+  • [acme-corp/P10] Config version is 0.3.0, current GSP is 0.5.0
     → Fix: Re-run /gsp:start to upgrade config
 
 ─── Summary ───────────────────────────

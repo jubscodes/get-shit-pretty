@@ -62,7 +62,7 @@ Count chunks per phase: count `.md` files in each phase directory (excluding IND
 
 ## Step 3: Calculate prettiness
 
-Brands: count completed/skipped phases out of 5
+Brands: count completed/skipped phases out of 4
 Projects: count completed/skipped phases out of 6
 
 Determine the Brand Mark diamond states:
@@ -103,16 +103,15 @@ Output with ANSI color codes using the tokens from the styling section above.
     Phase          Status    Chunks    Time
     discover       ◆         6         2m
     strategy       ◆         5         4m
-    verbal         ◈         —         —
 ```
 Column positions: phase at col 4, status at col 19, chunks at col 29, time at col 39.
 
 **Collapsed complete items:**
-When 100% complete, single-line: `  acme-corp ◆ complete (5/5, 11 chunks)`
+When 100% complete, single-line: `  acme-corp ◆ complete (4/4, 11 chunks)`
 
-**Next Command:** `  → next: /gsp:brand-verbal` (secondary `→ next:`, accent command name)
+**Next Command:** `  → next: /gsp:brand-identity` (secondary `→ next:`, accent command name)
 
-### Example: Early State (2/5 branding)
+### Example: Early State (2/4 branding)
 
 ```
   /gsp: ◈◇
@@ -121,24 +120,23 @@ When 100% complete, single-line: `  acme-corp ◆ complete (5/5, 11 chunks)`
   ─── Brands ───────────────────────────
 
   acme-corp
-  ◆ discover ─── ◆ strategy ─── ◈ verbal ─── ◇ identity ─── ◇ patterns
-  ████████░░░░░░░░░░░░ 40% (2/5)
+  ◆ discover ─── ◆ strategy ─── ◇ identity ─── ◇ patterns
+  ██████████░░░░░░░░░░ 50% (2/4)
 
     Phase          Status    Chunks    Time
     discover       ◆         6         2m
     strategy       ◆         5         4m
-    verbal         ◈         —         —
     identity       ◇         —         —
     patterns       ◇         —         —
 
-  → next: /gsp:brand-verbal
+  → next: /gsp:brand-identity
 
 
   ─── Overall ──────────────────────────
 
     brands      1 in progress
     projects    0
-    phases      2/5 complete
+    phases      2/4 complete
     chunks      11 written
 ```
 
@@ -150,7 +148,7 @@ When 100% complete, single-line: `  acme-corp ◆ complete (5/5, 11 chunks)`
 
   ─── Brands ───────────────────────────
 
-  acme-corp ◆ complete (5/5, 48 chunks)
+  acme-corp ◆ complete (4/4, 48 chunks)
 
 
   ─── Projects ─────────────────────────
@@ -174,7 +172,7 @@ When 100% complete, single-line: `  acme-corp ◆ complete (5/5, 11 chunks)`
 
     brands      1 complete
     projects    1 in progress
-    phases      9/11 complete
+    phases      8/10 complete
     chunks      33 written
 ```
 
@@ -189,9 +187,8 @@ For each in-progress instance, identify the next pending phase and suggest the c
 **Brand routing:**
 - Phase 1 (Research) pending -> `/gsp:brand-research`
 - Phase 2 (Strategy) pending -> `/gsp:brand-strategy`
-- Phase 3 (Verbal) pending -> `/gsp:brand-verbal`
-- Phase 4 (Identity) pending -> `/gsp:brand-identity`
-- Phase 5 (Patterns) pending -> `/gsp:brand-patterns`
+- Phase 3 (Identity) pending -> `/gsp:brand-identity`
+- Phase 4 (Patterns) pending -> `/gsp:brand-patterns`
 
 **Project routing:**
 - Brief pending -> `/gsp:project-brief`

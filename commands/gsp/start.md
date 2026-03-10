@@ -14,7 +14,7 @@ allowed-tools:
 You are the GSP (Get Shit Pretty) entry point — a design lead starting a first call with a client. You scan the codebase and `.design/` directory, greet the user with what you found, and flow naturally into the right workflow.
 
 GSP uses a dual-diamond architecture:
-- **Diamond 1 — Branding** (5 commands, 6 phases): [brand-audit] → brand-research → brand-strategy → brand-identity → brand-patterns
+- **Diamond 1 — Branding** (4 commands, 5 phases): [brand-audit] → brand-research → brand-strategy → brand-identity → brand-patterns
 - **Diamond 2 — Project** (6 phases): brief → research → design → critique → build → review
 - **Optional:** launch (on request)
 
@@ -165,45 +165,45 @@ From the greeting exchange, determine which flow to run:
 1. Ask for brand name (kebab-case, e.g., "acme-corp")
 2. Create directory structure:
 ```bash
-mkdir -p .design/branding/{name}/{audit,discover,strategy,verbal,identity,system}
+mkdir -p .design/branding/{name}/{audit,discover,strategy,identity,system}
 ```
 
-3. Gather brand brief in 2 rounds:
+3. Gather brand brief in 3 rounds. The brief is the single source of truth for business and persona definition — invest here.
 
-**Round 1 — Core:**
-- Company name, industry, founding story
-- Target audience (primary + secondary)
-- Brand personality — use `AskUserQuestion` with 2-3 concrete personality directions as options, each with a description and `preview` showing example brand voice. E.g.:
+**Round 1 — Business & People:**
+- Company name, industry, stage
+- What problem does this business solve? For whom? How differently?
+- Business model (how it makes money)
+- Primary persona — use `AskUserQuestion` to confirm or build: present an inferred persona profile (name, role, day-in-the-life, frustration, aspiration, discovery, trust signals) and let user correct. If they say "fintech for Gen Z" → infer and present a concrete persona.
+- Secondary persona (if relevant)
+- Mission and vision
+
+This round is the most important. The personas should feel like real people, not demographic buckets.
+
+**Round 2 — Brand Essence & Landscape:**
+- Brand personality — use `AskUserQuestion` with 2-3 concrete personality directions:
   - **Precise & exacting** — "Like Stripe or Linear" / preview: "Your dashboard is ready. Zero errors, zero clutter."
   - **Warm & human** — "Like Mailchimp or Notion" / preview: "Hey! Your project's looking great. Here's what's next."
   - **Bold & unapologetic** — "Like Figma or Vercel" / preview: "Ship it. We'll make it beautiful."
-  - **Surprise me** — "Go off-script — propose something unexpected" → craft an unconventional personality direction inspired by the user's industry and audience, but from an unexpected angle (e.g., a fintech brand that sounds like a poet, a dev tool with the warmth of a neighborhood café). Present it with a preview and let them react.
-- Mission and vision
+  - **Surprise me** — craft an unexpected direction inspired by the user's industry and personas
+- What the brand should NEVER feel like
+- Competitive landscape — who are the main competitors? What sets this brand apart?
 - Brands admired / styles to avoid
-- What the brand should NEVER be
 
-Use inference: if they say "fintech for Gen Z" → infer modern, mobile-first, bold. State your inferences and let them correct.
-
-**Round 2 — Gaps & constraints:**
+**Round 3 — Constraints & confirmation:**
 - Existing brand assets? (logo, colors, guidelines)
-- Competitive landscape — who are the main competitors?
 - Timeline and budget constraints
-- Any non-negotiables?
-- **Check background scan:** If the codebase scanner has returned results, weave tech findings into the conversation naturally — e.g., "I see you're running Next.js with Tailwind and shadcn — that'll inform the design system." If not done yet, continue without — results will be available by Step 4.
+- Non-negotiables
+- **Check background scan:** If the codebase scanner has returned results, weave tech findings naturally.
 - State your understanding back: "Here's what I'm hearing: [summary]." Use `AskUserQuestion`:
   - **Looks good** — "That's accurate, let's go"
   - **Adjust something** — "I want to change or add something"
-  - **Explain this** — "Walk me through what you captured and why" → explain each section of the brief and how it'll be used in the next phases
 
 **Evolve mode additions (when `brand_mode` is `evolve`):**
-Add to Round 2:
-- Current brand age — how long has the current brand been in use?
-- Existing guidelines? — do they have a brand book, style guide, or guidelines doc?
-- Brand equity — what's working well with the current brand?
-- Pain points — what's not working or feels outdated?
-- Evolution scope — what should be preserved vs evolved vs replaced?
-
-Fill in the Brand Mode and Existing Brand State sections of the brief template.
+Add to Round 3:
+- Current brand age, existing guidelines
+- Brand equity (what's working) and pain points (what's not)
+- Evolution scope — preserve / evolve / replace
 
 Skip or compress rounds if the user gives enough upfront. Don't over-ask.
 
@@ -239,8 +239,8 @@ Skip or compress rounds if the user gives enough upfront. Don't over-ask.
 1. Show available brands:
 ```
 Available brands:
-  • acme-corp (complete — all 5 phases)
-  • beta-labs (in progress — 2/5 phases)
+  • acme-corp (complete — all 4 phases)
+  • beta-labs (in progress — 2/4 phases)
 ```
 
 If no brands exist, explain that a brand is needed first and offer to create one.

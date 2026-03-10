@@ -45,7 +45,6 @@ Then use `AskUserQuestion` with 3 options.
 |-------|-------------------|--------------|
 | discover | market landscape mapped | `/gsp:brand-strategy` |
 | strategy | brand platform defined | `/gsp:brand-identity` |
-| verbal | voice and messaging shaped | `/gsp:brand-identity` |
 | identity | visual system designed | `/gsp:brand-patterns` |
 | system | design system built | `/gsp:project-brief` (or done) |
 
