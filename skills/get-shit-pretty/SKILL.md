@@ -1,9 +1,7 @@
 ---
 name: get-shit-pretty
 description: "Design engineering for AI coding tools. Full pipeline: brand research, strategy, identity, design system, UI design, critique, accessibility audit, build, and launch. Runs specialized agents with Apple HIG, Nielsen's heuristics, WCAG 2.2 AA, and design token standards baked in."
-metadata:
-  author: jubscodes
-  version: "0.4.3"
+user-invocable: false
 ---
 
 # Get Shit Pretty
@@ -26,7 +24,7 @@ A dual-diamond design pipeline with 23 commands:
 
 ```
 ◆ Branding
-research → strategy → verbal → identity → patterns
+research → strategy → identity → patterns
 
 ◆ Project
 brief → research → design → critique → build → review → launch
@@ -37,8 +35,7 @@ brief → research → design → critique → build → review → launch
 Each command spawns a specialized agent modeled after a real design discipline:
 
 - **Brand Research** — market landscape, audience, competitors
-- **Brand Strategy** — archetype, positioning, personality (Kapferer Prism)
-- **Brand Verbal** — voice, tone, messaging, naming
+- **Brand Strategy** — archetype, positioning, personality, voice, tone, messaging (Kapferer Prism)
 - **Brand Identity** — logo directions, color palette, typography
 - **Brand Patterns** — design tokens, component foundations
 - **Project Brief** — scope, screen list, gap analysis
