@@ -1,0 +1,24 @@
+{
+  "hooks": {
+    "SubagentStop": [
+      {
+        "matcher": "gsp-builder",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "The gsp-builder agent just finished. Verify: (1) BUILD-LOG.md was written, (2) build/INDEX.md was written, (3) no files were left with TODO/FIXME placeholder code. Report any issues to the user."
+          }
+        ]
+      },
+      {
+        "matcher": "gsp-reviewer",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "The gsp-reviewer agent just finished. Verify: (1) acceptance-report.md was written, (2) issues.md was written, (3) review/INDEX.md was written, (4) verdict is clearly stated as Pass, Conditional Pass, or Fail. Report any issues to the user."
+          }
+        ]
+      }
+    ]
+  }
+}
