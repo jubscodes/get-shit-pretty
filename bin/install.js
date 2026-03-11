@@ -363,7 +363,12 @@ function stripSubTags(content) {
 /**
  * Convert Claude frontmatter to OpenCode format
  */
-function convertClaudeToOpencodeFrontmatter(content) {
+/**
+ * Shared body-level replacements for all OpenCode conversions.
+ * Converts Claude tool names, command syntax, and agent spawning patterns
+ * to their OpenCode equivalents.
+ */
+function applyOpencodeBodyReplacements(content) {
   let converted = content;
   converted = converted.replace(/\bAskUserQuestion\b/g, 'question');
   converted = converted.replace(/\bSlashCommand\b/g, 'skill');
@@ -371,6 +376,34 @@ function convertClaudeToOpencodeFrontmatter(content) {
   converted = converted.replace(/\/gsp:/g, '/gsp-');
   converted = converted.replace(/~\/\.claude\b/g, '~/.config/opencode');
   converted = converted.replace(/subagent_type="general-purpose"/g, 'subagent_type="general"');
+  // Convert Claude agent spawning to OpenCode subagent delegation
+  converted = converted.replace(/Spawn the (`gsp-[a-z-]+`) agent/g, 'Delegate to the $1 subagent');
+  converted = converted.replace(/spawn the (`gsp-[a-z-]+`) agent/g, 'delegate to the $1 subagent');
+  // Convert "Re-spawn the agent" patterns
+  converted = converted.replace(/Re-spawn the agent/g, 'Re-delegate to the subagent');
+  converted = converted.replace(/re-spawn the agent/g, 're-delegate to the subagent');
+  return converted;
+}
+
+/**
+ * Convert Claude agent frontmatter to OpenCode agent format.
+ *
+ * OpenCode agents use YAML frontmatter with these fields:
+ *   description (required), mode, model, temperature, top_p, steps,
+ *   tools (boolean map: { write: false }), permission, color, hidden, disable
+ *
+ * Claude fields that map:
+ *   description → description
+ *   tools (csv)  → tools (boolean map, all true)
+ *   disallowedTools → tools (boolean map, set false)
+ *   maxTurns → steps
+ *   permissionMode → permission section
+ *   color → color (hex)
+ *   name → dropped (filename is the identifier)
+ */
+function convertClaudeToOpencodeAgent(content) {
+  let converted = applyOpencodeBodyReplacements(content);
+
 
   if (!converted.startsWith('---')) return converted;
   const endIndex = converted.indexOf('---', 3);
@@ -381,25 +414,59 @@ function convertClaudeToOpencodeFrontmatter(content) {
   const lines = frontmatter.split('\n');
   const newLines = [];
   let inAllowedTools = false;
-  const allowedTools = [];
+  let inDisallowedTools = false;
+  const enabledTools = [];
+  const disabledTools = [];
 
   for (const line of lines) {
     const trimmed = line.trim();
 
-    if (trimmed.startsWith('allowed-tools:')) { inAllowedTools = true; continue; }
-
-    if (trimmed.startsWith('tools:')) {
-      const val = trimmed.substring(6).trim();
+    // Parse allowed-tools / tools list
+    if (trimmed.startsWith('allowed-tools:') || (trimmed.startsWith('tools:') && !trimmed.includes('false'))) {
+      const val = trimmed.split(':').slice(1).join(':').trim();
       if (val) {
-        allowedTools.push(...val.split(',').map(t => t.trim()).filter(Boolean));
+        enabledTools.push(...val.split(',').map(t => t.trim()).filter(Boolean));
       } else {
         inAllowedTools = true;
+        inDisallowedTools = false;
       }
       continue;
     }
 
-    if (trimmed.startsWith('name:')) continue;
+    // Parse disallowedTools
+    if (trimmed.startsWith('disallowedTools:')) {
+      const val = trimmed.split(':').slice(1).join(':').trim();
+      if (val) {
+        disabledTools.push(...val.split(',').map(t => t.trim()).filter(Boolean));
+      } else {
+        inDisallowedTools = true;
+        inAllowedTools = false;
+      }
+      continue;
+    }
 
+    // Collect list items
+    if (inAllowedTools) {
+      if (trimmed.startsWith('- ')) { enabledTools.push(trimmed.substring(2).trim()); continue; }
+      else if (trimmed && !trimmed.startsWith('-')) { inAllowedTools = false; }
+    }
+    if (inDisallowedTools) {
+      if (trimmed.startsWith('- ')) { disabledTools.push(trimmed.substring(2).trim()); continue; }
+      else if (trimmed && !trimmed.startsWith('-')) { inDisallowedTools = false; }
+    }
+
+    // Drop Claude-only fields
+    if (trimmed.startsWith('name:')) continue;
+    if (trimmed.startsWith('permissionMode:')) continue;
+
+    // maxTurns → steps
+    if (trimmed.startsWith('maxTurns:')) {
+      const val = trimmed.split(':').slice(1).join(':').trim();
+      newLines.push(`steps: ${val}`);
+      continue;
+    }
+
+    // color → hex
     if (trimmed.startsWith('color:')) {
       const colorValue = trimmed.substring(6).trim().toLowerCase();
       const hex = colorNameToHex[colorValue];
@@ -410,20 +477,133 @@ function convertClaudeToOpencodeFrontmatter(content) {
       continue;
     }
 
-    if (inAllowedTools) {
-      if (trimmed.startsWith('- ')) { allowedTools.push(trimmed.substring(2).trim()); continue; }
-      else if (trimmed && !trimmed.startsWith('-')) { inAllowedTools = false; }
-    }
-
-    if (!inAllowedTools) newLines.push(line);
+    if (!inAllowedTools && !inDisallowedTools) newLines.push(line);
   }
 
-  if (allowedTools.length > 0) {
+  // Build tools map (OpenCode uses boolean map, not list)
+  if (enabledTools.length > 0 || disabledTools.length > 0) {
     newLines.push('tools:');
-    for (const tool of allowedTools) {
+    for (const tool of enabledTools) {
       newLines.push(`  ${convertToolName(tool)}: true`);
     }
+    for (const tool of disabledTools) {
+      newLines.push(`  ${convertToolName(tool)}: false`);
+    }
   }
+
+  return `---\n${newLines.join('\n').trim()}\n---${body}`;
+}
+
+/**
+ * Convert Claude command frontmatter to OpenCode command format.
+ *
+ * OpenCode commands use YAML frontmatter with:
+ *   description, agent, model, subtask
+ *
+ * Claude fields that map:
+ *   description → description
+ *   allowed-tools → dropped (not supported in commands)
+ *   disable-model-invocation → dropped
+ *   name → dropped (filename is identifier)
+ */
+function convertClaudeToOpencodeCommand(content) {
+  let converted = applyOpencodeBodyReplacements(content);
+
+  if (!converted.startsWith('---')) return converted;
+  const endIndex = converted.indexOf('---', 3);
+  if (endIndex === -1) return converted;
+
+  const frontmatter = converted.substring(3, endIndex).trim();
+  const body = converted.substring(endIndex + 3);
+  const newLines = [];
+  let inList = false;
+
+  for (const line of frontmatter.split('\n')) {
+    const trimmed = line.trim();
+    // Keep description
+    if (trimmed.startsWith('description:')) { newLines.push(line); inList = false; continue; }
+    // Drop Claude-only command fields
+    if (trimmed.startsWith('name:')) { inList = false; continue; }
+    if (trimmed.startsWith('allowed-tools:')) { inList = true; continue; }
+    if (trimmed.startsWith('disable-model-invocation:')) { inList = false; continue; }
+    if (trimmed.startsWith('user-invocable:')) { inList = false; continue; }
+    if (trimmed.startsWith('argument-hint:')) { newLines.push(line); inList = false; continue; }
+    // Skip list items under dropped fields
+    if (inList) {
+      if (trimmed.startsWith('- ')) continue;
+      else if (trimmed && !trimmed.startsWith('-')) inList = false;
+    }
+    if (!inList) newLines.push(line);
+  }
+
+  const fm = newLines.join('\n').trim();
+  return fm ? `---\n${fm}\n---${body}` : body;
+}
+
+/**
+ * Convert Claude SKILL.md to OpenCode skill format.
+ *
+ * OpenCode skills use YAML frontmatter with:
+ *   name (required, must match dir name), description (required),
+ *   license, compatibility, metadata
+ *
+ * Claude fields that map:
+ *   name → name
+ *   description → description
+ *   allowed-tools → dropped (tools controlled via agent/permission config)
+ *   disable-model-invocation → dropped
+ *   user-invocable → dropped
+ *
+ * Body: path refs and tool names are converted.
+ */
+function convertClaudeSkillToOpencode(content, skillName) {
+  let converted = applyOpencodeBodyReplacements(content);
+  // Replace CLAUDE_SKILL_DIR with OPENCODE_SKILL_DIR (or equivalent path)
+  converted = converted.replace(/\$\{CLAUDE_SKILL_DIR\}/g, '${SKILL_DIR}');
+
+  if (!converted.startsWith('---')) {
+    return `---\nname: ${skillName}\ndescription: GSP skill\n---\n${converted}`;
+  }
+  const endIndex = converted.indexOf('---', 3);
+  if (endIndex === -1) {
+    return `---\nname: ${skillName}\ndescription: GSP skill\n---\n${converted}`;
+  }
+
+  const frontmatter = converted.substring(3, endIndex).trim();
+  const body = converted.substring(endIndex + 3);
+  const newLines = [];
+  let hasName = false;
+  let hasDescription = false;
+  let inList = false;
+
+  for (const line of frontmatter.split('\n')) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('name:')) {
+      // Override with directory-matching name
+      newLines.push(`name: ${skillName}`);
+      hasName = true;
+      inList = false;
+      continue;
+    }
+    if (trimmed.startsWith('description:')) { newLines.push(line); hasDescription = true; inList = false; continue; }
+    // Drop Claude-only fields
+    if (trimmed.startsWith('allowed-tools:')) { inList = true; continue; }
+    if (trimmed.startsWith('disable-model-invocation:')) { inList = false; continue; }
+    if (trimmed.startsWith('user-invocable:')) { inList = false; continue; }
+    if (trimmed.startsWith('argument-hint:')) { inList = false; continue; }
+    if (trimmed.startsWith('color:')) { inList = false; continue; }
+    if (trimmed.startsWith('context:')) { inList = false; continue; }
+    if (trimmed.startsWith('agent:')) { inList = false; continue; }
+    // Skip list items under dropped fields
+    if (inList) {
+      if (trimmed.startsWith('- ')) continue;
+      else if (trimmed && !trimmed.startsWith('-')) inList = false;
+    }
+    if (!inList) newLines.push(line);
+  }
+
+  if (!hasName) newLines.unshift(`name: ${skillName}`);
+  if (!hasDescription) newLines.splice(1, 0, 'description: GSP skill');
 
   return `---\n${newLines.join('\n').trim()}\n---${body}`;
 }
@@ -616,8 +796,11 @@ function convertClaudeToCodexAgent(content) {
 // ──────────────────────────────────────────────────────
 
 /**
- * Copy commands to flat structure for OpenCode
- * commands/gsp/help.md → command/gsp-help.md
+ * Copy commands to flat structure for OpenCode.
+ * commands/gsp/help.md → commands/gsp-help.md
+ *
+ * OpenCode expects: ~/.config/opencode/commands/<name>.md or .opencode/commands/<name>.md
+ * YAML frontmatter with description, agent, model, subtask fields.
  */
 function copyFlattenedCommands(srcDir, destDir, prefix, pathPrefix, runtime) {
   if (!fs.existsSync(srcDir)) return;
@@ -643,10 +826,56 @@ function copyFlattenedCommands(srcDir, destDir, prefix, pathPrefix, runtime) {
       let content = fs.readFileSync(srcPath, 'utf8');
       content = content.replace(/~\/\.claude\//g, pathPrefix);
       content = content.replace(/\.\/\.claude\//g, `./${getDirName(runtime)}/`);
-      content = convertClaudeToOpencodeFrontmatter(content);
+      content = convertClaudeToOpencodeCommand(content);
       fs.writeFileSync(destPath, content);
     }
   }
+}
+
+/**
+ * Copy skills to OpenCode skill structure.
+ * skills/<name>/SKILL.md → skills/<name>/SKILL.md
+ *
+ * OpenCode expects: .opencode/skills/<name>/SKILL.md or ~/.config/opencode/skills/<name>/SKILL.md
+ * YAML frontmatter with name (required, must match dir), description (required).
+ * Also copies any sibling files in the skill directory (scripts, references, assets).
+ */
+function copyOpencodeSkills(srcDir, destDir, pathPrefix) {
+  if (!fs.existsSync(srcDir)) return 0;
+  fs.mkdirSync(destDir, { recursive: true });
+
+  // Clean old gsp- skill dirs
+  if (fs.existsSync(destDir)) {
+    for (const entry of fs.readdirSync(destDir, { withFileTypes: true })) {
+      if (entry.isDirectory() && entry.name.startsWith('gsp-')) {
+        fs.rmSync(path.join(destDir, entry.name), { recursive: true });
+      }
+    }
+  }
+
+  let count = 0;
+  const skillDirs = fs.readdirSync(srcDir, { withFileTypes: true });
+  for (const dir of skillDirs) {
+    if (!dir.isDirectory()) continue;
+
+    const skillMd = path.join(srcDir, dir.name, 'SKILL.md');
+    if (!fs.existsSync(skillMd)) continue;
+
+    // OpenCode skill names: lowercase, hyphens, no consecutive hyphens, 1-64 chars
+    // Prefix with gsp- so they don't collide, unless already prefixed
+    const skillName = dir.name.startsWith('gsp-') ? dir.name : `gsp-${dir.name}`;
+    const skillDest = path.join(destDir, skillName);
+    fs.mkdirSync(skillDest, { recursive: true });
+
+    let content = fs.readFileSync(skillMd, 'utf8');
+    content = content.replace(/~\/\.claude\//g, pathPrefix);
+    content = content.replace(/\.\/\.claude\//g, './.opencode/');
+    content = convertClaudeSkillToOpencode(content, skillName);
+    fs.writeFileSync(path.join(skillDest, 'SKILL.md'), content);
+    count++;
+  }
+
+  return count;
 }
 
 /**
@@ -707,7 +936,7 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix, runtime, isCommand
       content = content.replace(/\.\/\.claude\//g, `./${dirName}/`);
 
       if (runtime === 'opencode') {
-        content = convertClaudeToOpencodeFrontmatter(content);
+        content = applyOpencodeBodyReplacements(content);
         fs.writeFileSync(destPath, content);
       } else if (runtime === 'gemini') {
         if (isCommand) {
@@ -820,7 +1049,7 @@ function installLocalSymlinks(targetDir, src) {
     }
   }
 
-  // VERSION is a real file (not in source repo as a standalone file)
+  // Write VERSION from package.json (local dev uses repo root VERSION via symlinks)
   fs.writeFileSync(path.join(bundleDest, 'VERSION'), pkg.version);
   console.log(`  ${c.success}✓${c.reset} Wrote VERSION (${pkg.version})`);
 
@@ -904,13 +1133,20 @@ function install(isGlobal, runtime = 'claude') {
 
   // ── Commands ──
   if (isOpencode) {
-    const commandDir = path.join(targetDir, 'command');
-    fs.mkdirSync(commandDir, { recursive: true });
-    copyFlattenedCommands(path.join(src, 'commands', 'gsp'), commandDir, 'gsp', pathPrefix, runtime);
-    if (verifyInstalled(commandDir, 'command/gsp-*')) {
-      const count = fs.readdirSync(commandDir).filter(f => f.startsWith('gsp-')).length;
-      console.log(`  ${c.success}✓${c.reset} Installed ${count} commands to command/`);
+    const commandsDir = path.join(targetDir, 'commands');
+    fs.mkdirSync(commandsDir, { recursive: true });
+    copyFlattenedCommands(path.join(src, 'commands', 'gsp'), commandsDir, 'gsp', pathPrefix, runtime);
+    if (verifyInstalled(commandsDir, 'commands/gsp-*')) {
+      const count = fs.readdirSync(commandsDir).filter(f => f.startsWith('gsp-')).length;
+      console.log(`  ${c.success}✓${c.reset} Installed ${count} commands to commands/`);
     } else { failures.push('commands'); }
+
+    // ── Skills (OpenCode) ──
+    const skillsDir = path.join(targetDir, 'skills');
+    const skillCount = copyOpencodeSkills(path.join(src, 'skills'), skillsDir, pathPrefix);
+    if (skillCount > 0) {
+      console.log(`  ${c.success}✓${c.reset} Installed ${skillCount} skills to skills/`);
+    } else { failures.push('skills'); }
   } else if (isCodex) {
     const skillsDir = path.join(targetDir, 'skills');
     fs.mkdirSync(skillsDir, { recursive: true });
@@ -951,7 +1187,7 @@ function install(isGlobal, runtime = 'claude') {
         content = content.replace(/~\/\.claude\//g, pathPrefix);
 
         if (isOpencode) {
-          content = convertClaudeToOpencodeFrontmatter(content);
+          content = convertClaudeToOpencodeAgent(content);
         } else if (isGemini) {
           content = convertClaudeToGeminiAgent(content);
         } else if (isCodex) {
@@ -971,7 +1207,7 @@ function install(isGlobal, runtime = 'claude') {
           content = content.replace(/~\/\.claude\//g, pathPrefix);
 
           if (isOpencode) {
-            content = convertClaudeToOpencodeFrontmatter(content);
+            content = convertClaudeToOpencodeAgent(content);
           } else if (isGemini) {
             content = convertClaudeToGeminiAgent(content);
           } else if (isCodex) {
@@ -1083,15 +1319,34 @@ function uninstall(isGlobal, runtime = 'claude') {
 
   // Remove commands
   if (isOpencode) {
-    const commandDir = path.join(targetDir, 'command');
-    if (fs.existsSync(commandDir)) {
-      for (const file of fs.readdirSync(commandDir)) {
-        if (file.startsWith('gsp-') && file.endsWith('.md')) {
-          fs.unlinkSync(path.join(commandDir, file));
-          removedCount++;
+    // Remove from new path (commands/) and legacy path (command/)
+    for (const cmdDir of ['commands', 'command']) {
+      const commandDir = path.join(targetDir, cmdDir);
+      if (fs.existsSync(commandDir)) {
+        for (const file of fs.readdirSync(commandDir)) {
+          if (file.startsWith('gsp-') && file.endsWith('.md')) {
+            fs.unlinkSync(path.join(commandDir, file));
+            removedCount++;
+          }
         }
       }
-      if (removedCount > 0) console.log(`  ${c.success}✓${c.reset} Removed GSP commands from command/`);
+    }
+    if (removedCount > 0) console.log(`  ${c.success}✓${c.reset} Removed GSP commands`);
+
+    // Remove OpenCode skills
+    const skillsDir = path.join(targetDir, 'skills');
+    if (fs.existsSync(skillsDir)) {
+      let skillCount = 0;
+      for (const entry of fs.readdirSync(skillsDir, { withFileTypes: true })) {
+        if (entry.isDirectory() && entry.name.startsWith('gsp-')) {
+          fs.rmSync(path.join(skillsDir, entry.name), { recursive: true });
+          skillCount++;
+        }
+      }
+      if (skillCount > 0) {
+        removedCount++;
+        console.log(`  ${c.success}✓${c.reset} Removed ${skillCount} GSP skills`);
+      }
     }
   } else if (isCodex) {
     const skillsDir = path.join(targetDir, 'skills');
