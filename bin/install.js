@@ -609,21 +609,47 @@ function convertClaudeSkillToOpencode(content, skillName) {
 }
 
 /**
- * Convert Claude command to Gemini TOML format
+ * Shared body-level replacements for all Gemini conversions.
+ * Gemini uses TOML for commands but YAML for agents/skills.
+ * Command syntax stays as /gsp: (Gemini uses colon namespacing from subdirectories).
+ */
+function applyGeminiBodyReplacements(content) {
+  let converted = content;
+  converted = converted.replace(/\bAskUserQuestion\b/g, 'ask_user');
+  converted = converted.replace(/\bSlashCommand\b/g, 'activate_skill');
+  converted = converted.replace(/\bTodoWrite\b/g, 'write_todos');
+  converted = converted.replace(/~\/\.claude\b/g, '~/.gemini');
+  // Convert agent spawning — Gemini delegates via subagent tool calls
+  converted = converted.replace(/Spawn the (`gsp-[a-z-]+`) agent/g, 'Invoke the $1 subagent');
+  converted = converted.replace(/spawn the (`gsp-[a-z-]+`) agent/g, 'invoke the $1 subagent');
+  converted = converted.replace(/Re-spawn the agent/g, 'Re-invoke the subagent');
+  converted = converted.replace(/re-spawn the agent/g, 're-invoke the subagent');
+  return converted;
+}
+
+/**
+ * Convert Claude command to Gemini TOML format.
+ *
+ * Gemini expects .toml files in .gemini/commands/ with:
+ *   description (optional string), prompt (required string)
+ * Supports {{args}}, !{shell}, @{file} in prompt body.
  */
 function convertClaudeToGeminiToml(content) {
-  if (!content.startsWith('---')) return `prompt = ${JSON.stringify(content)}\n`;
-  const endIndex = content.indexOf('---', 3);
-  if (endIndex === -1) return `prompt = ${JSON.stringify(content)}\n`;
+  let processed = applyGeminiBodyReplacements(content);
+  processed = stripSubTags(processed);
 
-  const frontmatter = content.substring(3, endIndex).trim();
-  const body = content.substring(endIndex + 3).trim();
+  if (!processed.startsWith('---')) return `prompt = ${JSON.stringify(processed)}\n`;
+  const endIndex = processed.indexOf('---', 3);
+  if (endIndex === -1) return `prompt = ${JSON.stringify(processed)}\n`;
+
+  const frontmatter = processed.substring(3, endIndex).trim();
+  const body = processed.substring(endIndex + 3).trim();
 
   let description = '';
   for (const line of frontmatter.split('\n')) {
     const trimmed = line.trim();
     if (trimmed.startsWith('description:')) {
-      description = trimmed.substring(12).trim();
+      description = trimmed.substring(12).trim().replace(/^["']|["']$/g, '');
       break;
     }
   }
@@ -635,25 +661,40 @@ function convertClaudeToGeminiToml(content) {
 }
 
 /**
- * Convert Claude agent to Gemini agent format
+ * Convert Claude agent to Gemini agent format.
+ *
+ * Gemini agents use YAML frontmatter with:
+ *   name (required), description (required), kind, tools (array),
+ *   model, temperature, max_turns, timeout_mins
+ *
+ * Claude fields that map:
+ *   name → name
+ *   description → description
+ *   tools (csv) → tools (array of Gemini tool names)
+ *   maxTurns → max_turns
+ *   color → dropped (not supported)
+ *   permissionMode → dropped (subagents run in YOLO mode)
+ *   disallowedTools → dropped (Gemini uses allowlist only)
  */
 function convertClaudeToGeminiAgent(content) {
-  if (!content.startsWith('---')) return content;
-  const endIndex = content.indexOf('---', 3);
-  if (endIndex === -1) return content;
+  let converted = applyGeminiBodyReplacements(content);
 
-  const frontmatter = content.substring(3, endIndex).trim();
-  const body = content.substring(endIndex + 3);
+  if (!converted.startsWith('---')) return converted;
+  const endIndex = converted.indexOf('---', 3);
+  if (endIndex === -1) return converted;
+
+  const frontmatter = converted.substring(3, endIndex).trim();
+  const body = converted.substring(endIndex + 3);
   const lines = frontmatter.split('\n');
   const newLines = [];
   let inAllowedTools = false;
+  let inDisallowedTools = false;
   const tools = [];
 
   for (const line of lines) {
     const trimmed = line.trim();
-    if (trimmed.startsWith('allowed-tools:')) { inAllowedTools = true; continue; }
-    if (trimmed.startsWith('tools:')) {
-      const val = trimmed.substring(6).trim();
+    if (trimmed.startsWith('allowed-tools:') || (trimmed.startsWith('tools:') && !trimmed.includes('false'))) {
+      const val = trimmed.split(':').slice(1).join(':').trim();
       if (val) {
         for (const t of val.split(',').map(s => s.trim()).filter(Boolean)) {
           const mapped = convertGeminiToolName(t);
@@ -662,7 +703,20 @@ function convertClaudeToGeminiAgent(content) {
       } else { inAllowedTools = true; }
       continue;
     }
+    // Skip disallowedTools (Gemini uses allowlist only)
+    if (trimmed.startsWith('disallowedTools:')) { inDisallowedTools = true; inAllowedTools = false; continue; }
+    if (inDisallowedTools) {
+      if (trimmed.startsWith('- ')) continue;
+      else if (trimmed && !trimmed.startsWith('-')) inDisallowedTools = false;
+    }
     if (trimmed.startsWith('color:')) continue;
+    if (trimmed.startsWith('permissionMode:')) continue;
+    // maxTurns → max_turns
+    if (trimmed.startsWith('maxTurns:')) {
+      const val = trimmed.split(':').slice(1).join(':').trim();
+      newLines.push(`max_turns: ${val}`);
+      continue;
+    }
     if (inAllowedTools) {
       if (trimmed.startsWith('- ')) {
         const mapped = convertGeminiToolName(trimmed.substring(2).trim());
@@ -670,7 +724,7 @@ function convertClaudeToGeminiAgent(content) {
         continue;
       } else if (trimmed && !trimmed.startsWith('-')) { inAllowedTools = false; }
     }
-    if (!inAllowedTools) newLines.push(line);
+    if (!inAllowedTools && !inDisallowedTools) newLines.push(line);
   }
 
   if (tools.length > 0) {
@@ -683,110 +737,179 @@ function convertClaudeToGeminiAgent(content) {
 }
 
 /**
- * Convert Claude command to Codex SKILL.md format
- * Codex expects: ~/.codex/skills/gsp-help/SKILL.md
+ * Convert Claude SKILL.md to Gemini skill format.
+ *
+ * Gemini skills use YAML frontmatter with:
+ *   name (required, must match dir), description (required)
+ *
+ * Nearly identical to Claude format — just strip Claude-only fields
+ * and apply body replacements.
  */
-function convertClaudeCommandToCodexSkill(content) {
-  if (!content.startsWith('---')) return content;
-  const endIndex = content.indexOf('---', 3);
-  if (endIndex === -1) return content;
+function convertClaudeSkillToGemini(content, skillName) {
+  let converted = applyGeminiBodyReplacements(content);
+  // Gemini doesn't document a SKILL_DIR variable — use relative paths
+  converted = converted.replace(/\$\{CLAUDE_SKILL_DIR\}/g, '.');
 
-  const frontmatter = content.substring(3, endIndex).trim();
-  let body = content.substring(endIndex + 3).trim();
+  if (!converted.startsWith('---')) {
+    return `---\nname: ${skillName}\ndescription: GSP skill\n---\n${converted}`;
+  }
+  const endIndex = converted.indexOf('---', 3);
+  if (endIndex === -1) {
+    return `---\nname: ${skillName}\ndescription: GSP skill\n---\n${converted}`;
+  }
 
-  // Extract metadata from frontmatter
-  let description = '';
-  const tools = [];
-  let inTools = false;
+  const frontmatter = converted.substring(3, endIndex).trim();
+  const body = converted.substring(endIndex + 3);
+  const newLines = [];
+  let hasName = false;
+  let hasDescription = false;
+  let inList = false;
+
+  for (const line of frontmatter.split('\n')) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('name:')) {
+      newLines.push(`name: ${skillName}`);
+      hasName = true; inList = false; continue;
+    }
+    if (trimmed.startsWith('description:')) { newLines.push(line); hasDescription = true; inList = false; continue; }
+    // Drop Claude-only fields
+    if (trimmed.startsWith('allowed-tools:')) { inList = true; continue; }
+    if (trimmed.startsWith('disable-model-invocation:')) { inList = false; continue; }
+    if (trimmed.startsWith('user-invocable:')) { inList = false; continue; }
+    if (trimmed.startsWith('argument-hint:')) { inList = false; continue; }
+    if (trimmed.startsWith('color:')) { inList = false; continue; }
+    if (trimmed.startsWith('context:')) { inList = false; continue; }
+    if (trimmed.startsWith('agent:')) { inList = false; continue; }
+    if (inList) {
+      if (trimmed.startsWith('- ')) continue;
+      else if (trimmed && !trimmed.startsWith('-')) inList = false;
+    }
+    if (!inList) newLines.push(line);
+  }
+
+  if (!hasName) newLines.unshift(`name: ${skillName}`);
+  if (!hasDescription) newLines.splice(1, 0, 'description: GSP skill');
+
+  return `---\n${newLines.join('\n').trim()}\n---${stripSubTags(body)}`;
+}
+
+/**
+ * Shared body-level replacements for all Codex conversions.
+ * Codex uses $skill-name for invocation and AGENTS.md for context.
+ */
+function applyCodexBodyReplacements(content) {
+  let converted = content;
+  converted = converted.replace(/\/gsp:/g, '$gsp-');
+  converted = converted.replace(/~\/\.claude\b/g, '~/.codex');
+  converted = converted.replace(/\bAskUserQuestion\b/g, 'ask the user');
+  converted = converted.replace(/\bSlashCommand\b/g, 'skill');
+  converted = converted.replace(/\bTodoWrite\b/g, 'todowrite');
+  // Codex multi-agent uses direct prompting to spawn agents
+  converted = converted.replace(/Spawn the (`gsp-[a-z-]+`) agent/g, 'Spawn a worker agent for $1');
+  converted = converted.replace(/spawn the (`gsp-[a-z-]+`) agent/g, 'spawn a worker agent for $1');
+  converted = converted.replace(/Re-spawn the agent/g, 'Spawn another worker agent');
+  converted = converted.replace(/re-spawn the agent/g, 'spawn another worker agent');
+  return converted;
+}
+
+/**
+ * Convert Claude command to Codex SKILL.md format.
+ *
+ * Codex expects: .agents/skills/gsp-help/SKILL.md
+ * YAML frontmatter with name (required) and description (required).
+ */
+function convertClaudeCommandToCodexSkill(content, skillName) {
+  let converted = applyCodexBodyReplacements(content);
+
+  if (!converted.startsWith('---')) {
+    return `---\nname: ${skillName}\ndescription: GSP command\n---\n${converted}`;
+  }
+  const endIndex = converted.indexOf('---', 3);
+  if (endIndex === -1) {
+    return `---\nname: ${skillName}\ndescription: GSP command\n---\n${converted}`;
+  }
+
+  const frontmatter = converted.substring(3, endIndex).trim();
+  const body = converted.substring(endIndex + 3);
+  const newLines = [];
+  let hasDescription = false;
+  let inList = false;
 
   for (const line of frontmatter.split('\n')) {
     const trimmed = line.trim();
     if (trimmed.startsWith('description:')) {
-      description = trimmed.substring(12).trim();
-      inTools = false;
-      continue;
+      newLines.push(line);
+      hasDescription = true; inList = false; continue;
     }
-    if (trimmed.startsWith('allowed-tools:') || trimmed.startsWith('tools:')) {
-      const val = trimmed.includes(':') ? trimmed.split(':').slice(1).join(':').trim() : '';
-      if (val) {
-        for (const t of val.split(',').map(s => s.trim()).filter(Boolean)) {
-          const mapped = convertCodexToolName(t);
-          if (mapped) tools.push(mapped);
-        }
-      } else {
-        inTools = true;
-      }
-      continue;
+    // Drop Claude-only fields
+    if (trimmed.startsWith('name:')) { inList = false; continue; }
+    if (trimmed.startsWith('allowed-tools:')) { inList = true; continue; }
+    if (trimmed.startsWith('disable-model-invocation:')) { inList = false; continue; }
+    if (trimmed.startsWith('user-invocable:')) { inList = false; continue; }
+    if (inList) {
+      if (trimmed.startsWith('- ')) continue;
+      else if (trimmed && !trimmed.startsWith('-')) inList = false;
     }
-    if (inTools) {
-      if (trimmed.startsWith('- ')) {
-        const mapped = convertCodexToolName(trimmed.substring(2).trim());
-        if (mapped) tools.push(mapped);
-        continue;
-      } else if (trimmed && !trimmed.startsWith('-')) {
-        inTools = false;
-      }
-    }
+    if (!inList) newLines.push(line);
   }
 
-  // Replace slash command references: /gsp: → $gsp-
-  body = body.replace(/\/gsp:/g, '$gsp-');
-  // Replace ~/.claude references
-  body = body.replace(/~\/\.claude\b/g, '~/.codex');
+  newLines.unshift(`name: ${skillName}`);
+  if (!hasDescription) newLines.splice(1, 0, 'description: GSP command');
 
-  // Build SKILL.md
-  let skill = '';
-  if (description) skill += `# ${description}\n\n`;
-  if (tools.length > 0) skill += `Tools: ${tools.join(', ')}\n\n`;
-  skill += body;
-  return skill;
+  return `---\n${newLines.join('\n').trim()}\n---${body}`;
 }
 
 /**
- * Convert Claude agent to Codex agent format
+ * Convert Claude SKILL.md to Codex skill format.
+ *
+ * Codex expects: .agents/skills/<name>/SKILL.md
+ * YAML frontmatter with name (required) and description (required).
+ * Strips Claude-only fields, applies body replacements.
  */
-function convertClaudeToCodexAgent(content) {
-  let converted = content;
-  converted = converted.replace(/\/gsp:/g, '$gsp-');
-  converted = converted.replace(/~\/\.claude\b/g, '~/.codex');
+function convertClaudeSkillToCodex(content, skillName) {
+  let converted = applyCodexBodyReplacements(content);
+  // Codex doesn't have a SKILL_DIR variable — use relative paths
+  converted = converted.replace(/\$\{CLAUDE_SKILL_DIR\}/g, '.');
 
-  if (!converted.startsWith('---')) return converted;
+  if (!converted.startsWith('---')) {
+    return `---\nname: ${skillName}\ndescription: GSP skill\n---\n${converted}`;
+  }
   const endIndex = converted.indexOf('---', 3);
-  if (endIndex === -1) return converted;
+  if (endIndex === -1) {
+    return `---\nname: ${skillName}\ndescription: GSP skill\n---\n${converted}`;
+  }
 
   const frontmatter = converted.substring(3, endIndex).trim();
   const body = converted.substring(endIndex + 3);
-  const lines = frontmatter.split('\n');
   const newLines = [];
-  let inTools = false;
-  const tools = [];
+  let hasName = false;
+  let hasDescription = false;
+  let inList = false;
 
-  for (const line of lines) {
+  for (const line of frontmatter.split('\n')) {
     const trimmed = line.trim();
-    if (trimmed.startsWith('allowed-tools:') || trimmed.startsWith('tools:')) {
-      const val = trimmed.includes(':') ? trimmed.split(':').slice(1).join(':').trim() : '';
-      if (val) {
-        for (const t of val.split(',').map(s => s.trim()).filter(Boolean)) {
-          const mapped = convertCodexToolName(t);
-          if (mapped) tools.push(mapped);
-        }
-      } else { inTools = true; }
-      continue;
+    if (trimmed.startsWith('name:')) {
+      newLines.push(`name: ${skillName}`);
+      hasName = true; inList = false; continue;
     }
-    if (trimmed.startsWith('color:')) continue;
-    if (inTools) {
-      if (trimmed.startsWith('- ')) {
-        const mapped = convertCodexToolName(trimmed.substring(2).trim());
-        if (mapped) tools.push(mapped);
-        continue;
-      } else if (trimmed && !trimmed.startsWith('-')) { inTools = false; }
+    if (trimmed.startsWith('description:')) { newLines.push(line); hasDescription = true; inList = false; continue; }
+    // Drop Claude-only fields
+    if (trimmed.startsWith('allowed-tools:')) { inList = true; continue; }
+    if (trimmed.startsWith('disable-model-invocation:')) { inList = false; continue; }
+    if (trimmed.startsWith('user-invocable:')) { inList = false; continue; }
+    if (trimmed.startsWith('argument-hint:')) { inList = false; continue; }
+    if (trimmed.startsWith('color:')) { inList = false; continue; }
+    if (trimmed.startsWith('context:')) { inList = false; continue; }
+    if (trimmed.startsWith('agent:')) { inList = false; continue; }
+    if (inList) {
+      if (trimmed.startsWith('- ')) continue;
+      else if (trimmed && !trimmed.startsWith('-')) inList = false;
     }
-    if (!inTools) newLines.push(line);
+    if (!inList) newLines.push(line);
   }
 
-  if (tools.length > 0) {
-    newLines.push('tools: ' + tools.join(', '));
-  }
+  if (!hasName) newLines.unshift(`name: ${skillName}`);
+  if (!hasDescription) newLines.splice(1, 0, 'description: GSP skill');
 
   return `---\n${newLines.join('\n').trim()}\n---${body}`;
 }
@@ -882,7 +1005,13 @@ function copyOpencodeSkills(srcDir, destDir, pathPrefix) {
  * Copy commands to Codex skill structure
  * commands/gsp/help.md → skills/gsp-help/SKILL.md
  */
-function copyCodexSkills(srcDir, destDir, prefix, pathPrefix) {
+/**
+ * Convert commands/gsp/*.md to Codex skills.
+ * commands/gsp/help.md → skills/gsp-help/SKILL.md
+ *
+ * Codex expects: .agents/skills/<name>/SKILL.md with YAML frontmatter.
+ */
+function copyCodexSkillsFromCommands(srcDir, destDir, prefix, pathPrefix) {
   if (!fs.existsSync(srcDir)) return;
   fs.mkdirSync(destDir, { recursive: true });
 
@@ -899,17 +1028,88 @@ function copyCodexSkills(srcDir, destDir, prefix, pathPrefix) {
   for (const entry of entries) {
     const srcPath = path.join(srcDir, entry.name);
     if (entry.isDirectory()) {
-      copyCodexSkills(srcPath, destDir, `${prefix}-${entry.name}`, pathPrefix);
+      copyCodexSkillsFromCommands(srcPath, destDir, `${prefix}-${entry.name}`, pathPrefix);
     } else if (entry.name.endsWith('.md')) {
       const baseName = entry.name.replace('.md', '');
-      const skillDir = path.join(destDir, `${prefix}-${baseName}`);
+      const skillName = `${prefix}-${baseName}`;
+      const skillDir = path.join(destDir, skillName);
       fs.mkdirSync(skillDir, { recursive: true });
       let content = fs.readFileSync(srcPath, 'utf8');
       content = content.replace(/~\/\.claude\//g, pathPrefix);
-      content = convertClaudeCommandToCodexSkill(content);
+      content = convertClaudeCommandToCodexSkill(content, skillName);
       fs.writeFileSync(path.join(skillDir, 'SKILL.md'), content);
     }
   }
+}
+
+/**
+ * Copy skills/ source to Codex skill structure.
+ * skills/<name>/SKILL.md → .agents/skills/gsp-<name>/SKILL.md
+ *
+ * Codex expects: .agents/skills/<name>/SKILL.md with YAML frontmatter (name + description).
+ */
+function copyCodexSkillsFromSource(srcDir, destDir, pathPrefix) {
+  if (!fs.existsSync(srcDir)) return 0;
+  fs.mkdirSync(destDir, { recursive: true });
+
+  let count = 0;
+  const skillDirs = fs.readdirSync(srcDir, { withFileTypes: true });
+  for (const dir of skillDirs) {
+    if (!dir.isDirectory()) continue;
+    const skillMd = path.join(srcDir, dir.name, 'SKILL.md');
+    if (!fs.existsSync(skillMd)) continue;
+
+    const skillName = dir.name.startsWith('gsp-') ? dir.name : `gsp-${dir.name}`;
+    const skillDest = path.join(destDir, skillName);
+    fs.mkdirSync(skillDest, { recursive: true });
+
+    let content = fs.readFileSync(skillMd, 'utf8');
+    content = content.replace(/~\/\.claude\//g, pathPrefix);
+    content = convertClaudeSkillToCodex(content, skillName);
+    fs.writeFileSync(path.join(skillDest, 'SKILL.md'), content);
+    count++;
+  }
+  return count;
+}
+
+/**
+ * Copy skills/ source to Gemini skill structure.
+ * skills/<name>/SKILL.md → .gemini/skills/gsp-<name>/SKILL.md
+ *
+ * Gemini expects: .gemini/skills/<name>/SKILL.md with YAML frontmatter (name + description).
+ */
+function copyGeminiSkills(srcDir, destDir, pathPrefix) {
+  if (!fs.existsSync(srcDir)) return 0;
+  fs.mkdirSync(destDir, { recursive: true });
+
+  // Clean old gsp- skill dirs
+  if (fs.existsSync(destDir)) {
+    for (const entry of fs.readdirSync(destDir, { withFileTypes: true })) {
+      if (entry.isDirectory() && entry.name.startsWith('gsp-')) {
+        fs.rmSync(path.join(destDir, entry.name), { recursive: true });
+      }
+    }
+  }
+
+  let count = 0;
+  const skillDirs = fs.readdirSync(srcDir, { withFileTypes: true });
+  for (const dir of skillDirs) {
+    if (!dir.isDirectory()) continue;
+    const skillMd = path.join(srcDir, dir.name, 'SKILL.md');
+    if (!fs.existsSync(skillMd)) continue;
+
+    const skillName = dir.name.startsWith('gsp-') ? dir.name : `gsp-${dir.name}`;
+    const skillDest = path.join(destDir, skillName);
+    fs.mkdirSync(skillDest, { recursive: true });
+
+    let content = fs.readFileSync(skillMd, 'utf8');
+    content = content.replace(/~\/\.claude\//g, pathPrefix);
+    content = content.replace(/\.\/\.claude\//g, './.gemini/');
+    content = convertClaudeSkillToGemini(content, skillName);
+    fs.writeFileSync(path.join(skillDest, 'SKILL.md'), content);
+    count++;
+  }
+  return count;
 }
 
 /**
@@ -940,14 +1140,14 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix, runtime, isCommand
         fs.writeFileSync(destPath, content);
       } else if (runtime === 'gemini') {
         if (isCommand) {
-          content = stripSubTags(content);
           const tomlContent = convertClaudeToGeminiToml(content);
           fs.writeFileSync(destPath.replace(/\.md$/, '.toml'), tomlContent);
         } else {
+          content = applyGeminiBodyReplacements(content);
           fs.writeFileSync(destPath, content);
         }
       } else if (runtime === 'codex') {
-        content = content.replace(/\/gsp:/g, '$gsp-');
+        content = applyCodexBodyReplacements(content);
         fs.writeFileSync(destPath, content);
       } else {
         fs.writeFileSync(destPath, content);
@@ -1148,12 +1348,37 @@ function install(isGlobal, runtime = 'claude') {
       console.log(`  ${c.success}✓${c.reset} Installed ${skillCount} skills to skills/`);
     } else { failures.push('skills'); }
   } else if (isCodex) {
+    // Codex uses skills for everything — convert commands to skills, then install source skills
     const skillsDir = path.join(targetDir, 'skills');
     fs.mkdirSync(skillsDir, { recursive: true });
-    copyCodexSkills(path.join(src, 'commands', 'gsp'), skillsDir, 'gsp', pathPrefix);
-    if (verifyInstalled(skillsDir, 'skills/gsp-*')) {
-      const count = fs.readdirSync(skillsDir).filter(f => f.startsWith('gsp-')).length;
-      console.log(`  ${c.success}✓${c.reset} Installed ${count} skills to skills/`);
+    copyCodexSkillsFromCommands(path.join(src, 'commands', 'gsp'), skillsDir, 'gsp', pathPrefix);
+    const cmdSkillCount = fs.readdirSync(skillsDir).filter(f => f.startsWith('gsp-')).length;
+
+    // Also install skills from skills/ source (these take precedence — same names overwrite)
+    const srcSkillCount = copyCodexSkillsFromSource(path.join(src, 'skills'), skillsDir, pathPrefix);
+
+    const totalSkills = fs.readdirSync(skillsDir).filter(d => {
+      return fs.statSync(path.join(skillsDir, d)).isDirectory() && d.startsWith('gsp-');
+    }).length;
+    if (totalSkills > 0) {
+      console.log(`  ${c.success}✓${c.reset} Installed ${totalSkills} skills to skills/`);
+    } else { failures.push('skills'); }
+  } else if (isGemini) {
+    // Gemini uses TOML for commands
+    const commandsDir = path.join(targetDir, 'commands');
+    fs.mkdirSync(commandsDir, { recursive: true });
+    const gspDest = path.join(commandsDir, 'gsp');
+    copyWithPathReplacement(path.join(src, 'commands', 'gsp'), gspDest, pathPrefix, runtime, true);
+    if (verifyInstalled(gspDest, 'commands/gsp')) {
+      const count = fs.readdirSync(gspDest).filter(f => f.endsWith('.toml')).length;
+      console.log(`  ${c.success}✓${c.reset} Installed ${count} commands to commands/gsp/ (.toml)`);
+    } else { failures.push('commands'); }
+
+    // Install skills for Gemini
+    const skillsDir = path.join(targetDir, 'skills');
+    const skillCount = copyGeminiSkills(path.join(src, 'skills'), skillsDir, pathPrefix);
+    if (skillCount > 0) {
+      console.log(`  ${c.success}✓${c.reset} Installed ${skillCount} skills to skills/`);
     } else { failures.push('skills'); }
   } else {
     const commandsDir = path.join(targetDir, 'commands');
@@ -1166,66 +1391,68 @@ function install(isGlobal, runtime = 'claude') {
   }
 
   // ── Agents ──
-  const agentsSrc = path.join(src, 'agents');
-  if (fs.existsSync(agentsSrc)) {
-    const agentsDest = path.join(targetDir, 'agents');
-    fs.mkdirSync(agentsDest, { recursive: true });
+  // Codex agents are TOML config sections, not .md files — skip file installation
+  if (!isCodex) {
+    const agentsSrc = path.join(src, 'agents');
+    if (fs.existsSync(agentsSrc)) {
+      const agentsDest = path.join(targetDir, 'agents');
+      fs.mkdirSync(agentsDest, { recursive: true });
 
-    // Remove old GSP agents before copying new ones
-    if (fs.existsSync(agentsDest)) {
-      for (const file of fs.readdirSync(agentsDest)) {
-        if (file.startsWith('gsp-') && file.endsWith('.md')) {
-          fs.unlinkSync(path.join(agentsDest, file));
+      // Remove old GSP agents before copying new ones
+      if (fs.existsSync(agentsDest)) {
+        for (const file of fs.readdirSync(agentsDest)) {
+          if (file.startsWith('gsp-') && file.endsWith('.md')) {
+            fs.unlinkSync(path.join(agentsDest, file));
+          }
         }
       }
-    }
 
-    const agentEntries = fs.readdirSync(agentsSrc, { withFileTypes: true });
-    for (const entry of agentEntries) {
-      if (entry.isFile() && entry.name.endsWith('.md')) {
-        let content = fs.readFileSync(path.join(agentsSrc, entry.name), 'utf8');
-        content = content.replace(/~\/\.claude\//g, pathPrefix);
-
-        if (isOpencode) {
-          content = convertClaudeToOpencodeAgent(content);
-        } else if (isGemini) {
-          content = convertClaudeToGeminiAgent(content);
-        } else if (isCodex) {
-          content = convertClaudeToCodexAgent(content);
-        }
-        fs.writeFileSync(path.join(agentsDest, entry.name), content);
-      }
-    }
-
-    // ── Custom agents (agents/custom/) ──
-    const customAgentsSrc = path.join(agentsSrc, 'custom');
-    let customAgentCount = 0;
-    if (fs.existsSync(customAgentsSrc)) {
-      for (const entry of fs.readdirSync(customAgentsSrc, { withFileTypes: true })) {
+      const agentEntries = fs.readdirSync(agentsSrc, { withFileTypes: true });
+      for (const entry of agentEntries) {
         if (entry.isFile() && entry.name.endsWith('.md')) {
-          let content = fs.readFileSync(path.join(customAgentsSrc, entry.name), 'utf8');
+          let content = fs.readFileSync(path.join(agentsSrc, entry.name), 'utf8');
           content = content.replace(/~\/\.claude\//g, pathPrefix);
 
           if (isOpencode) {
             content = convertClaudeToOpencodeAgent(content);
           } else if (isGemini) {
             content = convertClaudeToGeminiAgent(content);
-          } else if (isCodex) {
-            content = convertClaudeToCodexAgent(content);
           }
           fs.writeFileSync(path.join(agentsDest, entry.name), content);
-          customAgentCount++;
         }
       }
-    }
 
-    if (verifyInstalled(agentsDest, 'agents')) {
-      const count = fs.readdirSync(agentsDest).filter(f => f.startsWith('gsp-')).length;
-      const msg = customAgentCount > 0
-        ? `Installed ${count} agents + ${customAgentCount} custom`
-        : `Installed ${count} agents`;
-      console.log(`  ${c.success}✓${c.reset} ${msg}`);
-    } else { failures.push('agents'); }
+      // ── Custom agents (agents/custom/) ──
+      const customAgentsSrc = path.join(agentsSrc, 'custom');
+      let customAgentCount = 0;
+      if (fs.existsSync(customAgentsSrc)) {
+        for (const entry of fs.readdirSync(customAgentsSrc, { withFileTypes: true })) {
+          if (entry.isFile() && entry.name.endsWith('.md')) {
+            let content = fs.readFileSync(path.join(customAgentsSrc, entry.name), 'utf8');
+            content = content.replace(/~\/\.claude\//g, pathPrefix);
+
+            if (isOpencode) {
+              content = convertClaudeToOpencodeAgent(content);
+            } else if (isGemini) {
+              content = convertClaudeToGeminiAgent(content);
+            }
+            fs.writeFileSync(path.join(agentsDest, entry.name), content);
+            customAgentCount++;
+          }
+        }
+      }
+
+      if (verifyInstalled(agentsDest, 'agents')) {
+        const count = fs.readdirSync(agentsDest).filter(f => f.startsWith('gsp-')).length;
+        const msg = customAgentCount > 0
+          ? `Installed ${count} agents + ${customAgentCount} custom`
+          : `Installed ${count} agents`;
+        console.log(`  ${c.success}✓${c.reset} ${msg}`);
+        if (isGemini) {
+          console.log(`  ${c.dim}(agents require experimental.enableAgents: true in settings.json)${c.reset}`);
+        }
+      } else { failures.push('agents'); }
+    }
   }
 
   // ── Bundle: prompts, templates, references → get-shit-pretty/ ──
@@ -1295,6 +1522,7 @@ function install(isGlobal, runtime = 'claude') {
 
 function uninstall(isGlobal, runtime = 'claude') {
   const isOpencode = runtime === 'opencode';
+  const isGemini = runtime === 'gemini';
   const isCodex = runtime === 'codex';
   const dirName = getDirName(runtime);
 
@@ -1359,6 +1587,44 @@ function uninstall(isGlobal, runtime = 'claude') {
       }
       if (removedCount > 0) console.log(`  ${c.success}✓${c.reset} Removed GSP skills from skills/`);
     }
+    // Clean up legacy agent .md files from previous installs
+    const agentsDir = path.join(targetDir, 'agents');
+    if (fs.existsSync(agentsDir)) {
+      let agentCount = 0;
+      for (const file of fs.readdirSync(agentsDir)) {
+        if (file.startsWith('gsp-') && file.endsWith('.md')) {
+          fs.unlinkSync(path.join(agentsDir, file));
+          agentCount++;
+        }
+      }
+      if (agentCount > 0) {
+        removedCount++;
+        console.log(`  ${c.success}✓${c.reset} Removed ${agentCount} legacy GSP agent files`);
+      }
+    }
+  } else if (isGemini) {
+    // Remove TOML commands
+    const gspCommandsDir = path.join(targetDir, 'commands', 'gsp');
+    if (fs.existsSync(gspCommandsDir)) {
+      fs.rmSync(gspCommandsDir, { recursive: true });
+      removedCount++;
+      console.log(`  ${c.success}✓${c.reset} Removed commands/gsp/`);
+    }
+    // Remove Gemini skills
+    const skillsDir = path.join(targetDir, 'skills');
+    if (fs.existsSync(skillsDir)) {
+      let skillCount = 0;
+      for (const entry of fs.readdirSync(skillsDir, { withFileTypes: true })) {
+        if (entry.isDirectory() && entry.name.startsWith('gsp-')) {
+          fs.rmSync(path.join(skillsDir, entry.name), { recursive: true });
+          skillCount++;
+        }
+      }
+      if (skillCount > 0) {
+        removedCount++;
+        console.log(`  ${c.success}✓${c.reset} Removed ${skillCount} GSP skills`);
+      }
+    }
   } else {
     const gspCommandsDir = path.join(targetDir, 'commands', 'gsp');
     if (fs.existsSync(gspCommandsDir)) {
@@ -1376,19 +1642,21 @@ function uninstall(isGlobal, runtime = 'claude') {
     console.log(`  ${c.success}✓${c.reset} Removed get-shit-pretty/`);
   }
 
-  // Remove GSP agents
-  const agentsDir = path.join(targetDir, 'agents');
-  if (fs.existsSync(agentsDir)) {
-    let agentCount = 0;
-    for (const file of fs.readdirSync(agentsDir)) {
-      if (file.startsWith('gsp-') && file.endsWith('.md')) {
-        fs.unlinkSync(path.join(agentsDir, file));
-        agentCount++;
+  // Remove GSP agents (skip Codex — agents are TOML config, not .md files)
+  if (!isCodex) {
+    const agentsDir = path.join(targetDir, 'agents');
+    if (fs.existsSync(agentsDir)) {
+      let agentCount = 0;
+      for (const file of fs.readdirSync(agentsDir)) {
+        if (file.startsWith('gsp-') && file.endsWith('.md')) {
+          fs.unlinkSync(path.join(agentsDir, file));
+          agentCount++;
+        }
       }
-    }
-    if (agentCount > 0) {
-      removedCount++;
-      console.log(`  ${c.success}✓${c.reset} Removed ${agentCount} GSP agents`);
+      if (agentCount > 0) {
+        removedCount++;
+        console.log(`  ${c.success}✓${c.reset} Removed ${agentCount} GSP agents`);
+      }
     }
   }
 
