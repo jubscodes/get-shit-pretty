@@ -1,6 +1,6 @@
 # Runtime Documentation Baseline
 
-Last verified: 2026-03-13
+Last verified: 2026-03-14
 
 This file captures the known-good state of each runtime's extension system. The skill fetches live docs and compares against this baseline to detect drift.
 
@@ -142,6 +142,12 @@ Dropped: all Claude-specific fields
 | color            | string  | Terminal color name                 |
 | permissionMode   | string  | Permission level                   |
 | user-invocable   | boolean | Can user invoke directly           |
+| memory           | string  | Memory scope (e.g. "project")      |
+| background       | boolean | Run agent in background            |
+| hooks            | object  | Agent-scoped hooks (multi-line)    |
+| isolation        | string  | Isolation mode (e.g. "worktree")   |
+| skills           | list    | Skills available to agent          |
+| mcpServers       | list    | MCP servers available to agent     |
 
 ### OpenCode (converted)
 | Field       | Type    | Claude equivalent      |
@@ -152,6 +158,8 @@ Dropped: all Claude-specific fields
 | color       | string  | color (name → hex)     |
 | tools       | map     | allowed-tools → bools  |
 
+Drops: name, permissionMode, memory, background, hooks, isolation, skills, mcpServers
+
 ### Gemini CLI (converted, experimental)
 | Field      | Type    | Claude equivalent      |
 |------------|---------|------------------------|
@@ -161,7 +169,7 @@ Dropped: all Claude-specific fields
 | tools      | array   | allowed-tools (mapped) |
 
 Requires: `experimental.enableAgents: true` in settings.json
-Drops: disallowedTools, color, permissionMode
+Drops: disallowedTools, color, permissionMode, memory, background, hooks, isolation, skills, mcpServers
 
 ### Codex CLI
 No agent file support. Agents are not installed.
@@ -180,9 +188,12 @@ No agent file support. Agents are not installed.
 | WebFetch          | webfetch       | web_fetch            | web_fetch   |
 | AskUserQuestion   | question       | ask_user             | (prompt)    |
 | SlashCommand      | skill          | (n/a)                | skill       |
+| Skill             | skill          | activate_skill       | skill       |
 | TodoWrite         | todowrite      | write_todos          | (n/a)       |
 | Agent             | Agent          | agent                | (n/a)       |
 | NotebookEdit      | NotebookEdit   | (n/a)                | (n/a)       |
+
+Note: `Task` was renamed to `Agent` in Claude Code v2.1.63. `SlashCommand` was renamed to `Skill`. Both old names are no longer used in GSP source.
 
 ## Body-Level Replacements
 
