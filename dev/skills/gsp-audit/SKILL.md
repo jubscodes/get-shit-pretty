@@ -1,6 +1,6 @@
 ---
 name: gsp-audit
-description: Verify GSP pipeline integrity — command/agent/skill contracts, installer correctness, runtime compatibility, version sync, and template coherence. Internal development tool for GSP maintainers.
+description: Verify GSP pipeline integrity — agent/skill contracts, installer correctness, runtime compatibility, version sync, and template coherence. Internal development tool for GSP maintainers.
 allowed-tools:
   - Read
   - Glob
@@ -19,7 +19,6 @@ GSP internal integrity checker for maintainers. Verifies that the plugin's movin
 Source layout:
 - `gsp/skills/` — 21 skills (SKILL.md files)
 - `gsp/agents/` — 15 agents (gsp-*.md files)
-- `gsp/commands/gsp/` — 20 commands (*.md files)
 - `gsp/templates/` — config, state, brief, roadmap templates
 - `gsp/references/` — shared reference material
 - `gsp/prompts/` — 12 system prompts
@@ -52,13 +51,13 @@ Review the output. If all tests pass, report the clean result. If any tests fail
 
 `$ARGUMENTS` determines which checks to run:
 - **`all`** or empty — run everything
-- **`contracts`** — command↔agent↔skill contract checks only
+- **`contracts`** — agent↔skill contract checks only
 - **`installer`** — installer correctness checks only
 - **`runtime`** — runtime compatibility checks (uses runtime-compat baseline)
 - **`versions`** — version sync checks only
 - **`templates`** — template coherence checks only
 
-## Step 1: Version Sync (V)
+## Step 2: Version Sync (V)
 
 Three version sources must agree:
 
@@ -72,138 +71,111 @@ node -e "console.log(require('./.claude-plugin/plugin.json').version)"
 
 **V2: CHANGELOG coverage** — `CHANGELOG.md` has an entry for the current version → PASS, missing → WARN.
 
-## Step 2: Contract Checks (C)
+## Step 3: Contract Checks (C)
 
-Verify that skills, commands, and agents reference each other correctly.
-
-### C1: Every skill has a matching command
-For each `gsp/skills/gsp-*/SKILL.md`, check that a corresponding `gsp/commands/gsp/*.md` exists (skill `gsp-project-brief` → command `project-brief.md`). Exception: `get-shit-pretty` skill (meta skill, no command needed).
-- All matched → PASS
-- Missing commands → WARN (skills work without commands, but commands provide backward compat)
-
-### C2: Every command that spawns agents references valid agents
-Read each command in `gsp/commands/gsp/`. Extract agent references (patterns: `gsp-{name}`, `Agent:`, `agent:`, `Spawns:`, `spawns`). Check each referenced agent exists in `gsp/agents/`.
-- All references valid → PASS
-- Missing agents → FAIL
+Verify that skills and agents reference each other correctly.
 
 ### C3: Every skill that spawns agents references valid agents
-Same as C2 but for `gsp/skills/gsp-*/SKILL.md`.
+For each `gsp/skills/gsp-*/SKILL.md`, extract agent references (patterns: `gsp-{name}`). Check each referenced agent exists in `gsp/agents/`.
+- All references valid → PASS
+- Missing agents → FAIL
 
 ### C4: Agent tool lists are valid
 Read each agent in `gsp/agents/`. Extract `tools:` frontmatter. Verify each tool name is a valid Claude Code tool: Read, Write, Edit, Bash, Glob, Grep, WebFetch, WebSearch, Agent, NotebookEdit, TodoWrite, AskUserQuestion, Skill.
 - All valid → PASS
 - Unknown tools → WARN
 
-### C5: Skill↔command content drift
-For each skill/command pair, check they describe the same workflow. Extract the `description:` and `<objective>` from both. If the objectives are substantially different → WARN. (Heuristic: check first 100 chars of objective match or differ.)
+### C5: No orphan agents
+Every agent in `gsp/agents/` is spawned by at least one skill.
+- All referenced → PASS
+- Orphan agents → WARN
 
-### C6: Agent descriptions match spawning context
-Each agent has a `description:` saying who spawns it. Verify the referenced skill/command actually spawns this agent.
-- Matches → PASS
-- Orphan agents (no skill/command spawns them) → WARN
+### C6: Agent frontmatter has required fields
+Each agent must have `name:`, `description:`, and `tools:` in frontmatter.
+- All present → PASS
+- Missing fields → FAIL
 
-## Step 3: Installer Checks (I)
+### C7: Skill frontmatter has required fields
+Each skill must have `name:` and `description:` in frontmatter.
+- All present → PASS
+- Missing fields → FAIL
 
-### I1: All skills are installed
-Read `bin/install.js`. For each runtime's skill copy function, verify it would find all 21 skills from `gsp/skills/`.
-```bash
-ls gsp/skills/ | wc -l
-```
-Cross-reference with the installer's source directory path.
+### C8: Claude-only field usage matches known set
+Canary test — grep agents for `memory:`, `background:`, `hooks:`, `isolation:`, `skills:`, `mcpServers:`. Compare against expected list (gsp-builder.md, gsp-codebase-scanner.md, gsp-reviewer.md). WARN if set changes so developer verifies converters handle new fields.
 
-### I2: All agents are installed (non-Codex)
-Verify the installer copies all 15 agents for Claude, OpenCode, and Gemini (Codex skips agents).
-```bash
-ls gsp/agents/gsp-*.md | wc -l
-```
+## Step 4: Installer Checks (I)
 
-### I3: All commands are installed
-Verify the installer copies all 20 commands.
-```bash
-ls gsp/commands/gsp/*.md | wc -l
-```
-
-### I4: Bundle completeness
-Verify the installer bundles prompts, templates, and references:
-```bash
-ls gsp/prompts/ gsp/templates/ gsp/references/ | head -50
-```
-
-### I5: Installer syntax validity
+### I1: Installer syntax validity
 ```bash
 node -c bin/install.js
 ```
 PASS if exit 0, FAIL if syntax error.
 
-### I6: Tool name mappings complete
-Read the installer's tool mapping functions. Extract all Claude tool names being mapped. Compare against the known Claude tool list. Any unmapped tool → WARN.
+### I2: Source skill count
+Verify ≥20 skills exist in `gsp/skills/`.
 
-Grep for the mapping objects:
-```bash
-grep -A 30 'opencode.*tool\|gemini.*tool\|codex.*tool' bin/install.js | head -100
-```
+### I3: Source agent count
+Verify ≥14 agents exist in `gsp/agents/`.
 
-### I7: package.json `files` field
-Verify `package.json` `files` array includes all necessary directories. Everything in the `files` list should exist.
-```bash
-node -e "require('./package.json').files.forEach(f => console.log(f))"
-```
-Check each path exists → PASS, missing → FAIL.
+### I5: Bundle directories present
+Verify `gsp/prompts`, `gsp/templates`, `gsp/references` exist.
 
-## Step 4: Runtime Compatibility (R)
+### I6: package.json `files` field
+Everything in the `files` list should exist on disk.
+
+### I7: Codex skills → .agents/skills/
+Verify `getCodexSkillsDir` function returns `.agents` path.
+
+### I8: Tool mapping objects present
+Verify `claudeToOpencodeTools`, `claudeToGeminiTools`, `claudeToCodexTools` objects exist.
+
+### I9: All conversion functions present
+Verify all 5 converter functions exist in the installer.
+
+### I10: All body replacement functions present
+Verify `applyOpencodeBodyReplacements`, `applyGeminiBodyReplacements`, `applyCodexBodyReplacements` exist.
+
+### I11: Agent converters strip Claude-only single-line fields
+Grep both `convertClaudeToOpencodeAgent` and `convertClaudeToGeminiAgent` for `startsWith('memory:')`, `startsWith('background:')`, `startsWith('isolation:')` with `continue`. FAIL if any stripping pattern is missing.
+
+### I12: Agent converters strip Claude-only multi-line blocks
+Grep both agent converters for `hooks:`, `skills:`, `mcpServers:` handling and verify `inSkipBlock` state machine exists. FAIL if block-stripping logic is missing.
+
+### I13: Body replacements handle Skill tool rename
+Grep each `apply*BodyReplacements` function for `Skill` replacement pattern. FAIL if any of the 3 body replacement functions lacks the pattern.
+
+### I14: No dead tool names in mappings
+Grep tool mapping objects for known-dead names (e.g. `Task`). Regression guard — FAIL if dead tools reappear.
+
+## Step 5: Runtime Compatibility (R)
 
 Read the baseline reference at `${CLAUDE_SKILL_DIR}/../runtime-compat/references/baseline.md`.
 
 ### R1: Discovery paths match installer
-For each runtime, check that the installer writes to the discovery paths documented in the baseline:
-- Claude: `.claude/skills/`, `.claude/commands/gsp/`, `.claude/agents/`
-- OpenCode: `.opencode/skills/`, `.opencode/commands/`, `.opencode/agents/`
-- Gemini: `.gemini/skills/`, `.gemini/commands/gsp/`, `.gemini/agents/`
+For each runtime, check that the installer writes to the correct discovery paths:
+- Claude: `.claude/skills/`, `.claude/agents/`
+- OpenCode: `.opencode/skills/`, `.opencode/agents/`
+- Gemini: `.gemini/skills/`, `.gemini/agents/`
 - Codex: `.agents/skills/` (NOT `.codex/skills/`), no agents
 
-Grep the installer for each path pattern. Mismatch → FAIL.
+### R2: Tool name mappings current (mapping + body)
+Compare installer's tool mappings against baseline. Verify Skill replacement exists in body replacement functions. Any difference → WARN.
 
-### R2: Tool name mappings current
-Compare installer's tool mappings against baseline. Any difference → WARN.
+### R3-R7: Body replacements, config paths, SKILL_DIR
+Check the installer's body replacement functions cover all patterns from the baseline.
 
-### R3: Body replacements current
-Check the installer's body replacement functions cover all patterns from the baseline (command invocation prefix, config path, SKILL_DIR variable, variable escaping). Missing pattern → WARN.
+### R8: Codex agents are skipped
+Verify Codex runtime doesn't install agent .md files.
 
-### R4: Live doc check (optional, when `runtime` scope)
-If scope includes `runtime`, attempt to fetch one doc page per runtime to verify URLs are still valid:
-- `https://code.claude.com/docs/en/skills`
-- `https://opencode.ai/docs/skills/`
-- `https://geminicli.com/docs/cli/skills/`
-- `https://developers.openai.com/codex/skills`
+### R9: Skill tool replacement uses lookahead guard
+Grep each `apply*BodyReplacements` for `(?=` near `Skill` — ensures the replacement isn't a naive `\bSkill\b` that would corrupt "SKILL.md", "skills", etc. WARN if guard pattern is missing.
 
-URL returns content → PASS, 404/redirect to different structure → WARN with new URL.
+## Step 6: Template Coherence (T)
 
-## Step 5: Template Coherence (T)
+### T1-T7: Config fields, state templates, phase templates, exports index, chunk format, state/brief templates
+See automated test suite for details.
 
-### T1: Config templates have all required fields
-Read `gsp/templates/branding/config.json` and `gsp/templates/projects/config.json`. Verify expected fields exist:
-
-**Brand config:** name, project_type ("brand"), version, phases (discover, strategy, identity, system)
-**Project config:** name, project_type ("design"), version, brand_ref, phases (brief, research, design, critique, build, review), design_scope, implementation_target, codebase_type
-
-Missing field → FAIL.
-
-### T2: State templates match phase names
-Read `gsp/templates/branding/state.md` and `gsp/templates/projects/state.md`. Verify phase names in the state table match the phases in the corresponding config template.
-Mismatch → FAIL.
-
-### T3: Phase templates exist for all phases
-For each phase listed in config templates, verify a corresponding template exists in `gsp/templates/phases/`.
-Missing → WARN.
-
-### T4: Exports index template covers all phases
-Read `gsp/templates/exports-index.md`. Verify it has BEGIN/END markers for each project phase.
-Missing phase → WARN.
-
-### T5: Chunk format reference exists
-Verify `gsp/references/chunk-format.md` exists and is non-empty.
-
-## Step 6: Report
+## Step 7: Report
 
 Output a terminal-formatted report:
 
@@ -212,57 +184,45 @@ GSP Integrity Audit
 ═══════════════════════════════════════
 
 Version Sync
-  ✅ V1. Version agreement .......... PASS (0.4.3)
+  ✅ V1. Version agreement .......... PASS (0.5.0)
   ⚠️  V2. CHANGELOG coverage ........ WARN
 
 Contracts
-  ✅ C1. Skill→command mapping ....... PASS (21/21)
-  ✅ C2. Command→agent refs ......... PASS
   ✅ C3. Skill→agent refs ........... PASS
   ✅ C4. Agent tool validity ........ PASS
-  ⚠️  C5. Skill↔command drift ....... WARN
-  ✅ C6. Agent spawn refs ........... PASS
+  ✅ C5. No orphan agents ........... PASS
+  ✅ C6. Agent frontmatter .......... PASS
+  ✅ C7. Skill frontmatter .......... PASS
+  ✅ C8. Claude-only field set ...... PASS
 
 Installer
-  ✅ I1. Skills installed ........... PASS (21)
-  ✅ I2. Agents installed ........... PASS (15)
-  ✅ I3. Commands installed ......... PASS (20)
-  ✅ I4. Bundle completeness ........ PASS
-  ✅ I5. Installer syntax ........... PASS
-  ⚠️  I6. Tool mappings complete .... WARN
-  ✅ I7. Files field ................ PASS
+  ✅ I1. Installer syntax ........... PASS
+  ✅ I2. Skills exist ............... PASS (21)
+  ✅ I3. Agents exist ............... PASS (15)
+  ✅ I5. Bundle dirs ................ PASS
+  ✅ I6. Files field ................ PASS
+  ✅ I7. Codex skills path .......... PASS
+  ✅ I8. Tool mapping objects ....... PASS
+  ✅ I9. Conversion functions ....... PASS
+  ✅ I10. Body replacers ............ PASS
+  ✅ I11. Single-line field strip ... PASS
+  ✅ I12. Multi-line block strip .... PASS
+  ✅ I13. Skill tool rename ......... PASS
+  ✅ I14. No dead tool names ........ PASS
 
 Runtime Compatibility
   ✅ R1. Discovery paths ............ PASS
   ✅ R2. Tool name mappings ......... PASS
-  ✅ R3. Body replacements .......... PASS
-  ⚠️  R4. Live doc check ............ WARN
+  ✅ R3-R7. Body replacements ....... PASS
+  ✅ R8. Codex skips agents ......... PASS
+  ✅ R9. Skill rename guard ......... PASS
 
 Templates
-  ✅ T1. Config fields .............. PASS
-  ✅ T2. State↔config phases ........ PASS
-  ✅ T3. Phase templates ............ PASS
-  ✅ T4. Exports index .............. PASS
-  ✅ T5. Chunk format ref ........... PASS
-
-─── Issues Found ──────────────────────
-
-FAIL:
-  (none)
-
-WARN:
-  • [V2] CHANGELOG.md missing entry for v0.4.3
-    → Add a ## 0.4.3 section to CHANGELOG.md
-  • [C5] Skill gsp-start objective differs from command start.md
-    → Sync objectives between skill and command
-  • [I6] Tool "NotebookEdit" has no Gemini mapping
-    → Add mapping in convertClaudeToGeminiAgent() or filter it out
-  • [R4] code.claude.com/docs/en/skills redirected (was docs.anthropic.com)
-    → Update baseline.md with current URLs
+  ✅ T1-T7. All template checks ..... PASS
 
 ─── Summary ───────────────────────────
 
-  18 PASS · 4 WARN · 0 FAIL
+  30 PASS · 1 WARN · 0 FAIL
   GSP pipeline is healthy with minor issues.
 ```
 
@@ -271,7 +231,7 @@ WARN:
 - **Read-only** — do NOT modify any files, only report findings
 - **Be specific** — every issue names the exact file and suggests the exact fix
 - **Don't over-report** — if the same root cause triggers multiple checks, note it once and cross-reference
-- **Count everything** — the report should show exact counts (21 skills, 15 agents, 20 commands)
+- **Count everything** — the report should show exact counts (21 skills, 15 agents)
 - **Runtime compat uses baseline** — read the baseline.md reference file, don't re-derive from scratch
 
 </process>

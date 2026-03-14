@@ -142,6 +142,15 @@ if should_run contracts; then
   else
     fail "C7 Missing skill frontmatter" "${MISSING_SKILL_FIELDS[*]}"
   fi
+
+  # C8: Claude-only field usage matches known set (canary)
+  EXPECTED_CLAUDE_ONLY="gsp-builder.md gsp-codebase-scanner.md gsp-reviewer.md"
+  ACTUAL_CLAUDE_ONLY=$(grep -rlE '^(memory|background|hooks|isolation|skills|mcpServers):' gsp/agents/ 2>/dev/null | xargs -I{} basename {} | sort -u | tr '\n' ' ' | sed 's/ $//')
+  if [[ "$ACTUAL_CLAUDE_ONLY" == "$EXPECTED_CLAUDE_ONLY" ]]; then
+    pass "C8 Claude-only field usage matches known set ($ACTUAL_CLAUDE_ONLY)"
+  else
+    warn "C8 Claude-only field set changed" "Expected: $EXPECTED_CLAUDE_ONLY Got: $ACTUAL_CLAUDE_ONLY — verify converters handle new fields"
+  fi
 fi
 
 # ── I: Installer Checks ─────────────────────────────
@@ -239,6 +248,69 @@ if should_run installer; then
     fi
   done
   $REP_OK && pass "I10 All body replacement functions present"
+
+  # I11: Agent converters strip Claude-only single-line fields
+  I11_OK=true
+  for fn in convertClaudeToOpencodeAgent convertClaudeToGeminiAgent; do
+    CONVERTER=$(grep -A80 "function $fn" bin/install.js)
+    for field in memory: background: isolation:; do
+      if ! echo "$CONVERTER" | grep -q "startsWith('$field')"; then
+        I11_OK=false
+      fi
+    done
+  done
+  if $I11_OK; then
+    pass "I11 Agent converters strip single-line Claude-only fields"
+  else
+    fail "I11 Missing single-line field stripping" "Converters must strip memory:, background:, isolation:"
+  fi
+
+  # I12: Agent converters strip Claude-only multi-line blocks
+  I12_OK=true
+  for fn in convertClaudeToOpencodeAgent convertClaudeToGeminiAgent; do
+    CONVERTER=$(grep -A80 "function $fn" bin/install.js)
+    for block in hooks: skills: mcpServers:; do
+      if ! echo "$CONVERTER" | grep -q "startsWith('$block')"; then
+        I12_OK=false
+      fi
+    done
+    if ! echo "$CONVERTER" | grep -q 'inSkipBlock'; then
+      I12_OK=false
+    fi
+  done
+  if $I12_OK; then
+    pass "I12 Agent converters strip multi-line Claude-only blocks"
+  else
+    fail "I12 Missing multi-line block stripping" "Converters must handle hooks:, skills:, mcpServers: with inSkipBlock"
+  fi
+
+  # I13: Body replacements handle Skill tool rename
+  I13_OK=true
+  for fn in applyOpencodeBodyReplacements applyGeminiBodyReplacements applyCodexBodyReplacements; do
+    BODY_FN=$(grep -A30 "function $fn" bin/install.js)
+    if ! echo "$BODY_FN" | grep -q 'Skill'; then
+      I13_OK=false
+    fi
+  done
+  if $I13_OK; then
+    pass "I13 Body replacements handle Skill tool rename"
+  else
+    fail "I13 Missing Skill replacement" "All body replacement functions must rename Skill tool"
+  fi
+
+  # I14: No dead tool names in mappings
+  I14_OK=true
+  DEAD_TOOLS="Task"
+  for dead in $DEAD_TOOLS; do
+    if grep -E "claudeTo(Opencode|Gemini|Codex)Tools" bin/install.js | grep -q "'$dead'"; then
+      I14_OK=false
+    fi
+  done
+  if $I14_OK; then
+    pass "I14 No dead tool names in mappings"
+  else
+    fail "I14 Dead tool names found" "Tool mappings contain removed tools ($DEAD_TOOLS)"
+  fi
 fi
 
 # ── R: Runtime Compatibility ────────────────────────
@@ -260,17 +332,22 @@ if should_run runtime; then
       warn "R1 Codex discovery path" "Installer or baseline may be out of sync"
     fi
 
-    # R2: OpenCode tool mapping — check key renames exist
+    # R2: OpenCode tool mapping — check key renames exist (mapping + body)
     OC_OK=true
     for pair in "AskUserQuestion.*question" "SlashCommand.*skill" "TodoWrite.*todowrite"; do
       if ! grep -q "$pair" bin/install.js; then
         OC_OK=false
       fi
     done
+    # Also verify Skill replacement exists in body replacement function
+    OC_BODY=$(grep -A30 "function applyOpencodeBodyReplacements" bin/install.js)
+    if ! echo "$OC_BODY" | grep -q 'Skill'; then
+      OC_OK=false
+    fi
     if $OC_OK; then
-      pass "R2 OpenCode tool mappings present"
+      pass "R2 OpenCode tool mappings present (mapping + body)"
     else
-      warn "R2 OpenCode tool mappings" "Missing expected tool renames"
+      warn "R2 OpenCode tool mappings" "Missing expected tool renames or Skill body replacement"
     fi
 
     # R3: Gemini tool mapping — check key renames exist
@@ -342,6 +419,22 @@ if should_run runtime; then
       fi
     else
       warn "R8 No isCodex check" "Installer may not handle Codex runtime"
+    fi
+
+    # R9: Skill tool replacement uses lookahead guard
+    R9_OK=true
+    for fn in applyOpencodeBodyReplacements applyGeminiBodyReplacements applyCodexBodyReplacements; do
+      BODY_FN=$(grep -A30 "function $fn" bin/install.js)
+      if echo "$BODY_FN" | grep -q 'Skill'; then
+        if ! echo "$BODY_FN" | grep -q '(?='; then
+          R9_OK=false
+        fi
+      fi
+    done
+    if $R9_OK; then
+      pass "R9 Skill tool replacement uses lookahead guard"
+    else
+      warn "R9 Skill replacement guard" "Skill rename may corrupt SKILL.md/skills — add lookahead (?=)"
     fi
   fi
 fi
