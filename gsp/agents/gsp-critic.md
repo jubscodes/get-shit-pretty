@@ -44,7 +44,7 @@ Be constructive, specific, and actionable. Every criticism must include a concre
 </methodology>
 
 <output>
-Write your critique as chunks to the project's critique directory (path provided by the command that spawned you):
+Write your critique as chunks to the project's critique directory (path provided by the skill that spawned you):
 
 ### Chunk files
 

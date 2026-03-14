@@ -1,10 +1,10 @@
 ---
 name: help
-description: Show all commands
+description: Show all skills
 disable-model-invocation: true
 ---
 <objective>
-Display the complete GSP command reference with branded ANSI styling.
+Display the complete GSP skill reference with branded ANSI styling.
 
 Output ONLY the reference content below. Do NOT add:
 - Project-specific analysis
@@ -25,11 +25,11 @@ Output the following using ANSI escape codes for color. Each element has a speci
 - **Brand mark `/gsp:`** — accent + bold: `\x1b[1m\x1b[38;2;255;107;53m`
 - **Diamonds `◇◇`** — tertiary: `\x1b[38;2;102;102;102m`
 - **Version** — dim: `\x1b[2m`
-- **Subtitle "command reference"** — secondary: `\x1b[38;2;160;160;160m`
+- **Subtitle "skill reference"** — secondary: `\x1b[38;2;160;160;160m`
 - **Divider `───`** — tertiary: `\x1b[38;2;102;102;102m`
 - **Divider label text** — secondary + bold: `\x1b[1m\x1b[38;2;160;160;160m`
-- **Command names** — accent + bold: `\x1b[1m\x1b[38;2;255;107;53m`
-- **Command descriptions** — secondary: `\x1b[38;2;160;160;160m`
+- **Skill names** — accent + bold: `\x1b[1m\x1b[38;2;255;107;53m`
+- **Skill descriptions** — secondary: `\x1b[38;2;160;160;160m`
 - **Flow phase names** — primary: `\x1b[38;2;224;224;224m`
 - **Flow arrows `→`** — tertiary: `\x1b[38;2;102;102;102m`
 - **Tree connectors** — tertiary: `\x1b[38;2;102;102;102m`
@@ -38,17 +38,17 @@ Output the following using ANSI escape codes for color. Each element has a speci
 - **Footer** — dim: `\x1b[2m`
 - **Reset** — `\x1b[0m`
 
-Command names are left-padded with 4 spaces. Descriptions start at column 27 (4 indent + 23 max command name width).
+Skill names are left-padded with 4 spaces. Descriptions start at column 27 (4 indent + 23 max skill name width).
 
 ```
   /gsp: ◇◇  v{VERSION}
-  command reference
+  skill reference
 
 
   ─── Getting Started ──────────────────
 
     /gsp:start             start here — picks up where you left off
-    /gsp:help              this command reference
+    /gsp:help              this skill reference
     /gsp:progress          how pretty are we?
 
   ─── Branding ─────────────────────────
@@ -89,7 +89,7 @@ Command names are left-padded with 4 spaces. Descriptions start at column 27 (4 
                                     ↑                    ↑
                               critique loop         QA loop
 
-    run any command directly — routing is optional.
+    run any skill directly — routing is optional.
 
   ─── Directory Structure ──────────────
 

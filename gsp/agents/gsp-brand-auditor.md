@@ -38,7 +38,7 @@ Write for both human review and agent consumption.
 </methodology>
 
 <output>
-Write 5 chunks + INDEX.md to the audit directory (path provided by the command that spawned you).
+Write 5 chunks + INDEX.md to the audit directory (path provided by the skill that spawned you).
 
 Each chunk follows `references/chunk-format.md`.
 

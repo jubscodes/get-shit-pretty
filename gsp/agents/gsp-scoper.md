@@ -40,7 +40,7 @@ Frame the project as a bounded issue (or set of issues) and a PR. Encourage tigh
 </methodology>
 
 <output>
-Write your brief as chunks to the project's brief directory (path provided by the command that spawned you):
+Write your brief as chunks to the project's brief directory (path provided by the skill that spawned you):
 
 ### Brief chunks
 

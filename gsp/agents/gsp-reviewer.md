@@ -55,7 +55,7 @@ Cross-reference these against design specs to validate the implementation.
 </methodology>
 
 <output>
-Write your review as chunks to the project's review directory (path provided by the command that spawned you):
+Write your review as chunks to the project's review directory (path provided by the skill that spawned you):
 
 ### Review chunks
 

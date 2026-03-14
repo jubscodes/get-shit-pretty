@@ -59,7 +59,7 @@ Read `system_strategy` from brand config's `system_config`:
 </methodology>
 
 <output>
-Write your design system as chunks to the brand's system directory (path provided by the command that spawned you):
+Write your design system as chunks to the brand's system directory (path provided by the skill that spawned you):
 
 ### Foundation chunks
 

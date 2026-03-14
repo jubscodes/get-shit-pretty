@@ -350,14 +350,12 @@ function convertToolName(claudeTool) {
 
 function convertGeminiToolName(claudeTool) {
   if (claudeTool.startsWith('mcp__')) return null;
-  if (claudeTool === 'Task') return null;
   if (claudeToGeminiTools[claudeTool]) return claudeToGeminiTools[claudeTool];
   return claudeTool.toLowerCase();
 }
 
 function convertCodexToolName(claudeTool) {
   if (claudeTool.startsWith('mcp__')) return null;
-  if (claudeTool === 'Task') return null;
   if (claudeToCodexTools[claudeTool]) return claudeToCodexTools[claudeTool];
   return claudeTool.toLowerCase();
 }
@@ -378,6 +376,7 @@ function applyOpencodeBodyReplacements(content) {
   let converted = content;
   converted = converted.replace(/\bAskUserQuestion\b/g, 'question');
   converted = converted.replace(/\bSlashCommand\b/g, 'skill');
+  converted = converted.replace(/\bSkill\b(?=\s+tool\b)/g, 'skill');
   converted = converted.replace(/\bTodoWrite\b/g, 'todowrite');
   converted = converted.replace(/\/gsp:/g, '/gsp-');
   converted = converted.replace(/~\/\.claude\b/g, '~/.config/opencode');
@@ -406,6 +405,9 @@ function applyOpencodeBodyReplacements(content) {
  *   permissionMode → permission section
  *   color → color (hex)
  *   name → dropped (filename is the identifier)
+ *
+ * Dropped (Claude-only, no OpenCode equivalent):
+ *   memory, background, hooks, isolation, skills, mcpServers
  */
 function convertClaudeToOpencodeAgent(content) {
   let converted = applyOpencodeBodyReplacements(content);
@@ -421,11 +423,21 @@ function convertClaudeToOpencodeAgent(content) {
   const newLines = [];
   let inAllowedTools = false;
   let inDisallowedTools = false;
+  let inSkipBlock = false;
   const enabledTools = [];
   const disabledTools = [];
 
   for (const line of lines) {
     const trimmed = line.trim();
+
+    // Skip continuation lines of multi-line blocks being stripped
+    if (inSkipBlock) {
+      if (trimmed && !line.startsWith(' ') && !line.startsWith('\t')) {
+        inSkipBlock = false; // back to top-level, fall through
+      } else {
+        continue;
+      }
+    }
 
     // Parse allowed-tools / tools list
     if (trimmed.startsWith('allowed-tools:') || (trimmed.startsWith('tools:') && !trimmed.includes('false'))) {
@@ -464,6 +476,16 @@ function convertClaudeToOpencodeAgent(content) {
     // Drop Claude-only fields
     if (trimmed.startsWith('name:')) continue;
     if (trimmed.startsWith('permissionMode:')) continue;
+    // Drop Claude-only fields (single-line)
+    if (trimmed.startsWith('memory:')) continue;
+    if (trimmed.startsWith('background:')) continue;
+    if (trimmed.startsWith('isolation:')) continue;
+    // Drop Claude-only fields (potentially multi-line blocks)
+    if (trimmed.startsWith('hooks:') || trimmed.startsWith('skills:') || trimmed.startsWith('mcpServers:')) {
+      const val = trimmed.split(':').slice(1).join(':').trim();
+      if (!val) { inSkipBlock = true; }
+      continue;
+    }
 
     // maxTurns → steps
     if (trimmed.startsWith('maxTurns:')) {
@@ -589,6 +611,7 @@ function applyGeminiBodyReplacements(content) {
   let converted = content;
   converted = converted.replace(/\bAskUserQuestion\b/g, 'ask_user');
   converted = converted.replace(/\bSlashCommand\b/g, 'activate_skill');
+  converted = converted.replace(/\bSkill\b(?=\s+tool\b)/g, 'activate_skill');
   converted = converted.replace(/\bTodoWrite\b/g, 'write_todos');
   converted = converted.replace(/~\/\.claude\b/g, '~/.gemini');
   // Convert agent spawning — Gemini delegates via subagent tool calls
@@ -614,6 +637,9 @@ function applyGeminiBodyReplacements(content) {
  *   color → dropped (not supported)
  *   permissionMode → dropped (subagents run in YOLO mode)
  *   disallowedTools → dropped (Gemini uses allowlist only)
+ *
+ * Dropped (Claude-only, no Gemini equivalent):
+ *   memory, background, hooks, isolation, skills, mcpServers
  */
 function convertClaudeToGeminiAgent(content) {
   let converted = applyGeminiBodyReplacements(content);
@@ -628,10 +654,21 @@ function convertClaudeToGeminiAgent(content) {
   const newLines = [];
   let inAllowedTools = false;
   let inDisallowedTools = false;
+  let inSkipBlock = false;
   const tools = [];
 
   for (const line of lines) {
     const trimmed = line.trim();
+
+    // Skip continuation lines of multi-line blocks being stripped
+    if (inSkipBlock) {
+      if (trimmed && !line.startsWith(' ') && !line.startsWith('\t')) {
+        inSkipBlock = false; // back to top-level, fall through
+      } else {
+        continue;
+      }
+    }
+
     if (trimmed.startsWith('allowed-tools:') || (trimmed.startsWith('tools:') && !trimmed.includes('false'))) {
       const val = trimmed.split(':').slice(1).join(':').trim();
       if (val) {
@@ -650,6 +687,16 @@ function convertClaudeToGeminiAgent(content) {
     }
     if (trimmed.startsWith('color:')) continue;
     if (trimmed.startsWith('permissionMode:')) continue;
+    // Drop Claude-only fields (single-line)
+    if (trimmed.startsWith('memory:')) continue;
+    if (trimmed.startsWith('background:')) continue;
+    if (trimmed.startsWith('isolation:')) continue;
+    // Drop Claude-only fields (potentially multi-line blocks)
+    if (trimmed.startsWith('hooks:') || trimmed.startsWith('skills:') || trimmed.startsWith('mcpServers:')) {
+      const val = trimmed.split(':').slice(1).join(':').trim();
+      if (!val) { inSkipBlock = true; }
+      continue;
+    }
     // maxTurns → max_turns
     if (trimmed.startsWith('maxTurns:')) {
       const val = trimmed.split(':').slice(1).join(':').trim();
@@ -742,6 +789,7 @@ function applyCodexBodyReplacements(content) {
   converted = converted.replace(/~\/\.claude\b/g, '~/.codex');
   converted = converted.replace(/\bAskUserQuestion\b/g, 'ask the user');
   converted = converted.replace(/\bSlashCommand\b/g, 'skill');
+  converted = converted.replace(/\bSkill\b(?=\s+tool\b)/g, 'skill');
   converted = converted.replace(/\bTodoWrite\b/g, 'todowrite');
   // Codex multi-agent uses direct prompting to spawn agents
   converted = converted.replace(/Spawn the (`gsp-[a-z-]+`) agent/g, 'Spawn a worker agent for $1');
@@ -965,7 +1013,7 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix, runtime) {
 
 /**
  * Check if we're running a local install inside the GSP source repo.
- * When true, we symlink instead of copying so edits to agents/ and commands/
+ * When true, we symlink instead of copying so edits to agents/ and skills/
  * are immediately reflected in .claude/ — no sync needed.
  */
 function isGspSourceRepo(dir) {

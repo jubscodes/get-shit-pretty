@@ -40,7 +40,7 @@ This is NOT brand-level discovery (that happens in `/gsp:brand-discover`). You b
 </methodology>
 
 <output>
-Write your research as chunks to the project's research directory (path provided by the command that spawned you):
+Write your research as chunks to the project's research directory (path provided by the skill that spawned you):
 
 ### Research chunks
 

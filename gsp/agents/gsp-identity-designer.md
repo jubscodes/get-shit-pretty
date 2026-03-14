@@ -47,7 +47,7 @@ Write for both human review and agent consumption by downstream phases.
 </methodology>
 
 <output>
-Write 6 chunks + palettes.json + INDEX.md to the identity directory (path provided by the command that spawned you).
+Write 6 chunks + palettes.json + INDEX.md to the identity directory (path provided by the skill that spawned you).
 
 Each chunk follows `references/chunk-format.md`.
 

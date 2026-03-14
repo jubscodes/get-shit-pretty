@@ -41,7 +41,7 @@ Accessibility is not optional polish — it's a core quality requirement. Be tho
 </methodology>
 
 <output>
-Write your audit as chunks to the project's critique directory (path provided by the command that spawned you):
+Write your audit as chunks to the project's critique directory (path provided by the skill that spawned you):
 
 ### Chunk files
 

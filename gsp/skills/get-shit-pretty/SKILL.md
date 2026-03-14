@@ -32,7 +32,7 @@ brief → research → design → critique → build → review → launch
                                 └──── loop ────────┘
 ```
 
-Each command spawns a specialized agent modeled after a real design discipline:
+Each skill spawns a specialized agent modeled after a real design discipline:
 
 - **Brand Research** — market landscape, audience, competitors
 - **Brand Strategy** — archetype, positioning, personality, voice, tone, messaging (Kapferer Prism)

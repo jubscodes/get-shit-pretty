@@ -47,7 +47,7 @@ Every asset should be ready to brief to a production team. Exact copy, specific 
 </methodology>
 
 <output>
-Write your campaign as chunks to the project's launch directory (path provided by the command that spawned you):
+Write your campaign as chunks to the project's launch directory (path provided by the skill that spawned you):
 
 ### Chunk files
 

@@ -46,7 +46,7 @@ Your output feeds brand strategy. Write for both human review and agent consumpt
 </methodology>
 
 <output>
-Write 4 chunks + INDEX.md to the discover directory (path provided by the command that spawned you).
+Write 4 chunks + INDEX.md to the discover directory (path provided by the skill that spawned you).
 
 Each chunk follows `references/chunk-format.md`.
 

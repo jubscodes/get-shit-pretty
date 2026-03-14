@@ -36,8 +36,8 @@ Display current progress across all brands and projects with branded terminal ou
 | Table header | `\x1b[1m\x1b[38;2;160;160;160m` (secondary + bold) |
 | Table values | `\x1b[38;2;160;160;160m` (secondary) |
 | Table pending `—` | `\x1b[38;2;102;102;102m` (tertiary) |
-| Next command `→` | `\x1b[38;2;160;160;160m` (secondary) |
-| Next command name | `\x1b[38;2;255;107;53m` (accent) |
+| Next skill `→` | `\x1b[38;2;160;160;160m` (secondary) |
+| Next skill name | `\x1b[38;2;255;107;53m` (accent) |
 | Summary keys | `\x1b[38;2;160;160;160m` (secondary) |
 | Summary values | `\x1b[38;2;224;224;224m` (primary) |
 | "brand: x" reference | `\x1b[38;2;102;102;102m` (tertiary) |
@@ -110,7 +110,7 @@ Column positions: phase at col 4, status at col 19, chunks at col 29, time at co
 **Collapsed complete items:**
 When 100% complete, single-line: `  acme-corp ◆ complete (4/4, 11 chunks)`
 
-**Next Command:** `  → next: /gsp:brand-identity` (secondary `→ next:`, accent command name)
+**Next Skill:** `  → next: /gsp:brand-identity` (secondary `→ next:`, accent skill name)
 
 ### Example: Early State (2/4 branding)
 
@@ -183,7 +183,7 @@ After the summary, if everything is 100% complete, add: `  fully pretty.` in pri
 
 ## Step 6: Route next
 
-For each in-progress instance, identify the next pending phase and suggest the command.
+For each in-progress instance, identify the next pending phase and suggest the skill.
 
 **Brand routing:**
 - Phase 1 (Research) pending -> `/gsp:brand-research`

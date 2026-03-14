@@ -60,7 +60,7 @@ If the fetch succeeds, extract and display the section for the latest version. I
 Tell the user:
 ```
 The update replaces:
-  • commands/gsp/*     (all GSP commands)
+  • skills/gsp-*       (all GSP skills)
   • get-shit-pretty/*  (runtime files)
   • gsp-* agents       (all GSP agents)
 

@@ -37,7 +37,7 @@ mkdir -p {PROJECT_PATH}/references
 
 ## Step 2: Determine reference type
 
-If the user provided a file path, URL, or description in the command invocation, use that. Otherwise, ask:
+If the user provided a file path, URL, or description in the skill invocation, use that. Otherwise, ask:
 
 Use `AskUserQuestion` with options:
 - **Screenshot or image** — "Add a screenshot, mockup, or wireframe"

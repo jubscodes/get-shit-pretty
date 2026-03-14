@@ -43,7 +43,7 @@ When an **Existing Components** inventory is provided (for `shadcn`, `rn-reusabl
 </methodology>
 
 <output>
-Write your screens as chunks to the project's design directory (path provided by the command that spawned you):
+Write your screens as chunks to the project's design directory (path provided by the skill that spawned you):
 
 ### Screen chunks
 

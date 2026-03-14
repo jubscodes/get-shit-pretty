@@ -77,7 +77,7 @@ Edit and create files directly in the project's source code:
 
 ### `build/BUILD-LOG.md`
 
-After implementation, write a build log to the project's build directory (path provided by the command that spawned you):
+After implementation, write a build log to the project's build directory (path provided by the skill that spawned you):
 
 1. **Implementation Summary** — What was built, which screens, overall approach
 2. **Files Created** — List of new files added to the codebase (actual paths)
@@ -104,7 +104,7 @@ When in **revision mode** (addressing QA issues), append a revision section:
 
 After writing BUILD-LOG.md, write `build/INDEX.md` following the standard chunk INDEX format (see `references/chunk-format.md`). Reference BUILD-LOG.md (and CODE.md + components/ in figma mode).
 
-> **Note:** `codebase/MANIFEST.md` is written by the command (`project-build.md`), not by this agent.
+> **Note:** `codebase/MANIFEST.md` is written by the skill (`project-build`), not by this agent.
 
 ### Figma exception
 
