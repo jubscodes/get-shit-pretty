@@ -10,13 +10,7 @@
     ".mcp.json",
     "bin",
     "scripts",
-    "commands",
-    "agents",
-    "hooks",
-    "prompts",
-    "skills",
-    "templates",
-    "references"
+    "gsp"
   ],
   "keywords": [
     "design",

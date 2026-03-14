@@ -2,6 +2,7 @@ node_modules/
 .DS_Store
 
 # Local runtime dirs (installer-generated symlinks/copies + local config)
+.agents/
 .claude/
 .codex/
 .gemini/
