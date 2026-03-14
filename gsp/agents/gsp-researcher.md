@@ -28,15 +28,15 @@ Your output feeds brand strategy. Write for both human review and agent consumpt
 1. **Read the brief** — understand business model, personas, and competitive context
 2. **Research market first** — use WebSearch for current industry trends, competitive design approaches, and audience expectations. This is the primary source of truth.
 3. **Analyze competitors** — positioning, visual language, strengths/weaknesses
-4. **Validate against references** — read `references/design-trends.md` (the index). Only load specific trend files from `references/trends/` when open research confirms that trend is relevant to this brand. Do NOT pre-load reference trends and fit the brand to them.
-5. **Synthesize** — form opinionated recommendations grounded in the personas from BRIEF.md. Reference trend files enrich findings — they don't drive them.
+4. **Validate against style presets** — read the `/gsp:style` skill's `styles/INDEX.yml` for available aesthetics. Only reference specific style presets when open research confirms that aesthetic is relevant to this brand. Do NOT pre-load styles and fit the brand to them.
+5. **Synthesize** — form opinionated recommendations grounded in the personas from BRIEF.md. Style presets and trend references enrich findings — they don't drive them.
 
 ## Source Priority
 1. Open web research (WebSearch) — real market signals come first
 2. Official design blogs (Apple Newsroom, Google Design, Figma blog)
 3. Industry reports (NN/g, Baymard, Nielsen)
 4. Real brand examples (cite specific companies)
-5. Local reference files (`references/trends/`) — only to deepen trends already validated by research
+5. GSP style presets and trend references — only to deepen trends already validated by research
 
 ## Quality Standards
 - Every trend needs 3 real brand examples

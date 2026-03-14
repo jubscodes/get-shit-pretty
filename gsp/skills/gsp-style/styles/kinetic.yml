@@ -1,0 +1,52 @@
+name: kinetic
+description: Motion-focused dynamic design — viewport-width typography, marquees, extreme scale hierarchy
+tags: [motion, animated, dynamic, kinetic, bold]
+
+tokens:
+  color:
+    primary: "#FF3D00"
+    secondary: "#FFEA00"
+    accent: "#00E676"
+    background: "#09090B"
+    surface: "#1A1A1A"
+    on-primary: "#000000"
+    on-background: "#FAFAFA"
+    error: "#EF4444"
+    success: "#00E676"
+    warning: "#FFEA00"
+    info: "#3B82F6"
+    muted: "#9E9E9E"
+
+  typography:
+    font-family-primary: "Space Grotesk, Inter, sans-serif"
+    font-family-mono: "JetBrains Mono, monospace"
+    font-weight-heading: 800
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.5
+
+  shape:
+    border-radius-sm: "0px"
+    border-radius-md: "4px"
+    border-radius-lg: "8px"
+    border-width: "2px"
+    border-color: "#424242"
+
+  elevation:
+    shadow-sm: "0 4px 16px rgba(255,61,0,0.2)"
+    shadow-md: "0 8px 24px rgba(255,61,0,0.3)"
+    shadow-lg: "0 16px 40px rgba(255,61,0,0.4)"
+    shadow-xl: "0 24px 56px rgba(255,234,0,0.3)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "200ms"
+    duration-normal: "300ms"
+    easing: "cubic-bezier(0.4, 0, 0.2, 1)"
+
+compatibility: [cyberpunk, bold-typography]
+clashes: [swiss-minimalist, professional, botanical]
+trend_ref: trends/kinetic-typography.md

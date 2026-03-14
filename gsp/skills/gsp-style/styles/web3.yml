@@ -1,0 +1,65 @@
+name: web3
+description: Bitcoin DeFi aesthetic — orange luminescence on void black, spinning orbitals, blockchain grids
+tags: [web3, crypto, blockchain, defi, dark]
+
+tokens:
+  color:
+    primary: "#F7931A"
+    secondary: "#EA580C"
+    accent: "#FFD600"
+    background: "#030304"
+    surface: "#0F1115"
+    on-primary: "#000000"
+    on-background: "#FFFFFF"
+    error: "#EF4444"
+    success: "#10B981"
+    warning: "#F7931A"
+    info: "#3B82F6"
+    muted: "#94A3B8"
+
+  typography:
+    font-family-primary: "Space Grotesk, sans-serif"
+    font-family-secondary: "Inter, sans-serif"
+    font-family-mono: "JetBrains Mono, monospace"
+    font-weight-heading: 700
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.6
+
+  shape:
+    border-radius-sm: "4px"
+    border-radius-md: "8px"
+    border-radius-lg: "9999px"
+    border-width: "1px"
+    border-color: "rgba(247,147,26,0.3)"
+
+  glass:
+    backdrop-blur: "12px"
+
+  glow:
+    primary: "0 0 20px rgba(247,147,26,0.4)"
+    gold: "0 0 15px rgba(255,214,0,0.3)"
+
+  elevation:
+    shadow-sm: "0 0 10px rgba(247,147,26,0.2)"
+    shadow-md: "0 0 15px rgba(247,147,26,0.3)"
+    shadow-lg: "0 0 20px rgba(234,88,12,0.4)"
+    shadow-xl: "0 0 30px rgba(247,147,26,0.5)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "200ms"
+    duration-normal: "400ms"
+    easing: "cubic-bezier(0.4, 0, 0.2, 1)"
+
+dark_mode:
+  color:
+    background: "#030304"
+    surface: "#0F1115"
+    on-background: "#FFFFFF"
+
+compatibility: [cyberpunk, modern-dark]
+clashes: [botanical, retro, sketch]

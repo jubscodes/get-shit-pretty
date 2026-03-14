@@ -1,0 +1,64 @@
+name: playful-geometric
+description: Memphis-inspired fun — confetti colors, candy buttons, sticker cards, bouncy interactions
+tags: [geometric, playful, fun, colorful, bouncy]
+
+tokens:
+  color:
+    primary: "#3B82F6"
+    secondary: "#F472B6"
+    accent: "#8B5CF6"
+    background: "#FFFDF5"
+    surface: "#FFFFFF"
+    on-primary: "#FFFFFF"
+    on-background: "#1E293B"
+    error: "#EF4444"
+    success: "#34D399"
+    warning: "#FBBF24"
+    info: "#3B82F6"
+
+  color-rotate:
+    blue: "#3B82F6"
+    pink: "#F472B6"
+    violet: "#8B5CF6"
+    amber: "#FBBF24"
+    mint: "#34D399"
+
+  typography:
+    font-family-primary: "Outfit, Plus Jakarta Sans, sans-serif"
+    font-family-display: "Fredoka One, sans-serif"
+    font-family-mono: "JetBrains Mono, monospace"
+    font-weight-heading: 700
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.5
+
+  shape:
+    border-radius-sm: "8px"
+    border-radius-md: "16px"
+    border-radius-lg: "9999px"
+    border-width: "2px"
+    border-color: "#1E293B"
+
+  elevation:
+    shadow-sm: "4px 4px 0px #1E293B"
+    shadow-md: "6px 6px 0px #1E293B"
+    shadow-lg: "8px 8px 0px #1E293B"
+    shadow-xl: "12px 12px 0px #1E293B"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "200ms"
+    duration-normal: "300ms"
+    easing: "cubic-bezier(0.34, 1.56, 0.64, 1)"
+
+dark_mode:
+  color:
+    background: "#1E293B"
+    surface: "#334155"
+    on-background: "#F8FAFC"
+
+compatibility: [neubrutalism, flat-design]
+clashes: [monochrome, luxury, swiss-minimalist]

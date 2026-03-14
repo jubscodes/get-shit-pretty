@@ -65,7 +65,7 @@ if should_run contracts; then
   # C3: Every skill that spawns agents references valid agents
   BAD_SKILL_REFS=()
   for skill in gsp/skills/gsp-*/SKILL.md; do
-    agents=$(grep -oE 'gsp-[a-z][-a-z]*' "$skill" | grep -v 'gsp-start\|gsp-help\|gsp-doctor\|gsp-progress\|gsp-update\|gsp-pretty\|gsp-art\|gsp-brand-\|gsp-project-\|gsp-add-\|gsp-launch' | sort -u)
+    agents=$(grep -oE 'gsp-[a-z][-a-z]*' "$skill" | grep -v 'gsp-start\|gsp-help\|gsp-doctor\|gsp-progress\|gsp-update\|gsp-pretty\|gsp-art\|gsp-brand-\|gsp-project-\|gsp-add-\|gsp-launch\|gsp-style' | sort -u)
     for agent in $agents; do
       if [[ ! -f "gsp/agents/${agent}.md" ]]; then
         BAD_SKILL_REFS+=("$(basename "$(dirname "$skill")"):${agent}")

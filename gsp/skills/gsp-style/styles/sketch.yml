@@ -1,0 +1,58 @@
+name: sketch
+description: Hand-drawn artistic — wobbly borders, offset shadows, paper texture, correction marker red
+tags: [hand-drawn, sketch, artistic, doodle, whimsical]
+
+tokens:
+  color:
+    primary: "#2D3748"
+    secondary: "#2D5DA1"
+    accent: "#FF4D4D"
+    background: "#FDFBF7"
+    surface: "#FFFDF7"
+    on-primary: "#FFFFFF"
+    on-background: "#2D2D2D"
+    error: "#FF4D4D"
+    success: "#48BB78"
+    warning: "#ED8936"
+    info: "#2D5DA1"
+    muted: "#718096"
+
+  typography:
+    font-family-primary: "Kalam, cursive"
+    font-family-secondary: "Patrick Hand, cursive"
+    font-family-mono: "Courier New, monospace"
+    font-weight-heading: 700
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.6
+
+  shape:
+    border-radius-sm: "4px 8px 6px 10px"
+    border-radius-md: "8px 12px 10px 14px"
+    border-radius-lg: "12px 16px 14px 18px"
+    border-width: "2px"
+    border-color: "#2D3748"
+
+  elevation:
+    shadow-sm: "2px 2px 0px #2D3748"
+    shadow-md: "4px 4px 0px #2D3748"
+    shadow-lg: "6px 6px 0px #2D3748"
+    shadow-xl: "8px 8px 0px #2D3748"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "100ms"
+    duration-normal: "200ms"
+    easing: "ease"
+
+dark_mode:
+  color:
+    background: "#1A1A2E"
+    surface: "#2D2D48"
+    on-background: "#FDFBF7"
+
+compatibility: [organic, playful-geometric]
+clashes: [professional, enterprise, modern-dark]

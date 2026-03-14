@@ -1,0 +1,64 @@
+name: glassmorphism
+description: Frosted-glass UI with backdrop blur, translucency, and layered depth
+tags: [translucent, depth, premium, modern, elegant]
+trend_ref: trends/glassmorphism.md
+
+tokens:
+  color:
+    primary: "#6366F1"
+    secondary: "#8B5CF6"
+    accent: "#EC4899"
+    background: "#0F172A"
+    surface: "rgba(255, 255, 255, 0.12)"
+    on-primary: "#FFFFFF"
+    on-background: "#F8FAFC"
+    error: "#EF4444"
+    success: "#22C55E"
+    warning: "#F59E0B"
+    info: "#3B82F6"
+
+  typography:
+    font-family-primary: "Inter, sans-serif"
+    font-family-mono: "Fira Code, monospace"
+    font-weight-heading: 600
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.6
+
+  shape:
+    border-radius-sm: "12px"
+    border-radius-md: "16px"
+    border-radius-lg: "24px"
+    border-width: "1px"
+    border-color: "rgba(255, 255, 255, 0.20)"
+
+  elevation:
+    shadow-sm: "0 4px 16px rgba(31, 38, 135, 0.15)"
+    shadow-md: "0 8px 32px rgba(31, 38, 135, 0.20)"
+    shadow-lg: "0 16px 48px rgba(31, 38, 135, 0.25)"
+    shadow-xl: "0 24px 64px rgba(31, 38, 135, 0.30)"
+
+  glass:
+    backdrop-blur: "12px"
+    backdrop-saturate: "180%"
+    surface-opacity: 0.12
+    border-opacity: 0.20
+    highlight: "inset 0 1px 0 rgba(255, 255, 255, 0.40)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "150ms"
+    duration-normal: "300ms"
+    easing: "cubic-bezier(0.4, 0, 0.2, 1)"
+
+dark_mode:
+  color:
+    background: "#020617"
+    surface: "rgba(255, 255, 255, 0.08)"
+    on-background: "#E2E8F0"
+
+compatibility: [aurora-gradients, liquid-glass]
+clashes: [neubrutalism, claymorphism]

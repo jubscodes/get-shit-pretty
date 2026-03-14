@@ -1,0 +1,58 @@
+name: newsprint
+description: Newspaper editorial — multi-column layouts, serif headlines, zero radius, high density
+tags: [newspaper, editorial, journalism, print, serif]
+
+tokens:
+  color:
+    primary: "#1A1A1A"
+    secondary: "#4A4A4A"
+    accent: "#DC2626"
+    background: "#F5F5F0"
+    surface: "#FFFFFF"
+    on-primary: "#FFFFFF"
+    on-background: "#1A1A1A"
+    error: "#DC2626"
+    success: "#16A34A"
+    warning: "#D97706"
+    info: "#2563EB"
+    muted: "#666666"
+
+  typography:
+    font-family-primary: "Playfair Display, serif"
+    font-family-secondary: "Lora, serif"
+    font-family-ui: "Inter, sans-serif"
+    font-family-mono: "JetBrains Mono, monospace"
+    font-weight-heading: 900
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.6
+
+  shape:
+    border-radius-sm: "0px"
+    border-radius-md: "0px"
+    border-radius-lg: "0px"
+    border-width: "1px"
+    border-width-divider: "4px"
+    border-color: "#D4D4D4"
+
+  elevation:
+    shadow-sm: "none"
+    shadow-md: "none"
+    shadow-lg: "none"
+    shadow-xl: "none"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "100ms"
+    duration-normal: "200ms"
+    easing: "ease"
+
+  texture:
+    halftone-opacity: 0.03
+    dot-grid-opacity: 0.02
+
+compatibility: [monochrome, swiss-minimalist, academia]
+clashes: [glassmorphism, cyberpunk, vaporwave]

@@ -1,0 +1,66 @@
+name: liquid-glass
+description: Apple 2025 design language — refractive translucency, fluid morphing, specular highlights
+tags: [premium, translucent, modern, apple, fluid]
+trend_ref: trends/liquid-glass.md
+
+tokens:
+  color:
+    primary: "#007AFF"
+    secondary: "#5856D6"
+    accent: "#FF2D55"
+    background: "#F2F2F7"
+    surface: "rgba(255, 255, 255, 0.60)"
+    on-primary: "#FFFFFF"
+    on-background: "#1C1C1E"
+    error: "#FF3B30"
+    success: "#34C759"
+    warning: "#FF9500"
+    info: "#5AC8FA"
+
+  typography:
+    font-family-primary: "SF Pro Display, -apple-system, system-ui, sans-serif"
+    font-family-mono: "SF Mono, Menlo, monospace"
+    font-weight-heading: 600
+    font-weight-body: 400
+    font-size-base: "17px"
+    line-height-base: 1.47
+
+  shape:
+    border-radius-sm: "10px"
+    border-radius-md: "16px"
+    border-radius-lg: "24px"
+    border-width: "0.5px"
+    border-color: "rgba(255, 255, 255, 0.80)"
+
+  elevation:
+    shadow-sm: "0 2px 8px rgba(0, 0, 0, 0.08)"
+    shadow-md: "0 8px 32px rgba(31, 38, 135, 0.15)"
+    shadow-lg: "0 16px 48px rgba(31, 38, 135, 0.20)"
+    shadow-xl: "0 24px 64px rgba(31, 38, 135, 0.25)"
+
+  glass:
+    backdrop-blur: "2px"
+    backdrop-saturate: "180%"
+    surface-opacity: 0.60
+    border-opacity: 0.80
+    highlight: "inset 0 4px 20px rgba(255, 255, 255, 0.30)"
+    refraction: "inset -10px -8px 0px -11px rgba(255, 255, 255, 1)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "200ms"
+    duration-normal: "350ms"
+    easing: "cubic-bezier(0.2, 0.8, 0.2, 1)"
+
+dark_mode:
+  color:
+    background: "#000000"
+    surface: "rgba(255, 255, 255, 0.10)"
+    on-background: "#F5F5F7"
+    border-color: "rgba(255, 255, 255, 0.18)"
+
+compatibility: [glassmorphism, aurora-gradients]
+clashes: [neubrutalism, terminal, cyberpunk]

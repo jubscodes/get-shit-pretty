@@ -13,6 +13,7 @@
   },
   "system_config": {
     "tech_stack": "",
-    "system_strategy": "generate"
+    "system_strategy": "generate",
+    "style_preset": ""
   }
 }

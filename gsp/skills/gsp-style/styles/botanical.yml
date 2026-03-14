@@ -1,0 +1,63 @@
+name: botanical
+description: Nature-inspired organic — deep greens, floral accents, serif typography, paper grain texture
+tags: [nature, botanical, green, organic, serif]
+trend_ref: trends/botanical.md
+
+tokens:
+  color:
+    primary: "#166534"
+    secondary: "#5D7052"
+    accent: "#C27B66"
+    background: "#F9F8F4"
+    surface: "#F7FEE7"
+    on-primary: "#FFFFFF"
+    on-background: "#2D3A31"
+    error: "#DC2626"
+    success: "#16A34A"
+    warning: "#CA8A04"
+    info: "#2563EB"
+    muted: "#8C9A84"
+
+  typography:
+    font-family-primary: "Playfair Display, serif"
+    font-family-secondary: "Source Sans 3, sans-serif"
+    font-family-mono: "SF Mono, monospace"
+    font-weight-heading: 600
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.7
+
+  shape:
+    border-radius-sm: "8px"
+    border-radius-md: "16px"
+    border-radius-lg: "32px"
+    border-width: "1px"
+    border-color: "rgba(22,101,52,0.15)"
+
+  elevation:
+    shadow-sm: "0 2px 4px rgba(22,101,52,0.1)"
+    shadow-md: "0 4px 8px rgba(22,101,52,0.15)"
+    shadow-lg: "0 8px 20px rgba(22,101,52,0.15)"
+    shadow-xl: "0 12px 32px rgba(22,101,52,0.2)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "200ms"
+    duration-normal: "400ms"
+    easing: "ease-out"
+
+  texture:
+    grain-opacity: 0.015
+    blend-mode: "multiply"
+
+dark_mode:
+  color:
+    background: "#1A2E1A"
+    surface: "#243524"
+    on-background: "#E2EDE2"
+
+compatibility: [organic, swiss-minimalist]
+clashes: [cyberpunk, terminal, industrial]

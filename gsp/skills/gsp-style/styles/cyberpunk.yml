@@ -1,0 +1,62 @@
+name: cyberpunk
+description: Neon-soaked dark UI — glowing accents, sharp angles, high-tech atmosphere
+tags: [dark, neon, expressive, futuristic, bold]
+
+tokens:
+  color:
+    primary: "#00FFFF"
+    secondary: "#FF00FF"
+    accent: "#FFFF00"
+    background: "#0A0A0F"
+    surface: "#12121A"
+    on-primary: "#000000"
+    on-background: "#E0E0FF"
+    error: "#FF3366"
+    success: "#00FF88"
+    warning: "#FFB800"
+    info: "#00BFFF"
+
+  typography:
+    font-family-primary: "Orbitron, sans-serif"
+    font-family-secondary: "Rajdhani, sans-serif"
+    font-family-mono: "JetBrains Mono, monospace"
+    font-weight-heading: 700
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.5
+
+  shape:
+    border-radius-sm: "2px"
+    border-radius-md: "4px"
+    border-radius-lg: "8px"
+    border-width: "1px"
+    border-color: "rgba(0, 255, 255, 0.3)"
+
+  elevation:
+    shadow-sm: "0 0 8px rgba(0, 255, 255, 0.15)"
+    shadow-md: "0 0 16px rgba(0, 255, 255, 0.20)"
+    shadow-lg: "0 0 32px rgba(0, 255, 255, 0.25), 0 0 8px rgba(255, 0, 255, 0.15)"
+    shadow-xl: "0 0 48px rgba(0, 255, 255, 0.30), 0 0 16px rgba(255, 0, 255, 0.20)"
+
+  glow:
+    text-glow: "0 0 10px currentColor"
+    border-glow: "0 0 8px rgba(0, 255, 255, 0.4)"
+    neon-primary: "0 0 5px #00FFFF, 0 0 20px #00FFFF, 0 0 40px #00FFFF"
+    neon-secondary: "0 0 5px #FF00FF, 0 0 20px #FF00FF, 0 0 40px #FF00FF"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "150ms"
+    duration-normal: "300ms"
+    easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+
+dark_mode:
+  color:
+    background: "#050508"
+    surface: "#0A0A12"
+
+compatibility: [kinetic-typography, bento-grid]
+clashes: [swiss-minimalist, professional, liquid-glass]

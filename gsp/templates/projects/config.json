@@ -11,7 +11,8 @@
     "accessibility_level": "WCAG 2.2 AA",
     "implementation_target": "code",
     "codebase_type": "greenfield",
-    "design_scope": "full"
+    "design_scope": "full",
+    "style_preset": ""
   },
   "git": {
     "branch": "",

@@ -1,0 +1,57 @@
+name: bauhaus
+description: Functionalist geometric minimalism — primary colors, hard shadows, constructivist modernism
+tags: [functionalist, geometric, minimal, modernist, primary-colors]
+trend_ref: trends/bauhaus.md
+
+tokens:
+  color:
+    primary: "#D02020"
+    secondary: "#1040C0"
+    accent: "#F0C020"
+    background: "#FFFFFF"
+    surface: "#F0F0F0"
+    on-primary: "#FFFFFF"
+    on-background: "#000000"
+    error: "#DC2626"
+    success: "#16A34A"
+    warning: "#F0C020"
+    info: "#1040C0"
+
+  typography:
+    font-family-primary: "Outfit, sans-serif"
+    font-family-mono: "JetBrains Mono, monospace"
+    font-weight-heading: 800
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.5
+
+  shape:
+    border-radius-sm: "0px"
+    border-radius-md: "0px"
+    border-radius-lg: "9999px"
+    border-width: "4px"
+    border-color: "#000000"
+
+  elevation:
+    shadow-sm: "4px 4px 0px 0px #000000"
+    shadow-md: "8px 8px 0px 0px #000000"
+    shadow-lg: "12px 12px 0px 0px #000000"
+    shadow-xl: "16px 16px 0px 0px #000000"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "150ms"
+    duration-normal: "250ms"
+    easing: "ease"
+
+dark_mode:
+  color:
+    background: "#1A1A1A"
+    surface: "#2A2A2A"
+    on-background: "#F0F0F0"
+
+compatibility: [neubrutalism, flat-design]
+clashes: [glassmorphism, liquid-glass, neumorphism]
