@@ -1197,13 +1197,17 @@ function handleStatusline(settings, isInteractive, callback) {
   Your current statusline:
     ${dim}command: ${existingCmd}${reset}
 
-  GSP includes a statusline showing:
+  GSP includes a smart dispatcher that auto-switches between
+  your existing statusline (GSD) and the GSP statusline based
+  on the current project type.
+
+  GSP statusline shows:
     * Model name
     * Current design phase + prettiness meter
     * Context window usage (color-coded)
 
-  ${cyan}1${reset}) Keep existing
-  ${cyan}2${reset}) Replace with GSP statusline\n`);
+  ${cyan}1${reset}) Keep existing (current statusline only)
+  ${cyan}2${reset}) Install dispatcher (auto-switches between both)\n`);
 
   rl.question(`  Choice ${dim}[1]${reset}: `, (answer) => {
     rl.close();
