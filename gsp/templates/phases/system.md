@@ -42,6 +42,8 @@ Each includes: states, anatomy, usage rules, accessibility spec, code hints.
 |-----------|---------|
 | `principles.md` | 3-5 design principles + do's and don'ts |
 | `tokens.json` | Complete W3C Design Tokens format (color, typography, spacing, shadow, border-radius, breakpoints) |
+| `{brand-name}.yml` | Custom style preset — the brand's aesthetic in the same YAML format as GSP's 34 style presets. Portable and reusable. |
+| `{brand-name}.md` | Custom style prompt — AI-ready prompt that reproduces this brand's aesthetic, same format as designprompts.dev. |
 
 ## Content Reference
 

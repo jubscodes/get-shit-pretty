@@ -51,13 +51,25 @@ Load:
 - `{BRAND_PATH}/BRIEF.md`
 - `{BRAND_PATH}/strategy/INDEX.md` → load all 5 strategy chunks
 - `{BRAND_PATH}/discover/mood-board-direction.md`
+- `{BRAND_PATH}/config.json` → read `system_config.style_base`
+
+### Style base presets
+
+If `style_base` is a non-empty array, load each preset's files from `${CLAUDE_SKILL_DIR}/../gsp-style/styles/`:
+- `{preset-name}.yml` — structured tokens (palette, typography, spacing)
+- `{preset-name}.md` — design philosophy and AI prompt
+
+These will be passed to the identity-designer agent as the aesthetic seed.
 
 ## Step 2: Visual direction
 
 Load mood-board-direction.md + archetype visual tendencies.
 If audit exists, load `audit/brand-inventory.md` for current visuals.
 
-Present research context (compact — colors, typefaces, imagery from mood board + archetype tendencies).
+Present research context (compact — colors, typefaces, imagery from mood board + archetype tendencies). If style base presets are loaded, frame the visual directions around them:
+- **Faithful** — follows the preset's aesthetic closely, adapting for this brand
+- **Selective** — cherry-picks elements (e.g. typography approach but different palette)
+- **Departure** — uses the preset as a point of contrast, defining what the brand is *not*
 
 Use `AskUserQuestion` with 2-3 visual directions:
 - **Label:** direction name (e.g. "Minimal & Sharp")
@@ -77,6 +89,7 @@ Spawn the `gsp-identity-designer` agent with:
 - Brand Identity Creator prompt (02)
 - Identity output template
 - User-confirmed visual direction + constraints
+- Style base preset files (`.yml` + `.md`) if loaded
 - Audit chunks if they exist
 - **Output path:** `{BRAND_PATH}/identity/`
 

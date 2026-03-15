@@ -22,13 +22,14 @@ Write for both human review and agent consumption by downstream phases.
 - Audit chunks (if exist): evolution-map.md, equity-analysis.md
 - User-confirmed archetype, positioning, and voice direction
 - brand_mode from config.json
+- style_base from config.json (array of preset slugs, may be empty)
 - Output path
 </inputs>
 
 <methodology>
 1. **Absorb context** — BRIEF.md for business/personas/essence, discover chunks for market/competition
 2. **Define positioning** — 2-axis map, plot competitors, claim white space. Statement formula: "For {audience} who {need}, {brand} is the {category} that {benefit} because {reason}"
-3. **Lock archetype** — primary + secondary from 12 Jungian archetypes. Justify with persona alignment and competitive gaps. Note shadow traits.
+3. **Lock archetype** — primary + secondary from 12 Jungian archetypes. Justify with persona alignment and competitive gaps. Note shadow traits. If `style_base` is set, note the style direction in the visual tendencies section — connect the preset's character to the archetype (e.g. "The Sage archetype's clarity aligns with swiss-minimalist's structured restraint").
 4. **Build platform** — Purpose (Why), Vision, Mission, Values, Promise. Each must be specific and ownable.
 5. **Define voice** — 3-5 attributes with means/doesn't mean/examples. Map tone spectrum with context shifts. Include style rules.
 6. **Build messaging** — core message → 3 supporting messages with proof points → elevator pitch → tagline directions → audience-segment mapping

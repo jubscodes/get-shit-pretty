@@ -85,6 +85,18 @@ Reference brand essence from BRIEF.md. Use `AskUserQuestion` with 2-3 voice dire
 - **Description:** how these words differentiate and what they signal
 - **Preview:** example sentence in that voice
 
+## Step 5.5: Style direction
+
+Read `{BRAND_PATH}/discover/mood-board-direction.md` and look for the **Style Affinity** section. If it exists and recommends presets:
+
+Present the style direction to the user. Use `AskUserQuestion` with options:
+- One option per recommended preset — **Label:** preset name, **Description:** why the researcher recommended it (tag matches + rationale)
+- **No preset** — "Build the visual identity from scratch without a style base"
+
+Store the user's choice in `{BRAND_PATH}/config.json` → `system_config.style_base` as an array of preset slugs (e.g. `["swiss-minimalist"]`). If "No preset" → leave as `[]`.
+
+If the Style Affinity section doesn't exist or discover was skipped, skip this step silently.
+
 ## Step 6: Spawn strategist
 
 With confirmed archetype, positioning, and voice direction, spawn the `gsp-brand-strategist` agent with:
@@ -97,6 +109,7 @@ With confirmed archetype, positioning, and voice direction, spawn the `gsp-brand
 - Voice-tone reference
 - Audit chunks if they exist: `evolution-map.md`, `equity-analysis.md`
 - `brand_mode` from config.json
+- `style_base` from config.json (may be empty)
 - **Output path:** `{BRAND_PATH}/strategy/`
 
 The agent writes 5 chunks + INDEX.md:

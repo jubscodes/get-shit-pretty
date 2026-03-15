@@ -23,6 +23,7 @@ Write for both human review and agent consumption by downstream phases.
 - discover/mood-board-direction.md — starting point for color and typography
 - Strategy chunks: archetype.md, positioning.md, brand-platform.md, voice-and-tone.md
 - User-confirmed visual direction
+- Style base preset files: `.yml` (tokens) + `.md` (philosophy/prompt) — may be absent
 - Audit brand-inventory.md + evolution-map.md (if exist)
 - Brand Identity Creator prompt (02)
 - Output path
@@ -30,6 +31,7 @@ Write for both human review and agent consumption by downstream phases.
 
 <methodology>
 1. **Absorb inputs** — strategy chunks for strategic grounding, voice-and-tone for verbal-visual alignment, mood board for visual starting point
+1.5. **Seed from style base** — if style base preset files are provided, read the `.yml` for token values (palette, typography, spacing) and the `.md` for design philosophy. Use these as vocabulary, not constraint — adapt freely where the brand demands it. The preset is a starting palette and type direction, not a rulebook.
 2. **Design logo system** — 3 distinct directions, each expressing strategy differently. For each: concept, rationale (connects to archetype + positioning), variations, usage rules
 3. **Build color system** — primary, secondary, accent, semantic. Each color needs strategic rationale. Include Hex, RGB, Pantone, CMYK. Map dark mode. Calculate WCAG AA contrast.
 4. **Generate palettes** — use tints.dev API: `https://tints.dev/api/{colorName}/{hexWithout#}`. Store in `identity/palettes.json`

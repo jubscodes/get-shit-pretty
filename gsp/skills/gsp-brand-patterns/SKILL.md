@@ -58,7 +58,13 @@ Fallback: read `{BRAND_PATH}/strategy/STRATEGY.md`.
 
 Read:
 - `{BRAND_PATH}/BRIEF.md` — business, personas, goals
-- `{BRAND_PATH}/config.json` — get `system_config.system_strategy`, `system_config.tech_stack`
+- `{BRAND_PATH}/config.json` — get `system_config.system_strategy`, `system_config.tech_stack`, `system_config.style_base`
+
+### Style base presets
+
+If `style_base` is a non-empty array, load each preset's files from `${CLAUDE_SKILL_DIR}/../gsp-style/styles/`:
+- `{preset-name}.yml` — format reference for custom style output
+- `{preset-name}.md` — format reference for custom style prompt
 
 ## Step 1.5: Codebase awareness
 
@@ -103,6 +109,7 @@ Spawn the `gsp-system-architect` agent with:
 - The system output template
 - The design tokens reference
 - The `system_strategy` and `tech_stack` values
+- The `style_base` value + preset `.yml`/`.md` files (if loaded)
 - The INVENTORY.md content (when exists)
 - **Execution mode:** `"foundations"`
 - **Output path:** `{BRAND_PATH}/system/`
@@ -152,6 +159,7 @@ Spawn the `gsp-system-architect` agent with:
 - The existing foundations from Pass 1
 - All identity chunks + palettes.json
 - Strategy chunks (voice-and-tone.md for content component guidelines)
+- The `style_base` value + preset `.yml`/`.md` files (if loaded)
 - **Execution mode:** `"components"`
 - Confirmed component scope from Step 1.5
 - **Output path:** `{BRAND_PATH}/system/`
@@ -207,6 +215,8 @@ Render the phase transition screen (see `references/phase-transitions.md` for AN
     │   ├── {component files}
     ├── principles.md
     ├── tokens.json
+    ├── {brand-name}.yml
+    ├── {brand-name}.md
     └── INDEX.md
 
   ──────────────────────────────

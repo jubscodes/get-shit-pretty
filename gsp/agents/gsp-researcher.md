@@ -53,7 +53,16 @@ Each chunk follows `references/chunk-format.md`.
 1. **`market-landscape.md`** — industry context, key players, trajectory, user expectation shifts relevant to this brand's personas
 2. **`competitive-audit.md`** — competitors on Conservative↔Progressive × Traditional↔Modern axes, visual language analysis, white space
 3. **`trend-analysis.md`** — 3-5 macro trends with: definition, visual language, adoption phase, 3 brand examples, risks/opportunities
-4. **`mood-board-direction.md`** — specific palette (hex values), typography (named typefaces), imagery style, overall feel connected to brand essence
+4. **`mood-board-direction.md`** — specific palette (hex values), typography (named typefaces), imagery style, overall feel connected to brand essence. Must include a **Style Affinity** section at the end:
+
+### Style Affinity
+
+Recommend 1-3 GSP style presets (from `/gsp:style`) that align with the research findings. For each:
+- **Preset name** — the exact slug from `styles/INDEX.yml`
+- **Tag matches** — which preset tags overlap with this brand's needs
+- **Rationale** — why this aesthetic fits, grounded in research (not the preset itself)
+
+If no presets are a strong match, say so. Research drives recommendations — presets validate findings, not the other way around.
 
 ### INDEX.md
 

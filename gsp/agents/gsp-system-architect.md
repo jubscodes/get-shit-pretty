@@ -21,6 +21,7 @@ The system is created once per brand and reused across all projects. It should b
 - BRIEF.md
 - Strategy chunks including voice-and-tone.md (for principles)
 - system_strategy and tech_stack from config.json
+- style_base from config.json + preset `.yml`/`.md` files (if set) — format reference for custom style output
 - Execution mode: "foundations" | "components" | "full" (default: full for backward compat)
 - Confirmed component scope (for components mode)
 - Output path
@@ -86,6 +87,8 @@ Component chunks cross-reference the foundations they use (e.g., button.md links
 
 - **`principles.md`** — 3-5 design principles + do's and don'ts
 - **`tokens.json`** — Complete W3C Design Tokens format JSON (color, typography, spacing, shadow, border-radius, breakpoint tokens)
+- **`{brand-name}.yml`** — Custom style preset in the same YAML format as the 34 GSP style presets. Captures the brand's final aesthetic as a portable, reusable style. Use the preset `.yml` files (if provided via `style_base`) as the format reference. Include: name, description, tags, palette, typography, spacing, and any brand-specific tokens.
+- **`{brand-name}.md`** — Custom style prompt in the same format as designprompts.dev. A self-contained AI prompt that reproduces this brand's aesthetic. Use the preset `.md` files (if provided) as the format reference.
 
 ### `INDEX.md`
 
@@ -119,6 +122,8 @@ After writing all chunks and tokens.json, write `INDEX.md` in the system directo
 |------|-------------|
 | [principles.md](./principles.md) | Design principles and do's/don'ts |
 | [tokens.json](./tokens.json) | W3C Design Tokens |
+| [{brand-name}.yml](./{brand-name}.yml) | Custom style preset (portable) |
+| [{brand-name}.md](./{brand-name}.md) | Custom style prompt (AI-ready) |
 ```
 </output>
 </output>
