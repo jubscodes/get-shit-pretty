@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # GSP Integrity Test Suite
 # Run from repo root: bash dev/scripts/audit-tests.sh [suite]
-# Suites: all, versions, contracts, installer, runtime, templates
+# Suites: all, versions, contracts, installer, runtime, templates, unit
 # Exit code: number of failures
 
 set -uo pipefail
@@ -531,6 +531,17 @@ if should_run templates; then
     fi
   done
   $BR_OK && pass "T7 Brief templates present"
+fi
+
+# ── U: Unit Tests ──────────────────────────────────────
+
+if should_run unit; then
+  header "Unit Tests"
+  if node --test dev/tests/installer.test.js 2>&1; then
+    pass "U1 Installer unit tests"
+  else
+    fail "U1 Installer unit tests" "see output above"
+  fi
 fi
 
 # ── Summary ──────────────────────────────────────────

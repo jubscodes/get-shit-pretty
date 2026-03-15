@@ -1772,36 +1772,65 @@ function installAllRuntimes(runtimes, isGlobal, isInteractive) {
 // Main
 // ──────────────────────────────────────────────────────
 
-if (hasGlobal && hasLocal) {
-  console.error(`  ${yellow}Cannot specify both --global and --local${reset}`);
-  process.exit(1);
-} else if (explicitConfigDir && hasLocal) {
-  console.error(`  ${yellow}Cannot use --config-dir with --local${reset}`);
-  process.exit(1);
-} else if (hasUninstall) {
-  if (!hasGlobal && !hasLocal) {
-    console.error(`  ${yellow}--uninstall requires --global or --local${reset}`);
+if (require.main === module) {
+  if (hasGlobal && hasLocal) {
+    console.error(`  ${yellow}Cannot specify both --global and --local${reset}`);
     process.exit(1);
-  }
-  const runtimes = selectedRuntimes.length > 0 ? selectedRuntimes : ['claude'];
-  for (const runtime of runtimes) {
-    uninstall(hasGlobal, runtime);
-  }
-} else if (selectedRuntimes.length > 0) {
-  if (!hasGlobal && !hasLocal) {
-    promptLocation(selectedRuntimes);
+  } else if (explicitConfigDir && hasLocal) {
+    console.error(`  ${yellow}Cannot use --config-dir with --local${reset}`);
+    process.exit(1);
+  } else if (hasUninstall) {
+    if (!hasGlobal && !hasLocal) {
+      console.error(`  ${yellow}--uninstall requires --global or --local${reset}`);
+      process.exit(1);
+    }
+    const runtimes = selectedRuntimes.length > 0 ? selectedRuntimes : ['claude'];
+    for (const runtime of runtimes) {
+      uninstall(hasGlobal, runtime);
+    }
+  } else if (selectedRuntimes.length > 0) {
+    if (!hasGlobal && !hasLocal) {
+      promptLocation(selectedRuntimes);
+    } else {
+      installAllRuntimes(selectedRuntimes, hasGlobal, false);
+    }
+  } else if (hasGlobal || hasLocal) {
+    installAllRuntimes(['claude'], hasGlobal, false);
   } else {
-    installAllRuntimes(selectedRuntimes, hasGlobal, false);
-  }
-} else if (hasGlobal || hasLocal) {
-  installAllRuntimes(['claude'], hasGlobal, false);
-} else {
-  if (!process.stdin.isTTY) {
-    console.log(`  ${yellow}Non-interactive terminal detected, defaulting to Claude Code global install${reset}\n`);
-    installAllRuntimes(['claude'], true, false);
-  } else {
-    promptRuntime((runtimes) => {
-      promptLocation(runtimes);
-    });
+    if (!process.stdin.isTTY) {
+      console.log(`  ${yellow}Non-interactive terminal detected, defaulting to Claude Code global install${reset}\n`);
+      installAllRuntimes(['claude'], true, false);
+    } else {
+      promptRuntime((runtimes) => {
+        promptLocation(runtimes);
+      });
+    }
   }
 }
+
+// ── Exports for testing ──
+
+module.exports = {
+  // Tool name converters
+  convertToolName,
+  convertGeminiToolName,
+  convertCodexToolName,
+  // Tag stripping
+  stripSubTags,
+  // Body replacements
+  applyOpencodeBodyReplacements,
+  applyGeminiBodyReplacements,
+  applyCodexBodyReplacements,
+  // Agent converters
+  convertClaudeToOpencodeAgent,
+  convertClaudeToGeminiAgent,
+  // Skill converters
+  convertClaudeSkillToOpencode,
+  convertClaudeSkillToGemini,
+  convertClaudeSkillToCodex,
+  // Mapping objects
+  claudeToOpencodeTools,
+  claudeToGeminiTools,
+  claudeToCodexTools,
+  colorNameToHex,
+};
