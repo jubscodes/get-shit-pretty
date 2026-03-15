@@ -1828,6 +1828,11 @@ module.exports = {
   convertClaudeSkillToOpencode,
   convertClaudeSkillToGemini,
   convertClaudeSkillToCodex,
+  // Copy functions (integration testing)
+  copyOpencodeSkills,
+  copyGeminiSkills,
+  copyCodexSkillsFromSource,
+  copyWithPathReplacement,
   // Mapping objects
   claudeToOpencodeTools,
   claudeToGeminiTools,

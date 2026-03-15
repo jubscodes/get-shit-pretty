@@ -1,0 +1,5 @@
+{
+  "project_type": "test",
+  "version": "0.0.1",
+  "paths": ["~/.claude/templates/"]
+}
