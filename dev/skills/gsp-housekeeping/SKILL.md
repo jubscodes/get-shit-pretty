@@ -71,6 +71,18 @@ Any mismatch → drift issue. The VERSION file is the source of truth.
 
 **Fix:** update the mismatched files to match VERSION.
 
+## Step 2.5: Changelog health
+
+Check CHANGELOG.md for common issues:
+
+1. **Unreleased section exists** — `## [Unreleased]` must be present at the top. If missing, flag it.
+2. **Unreleased is not empty** — if there are commits since the last versioned entry but Unreleased has no content, flag: "Unreleased section is empty but there are new commits. Run `/gsp-changelog update` to populate."
+3. **Current version coverage** — if VERSION matches the latest versioned section in CHANGELOG.md, that's fine (post-release state). If VERSION is *ahead* of the changelog (no versioned section for it), Unreleased should have content.
+
+This check is informational — don't auto-fix. Suggest `/gsp-changelog update` or `/gsp-changelog release` as appropriate.
+
+**Fix:** not auto-fixable. Report only.
+
 ## Step 3: Count drift in CLAUDE.md
 
 Grep CLAUDE.md for counts like "21 skills", "15 agents", "12 prompts". Compare against actual filesystem counts from Step 1.

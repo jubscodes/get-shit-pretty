@@ -2,6 +2,33 @@
 
 All notable changes to get-shit-pretty are documented here.
 
+## [Unreleased]
+
+### Added
+- Style base integration across branding diamond — presets from `/gsp:style` flow through research, strategy, identity, and system phases as shared aesthetic vocabulary
+- Custom style output per brand — system phase produces `{brand-name}.yml` and `{brand-name}.md` in the same format as the 34 built-in presets
+
+### Changed
+- Brand config template gains `style_base` array in `system_config`
+
+## [0.5.0] — 2026-03-15
+
+### Added
+- Plugin architecture — manifest at `.claude-plugin/plugin.json`, MCP servers, hooks
+- 34 design style presets via `/gsp:style` — structured YAML tokens + AI-ready prompts from designprompts.dev
+- Multi-runtime installer — OpenCode, Gemini CLI, and Codex CLI support with tool name mapping, body replacements, and per-runtime discovery paths
+- Agent runtime config — `maxTurns`, `disallowedTools`, `permissionMode` frontmatter
+- Dev tools: `/gsp-audit` (36-test integrity suite), `/gsp-housekeeping` (drift catcher), `/gsp-dev` (dev router), `/runtime-compat` (live doc drift checker)
+
+### Changed
+- Skills-only architecture — removed commands, all functionality lives in `gsp/skills/*/SKILL.md`
+- Moved all GSP content under `gsp/` prefix (agents, skills, prompts, templates, references)
+- Merged verbal identity into strategy phase — branding diamond is now 4 phases (discover, strategy, identity, system)
+- Simplified brand agents with concise prompts and persona-focused methodology
+
+### Fixed
+- OpenCode installer — proper skills, agents, and body replacements
+
 ## [0.4.3] — 2025-11-21
 
 ### Changed
