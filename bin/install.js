@@ -172,13 +172,13 @@ const sparkleWidth = Math.min(34, columns - 4);
 const showSparkles = columns >= 40;
 
 const banner = '\n\n' +
-  (showSparkles ? `${c.dim}  ${sparkleLine(sparkleWidth)}${c.reset}\n` : '') +
-  (showSparkles ? `${c.dim}  ${sparkleLine(sparkleWidth)}${c.reset}\n` : '') +
+  (showSparkles ? center(`${c.dim}${sparkleLine(sparkleWidth)}${c.reset}`, columns) + '\n' : '') +
+  (showSparkles ? center(`${c.dim}${sparkleLine(sparkleWidth)}${c.reset}`, columns) + '\n' : '') +
   '\n' +
   center(rampText, columns) + '\n' +
   '\n' +
-  (showSparkles ? `${c.dim}  ${sparkleLine(sparkleWidth)}${c.reset}\n` : '') +
-  (showSparkles ? `${c.dim}  ${sparkleLine(sparkleWidth)}${c.reset}\n` : '') +
+  (showSparkles ? center(`${c.dim}${sparkleLine(sparkleWidth)}${c.reset}`, columns) + '\n' : '') +
+  (showSparkles ? center(`${c.dim}${sparkleLine(sparkleWidth)}${c.reset}`, columns) + '\n' : '') +
   '\n' +
   `  ${c.bold}${c.accent}/gsp:${c.reset} ${c.tertiary}◇◇${c.reset}  ${c.dim}v${pkg.version}${c.reset}\n` +
   `  ${c.dim}${tagline}${c.reset}\n`;
