@@ -8,7 +8,6 @@ allowed-tools:
   - Grep
   - Bash
 argument-hint: "[fix|check] default: check (dry run)"
-disable-model-invocation: true
 ---
 <context>
 Lightweight housekeeping for GSP maintainers. Unlike `/gsp-audit` (comprehensive, read-only, 30+ checks), this skill catches the **most common drift** after a moderate development session and offers to fix it.
@@ -58,9 +57,9 @@ node -e "process.stdout.write(require('./package.json').version)"
 echo
 node -e "process.stdout.write(require('./.claude-plugin/plugin.json').version)"
 echo
-node -e "process.stdout.write(require('./gsp/templates/projects/config.json').gsp_version)"
+node -e "process.stdout.write(require('./gsp/templates/projects/config.json').version)"
 echo
-node -e "process.stdout.write(require('./gsp/templates/branding/config.json').gsp_version)"
+node -e "process.stdout.write(require('./gsp/templates/branding/config.json').version)"
 ```
 
 ## Step 2: Version sync
@@ -133,12 +132,21 @@ Only check **comments** (lines starting with `//` or inside `/* */`), not code l
 git status --short
 ```
 
+```bash
+# Recent commits for context on what's already been committed
+git log --oneline -10
+```
+
 Flag:
 - Modified files that look like they belong to a previous chore session
 - Untracked files in `dev/` that should be committed or gitignored
 - Modified files outside the expected working area
 
-This is informational only — don't auto-fix git state.
+If there are uncommitted changes (staged or unstaged), **propose commits**:
+1. Group related changed files into logical commits (e.g. "version bumps", "new skill", "installer fixes")
+2. For each proposed commit, show the files and a draft commit message
+3. In `fix` mode, ask the user to confirm each proposed commit before creating it
+4. In `check` mode, list the proposed commits in the report under a "Proposed commits" subsection
 
 ## Step 7: Report
 
@@ -167,8 +175,15 @@ Output a compact report:
     M bin/install.js                        (modified, unstaged)
     ?? dev/skills/gsp-dev/                  (untracked)
 
+  Proposed commits
+    1. "fix: update version refs in config templates"
+       → gsp/templates/projects/config.json
+       → gsp/templates/branding/config.json
+    2. "chore: add gsp-dev skill"
+       → dev/skills/gsp-dev/
+
   ─────────────────────────────────────
-  5 issues found. Run /gsp-housekeeping fix to apply fixes.
+  5 issues found, 2 commits proposed. Run /gsp-housekeeping fix to apply.
 ```
 
 In `fix` mode, after the report, walk through each fixable issue:
