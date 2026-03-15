@@ -337,7 +337,7 @@ get-shit-pretty/
 │   ├── templates/         Config, state, brief, roadmap templates
 │   └── references/        Shared reference material
 ├── dev/                   Internal dev tools (not installed)
-│   ├── skills/            Dev-only skills (gsp-audit, runtime-compat)
+│   ├── skills/            Dev-only skills (gsp-audit, gsp-runtime-compat)
 │   └── scripts/           Test suite (audit-tests.sh)
 ├── package.json           npm package config
 ├── VERSION                Single source for version string

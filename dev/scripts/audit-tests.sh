@@ -318,10 +318,10 @@ fi
 if should_run runtime; then
   header "Runtime Compatibility"
 
-  BASELINE="dev/skills/runtime-compat/references/baseline.md"
+  BASELINE="dev/skills/gsp-runtime-compat/references/baseline.md"
 
   if [[ ! -f "$BASELINE" ]]; then
-    fail "R0 Baseline missing" "$BASELINE not found — run /runtime-compat to generate"
+    fail "R0 Baseline missing" "$BASELINE not found — run /gsp-runtime-compat to generate"
   else
     pass "R0 Baseline reference exists"
 
@@ -541,6 +541,11 @@ if should_run unit; then
     pass "U1 Installer unit tests"
   else
     fail "U1 Installer unit tests" "see output above"
+  fi
+  if node --test dev/tests/installer-integration.test.js 2>&1; then
+    pass "U2 Installer integration tests"
+  else
+    fail "U2 Installer integration tests" "see output above"
   fi
 fi
 

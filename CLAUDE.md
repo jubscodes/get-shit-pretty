@@ -95,7 +95,7 @@ Internal development tools live in `dev/` (versioned in repo, never installed to
 | Path | Purpose |
 |------|---------|
 | `dev/skills/gsp-audit/` | Pipeline integrity checker — contracts, installer, runtime compat, versions, templates |
-| `dev/skills/runtime-compat/` | Fetch live runtime docs and flag drift against GSP installer |
+| `dev/skills/gsp-runtime-compat/` | Fetch live runtime docs and flag drift against GSP installer |
 | `dev/scripts/audit-tests.sh` | Automated test suite (36 tests across 5 suites) |
 
 ### Running tests
@@ -114,7 +114,7 @@ bash dev/scripts/audit-tests.sh templates # template coherence
 To make dev skills available in your session, symlink into your personal skills:
 ```bash
 ln -s "$(pwd)/dev/skills/gsp-audit" ~/.claude/skills/gsp-audit
-ln -s "$(pwd)/dev/skills/runtime-compat" ~/.claude/skills/runtime-compat
+ln -s "$(pwd)/dev/skills/gsp-runtime-compat" ~/.claude/skills/gsp-runtime-compat
 ```
 
-Then invoke `/gsp-audit` or `/runtime-compat drift`.
+Then invoke `/gsp-audit` or `/gsp-runtime-compat drift`.

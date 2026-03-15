@@ -18,7 +18,7 @@ All notable changes to get-shit-pretty are documented here.
 - 34 design style presets via `/gsp:style` — structured YAML tokens + AI-ready prompts from designprompts.dev
 - Multi-runtime installer — OpenCode, Gemini CLI, and Codex CLI support with tool name mapping, body replacements, and per-runtime discovery paths
 - Agent runtime config — `maxTurns`, `disallowedTools`, `permissionMode` frontmatter
-- Dev tools: `/gsp-audit` (36-test integrity suite), `/gsp-housekeeping` (drift catcher), `/gsp-dev` (dev router), `/runtime-compat` (live doc drift checker)
+- Dev tools: `/gsp-audit` (36-test integrity suite), `/gsp-housekeeping` (drift catcher), `/gsp-dev` (dev router), `/gsp-runtime-compat` (live doc drift checker)
 
 ### Changed
 - Skills-only architecture — removed commands, all functionality lives in `gsp/skills/*/SKILL.md`
