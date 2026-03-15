@@ -65,8 +65,8 @@ GSP follows a **dual-diamond** architecture — two complete design cycles that 
     │  brand-research          │           │  project-brief               │
     │    ↓                     │           │    ↓                         │
     │  brand-strategy          │           │  project-research            │
-    │    ↓                     │           │    ↓                         │
-    │  brand-verbal            │           │  project-design              │
+    │    (includes voice       │           │    ↓                         │
+    │     and messaging)       │           │  project-design              │
     │    ↓                     │           │    ↓                         │
     │  brand-identity          │           │  project-critique ←──┐      │
     │    ↓                     │           │    ↓            loop │      │
@@ -92,27 +92,21 @@ Build your brand from research to design system. Each phase feeds the next.
 
 Research your audience, competitors, and market position. Understand the terrain before making decisions.
 
-**Creates:** `.design/branding/{brand}/research/`
+**Creates:** `.design/branding/{brand}/discover/`
 
-#### 2. `/gsp:brand-strategy` — Who you are
+#### 2. `/gsp:brand-strategy` — Who you are and how you sound
 
-Define your archetype, positioning, and personality using the Kapferer Brand Identity Prism. The strategic foundation everything else builds on.
+Define your archetype, positioning, and personality using the Kapferer Brand Identity Prism. Includes voice, tone spectrum, messaging framework, and naming conventions — verbal identity is part of strategy.
 
 **Creates:** `.design/branding/{brand}/strategy/`
 
-#### 3. `/gsp:brand-verbal` — How you sound
-
-Craft your voice, tone spectrum, messaging framework, and naming conventions. Words that feel like you.
-
-**Creates:** `.design/branding/{brand}/verbal/`
-
-#### 4. `/gsp:brand-identity` — How you look
+#### 3. `/gsp:brand-identity` — How you look
 
 Create your visual identity — logo directions, color palette, typography system, imagery style. Design decisions, not decoration.
 
 **Creates:** `.design/branding/{brand}/identity/`
 
-#### 5. `/gsp:brand-patterns` — Your design system
+#### 4. `/gsp:brand-patterns` — Your design system
 
 Translate your brand into tokens, components, and a living design system. Everything codified and ready to build with.
 
@@ -186,8 +180,7 @@ Create marketing campaign assets — landing page copy, social media content, la
 |---------|--------------|
 | `/gsp:brand-audit` | Audit an existing brand before evolving it |
 | `/gsp:brand-research` | Research market, audience, competitors |
-| `/gsp:brand-strategy` | Define archetype, positioning, personality |
-| `/gsp:brand-verbal` | Craft voice, tone, messaging, naming |
+| `/gsp:brand-strategy` | Define archetype, positioning, personality, voice, messaging |
 | `/gsp:brand-identity` | Create visual identity — logo, color, type |
 | `/gsp:brand-patterns` | Build design system — tokens, components |
 
@@ -217,12 +210,11 @@ Create marketing campaign assets — landing page copy, social media content, la
 
 ## Agents
 
-GSP ships with 16 specialized agents, each modeled after a real design discipline:
+GSP ships with 15 specialized agents, each modeled after a real design discipline:
 
 | Agent | Role |
 |-------|------|
-| **Brand Strategist** | Brand strategy using Kapferer Prism, archetypes, positioning |
-| **Verbal Strategist** | Voice, tone spectrum, messaging, naming conventions |
+| **Brand Strategist** | Brand strategy using Kapferer Prism, archetypes, positioning, voice, and messaging |
 | **Identity Designer** | Visual identity — logo, color palettes, typography systems |
 | **Design System Architect** | Complete design systems — tokens, components, foundations |
 | **Brand Auditor** | Brand coherence assessment and evolution mapping |
@@ -244,18 +236,28 @@ Each agent carries deep reference material — Apple HIG patterns, Nielsen's heu
 
 ## AI Coding Tool Support
 
-GSP works across all major AI coding tools:
+GSP works across all major AI coding tools. The installer converts Claude Code's native format into each runtime's expected format.
 
 | Feature | Claude Code | OpenCode | Gemini CLI | Codex CLI |
 |---------|:-----------:|:--------:|:----------:|:---------:|
-| Slash commands | `/gsp:command` | `/gsp-command` | `/gsp:command` | `$gsp-command` |
-| Agents | Yes | Yes | Yes | Yes |
-| Prompts | Yes | Yes | Yes | Yes |
-| Templates | Yes | Yes | Yes | Yes |
+| Skills | 21 | 21 | 21 | 21 |
+| Agents | 15 | 15 | 15 (experimental) | — |
+| Commands | 20 | 20 (flattened) | 20 (TOML) | via skills |
+| Slash syntax | `/gsp:command` | `/gsp-command` | `/gsp:command` | `$gsp-command` |
+| Prompts + templates | Yes | Yes | Yes | Yes |
 | References | Yes | Yes | Yes | Yes |
-| Statusline | Yes | — | — | — |
-| Global install | `~/.claude` | `~/.config/opencode` | `~/.gemini` | `~/.codex` |
-| Local install | `.claude/` | `.opencode/` | `.gemini/` | `.codex/` |
+| Statusline hooks | Yes | — | — | — |
+
+### Runtime directories
+
+| Runtime | Config / bundle | Skills | Agents |
+|---------|-----------------|--------|--------|
+| Claude Code | `~/.claude/` | `~/.claude/skills/` | `~/.claude/agents/` |
+| OpenCode | `~/.config/opencode/` | `~/.config/opencode/skills/` | `~/.config/opencode/agents/` |
+| Gemini CLI | `~/.gemini/` | `~/.gemini/skills/` | `~/.gemini/agents/` |
+| Codex CLI | `~/.codex/` | `~/.agents/skills/` | — |
+
+> **Codex note:** Skills are discovered at `~/.agents/skills/`, not `~/.codex/skills/`. Config and bundle files (prompts, templates, references) stay at `~/.codex/get-shit-pretty/`. Codex does not support agent `.md` files.
 
 ---
 
@@ -298,22 +300,70 @@ npx get-shit-pretty --all --global
 ```bash
 npx get-shit-pretty --claude --global --uninstall
 npx get-shit-pretty --opencode --global --uninstall
+npx get-shit-pretty --gemini --global --uninstall
 npx get-shit-pretty --codex --global --uninstall
 ```
 
 </details>
 
 <details>
-<summary><strong>Legacy install (bash)</strong></summary>
+<summary><strong>Use as Claude Code plugin</strong></summary>
 
 ```bash
-git clone https://github.com/jubscodes/get-shit-pretty.git ~/get-shit-pretty
-cd ~/get-shit-pretty
-chmod +x install.sh
-./install.sh
+# From a project directory:
+claude --plugin-dir /path/to/get-shit-pretty
 ```
 
+Uses the `.claude-plugin/plugin.json` manifest. Skills, agents, and hooks load directly from source — no install step needed.
+
 </details>
+
+---
+
+## Repo Structure
+
+```
+get-shit-pretty/
+├── .claude-plugin/        Plugin manifest (plugin.json)
+├── bin/
+│   └── install.js         Multi-runtime installer
+├── scripts/               Hook scripts and utilities
+├── gsp/                   Source of truth for all content
+│   ├── agents/            15 subagents (gsp-*.md)
+│   ├── commands/gsp/      20 slash commands (backward compat)
+│   ├── skills/            21 skills (*/SKILL.md — primary)
+│   ├── hooks/             Plugin-level hooks (hooks.json)
+│   ├── prompts/           12 agent system prompts
+│   ├── templates/         Config, state, brief, roadmap templates
+│   └── references/        Shared reference material
+├── dev/                   Internal dev tools (not installed)
+│   ├── skills/            Dev-only skills (gsp-audit, runtime-compat)
+│   └── scripts/           Test suite (audit-tests.sh)
+├── package.json           npm package config
+├── VERSION                Single source for version string
+└── CLAUDE.md              AI agent instructions for this repo
+```
+
+Skills take precedence over commands when both exist. The installer reads from `gsp/` and writes to each runtime's config directory.
+
+---
+
+## Contributing
+
+Edit source under `gsp/` — never edit inside `.claude/` or other runtime dirs directly. For local development, the installer creates symlinks so changes reflect immediately without reinstalling.
+
+```bash
+# Install locally with symlinks
+node bin/install.js --claude --local
+
+# Test as a plugin
+claude --plugin-dir .
+
+# Run the integrity test suite
+bash dev/scripts/audit-tests.sh
+```
+
+See [CLAUDE.md](CLAUDE.md) for editing rules, key files, and dev tool setup.
 
 ---
 

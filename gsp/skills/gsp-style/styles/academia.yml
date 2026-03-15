@@ -1,0 +1,66 @@
+name: academia
+description: Scholarly gravitas — mahogany, brass accents, serif typography, Victorian study halls
+tags: [scholarly, classic, refined, educational, serif]
+trend_ref: trends/academia.md
+
+tokens:
+  color:
+    primary: "#7C2D12"
+    secondary: "#92400E"
+    accent: "#C9A962"
+    background: "#FEF7ED"
+    surface: "#F5F5F4"
+    on-primary: "#FFFFFF"
+    on-background: "#1C1917"
+    error: "#DC2626"
+    success: "#16A34A"
+    warning: "#D97706"
+    info: "#2563EB"
+
+  typography:
+    font-family-primary: "EB Garamond, Georgia, serif"
+    font-family-display: "Cinzel, serif"
+    font-family-mono: "SF Mono, monospace"
+    font-weight-heading: 700
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.7
+
+  shape:
+    border-radius-sm: "0px"
+    border-radius-md: "4px"
+    border-radius-lg: "8px"
+    border-width: "1px"
+    border-color: "#D6D3D1"
+
+  elevation:
+    shadow-sm: "0 1px 2px rgba(0,0,0,0.05)"
+    shadow-md: "0 4px 6px rgba(0,0,0,0.1)"
+    shadow-lg: "0 8px 24px rgba(0,0,0,0.3)"
+    shadow-xl: "0 4px 12px rgba(201,169,98,0.3)"
+
+  spacing:
+    base: 4
+    scale: [0, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96]
+
+  motion:
+    duration-fast: "150ms"
+    duration-normal: "300ms"
+    easing: "ease-out"
+
+  brass:
+    gradient: "linear-gradient(180deg, #D4B872 0%, #C9A962 50%, #B8953F 100%)"
+    glow: "0 4px 12px rgba(201,169,98,0.3)"
+
+  texture:
+    sepia-filter: "sepia(0.6) contrast(0.95) brightness(0.9)"
+    paper-overlay-opacity: 0.03
+
+dark_mode:
+  color:
+    background: "#1C1714"
+    surface: "#251E19"
+    on-background: "#E8DFD4"
+
+compatibility: [swiss-minimalist, monochrome]
+clashes: [cyberpunk, vaporwave, retro]

@@ -1,0 +1,58 @@
+name: humanist-literary
+description: Quiet intelligence — warm paper canvas, terracotta accent, serif/sans editorial split, Claude aesthetic
+tags: [humanist, literary, warm, calm, conversational]
+
+tokens:
+  color:
+    primary: "#DA7756"
+    secondary: "#6B6960"
+    accent: "#FAF9F6"
+    background: "#FAF9F6"
+    surface: "#F2F0EB"
+    on-primary: "#FFFFFF"
+    on-background: "#383838"
+    error: "#DC2626"
+    success: "#16A34A"
+    warning: "#D97706"
+    info: "#2563EB"
+    muted: "#6B6960"
+
+  typography:
+    font-family-primary: "Merriweather, Tiempos, serif"
+    font-family-secondary: "Inter, Sohne, sans-serif"
+    font-family-mono: "SF Mono, monospace"
+    font-weight-heading: 600
+    font-weight-body: 400
+    font-size-base: "17px"
+    line-height-base: 1.6
+
+  shape:
+    border-radius-sm: "12px"
+    border-radius-md: "16px"
+    border-radius-lg: "9999px"
+    border-width: "1px"
+    border-color: "#E8E6E0"
+
+  elevation:
+    shadow-sm: "0 1px 2px rgba(0,0,0,0.04)"
+    shadow-md: "0 2px 4px rgba(0,0,0,0.06)"
+    shadow-lg: "0 4px 8px rgba(0,0,0,0.08)"
+    shadow-xl: "0 8px 16px rgba(0,0,0,0.10)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "100ms"
+    duration-normal: "150ms"
+    easing: "ease"
+
+dark_mode:
+  color:
+    background: "#1C1B19"
+    surface: "#2A2926"
+    on-background: "#E8E6E0"
+
+compatibility: [professional, botanical, academia]
+clashes: [cyberpunk, maximalism, retro]

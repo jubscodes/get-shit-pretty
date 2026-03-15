@@ -1,0 +1,21 @@
+{
+  "version": "0.5.0",
+  "project_type": "design",
+  "project": {
+    "name": "",
+    "created": ""
+  },
+  "preferences": {
+    "platform": "web",
+    "tech_stack": "React + Tailwind",
+    "accessibility_level": "WCAG 2.2 AA",
+    "implementation_target": "code",
+    "codebase_type": "greenfield",
+    "design_scope": "full",
+    "style_preset": ""
+  },
+  "git": {
+    "branch": "",
+    "pr": ""
+  }
+}

@@ -1,0 +1,184 @@
+# Style Preset Index
+# 34 styles — sourced from designprompts.dev, GSP trend references, and original presets
+# Tags enable fuzzy matching: /gsp:style "something dark and techy" → cyberpunk, terminal, modern-dark
+
+styles:
+  # ── Minimal ─────────────────────────
+  - name: swiss-minimalist
+    file: swiss-minimalist.yml
+    tags: [clean, grid, typographic, classic, professional]
+    vibe: "Helvetica and whitespace — let the content breathe"
+
+  - name: flat-design
+    file: flat-design.yml
+    tags: [flat, 2d, minimal, clean, colorful]
+    vibe: "Solid colors, zero shadows — bold color blocks as structure"
+
+  - name: monochrome
+    file: monochrome.yml
+    tags: [black-white, monochrome, high-contrast, editorial, minimal]
+    vibe: "Pure black and white — typographic depth, zero decoration"
+
+  - name: minimal-dark
+    file: minimal-dark.yml
+    tags: [minimal, dark, atmospheric, amber, layered]
+    vibe: "Three layers of darkness with warm amber accents"
+
+  # ── Modern ──────────────────────────
+  - name: professional
+    file: professional.yml
+    tags: [business, neutral, clean, safe, default]
+    vibe: "The sensible default — clean, trustworthy, gets out of the way"
+
+  - name: saas
+    file: saas.yml
+    tags: [saas, startup, modern, clean, gradient]
+    vibe: "Electric blue gradient — modern SaaS landing page energy"
+
+  - name: enterprise
+    file: enterprise.yml
+    tags: [corporate, professional, scalable, business, b2b]
+    vibe: "Indigo-to-violet gradient — dashboard-ready corporate"
+
+  - name: fluent
+    file: fluent.yml
+    tags: [fluent, microsoft, modern, professional, accessibility]
+    vibe: "Microsoft Fluent 2 — acrylic materials, semantic tokens"
+
+  - name: material
+    file: material.yml
+    tags: [material, google, android, rounded, colorful]
+    vibe: "Material Design 3 — adaptive, organic, expressive"
+
+  - name: modern-dark
+    file: modern-dark.yml
+    tags: [modern, dark, cinematic, linear, vercel]
+    vibe: "Linear/Vercel aesthetic — ambient blobs, mouse spotlights"
+
+  - name: glassmorphism
+    file: glassmorphism.yml
+    tags: [translucent, depth, premium, modern, elegant]
+    vibe: "Frosted glass panels floating over rich backgrounds"
+
+  - name: liquid-glass
+    file: liquid-glass.yml
+    tags: [premium, translucent, modern, apple, fluid]
+    vibe: "Apple's 2025 design language — refractive, fluid, alive"
+
+  # ── Creative ────────────────────────
+  - name: neubrutalism
+    file: neubrutalism.yml
+    tags: [bold, flat, high-contrast, playful, developer]
+    vibe: "Gumroad meets Figma — thick borders, hard shadows, unapologetically flat"
+
+  - name: cyberpunk
+    file: cyberpunk.yml
+    tags: [dark, neon, expressive, futuristic, bold]
+    vibe: "Neon-soaked interfaces from a dystopian future"
+
+  - name: maximalism
+    file: maximalism.yml
+    tags: [bold, expressive, abundant, colorful, maximalist]
+    vibe: "MORE IS MORE — sensory overload, 5 rotating accent colors"
+
+  - name: bold-typography
+    file: bold-typography.yml
+    tags: [type-driven, editorial, bold, dark, expressive]
+    vibe: "Typography IS the design — massive headlines, poster aesthetic"
+
+  - name: playful-geometric
+    file: playful-geometric.yml
+    tags: [geometric, playful, fun, colorful, bouncy]
+    vibe: "Memphis-inspired candy buttons and confetti cards"
+
+  - name: sketch
+    file: sketch.yml
+    tags: [hand-drawn, sketch, artistic, doodle, whimsical]
+    vibe: "Wobbly borders and marker red on warm paper"
+
+  - name: kinetic
+    file: kinetic.yml
+    tags: [motion, animated, dynamic, kinetic, bold]
+    vibe: "Viewport-width type, marquees, extreme scale hierarchy"
+
+  # ── Elegant ─────────────────────────
+  - name: luxury
+    file: luxury.yml
+    tags: [premium, elegant, luxury, high-end, sophisticated]
+    vibe: "Gold accent, slow reveals, asymmetric restraint"
+
+  - name: art-deco
+    file: art-deco.yml
+    tags: [luxury, 1920s, glamour, geometric, vintage]
+    vibe: "1920s theatrical glamour — gold on obsidian black"
+
+  - name: academia
+    file: academia.yml
+    tags: [scholarly, classic, refined, educational, serif]
+    vibe: "Victorian study halls — mahogany, brass, and serif type"
+
+  - name: humanist-literary
+    file: humanist-literary.yml
+    tags: [humanist, literary, warm, calm, conversational]
+    vibe: "Warm paper canvas, terracotta accent — quiet intelligence"
+
+  # ── Organic ─────────────────────────
+  - name: botanical
+    file: botanical.yml
+    tags: [nature, botanical, green, organic, serif]
+    vibe: "Deep greens, paper grain, nature-inspired serif elegance"
+
+  - name: organic
+    file: organic.yml
+    tags: [natural, flowing, organic, wabi-sabi, curved]
+    vibe: "Moss and terracotta — blob shapes, no straight lines"
+
+  # ── Editorial ───────────────────────
+  - name: newsprint
+    file: newsprint.yml
+    tags: [newspaper, editorial, journalism, print, serif]
+    vibe: "Multi-column layouts, drop caps, high information density"
+
+  # ── Nostalgic ───────────────────────
+  - name: retro
+    file: retro.yml
+    tags: [vintage, retro, nostalgic, 90s, windows95]
+    vibe: "Windows 95 bevels, marquee text — the ugliness IS the beauty"
+
+  - name: vaporwave
+    file: vaporwave.yml
+    tags: [retro, pastel, expressive, nostalgic, gradient]
+    vibe: "80s/90s digital nostalgia with neon gradients and CRT scanlines"
+
+  # ── Tactile ─────────────────────────
+  - name: claymorphism
+    file: claymorphism.yml
+    tags: [clay, 3d, soft, playful, tactile]
+    vibe: "Vinyl toy aesthetic — 4-layer shadows, super-rounded, squish"
+
+  - name: neumorphism
+    file: neumorphism.yml
+    tags: [soft-ui, neumorphic, 3d, embossed, tactile]
+    vibe: "Dual opposing shadows — extruded and inset on continuous surface"
+
+  - name: industrial
+    file: industrial.yml
+    tags: [raw, mechanical, utilitarian, factory, industrial]
+    vibe: "Precision machinery — carbon fiber, dual-shadow, safety orange"
+
+  # ── Tech ────────────────────────────
+  - name: terminal
+    file: terminal.yml
+    tags: [developer, monospace, dark, minimal, technical]
+    vibe: "Your favorite code editor as a design system"
+
+  - name: web3
+    file: web3.yml
+    tags: [web3, crypto, blockchain, defi, dark]
+    vibe: "Bitcoin orange luminescence on void black"
+
+  # ── Geometric ───────────────────────
+  - name: bauhaus
+    file: bauhaus.yml
+    tags: [functionalist, geometric, minimal, modernist, primary-colors]
+    vibe: "Form follows function — Bauhaus primary colors, hard shadows"

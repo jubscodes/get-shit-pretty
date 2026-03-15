@@ -1,0 +1,63 @@
+name: industrial
+description: Raw mechanical aesthetic — neumorphic dual-shadows, carbon fiber, precision machinery
+tags: [raw, mechanical, utilitarian, factory, industrial]
+trend_ref: trends/industrial.md
+
+tokens:
+  color:
+    primary: "#FF4757"
+    secondary: "#F59E0B"
+    accent: "#DC2626"
+    background: "#E0E5EC"
+    surface: "#F0F2F5"
+    on-primary: "#FFFFFF"
+    on-background: "#2D3436"
+    error: "#DC2626"
+    success: "#16A34A"
+    warning: "#F59E0B"
+    info: "#2563EB"
+    muted: "#78716C"
+
+  typography:
+    font-family-primary: "Inter, sans-serif"
+    font-family-display: "Bebas Neue, sans-serif"
+    font-family-mono: "JetBrains Mono, monospace"
+    font-weight-heading: 900
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.5
+
+  shape:
+    border-radius-sm: "0px"
+    border-radius-md: "2px"
+    border-radius-lg: "4px"
+    border-width: "2px"
+    border-color: "#D6D3D1"
+
+  elevation:
+    shadow-sm: "4px 4px 8px rgba(163,177,198,0.6), -4px -4px 8px rgba(255,255,255,0.5)"
+    shadow-md: "6px 6px 12px rgba(163,177,198,0.6), -6px -6px 12px rgba(255,255,255,0.5)"
+    shadow-lg: "9px 9px 16px rgba(163,177,198,0.6), -9px -9px 16px rgba(255,255,255,0.5)"
+    shadow-xl: "12px 12px 20px rgba(163,177,198,0.6), -12px -12px 20px rgba(255,255,255,0.5)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "150ms"
+    duration-normal: "300ms"
+    easing: "cubic-bezier(0.175, 0.885, 0.32, 1.275)"
+
+  texture:
+    carbon-fiber-opacity: 0.15
+    scanline-opacity: 0.05
+
+dark_mode:
+  color:
+    background: "#2D3436"
+    surface: "#3D4446"
+    on-background: "#DFE6E9"
+
+compatibility: [terminal, monochrome]
+clashes: [botanical, glassmorphism, liquid-glass]

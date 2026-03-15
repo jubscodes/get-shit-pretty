@@ -1,0 +1,66 @@
+name: monochrome
+description: Austere editorial — pure black and white, zero accent colors, typographic depth only
+tags: [black-white, monochrome, high-contrast, editorial, minimal]
+
+tokens:
+  color:
+    primary: "#000000"
+    secondary: "#525252"
+    accent: "#000000"
+    background: "#FFFFFF"
+    surface: "#F5F5F5"
+    on-primary: "#FFFFFF"
+    on-background: "#000000"
+    error: "#000000"
+    success: "#000000"
+    warning: "#000000"
+    info: "#000000"
+    muted: "#525252"
+
+  typography:
+    font-family-primary: "Playfair Display, serif"
+    font-family-secondary: "Source Serif 4, serif"
+    font-family-mono: "JetBrains Mono, monospace"
+    font-weight-heading: 900
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.6
+
+  shape:
+    border-radius-sm: "0px"
+    border-radius-md: "0px"
+    border-radius-lg: "0px"
+    border-width: "2px"
+    border-width-max: "8px"
+    border-color: "#000000"
+
+  elevation:
+    shadow-sm: "none"
+    shadow-md: "none"
+    shadow-lg: "none"
+    shadow-xl: "none"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "0ms"
+    duration-normal: "100ms"
+    easing: "linear"
+
+  texture:
+    horizontal-lines-opacity: 0.015
+    grid-opacity: 0.015
+    diagonal-opacity: 0.01
+    noise-opacity: 0.02
+
+dark_mode:
+  color:
+    background: "#000000"
+    surface: "#0A0A0A"
+    on-background: "#FFFFFF"
+    border-color: "#FFFFFF"
+
+compatibility: [swiss-minimalist, newsprint, bold-typography]
+clashes: [vaporwave, maximalism, cyberpunk]

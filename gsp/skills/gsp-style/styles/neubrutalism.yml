@@ -1,0 +1,58 @@
+name: neubrutalism
+description: Bold flat aesthetic — thick borders, hard-offset shadows, bright accents
+tags: [bold, flat, high-contrast, playful, developer]
+trend_ref: trends/neubrutalism.md
+
+tokens:
+  color:
+    primary: "#000000"
+    secondary: "#FFD700"
+    accent: "#FF6B6B"
+    background: "#FFFFFF"
+    surface: "#FFF8F0"
+    on-primary: "#FFFFFF"
+    on-background: "#000000"
+    error: "#DC2626"
+    success: "#16A34A"
+    warning: "#F59E0B"
+    info: "#4169E1"
+
+  typography:
+    font-family-primary: "Space Grotesk, sans-serif"
+    font-family-mono: "JetBrains Mono, monospace"
+    font-weight-heading: 700
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.5
+
+  shape:
+    border-radius-sm: "8px"
+    border-radius-md: "12px"
+    border-radius-lg: "16px"
+    border-width: "3px"
+    border-color: "#000000"
+
+  elevation:
+    shadow-sm: "2px 2px 0px 0px #000000"
+    shadow-md: "4px 4px 0px 0px #000000"
+    shadow-lg: "6px 6px 0px 0px #000000"
+    shadow-xl: "8px 8px 0px 0px #000000"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "100ms"
+    duration-normal: "200ms"
+    easing: "ease"
+
+dark_mode:
+  color:
+    background: "#1A1A2E"
+    surface: "#16213E"
+    on-background: "#F0F0F0"
+    border-color: "#F0F0F0"
+
+compatibility: [bento-grid, kinetic-typography]
+clashes: [glassmorphism, claymorphism, liquid-glass]

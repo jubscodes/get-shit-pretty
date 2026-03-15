@@ -1,0 +1,61 @@
+name: vaporwave
+description: Retro-futurist pastel aesthetic — gradient skies, lo-fi nostalgia, 80s/90s digital dreams
+tags: [retro, pastel, expressive, nostalgic, gradient]
+
+tokens:
+  color:
+    primary: "#FF71CE"
+    secondary: "#01CDFE"
+    accent: "#B967FF"
+    background: "#1A0533"
+    surface: "#2D1B4E"
+    on-primary: "#FFFFFF"
+    on-background: "#E8D5FF"
+    error: "#FF6B6B"
+    success: "#05FFA1"
+    warning: "#FFE66D"
+    info: "#01CDFE"
+
+  typography:
+    font-family-primary: "Space Grotesk, sans-serif"
+    font-family-display: "Bungee, cursive"
+    font-family-mono: "VT323, monospace"
+    font-weight-heading: 700
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.6
+
+  shape:
+    border-radius-sm: "8px"
+    border-radius-md: "12px"
+    border-radius-lg: "20px"
+    border-width: "2px"
+    border-color: "rgba(255, 113, 206, 0.3)"
+
+  elevation:
+    shadow-sm: "0 4px 12px rgba(185, 103, 255, 0.15)"
+    shadow-md: "0 8px 24px rgba(185, 103, 255, 0.20)"
+    shadow-lg: "0 16px 40px rgba(185, 103, 255, 0.25)"
+    shadow-xl: "0 24px 56px rgba(185, 103, 255, 0.30)"
+
+  gradient:
+    sky: "linear-gradient(180deg, #1A0533 0%, #2D1B4E 40%, #FF71CE 100%)"
+    sunset: "linear-gradient(135deg, #FF71CE, #B967FF, #01CDFE)"
+    chrome: "linear-gradient(90deg, #01CDFE, #B967FF, #FF71CE)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "200ms"
+    duration-normal: "400ms"
+    easing: "cubic-bezier(0.4, 0, 0.2, 1)"
+
+dark_mode:
+  color:
+    background: "#0D0019"
+    surface: "#1A0533"
+
+compatibility: [kinetic-typography, aurora-gradients]
+clashes: [swiss-minimalist, professional, terminal]

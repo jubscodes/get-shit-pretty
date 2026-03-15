@@ -1,0 +1,61 @@
+name: bold-typography
+description: Type-driven editorial design — massive headlines, extreme scale contrast, poster aesthetic
+tags: [type-driven, editorial, bold, dark, expressive]
+trend_ref: trends/bold-typography.md
+
+tokens:
+  color:
+    primary: "#FF3D00"
+    secondary: "#A3A3A3"
+    accent: "#FFFFFF"
+    background: "#0A0A0A"
+    surface: "#171717"
+    on-primary: "#000000"
+    on-background: "#FAFAFA"
+    error: "#EF4444"
+    success: "#22C55E"
+    warning: "#F59E0B"
+    info: "#3B82F6"
+    muted: "#737373"
+
+  typography:
+    font-family-primary: "Inter Tight, Inter, sans-serif"
+    font-family-display: "Playfair Display, serif"
+    font-family-mono: "JetBrains Mono, monospace"
+    font-weight-heading: 900
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.5
+
+  shape:
+    border-radius-sm: "0px"
+    border-radius-md: "4px"
+    border-radius-lg: "8px"
+    border-width: "1px"
+    border-color: "#262626"
+
+  elevation:
+    shadow-sm: "none"
+    shadow-md: "none"
+    shadow-lg: "none"
+    shadow-xl: "none"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "150ms"
+    duration-normal: "200ms"
+    easing: "cubic-bezier(0.25, 0, 0, 1)"
+
+  texture:
+    noise-opacity: 0.015
+
+dark_mode:
+  color:
+    background: "#050505"
+    surface: "#0F0F0F"
+
+compatibility: [monochrome, kinetic]
+clashes: [playful-geometric, botanical, claymorphism]

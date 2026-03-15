@@ -1,0 +1,19 @@
+{
+  "version": "0.5.0",
+  "project_type": "brand",
+  "brand": {
+    "name": "",
+    "created": ""
+  },
+  "brand_mode": "new",
+  "evolution_scope": {
+    "preserve": [],
+    "evolve": [],
+    "replace": []
+  },
+  "system_config": {
+    "tech_stack": "",
+    "system_strategy": "generate",
+    "style_preset": ""
+  }
+}

@@ -1,0 +1,62 @@
+name: luxury
+description: Premium restraint — gold accent, slow motion, grayscale-to-color reveals, asymmetric layouts
+tags: [premium, elegant, luxury, high-end, sophisticated]
+
+tokens:
+  color:
+    primary: "#D4AF37"
+    secondary: "#B8860B"
+    accent: "#1A1A1A"
+    background: "#F9F8F6"
+    surface: "#EBE5DE"
+    on-primary: "#000000"
+    on-background: "#1A1A1A"
+    error: "#DC2626"
+    success: "#16A34A"
+    warning: "#D97706"
+    info: "#2563EB"
+    muted: "#6C6863"
+
+  typography:
+    font-family-primary: "Playfair Display, serif"
+    font-family-secondary: "Inter, sans-serif"
+    font-family-mono: "SF Mono, monospace"
+    font-weight-heading: 700
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.7
+
+  shape:
+    border-radius-sm: "0px"
+    border-radius-md: "0px"
+    border-radius-lg: "0px"
+    border-width: "1px"
+    border-color: "rgba(26,26,26,0.1)"
+
+  elevation:
+    shadow-sm: "0 2px 12px rgba(0,0,0,0.08)"
+    shadow-md: "0 4px 16px rgba(0,0,0,0.10)"
+    shadow-lg: "0 8px 24px rgba(0,0,0,0.12)"
+    shadow-xl: "0 12px 32px rgba(0,0,0,0.15)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "300ms"
+    duration-normal: "500ms"
+    easing: "cubic-bezier(0.4, 0, 0.2, 1)"
+
+  reveal:
+    image-transition: "1500ms"
+    grayscale-filter: "grayscale(100%)"
+
+dark_mode:
+  color:
+    background: "#0A0A0A"
+    surface: "#1A1A1A"
+    on-background: "#F5F5F0"
+
+compatibility: [art-deco, academia]
+clashes: [neubrutalism, retro, maximalism]
