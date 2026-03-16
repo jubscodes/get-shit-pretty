@@ -64,13 +64,14 @@ Fallback: `{PROJECT_PATH}/design/SCREENS.md` or `{PROJECT_PATH}/screens/INDEX.md
 ## Step 1.5: Scope check
 
 **If `design_scope` is `tokens`:**
-1. Review system chunks only — token foundations, naming, scale consistency
-2. Run accessibility audit on color contrast and token values only
-3. Write results to `{PROJECT_PATH}/critique/accessibility-audit.md` and `accessibility-fixes.md`
-4. Write `{PROJECT_PATH}/critique/INDEX.md`
-5. Update STATE.md — set Phase 4 to `complete`
-6. Route: "Run `/gsp:project-build`."
-7. **Stop here**
+1. Check if `{PROJECT_PATH}/critique/accessibility-token-audit.md` exists (from prior `/gsp:accessibility --tokens`). If yes, reference it and skip inline token checks. If no, suggest running `/gsp:accessibility --tokens` for detailed token contrast analysis.
+2. Review system chunks only — token foundations, naming, scale consistency
+3. Run accessibility audit on color contrast and token values only (unless prior token audit exists)
+4. Write results to `{PROJECT_PATH}/critique/accessibility-audit.md` and `accessibility-fixes.md`
+5. Write `{PROJECT_PATH}/critique/INDEX.md`
+6. Update STATE.md — set Phase 4 to `complete`
+7. Route: "Run `/gsp:project-build`."
+8. **Stop here**
 
 **Otherwise:** If design chunks don't exist and scope is not `tokens`, tell the user to complete the design phase first.
 
@@ -79,7 +80,7 @@ Fallback: `{PROJECT_PATH}/design/SCREENS.md` or `{PROJECT_PATH}/screens/INDEX.md
 **Agent 1: gsp-critic** — Design critique using Nielsen's 10 Heuristics reference + all design chunks.
 Output path: `{PROJECT_PATH}/critique/`
 
-**Agent 2: gsp-accessibility-auditor** — WCAG 2.2 audit using WCAG checklist + all design chunks. Pass `accessibility_level` from config (defaults to "WCAG 2.2 AA") so the auditor adapts its criteria (AA vs AAA).
+**Agent 2: gsp-accessibility-auditor** — Check if `{PROJECT_PATH}/critique/accessibility-audit.md` already exists from a prior `/gsp:accessibility` run. If yes, skip spawning the accessibility auditor — reuse the existing output. If no, spawn `gsp-accessibility-auditor` with WCAG 2.2 audit using WCAG checklist + all design chunks. Pass `accessibility_level` from config (defaults to "WCAG 2.2 AA") so the auditor adapts its criteria (AA vs AAA).
 Output path: `{PROJECT_PATH}/critique/`
 
 ## Step 3: Write critique INDEX.md
