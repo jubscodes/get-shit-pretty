@@ -19,7 +19,7 @@ Critique design quality and audit accessibility compliance.
 
 **Input:** All prior project chunks + brand identity
 **Output:** `{project}/critique/` (critique + accessibility chunks + INDEX.md) + exports/INDEX.md update
-**Agents:** `gsp-critic` + `gsp-auditor`
+**Agents:** `gsp-critic` + `gsp-accessibility-auditor`
 </objective>
 
 <execution_context>
@@ -79,7 +79,7 @@ Fallback: `{PROJECT_PATH}/design/SCREENS.md` or `{PROJECT_PATH}/screens/INDEX.md
 **Agent 1: gsp-critic** — Design critique using Nielsen's 10 Heuristics reference + all design chunks.
 Output path: `{PROJECT_PATH}/critique/`
 
-**Agent 2: gsp-auditor** — WCAG 2.2 audit using WCAG checklist + all design chunks. Pass `accessibility_level` from config (defaults to "WCAG 2.2 AA") so the auditor adapts its criteria (AA vs AAA).
+**Agent 2: gsp-accessibility-auditor** — WCAG 2.2 audit using WCAG checklist + all design chunks. Pass `accessibility_level` from config (defaults to "WCAG 2.2 AA") so the auditor adapts its criteria (AA vs AAA).
 Output path: `{PROJECT_PATH}/critique/`
 
 ## Step 3: Write critique INDEX.md
