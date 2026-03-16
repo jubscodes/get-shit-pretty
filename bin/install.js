@@ -975,6 +975,68 @@ function copyGeminiSkills(srcDir, destDir, pathPrefix) {
 }
 
 /**
+ * Copy agents from source to dest with runtime conversion.
+ * Returns count of gsp- agents installed.
+ * runtime: 'claude' | 'opencode' | 'gemini'  (Codex skips agents entirely)
+ */
+function copyAgents(srcDir, destDir, pathPrefix, runtime) {
+  fs.mkdirSync(destDir, { recursive: true });
+
+  // Remove old GSP agents before copying new ones
+  for (const file of fs.readdirSync(destDir)) {
+    if (file.startsWith('gsp-') && file.endsWith('.md')) {
+      fs.unlinkSync(path.join(destDir, file));
+    }
+  }
+
+  const agentEntries = fs.readdirSync(srcDir, { withFileTypes: true });
+  for (const entry of agentEntries) {
+    if (entry.isFile() && entry.name.endsWith('.md')) {
+      let content = fs.readFileSync(path.join(srcDir, entry.name), 'utf8');
+      content = content.replace(/~\/\.claude\//g, pathPrefix);
+
+      if (runtime === 'opencode') {
+        content = convertClaudeToOpencodeAgent(content);
+      } else if (runtime === 'gemini') {
+        content = convertClaudeToGeminiAgent(content);
+      }
+      fs.writeFileSync(path.join(destDir, entry.name), content);
+    }
+  }
+
+  return fs.readdirSync(destDir).filter(f => f.startsWith('gsp-')).length;
+}
+
+/**
+ * Copy Claude Code skills (global install path — no body conversion, only path replacement).
+ * Returns skill count.
+ */
+function copyClaudeSkills(srcDir, destDir, pathPrefix) {
+  fs.mkdirSync(destDir, { recursive: true });
+
+  // Clean old gsp- skill dirs
+  for (const entry of fs.readdirSync(destDir, { withFileTypes: true })) {
+    if (entry.isDirectory() && (entry.name.startsWith('gsp-') || entry.name === 'get-shit-pretty')) {
+      fs.rmSync(path.join(destDir, entry.name), { recursive: true });
+    }
+  }
+
+  let skillCount = 0;
+  for (const dir of fs.readdirSync(srcDir, { withFileTypes: true })) {
+    if (!dir.isDirectory()) continue;
+    const skillMd = path.join(srcDir, dir.name, 'SKILL.md');
+    if (!fs.existsSync(skillMd)) continue;
+    const destSkillDir = path.join(destDir, dir.name);
+    fs.mkdirSync(destSkillDir, { recursive: true });
+    let content = fs.readFileSync(skillMd, 'utf8');
+    content = content.replace(/~\/\.claude\//g, pathPrefix);
+    fs.writeFileSync(path.join(destSkillDir, 'SKILL.md'), content);
+    skillCount++;
+  }
+  return skillCount;
+}
+
+/**
  * Recursively copy directory with path replacement and runtime conversion
  */
 function copyWithPathReplacement(srcDir, destDir, pathPrefix, runtime) {
@@ -1263,30 +1325,9 @@ function install(isGlobal, runtime = 'claude') {
   } else {
     // Claude Code — install skills (copies for global, symlinks handled above for local)
     const skillsDir = path.join(targetDir, 'skills');
-    fs.mkdirSync(skillsDir, { recursive: true });
-
-    // Clean old gsp- skill dirs
-    for (const entry of fs.readdirSync(skillsDir, { withFileTypes: true })) {
-      if (entry.isDirectory() && (entry.name.startsWith('gsp-') || entry.name === 'get-shit-pretty')) {
-        fs.rmSync(path.join(skillsDir, entry.name), { recursive: true });
-      }
-    }
-
     const skillsSrc = path.join(gspRoot, 'skills');
     if (fs.existsSync(skillsSrc)) {
-      let skillCount = 0;
-      for (const dir of fs.readdirSync(skillsSrc, { withFileTypes: true })) {
-        if (!dir.isDirectory()) continue;
-        const skillMd = path.join(skillsSrc, dir.name, 'SKILL.md');
-        if (!fs.existsSync(skillMd)) continue;
-        const destSkillDir = path.join(skillsDir, dir.name);
-        fs.mkdirSync(destSkillDir, { recursive: true });
-        // Copy SKILL.md with path replacement
-        let content = fs.readFileSync(skillMd, 'utf8');
-        content = content.replace(/~\/\.claude\//g, pathPrefix);
-        fs.writeFileSync(path.join(destSkillDir, 'SKILL.md'), content);
-        skillCount++;
-      }
+      const skillCount = copyClaudeSkills(skillsSrc, skillsDir, pathPrefix);
       if (skillCount > 0) {
         console.log(`  ${c.success}✓${c.reset} Installed ${skillCount} skills`);
       } else { failures.push('skills'); }
@@ -1306,50 +1347,13 @@ function install(isGlobal, runtime = 'claude') {
     const agentsSrc = path.join(gspRoot, 'agents');
     if (fs.existsSync(agentsSrc)) {
       const agentsDest = path.join(targetDir, 'agents');
-      fs.mkdirSync(agentsDest, { recursive: true });
-
-      // Remove old GSP agents before copying new ones
-      if (fs.existsSync(agentsDest)) {
-        for (const file of fs.readdirSync(agentsDest)) {
-          if (file.startsWith('gsp-') && file.endsWith('.md')) {
-            fs.unlinkSync(path.join(agentsDest, file));
-          }
-        }
-      }
-
-      const agentEntries = fs.readdirSync(agentsSrc, { withFileTypes: true });
-      for (const entry of agentEntries) {
-        if (entry.isFile() && entry.name.endsWith('.md')) {
-          let content = fs.readFileSync(path.join(agentsSrc, entry.name), 'utf8');
-          content = content.replace(/~\/\.claude\//g, pathPrefix);
-
-          if (isOpencode) {
-            content = convertClaudeToOpencodeAgent(content);
-          } else if (isGemini) {
-            content = convertClaudeToGeminiAgent(content);
-          }
-          fs.writeFileSync(path.join(agentsDest, entry.name), content);
-        }
-      }
+      const agentCount = copyAgents(agentsSrc, agentsDest, pathPrefix, runtime);
 
       // ── Custom agents (agents/custom/) ──
       const customAgentsSrc = path.join(agentsSrc, 'custom');
       let customAgentCount = 0;
       if (fs.existsSync(customAgentsSrc)) {
-        for (const entry of fs.readdirSync(customAgentsSrc, { withFileTypes: true })) {
-          if (entry.isFile() && entry.name.endsWith('.md')) {
-            let content = fs.readFileSync(path.join(customAgentsSrc, entry.name), 'utf8');
-            content = content.replace(/~\/\.claude\//g, pathPrefix);
-
-            if (isOpencode) {
-              content = convertClaudeToOpencodeAgent(content);
-            } else if (isGemini) {
-              content = convertClaudeToGeminiAgent(content);
-            }
-            fs.writeFileSync(path.join(agentsDest, entry.name), content);
-            customAgentCount++;
-          }
-        }
+        customAgentCount = copyAgents(customAgentsSrc, agentsDest, pathPrefix, runtime);
       }
 
       if (verifyInstalled(agentsDest, 'agents')) {
@@ -1832,6 +1836,8 @@ module.exports = {
   copyOpencodeSkills,
   copyGeminiSkills,
   copyCodexSkillsFromSource,
+  copyClaudeSkills,
+  copyAgents,
   copyWithPathReplacement,
   // Mapping objects
   claudeToOpencodeTools,
