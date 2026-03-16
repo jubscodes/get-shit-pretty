@@ -43,6 +43,8 @@ Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
 
 Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`, `codebase_type`.
 
+**Prior code accessibility audit:** Check if `{PROJECT_PATH}/review/accessibility-audit.md` exists from a prior `/gsp:accessibility --code` run. If yes, load it — the reviewer will reference these findings instead of performing inline a11y checks.
+
 ### Load all artifacts
 
 **Build log:** Read `{PROJECT_PATH}/build/BUILD-LOG.md` — what the builder says was implemented (files created, files modified, component map).
@@ -92,6 +94,7 @@ Spawn the `gsp-reviewer` agent with:
 - The Deliverable Reviewer prompt (11)
 - The review output template
 - **Output path:** `{PROJECT_PATH}/review/`
+- Prior code accessibility findings (if `{PROJECT_PATH}/review/accessibility-audit.md` exists — tell reviewer to reference these instead of performing inline a11y checks; reviewer keeps inline checks as fallback if no prior audit exists)
 - **Clear instruction:** "Review actual codebase files, not `.design/build/` specs. Use Grep to search for hardcoded values. Use `git diff` to verify changes. Reference actual file paths in issues."
 
 The agent writes chunks directly:

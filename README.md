@@ -331,7 +331,7 @@ get-shit-pretty/
 ├── gsp/                   Source of truth for all content
 │   ├── agents/            15 subagents (gsp-*.md)
 │   ├── commands/gsp/      20 slash commands (backward compat)
-│   ├── skills/            21 skills (*/SKILL.md — primary)
+│   ├── skills/            24 skills (*/SKILL.md — primary)
 │   ├── hooks/             Plugin-level hooks (hooks.json)
 │   ├── prompts/           12 agent system prompts
 │   ├── templates/         Config, state, brief, roadmap templates

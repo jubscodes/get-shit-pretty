@@ -17,7 +17,7 @@ disable-model-invocation: true
 GSP internal integrity checker for maintainers. Verifies that the plugin's moving parts stay consistent as the codebase evolves. This is NOT the user-facing `/gsp:doctor` (which checks `.design/` project health) — this checks the GSP *source code* itself.
 
 Source layout:
-- `gsp/skills/` — 21 skills (SKILL.md files)
+- `gsp/skills/` — 24 skills (SKILL.md files)
 - `gsp/agents/` — 15 agents (gsp-*.md files)
 - `gsp/templates/` — config, state, brief, roadmap templates
 - `gsp/references/` — shared reference material
@@ -231,7 +231,7 @@ Templates
 - **Read-only** — do NOT modify any files, only report findings
 - **Be specific** — every issue names the exact file and suggests the exact fix
 - **Don't over-report** — if the same root cause triggers multiple checks, note it once and cross-reference
-- **Count everything** — the report should show exact counts (21 skills, 15 agents)
+- **Count everything** — the report should show exact counts (24 skills, 15 agents)
 - **Runtime compat uses baseline** — read the baseline.md reference file, don't re-derive from scratch
 
 </process>

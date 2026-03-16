@@ -15,6 +15,14 @@ Edit source under `gsp/`; the installer keeps runtimes in sync. Never edit insid
 
 Dual-diamond: **Branding** (discover → strategy → identity → system) + **Project** (brief → research → design → critique → build → review). Optional: launch. Verbal identity is merged into brand-strategy (4 phases, not 5).
 
+### Composable skills
+
+Skills produce artifacts to `.design/`; agents consume them. The filesystem is the integration layer — no skill-to-skill invocation.
+
+Composable skills work two ways: (1) standalone — user runs directly for quick output, (2) as building blocks — pipeline phases consume their output files. Each composable skill runs inline (no agent), is deterministic, writes to a predictable path, and produces foundation chunks per `references/chunk-format.md`.
+
+Examples: `/gsp:accessibility` (WCAG audits), `/gsp:style` (tokens + foundations), `/gsp:palette` (OKLCH palettes), `/gsp:typescale` (type scale).
+
 ## Plugin and pack structure
 
 GSP is a Claude Code plugin. The manifest is at `.claude-plugin/plugin.json` with name `gsp`.
@@ -22,7 +30,7 @@ GSP is a Claude Code plugin. The manifest is at `.claude-plugin/plugin.json` wit
 | Directory | Contents |
 |-----------|----------|
 | `.claude-plugin/` | Plugin manifest (`plugin.json`) |
-| `gsp/skills/` | 21 skills — each is a `<name>/SKILL.md` directory (single source for all runtimes) |
+| `gsp/skills/` | 24 skills — each is a `<name>/SKILL.md` directory (single source for all runtimes) |
 | `gsp/agents/` | 15 subagents (`gsp-{name}.md`) |
 | `gsp/hooks/` | Plugin-level hooks (`hooks.json`) |
 | `gsp/prompts/` | 12 agent system prompts |
