@@ -26,6 +26,7 @@ Research market context that will inform brand strategy.
 <execution_context>
 @${CLAUDE_SKILL_DIR}/../../templates/phases/discover.md
 @${CLAUDE_SKILL_DIR}/../../references/design-trends.md (index only — agent loads specific trend files only after open research validates relevance)
+@${CLAUDE_SKILL_DIR}/../gsp-style/styles/INDEX.yml
 </execution_context>
 
 <rules>
@@ -58,6 +59,7 @@ Spawn the `gsp-researcher` agent with:
 - BRIEF.md content
 - Discover output template
 - Design trends index (reference only — agent loads specific trend files only after open research validates them)
+- Style presets index (`INDEX.yml`) — agent matches research findings to existing aesthetics
 - User-confirmed scope adjustments
 - `brand_mode` from config.json
 - Audit chunks if they exist
