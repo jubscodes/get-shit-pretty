@@ -240,9 +240,8 @@ GSP works across all major AI coding tools. The installer converts Claude Code's
 
 | Feature | Claude Code | OpenCode | Gemini CLI | Codex CLI |
 |---------|:-----------:|:--------:|:----------:|:---------:|
-| Skills | 21 | 21 | 21 | 21 |
+| Skills | 24 | 24 | 24 | 24 |
 | Agents | 15 | 15 | 15 (experimental) | — |
-| Commands | 20 | 20 (flattened) | 20 (TOML) | via skills |
 | Slash syntax | `/gsp:command` | `/gsp-command` | `/gsp:command` | `$gsp-command` |
 | Prompts + templates | Yes | Yes | Yes | Yes |
 | References | Yes | Yes | Yes | Yes |

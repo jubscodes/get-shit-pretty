@@ -5,10 +5,17 @@ All notable changes to get-shit-pretty are documented here.
 ## [Unreleased]
 
 ### Added
+- `/gsp:accessibility` standalone composable skill — 5 modes: design audit, token audit, code audit, accessibility statement, quick contrast check
+- WCAG 2.2 new criteria in checklist — SC 2.4.11 Focus Not Obscured, SC 2.5.8 Target Size, SC 3.2.6 Consistent Help, SC 3.3.7 Redundant Entry, SC 3.3.8 Accessible Authentication
+- Token-specific accessibility checks section and APCA reference in wcag-checklist.md
 - Style base integration across branding diamond — presets from `/gsp:style` flow through research, strategy, identity, and system phases as shared aesthetic vocabulary
 - Custom style output per brand — system phase produces `{brand-name}.yml` and `{brand-name}.md` in the same format as the 34 built-in presets
 
 ### Changed
+- Renamed `gsp-auditor` agent → `gsp-accessibility-auditor` for clarity and dual-spawning support
+- Critique phase reuses prior `/gsp:accessibility` output instead of re-running auditor
+- Review phase detects prior code accessibility audits from `/gsp:accessibility --code`
+- Help skill adds Composable section with all 4 composable skills
 - Brand config template gains `style_base` array in `system_config`
 
 ## [0.5.0] — 2026-03-15
