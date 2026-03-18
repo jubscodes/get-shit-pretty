@@ -33,8 +33,13 @@
 
 ### Components (`system/components/`)
 
-One chunk per component (`{name}.md`), singular kebab-case naming.
-Each includes: states, anatomy, usage rules, accessibility spec, code hints.
+Component output is library-aware:
+
+1. **`token-mapping.md`** (always) — brand tokens → component library theming API. Complete, copy-paste-ready config.
+2. **Override specs** (selective) — one file per library component needing treatment beyond tokens. Singular kebab-case naming.
+3. **Custom component specs** (selective) — one file per brand-distinctive component with no library equivalent. Includes: states, anatomy, usage rules, accessibility spec, code hints.
+
+If no UI library is detected, write up to 15 core component specs.
 
 ### Other Files
 
@@ -79,7 +84,17 @@ Each chunk follows the format in `references/chunk-format.md`. Below is the stru
 - Token scale: none (0), sm, md, lg, xl, full (9999px)
 - Use cases per token
 
-### Component chunks
+### components/token-mapping.md
+- Library-specific token config (CSS vars, theme object, etc.)
+- Maps every foundation token to the library's theming API
+- Copy-paste-ready — no interpretation needed
+
+### Override component chunks
+- What to override and why (traces to brand identity)
+- Code hints for the specific library
+- Cross-references to foundation chunks
+
+### Custom component chunks
 - States: default, hover, active, disabled, focus, loading
 - Anatomy diagram
 - Usage rules

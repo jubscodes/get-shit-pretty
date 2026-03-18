@@ -20,7 +20,7 @@ Adapts strategy based on codebase context — generates from scratch, extends an
 Build the design system, generate brand preview, and complete the branding diamond.
 
 **Input:** Brand identity + strategy + BRIEF.md
-**Output:** `{brand}/system/` (foundations/, components/, principles.md, tokens.json, INDEX.md) + `{brand}/preview.html`
+**Output:** `{brand}/system/` (foundations/, components/, principles.md, tokens.json, {brand-name}.yml, {brand-name}.md, INDEX.md) + `{brand}/preview.html`
 **Agent:** `gsp-system-architect`
 </objective>
 
@@ -60,11 +60,13 @@ Read:
 - `{BRAND_PATH}/BRIEF.md` — business, personas, goals
 - `{BRAND_PATH}/config.json` — get `system_config.system_strategy`, `system_config.tech_stack`, `system_config.style_base`
 
-### Style base presets
+### Style base presets (format reference)
 
 If `style_base` is a non-empty array, load each preset's files from `${CLAUDE_SKILL_DIR}/../gsp-style/styles/`:
 - `{preset-name}.yml` — format reference for custom style output
 - `{preset-name}.md` — format reference for custom style prompt
+
+If `style_base` is empty or missing, load `${CLAUDE_SKILL_DIR}/../gsp-style/styles/professional.yml` and `${CLAUDE_SKILL_DIR}/../gsp-style/styles/professional.md` as the default format reference. The agent always needs at least one example to produce the custom style output.
 
 ## Step 1.5: Codebase awareness
 
@@ -158,15 +160,18 @@ If confirmed → proceed to components pass.
 Spawn the `gsp-system-architect` agent with:
 - The existing foundations from Pass 1
 - All identity chunks + palettes.json
-- Strategy chunks (voice-and-tone.md for content component guidelines)
+- Strategy chunks: voice-and-tone.md, archetype.md, positioning.md (needed for custom style output)
+- INVENTORY.md (if it exists — component library detection for token mapping)
 - The `style_base` value + preset `.yml`/`.md` files (if loaded)
 - **Execution mode:** `"components"`
 - Confirmed component scope from Step 1.5
 - **Output path:** `{BRAND_PATH}/system/`
 
-The agent writes components:
+The agent writes components + custom style:
 - `system/components/` (one per component)
 - Updates `system/tokens.json` (adds component tokens)
+- `system/{brand-name}.yml` (custom style preset — portable, reusable)
+- `system/{brand-name}.md` (custom style prompt — AI-ready)
 - `system/INDEX.md`
 
 ## Step 4.5: Update state

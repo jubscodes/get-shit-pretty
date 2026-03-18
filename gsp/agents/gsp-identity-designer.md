@@ -1,8 +1,7 @@
 ---
 name: gsp-identity-designer
 description: Creates visual identity — logo, color, typography, imagery. Spawned by /gsp:brand-identity.
-tools: Read, Write, Bash, Grep, Glob, WebSearch, WebFetch
-disallowedTools: Edit
+tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch, WebFetch
 maxTurns: 40
 permissionMode: acceptEdits
 color: magenta
