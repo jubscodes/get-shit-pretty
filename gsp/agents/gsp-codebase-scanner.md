@@ -6,6 +6,7 @@ disallowedTools: Edit, Write
 maxTurns: 30
 permissionMode: dontAsk
 background: true
+model: sonnet
 color: cyan
 ---
 

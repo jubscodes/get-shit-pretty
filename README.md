@@ -380,6 +380,6 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 <div align="center">
 
-**Ship a brand, not just code.**
+**Code is a commodity, your brand is not.**
 
 </div>
