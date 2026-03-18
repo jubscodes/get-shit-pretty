@@ -65,7 +65,7 @@ Also read `{BRAND_PATH}/system/tokens.json`.
 
 **Critique:** Read `{PROJECT_PATH}/critique/INDEX.md` → load prioritized-fixes and accessibility-fixes (to verify they were addressed).
 
-**Codebase context:** Read `{PROJECT_PATH}/codebase/INVENTORY.md` (if exists) — what existed before build. Read `{PROJECT_PATH}/codebase/MANIFEST.md` (if exists) — what build claims it produced. Cross-reference both against BUILD-LOG.md and actual git diff.
+**Codebase context:** Read `.design/system/COMPONENTS.md` (if exists) — what existed before build. Read `{PROJECT_PATH}/codebase/MANIFEST.md` (if exists) — what build claims it produced. Cross-reference both against BUILD-LOG.md and actual git diff.
 
 ## Step 1.5: Scope check
 
@@ -88,7 +88,7 @@ Spawn the `gsp-reviewer` agent with:
 - Brand system chunks + tokens.json
 - Brief chunks
 - Critique fixes (to verify resolution)
-- INVENTORY.md (when exists — to verify existing components weren't broken)
+- `.design/system/COMPONENTS.md` (when exists — to verify existing components weren't broken)
 - MANIFEST.md (when exists — to verify build claims match reality)
 - `codebase_type` from config.json
 - The Deliverable Reviewer prompt (11)

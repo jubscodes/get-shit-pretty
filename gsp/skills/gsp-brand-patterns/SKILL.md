@@ -70,12 +70,16 @@ If `style_base` is empty or missing, load `${CLAUDE_SKILL_DIR}/../gsp-style/styl
 
 ## Step 1.5: Codebase awareness
 
-Ask the user:
+**Always scan:** If `.design/system/` docs don't exist, invoke `/gsp:design-system` via Skill tool to scan the codebase. If they already exist, read them. Either way, load STACK.md, COMPONENTS.md, and TOKENS.md before continuing.
+
+Then ask the user:
 1. "Will this brand target a specific tech stack?" (React + Tailwind, React Native + NativeWind, vanilla CSS, etc.)
+   - If the scan detected a stack, present it as the default: "I see you're using {framework} with {styling} — build on that?"
    - Store answer in `{BRAND_PATH}/config.json` → `system_config.tech_stack`
-2. "Is there an existing design system to incorporate?"
-   - If yes: scan codebase for INVENTORY (existing tokens, components, architecture)
+2. Based on scan results, determine system strategy:
+   - If scan found existing tokens/components: "You have an existing design system. Want to evolve it, rethink it from scratch, or ignore it?"
    - Store strategy in `{BRAND_PATH}/config.json` → `system_config.system_strategy`
+   - If scan found no tokens/components (greenfield/boilerplate): default to `generate`, skip the question
 
 ## Step 2: Determine system strategy
 
@@ -92,11 +96,11 @@ Evolve the existing system rather than replacing it.
 2. Classify each existing component: KEEP / RESTYLE / REFACTOR / REPLACE
 3. Design only net-new components not covered by existing ones
 4. Output delta tokens — only new and changed values
-5. Preserve existing naming conventions from INVENTORY.md
+5. Preserve existing naming conventions from `.design/system/CONVENTIONS.md`
 
 **REFACTOR** (when `system_strategy` is `refactor`):
 Redesign the system from the ground up, informed by what exists.
-1. Read and understand existing tokens, components, patterns from INVENTORY.md
+1. Read and understand existing tokens, components, patterns from `.design/system/` docs
 2. Design a complete new system — same scope as GENERATE
 3. Produce a migration mapping for every change
 4. Preserve conventions unless the brand requires changes
@@ -112,7 +116,7 @@ Spawn the `gsp-system-architect` agent with:
 - The design tokens reference
 - The `system_strategy` and `tech_stack` values
 - The `style_base` value + preset `.yml`/`.md` files (if loaded)
-- The INVENTORY.md content (when exists)
+- The `.design/system/STACK.md`, `COMPONENTS.md`, `TOKENS.md` content (when exist)
 - **Execution mode:** `"foundations"`
 - **Output path:** `{BRAND_PATH}/system/`
 
@@ -161,7 +165,7 @@ Spawn the `gsp-system-architect` agent with:
 - The existing foundations from Pass 1
 - All identity chunks + palettes.json
 - Strategy chunks: voice-and-tone.md, archetype.md, positioning.md (needed for custom style output)
-- INVENTORY.md (if it exists — component library detection for token mapping)
+- `.design/system/STACK.md`, `COMPONENTS.md`, `TOKENS.md` (if exist — component library detection for token mapping)
 - The `style_base` value + preset `.yml`/`.md` files (if loaded)
 - **Execution mode:** `"components"`
 - Confirmed component scope from Step 1.5

@@ -38,10 +38,10 @@ Write real, production-ready code directly in the codebase. Not pseudocode. Not 
 ## Step 0: Plan Before Building
 
 Before writing any code:
-1. Read all design specs, INVENTORY.md, and brief/target-adaptations
+1. Read all design specs, `.design/system/` docs (STACK, COMPONENTS, CONVENTIONS), and brief/target-adaptations
 2. Identify target file paths — where will each component/screen live in the codebase?
 3. Outline the implementation plan: what files to create, what files to modify, what order
-4. If INVENTORY.md exists, follow the codebase's conventions (naming, imports, file structure, styling approach)
+4. If `.design/system/` docs exist, follow the codebase's conventions (naming, imports, file structure, styling approach)
 
 ## Translation Process
 
@@ -61,7 +61,7 @@ Before writing any code:
 - Animations respect `prefers-reduced-motion`
 - Dark mode support via design tokens
 - All spacing/color/type values come from tokens (no magic numbers)
-- Follow codebase conventions from INVENTORY.md
+- Follow codebase conventions from `.design/system/` docs (STACK, COMPONENTS, CONVENTIONS)
 </methodology>
 
 <output>

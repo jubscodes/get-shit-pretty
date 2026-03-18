@@ -83,13 +83,14 @@ For each brand phase directory (discover, strategy, identity, system):
 Required: config.json, STATE.md, BRIEF.md, brand.ref
 Required dirs: brief/, research/, design/, critique/, build/, review/
 
-Required when `codebase_type` is NOT `greenfield`:
-- codebase/INVENTORY.md
-
 Check each exists:
 - All present → PASS
-- INVENTORY.md missing for non-greenfield → WARN: "Codebase inventory missing. Re-run `/gsp:start` or create `codebase/INVENTORY.md` manually."
 - Core files missing → FAIL: list which are missing, suggest `/gsp:start`
+
+**Design system check:**
+- If `.design/system/` directory exists, verify at least `STACK.md` is present → PASS
+- If `.design/system/` is missing and codebase is not greenfield → WARN: "Design system scan missing. Run `/gsp:design-system` to scan."
+- If old project-scoped `codebase/INVENTORY.md` exists → WARN: "Legacy INVENTORY.md found. Run `/gsp:design-system` to migrate to workspace-level design system docs."
 
 Legacy detection: if system/, screens/, specs/, plan/ dirs exist → WARN: "Legacy structure detected — project uses old phase layout"
 
@@ -153,8 +154,8 @@ No stale outputs detected → PASS
 - Config says `generate` but brand system output contains "Component Audit" → WARN: "Config says `generate` but system contains extend-style audit."
 
 **Check `codebase_type` alignment:**
-- Config says `existing` or `boilerplate` but no INVENTORY.md → WARN (already caught by P1, don't double-count)
-- Config says `greenfield` but INVENTORY.md exists → INFO: "Config says `greenfield` but INVENTORY.md exists. Not an issue, but config may be stale."
+- Config says `existing` or `boilerplate` but no `.design/system/STACK.md` → WARN (already caught by P1, don't double-count)
+- Config says `greenfield` but `.design/system/STACK.md` exists → INFO: "Config says `greenfield` but design system docs exist. Not an issue, but config may be stale."
 
 **Check `design_scope` alignment:**
 - Config says `tokens` but design/ has full screen designs → WARN: "Scope is `tokens` but design/ has full screen designs."

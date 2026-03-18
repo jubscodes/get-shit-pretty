@@ -36,7 +36,6 @@ Through 2-3 rounds of natural conversation, gather a complete brief and create t
 @${CLAUDE_SKILL_DIR}/../../templates/projects/state.md
 @${CLAUDE_SKILL_DIR}/../../templates/projects/config.json
 @${CLAUDE_SKILL_DIR}/../../templates/projects/roadmap.md
-@${CLAUDE_SKILL_DIR}/../../templates/codebase-inventory.md
 @${CLAUDE_SKILL_DIR}/../../templates/exports-index.md
 </execution_context>
 
@@ -62,12 +61,14 @@ Scan `.design/` for existing brands and projects:
 - For each brand/project found, read its `config.json` to get phase statuses
 - If `.design/CHANGELOG.md` doesn't exist, create it from `templates/changelog.md`
 
-### Step 1b: Spawn codebase scanner (background)
+### Step 1b: Run design system scan (background)
 
-Spawn the `gsp-codebase-scanner` agent with `run_in_background: true`:
-- Use `subagent_type: "Explore"` with the scanner's methodology
-- Prompt: "Scan this codebase following the gsp-codebase-scanner methodology. Return a structured report with classification, tech stack, components, tokens, architecture patterns, conventions, and key paths. Read `.design/CHANGELOG.md` and scan `.design/projects/*/STATE.md` for sibling project context. If no package.json exists, return a minimal greenfield report."
-- Store the task reference — you'll consume results in Step 3 Round 2 or Step 4.
+Spawn a background agent with `run_in_background: true` that follows the `/gsp:design-system` skill methodology:
+- Use `subagent_type: "general-purpose"`
+- Prompt: "Follow the /gsp:design-system skill methodology. Scan the codebase and produce `.design/system/{STACK,COMPONENTS,TOKENS,CONVENTIONS,CONCERNS}.md`. Read the templates from `.claude/templates/system/` for output format. If no package.json exists, write minimal greenfield versions."
+- Store the task reference — you'll read results in Step 3 Round 2 or Step 4.
+
+This produces workspace-level documents consumed by downstream skills and agents.
 
 ### Step 1c: Greet
 
@@ -136,7 +137,7 @@ Show compact brand (single-line if complete) + full project pipeline flow. Then 
 - **New brand** — "create a new brand identity"
 - **View progress** — "see full progress dashboard"
 
-When codebase has been scanned (INVENTORY.md exists), show a Summary Box:
+When codebase has been scanned (`.design/system/STACK.md` exists), show a Summary Box using data from STACK.md and COMPONENTS.md:
 ```
   ┌──────────────────────────────────────────┐
   │  /gsp: ◆◈                               │
@@ -275,11 +276,10 @@ identity_hash: {first 8 chars of md5 of IDENTITY.md content, or "pending" if ide
 ```
 Write to `.design/projects/{name}/brand.ref`
 
-6. Consume background scan results:
-- Retrieve the codebase scanner's structured report (guaranteed done by now — conversation has been going for multiple rounds)
-- If **greenfield**: no INVENTORY.md needed, note classification for config.json
-- If **boilerplate** or **existing**: write INVENTORY.md to `.design/projects/{name}/codebase/INVENTORY.md` using the scanner's report and the `templates/codebase-inventory.md` template
-- Auto-infer `implementation_target` from the scanner's tech stack and components
+6. Consume design system scan results:
+- Read `.design/system/STACK.md` (guaranteed done by now — conversation has been going for multiple rounds)
+- Note classification for config.json
+- Auto-infer `implementation_target` from STACK.md tech stack and COMPONENTS.md component inventory
 
 7. Gather project brief in 2 rounds:
 

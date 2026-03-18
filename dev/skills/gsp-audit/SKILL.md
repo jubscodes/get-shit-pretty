@@ -101,7 +101,7 @@ Each skill must have `name:` and `description:` in frontmatter.
 - Missing fields → FAIL
 
 ### C8: Claude-only field usage matches known set
-Canary test — grep agents for `memory:`, `background:`, `hooks:`, `isolation:`, `skills:`, `mcpServers:`. Compare against expected list (gsp-builder.md, gsp-codebase-scanner.md, gsp-reviewer.md). WARN if set changes so developer verifies converters handle new fields.
+Canary test — grep agents for `memory:`, `background:`, `hooks:`, `isolation:`, `skills:`, `mcpServers:`. Compare against expected list (gsp-builder.md, gsp-reviewer.md). WARN if set changes so developer verifies converters handle new fields.
 
 ## Step 4: Installer Checks (I)
 

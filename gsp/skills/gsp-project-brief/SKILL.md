@@ -64,7 +64,7 @@ Read:
 
 ### Codebase context
 
-Read `{PROJECT_PATH}/codebase/INVENTORY.md` (if exists) — existing tokens, components, architecture.
+Read `.design/system/STACK.md` and `.design/system/COMPONENTS.md` (if exist) — existing tech stack, components, architecture.
 
 Read `.design/CHANGELOG.md` — quick history of what prior projects built.
 For projects with overlapping scope, read their `codebase/MANIFEST.md` for detail.
@@ -92,7 +92,7 @@ Spawn the `gsp-scoper` agent with:
 - tokens.json
 - BRIEF.md
 - config.json preferences
-- INVENTORY.md (when exists)
+- `.design/system/STACK.md`, `COMPONENTS.md` (when exist)
 - CHANGELOG.md + relevant MANIFEST.md files — for overlap detection and provenance
 - The Project Scoper prompt (10)
 - The brief output template

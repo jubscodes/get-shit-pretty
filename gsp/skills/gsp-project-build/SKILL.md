@@ -61,7 +61,7 @@ Check `{PROJECT_PATH}/STATE.md` for build status. If status is `needs-revision`:
 5b. Load `{PROJECT_PATH}/brief/gap-analysis.md` + `file-references.md` (existing target)
 5d. Load `{PROJECT_PATH}/research/reference-specs.md` (if exists)
 5e. Load `{PROJECT_PATH}/research/technical-research.md` (if exists)
-5c. Load `{PROJECT_PATH}/codebase/INVENTORY.md` (when exists)
+5c. Load `.design/system/STACK.md`, `.design/system/COMPONENTS.md`, `.design/system/CONVENTIONS.md` (when exist)
 6. Load `{BRAND_PATH}/system/tokens.json`
 7. Read `{PROJECT_PATH}/BRIEF.md` — tech stack preference
 8. Load `{PROJECT_PATH}/critique/prioritized-fixes.md` (if available)
@@ -86,7 +86,7 @@ Spawn the `gsp-builder` agent with:
 - The Design-to-Code Translator prompt (09)
 - Build output template
 - Target tech stack, implementation_target, design_scope
-- Codebase inventory (INVENTORY.md)
+- Design system docs (`.design/system/STACK.md`, `COMPONENTS.md`, `CONVENTIONS.md`)
 - **Codebase root path** — where to write code
 - **Clear instruction:** "Write code directly to the codebase, not to the `.design/build/` directory. Leave changes unstaged."
 - **Review issues** (when in revision mode): contents of `review/issues.md`
@@ -122,7 +122,7 @@ Write `{PROJECT_PATH}/build/INDEX.md`:
 ### Write manifest
 
 Write `{PROJECT_PATH}/codebase/MANIFEST.md` from `templates/manifest.md`:
-1. **Components table** — one row per component produced. Action = `added` or `modified` based on INVENTORY.md. File paths reference actual codebase locations.
+1. **Components table** — one row per component produced. Action = `added` or `modified` based on `.design/system/COMPONENTS.md`. File paths reference actual codebase locations.
 2. **Patterns table** — patterns established (infer from BUILD-LOG.md).
 3. **Files Touched** — flat list of all codebase file paths from BUILD-LOG.md.
 

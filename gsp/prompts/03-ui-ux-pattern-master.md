@@ -13,8 +13,8 @@ Act as a Senior Apple UI Designer. Design a full UI for [APP TYPE] based on [PER
 - When `design_scope` is `full`: design [SCREEN_COUNT] core screens (default 8)
 - When `design_scope` is `partial`: design only [TARGET_SCREENS]
 
-**When [INVENTORY] is provided (existing codebase):**
-Reference existing components and patterns from [INVENTORY]. Use existing component names in wireframes where applicable. When redesigning existing screens, note what changes vs what stays.
+**When [COMPONENTS] is provided (existing codebase):**
+Reference existing components and patterns from [COMPONENTS]. Use existing component names in wireframes where applicable. When redesigning existing screens, note what changes vs what stays.
 
 ---
 
@@ -24,7 +24,7 @@ Reference existing components and patterns from [INVENTORY]. Use existing compon
 - `[PERSONA]` — Target user persona
 - `[SCREEN_COUNT]` — Number of screens (default 8)
 - `[TARGET_SCREENS]` — Specific screens when partial scope
-- `[INVENTORY]` — INVENTORY.md contents (empty when greenfield)
+- `[COMPONENTS]` — `.design/system/COMPONENTS.md` contents (empty when greenfield)
 
 ## Expected Output
 

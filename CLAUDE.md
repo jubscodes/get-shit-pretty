@@ -21,7 +21,7 @@ Skills produce artifacts to `.design/`; agents consume them. The filesystem is t
 
 Composable skills work two ways: (1) standalone — user runs directly for quick output, (2) as building blocks — pipeline phases consume their output files. Each composable skill runs inline (no agent), is deterministic, writes to a predictable path, and produces foundation chunks per `references/chunk-format.md`.
 
-Examples: `/gsp:accessibility` (WCAG audits), `/gsp:style` (tokens + foundations), `/gsp:palette` (OKLCH palettes), `/gsp:typescale` (type scale).
+Examples: `/gsp:accessibility` (WCAG audits), `/gsp:style` (tokens + foundations), `/gsp:palette` (OKLCH palettes), `/gsp:typescale` (type scale), `/gsp:design-system` (codebase design system scan).
 
 ## Plugin and pack structure
 
@@ -30,8 +30,8 @@ GSP is a Claude Code plugin. The manifest is at `.claude-plugin/plugin.json` wit
 | Directory | Contents |
 |-----------|----------|
 | `.claude-plugin/` | Plugin manifest (`plugin.json`) |
-| `gsp/skills/` | 24 skills — each is a `<name>/SKILL.md` directory (single source for all runtimes) |
-| `gsp/agents/` | 15 subagents (`gsp-{name}.md`) |
+| `gsp/skills/` | 25 skills — each is a `<name>/SKILL.md` directory (single source for all runtimes) |
+| `gsp/agents/` | 14 subagents (`gsp-{name}.md`) |
 | `gsp/hooks/` | Plugin-level hooks (`hooks.json`) |
 | `gsp/prompts/` | 12 agent system prompts |
 | `gsp/templates/` | Project/brand config, state, brief, roadmap templates |
@@ -45,9 +45,9 @@ GSP is a Claude Code plugin. The manifest is at `.claude-plugin/plugin.json` wit
 
 | Runtime | Skills location | Agents | Bundle location |
 |---------|-----------------|--------|-----------------|
-| Claude Code | `.claude/skills/` | `.claude/agents/` (15) | `.claude/{prompts,templates,references}/` |
-| OpenCode | `.opencode/skills/` | `.opencode/agents/` (15) | `.opencode/{prompts,templates,references}/` |
-| Gemini CLI | `.gemini/skills/` | `.gemini/agents/` (15, experimental) | `.gemini/{prompts,templates,references}/` |
+| Claude Code | `.claude/skills/` | `.claude/agents/` (14) | `.claude/{prompts,templates,references}/` |
+| OpenCode | `.opencode/skills/` | `.opencode/agents/` (14) | `.opencode/{prompts,templates,references}/` |
+| Gemini CLI | `.gemini/skills/` | `.gemini/agents/` (14, experimental) | `.gemini/{prompts,templates,references}/` |
 | Codex CLI | **`.agents/skills/`** (not `.codex/`) | **None** (not supported) | `.codex/{prompts,templates,references}/` |
 
 Skills are the single source for all runtimes — commands have been removed.

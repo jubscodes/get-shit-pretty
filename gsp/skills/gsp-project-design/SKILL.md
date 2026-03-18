@@ -93,10 +93,10 @@ If research doesn't exist, proceed without it (research is informative, not bloc
 **If `design_scope` is `partial`:**
 Read BRIEF.md "Target screens" to get the specific screen list.
 
-## Step 2: Load existing components inventory
+## Step 2: Load existing design system context
 
 When `implementation_target` is not `figma`:
-- **If `{PROJECT_PATH}/codebase/INVENTORY.md` exists**, read it. Pass to the agent.
+- **If `.design/system/COMPONENTS.md` and `.design/system/TOKENS.md` exist**, read them. Pass to the agent.
 - **If not**, fall back to scanning the codebase.
 
 ## Step 3: Spawn designer

@@ -144,7 +144,7 @@ if should_run contracts; then
   fi
 
   # C8: Claude-only field usage matches known set (canary)
-  EXPECTED_CLAUDE_ONLY="gsp-builder.md gsp-codebase-scanner.md gsp-reviewer.md"
+  EXPECTED_CLAUDE_ONLY="gsp-builder.md gsp-reviewer.md"
   ACTUAL_CLAUDE_ONLY=$(grep -rlE '^(memory|background|hooks|isolation|skills|mcpServers):' gsp/agents/ 2>/dev/null | xargs -I{} basename {} | sort -u | tr '\n' ' ' | sed 's/ $//')
   if [[ "$ACTUAL_CLAUDE_ONLY" == "$EXPECTED_CLAUDE_ONLY" ]]; then
     pass "C8 Claude-only field usage matches known set ($ACTUAL_CLAUDE_ONLY)"

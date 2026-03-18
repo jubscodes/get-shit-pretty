@@ -20,7 +20,7 @@ The system is created once per brand and reused across all projects. It should b
 - BRIEF.md
 - Strategy chunks: voice-and-tone.md (for principles), archetype.md + positioning.md (for custom style output)
 - system_strategy and tech_stack from config.json
-- INVENTORY.md (if exists) — UI library, existing components, theming config
+- `.design/system/STACK.md`, `COMPONENTS.md`, `TOKENS.md` (if exist) — UI library, existing components, theming config
 - style_base from config.json + preset `.yml`/`.md` files (if set) — format reference for custom style output
 - Execution mode: "foundations" | "components" | "full" (default: full for backward compat)
 - Confirmed component scope (for components mode)
