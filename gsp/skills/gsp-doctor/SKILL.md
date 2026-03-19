@@ -1,7 +1,7 @@
 ---
 name: doctor
 description: Check project health
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Glob
@@ -232,6 +232,13 @@ No review issues → PASS
 
 No upgrade concerns → PASS
 
+### Installation Health Checks
+
+**Check I1: Skills have `user-invocable: true`**
+Glob for all SKILL.md files in the skills directory (`.claude/skills/*/SKILL.md` or equivalent runtime path). For each skill (except the plugin entry point `get-shit-pretty`), check frontmatter for `user-invocable: true`.
+- All present → PASS
+- Missing → WARN: "Skills missing `user-invocable: true`: {list}. They won't appear in the slash-command menu. Re-run the installer or add the field manually."
+
 ### Cross-Instance Checks
 
 **Check X1: Multiple projects, same brand**
@@ -277,6 +284,9 @@ Overall Health: {SCORE}/100 {emoji}
   ✅ P8. Broken References ...... PASS
   ✅ P9. Review Status .......... PASS
   ✅ P10. Upgrade Detection ..... PASS
+
+─── Installation Health ───────────────
+  ✅ I1. Skills invocable ........ PASS
 
 ─── Cross-Instance ────────────────────
   ✅ X1. Brand Consistency ...... PASS

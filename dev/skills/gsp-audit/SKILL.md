@@ -100,6 +100,11 @@ Each skill must have `name:` and `description:` in frontmatter.
 - All present → PASS
 - Missing fields → FAIL
 
+### C9: User-invocable skills have `user-invocable: true`
+Every skill in `gsp/skills/` (except `get-shit-pretty`, which is the plugin entry point with `user-invocable: false`) must have `user-invocable: true` in frontmatter. Without it, Claude Code won't list the skill in the slash-command menu.
+- All present → PASS
+- Missing → FAIL with list of skills
+
 ### C8: Claude-only field usage matches known set
 Canary test — grep agents for `memory:`, `background:`, `hooks:`, `isolation:`, `skills:`, `mcpServers:`. Compare against expected list (gsp-builder.md, gsp-reviewer.md). WARN if set changes so developer verifies converters handle new fields.
 

@@ -143,6 +143,22 @@ if should_run contracts; then
     fail "C7 Missing skill frontmatter" "${MISSING_SKILL_FIELDS[*]}"
   fi
 
+  # C9: User-invocable skills have user-invocable: true
+  MISSING_INVOCABLE=()
+  for skill in gsp/skills/*/SKILL.md; do
+    dir=$(basename "$(dirname "$skill")")
+    # Skip the plugin entry point (get-shit-pretty) — it uses user-invocable: false
+    [[ "$dir" == "get-shit-pretty" ]] && continue
+    if ! grep -q '^user-invocable: true' "$skill"; then
+      MISSING_INVOCABLE+=("$dir")
+    fi
+  done
+  if [[ ${#MISSING_INVOCABLE[@]} -eq 0 ]]; then
+    pass "C9 All skills have user-invocable: true"
+  else
+    fail "C9 Skills missing user-invocable: true" "${MISSING_INVOCABLE[*]}"
+  fi
+
   # C8: Claude-only field usage matches known set (canary)
   EXPECTED_CLAUDE_ONLY="gsp-builder.md gsp-reviewer.md"
   ACTUAL_CLAUDE_ONLY=$(grep -rlE '^(memory|background|hooks|isolation|skills|mcpServers):' gsp/agents/ 2>/dev/null | xargs -I{} basename {} | sort -u | tr '\n' ' ' | sed 's/ $//')
