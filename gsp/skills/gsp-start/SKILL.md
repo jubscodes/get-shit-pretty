@@ -1,7 +1,7 @@
 ---
 name: start
 description: Start here — picks up where you left off
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Write
@@ -76,29 +76,14 @@ Greet based on `.design/` findings from Step 1a. Use `AskUserQuestion` with clic
 
 If a `package.json` exists (quick check via glob — don't wait for the full scan), add to the greeting: "I'm scanning your codebase in the background — I'll factor in what I find."
 
-Adapt the greeting based on what the scan revealed. Use ANSI color codes for the branded output:
+Adapt the greeting based on what the scan revealed. Use plain text with Unicode characters for visual hierarchy:
 
-| Element | ANSI Code |
-|---------|-----------|
-| Brand mark `/gsp:` | `\x1b[1m\x1b[38;2;255;107;53m` (accent + bold) |
-| Diamonds (state) | `◆` `\x1b[38;2;224;224;224m`, `◈` `\x1b[38;2;255;107;53m`, `◇` `\x1b[38;2;102;102;102m` |
-| Primary text | `\x1b[38;2;224;224;224m` |
-| Secondary text | `\x1b[38;2;160;160;160m` |
-| Tertiary text | `\x1b[38;2;102;102;102m` |
-| Info `i` symbol | `\x1b[38;2;96;165;250m` |
-| Divider `───` | `\x1b[38;2;102;102;102m` |
-| Divider label | `\x1b[1m\x1b[38;2;160;160;160m` |
-| Pipeline (complete) | `\x1b[38;2;224;224;224m` |
-| Pipeline (active) | `\x1b[38;2;255;107;53m` |
-| Pipeline (pending) | `\x1b[38;2;102;102;102m` |
-| Summary box border | `\x1b[38;2;102;102;102m` |
-| Summary box keys | `\x1b[38;2;160;160;160m` |
-| Summary box values | `\x1b[38;2;224;224;224m` |
-| Reset | `\x1b[0m` |
+- **Diamonds:** `◆` complete, `◈` active/in-progress, `◇` pending
+- **Dividers:** `─── Label ──────────────────` as section separators
+- **Pipeline flow:** phases connected by `───`, diamond prefix per phase
+- **Summary box:** `┌──┐│└──┘` border with key-value pairs inside
 
 **Fresh start (no `.design/`):**
-
-Output with ANSI codes:
 ```
   /gsp: ◇◇
 
@@ -122,7 +107,7 @@ Acknowledge the legacy project, note it still works with current commands. Use `
 - **Keep working** — "continue with the legacy structure"
 
 **Brands exist, no projects:**
-Show brand name + pipeline flow with ANSI colors. Then use `AskUserQuestion` with:
+Show brand name + pipeline flow. Then use `AskUserQuestion` with:
 - One option per existing brand — "start a project with {brand name}"
 - **Create new brand** — "start a new brand identity"
 

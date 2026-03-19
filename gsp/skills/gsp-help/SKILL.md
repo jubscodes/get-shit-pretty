@@ -1,10 +1,10 @@
 ---
 name: help
 description: Show all skills
-disable-model-invocation: true
+user-invocable: true
 ---
 <objective>
-Display the complete GSP skill reference with branded ANSI styling.
+Display the complete GSP skill reference as plain text.
 
 Output ONLY the reference content below. Do NOT add:
 - Project-specific analysis
@@ -20,23 +20,7 @@ GSP version: !`cat ${CLAUDE_SKILL_DIR}/../../VERSION 2>/dev/null || echo "0.4.3"
 
 ## Output the reference
 
-Output the following using ANSI escape codes for color. Each element has a specific color:
-
-- **Brand mark `/gsp:`** — accent + bold: `\x1b[1m\x1b[38;2;255;107;53m`
-- **Diamonds `◇◇`** — tertiary: `\x1b[38;2;102;102;102m`
-- **Version** — dim: `\x1b[2m`
-- **Subtitle "skill reference"** — secondary: `\x1b[38;2;160;160;160m`
-- **Divider `───`** — tertiary: `\x1b[38;2;102;102;102m`
-- **Divider label text** — secondary + bold: `\x1b[1m\x1b[38;2;160;160;160m`
-- **Skill names** — accent + bold: `\x1b[1m\x1b[38;2;255;107;53m`
-- **Skill descriptions** — secondary: `\x1b[38;2;160;160;160m`
-- **Flow phase names** — primary: `\x1b[38;2;224;224;224m`
-- **Flow arrows `→`** — tertiary: `\x1b[38;2;102;102;102m`
-- **Tree connectors** — tertiary: `\x1b[38;2;102;102;102m`
-- **Tree labels** — secondary: `\x1b[38;2;160;160;160m`
-- **Tree descriptions** — tertiary: `\x1b[38;2;102;102;102m`
-- **Footer** — dim: `\x1b[2m`
-- **Reset** — `\x1b[0m`
+Output the following as plain text. Use Unicode characters (`───`, `◇`, `├──`, `└──`, `│`, `→`) for visual structure.
 
 Skill names are left-padded with 4 spaces. Descriptions start at column 27 (4 indent + 23 max skill name width).
 

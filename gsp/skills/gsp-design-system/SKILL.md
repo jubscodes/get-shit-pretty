@@ -1,7 +1,7 @@
 ---
 name: design-system
 description: Scan and document the existing design system state
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Write
@@ -149,13 +149,5 @@ Display a summary box:
   output: .design/system/
 ```
 
-Use ANSI color codes for the summary box:
-
-| Element | ANSI Code |
-|---------|-----------|
-| Brand mark `/gsp:` | `\x1b[1m\x1b[38;2;255;107;53m` (accent + bold) |
-| Box border | `\x1b[38;2;102;102;102m` |
-| Keys | `\x1b[38;2;160;160;160m` |
-| Values | `\x1b[38;2;224;224;224m` |
-| Reset | `\x1b[0m` |
+Use plain text with Unicode box-drawing characters (`┌──┐│└──┘`) for the summary box.
 </process>

@@ -1,7 +1,7 @@
 ---
 name: project-brief
 description: Scope what you're building
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Write
@@ -138,7 +138,7 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ## Step 5: Phase transition output
 
-Render the phase transition screen (see `references/phase-transitions.md` for ANSI color tokens):
+Render the phase transition screen (see `references/phase-transitions.md` for styling):
 
 ```
   ◆ brief complete — project scoped

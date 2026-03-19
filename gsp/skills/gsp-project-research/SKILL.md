@@ -1,7 +1,7 @@
 ---
 name: project-research
 description: Research UX patterns and technical approaches
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Write
@@ -128,7 +128,7 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ## Step 4: Phase transition output
 
-Render the phase transition screen (see `references/phase-transitions.md` for ANSI color tokens):
+Render the phase transition screen (see `references/phase-transitions.md` for styling):
 
 ```
   ◆ research complete — patterns and approaches researched

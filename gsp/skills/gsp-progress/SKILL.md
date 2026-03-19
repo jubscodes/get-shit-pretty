@@ -1,13 +1,13 @@
 ---
 name: progress
 description: How pretty are we?
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Glob
 ---
 <context>
-Status check for GSP design projects. Shows progress for all brands and projects with diamond state indicators, pipeline flows, and progress bars. Renders with ANSI color codes.
+Status check for GSP design projects. Shows progress for all brands and projects with diamond state indicators, pipeline flows, and progress bars. Renders as plain text with Unicode visual elements.
 </context>
 
 <objective>
@@ -15,34 +15,16 @@ Display current progress across all brands and projects with branded terminal ou
 </objective>
 
 <styling>
-## ANSI Color Tokens
+## Visual Elements
 
-| Element | ANSI Code |
-|---------|-----------|
-| Brand mark `/gsp:` | `\x1b[1m\x1b[38;2;255;107;53m` (accent + bold) |
-| `◆` complete diamond | `\x1b[38;2;224;224;224m` (primary) |
-| `◈` active diamond | `\x1b[38;2;255;107;53m` (accent) |
-| `◇` pending diamond | `\x1b[38;2;102;102;102m` (tertiary) |
-| Labeled divider `───` | `\x1b[38;2;102;102;102m` (tertiary) |
-| Divider label | `\x1b[1m\x1b[38;2;160;160;160m` (secondary + bold) |
-| Instance name | `\x1b[1m\x1b[38;2;224;224;224m` (primary + bold) |
-| Pipeline phase names (complete) | `\x1b[38;2;224;224;224m` (primary) |
-| Pipeline phase names (active) | `\x1b[38;2;255;107;53m` (accent) |
-| Pipeline phase names (pending) | `\x1b[38;2;102;102;102m` (tertiary) |
-| Pipeline connectors `───` | `\x1b[38;2;102;102;102m` (tertiary) |
-| Progress bar filled `█` | `\x1b[38;2;255;107;53m` (accent) |
-| Progress bar empty `░` | `\x1b[38;2;102;102;102m` (tertiary) |
-| Percentage + fraction | `\x1b[38;2;160;160;160m` (secondary) |
-| Table header | `\x1b[1m\x1b[38;2;160;160;160m` (secondary + bold) |
-| Table values | `\x1b[38;2;160;160;160m` (secondary) |
-| Table pending `—` | `\x1b[38;2;102;102;102m` (tertiary) |
-| Next skill `→` | `\x1b[38;2;160;160;160m` (secondary) |
-| Next skill name | `\x1b[38;2;255;107;53m` (accent) |
-| Summary keys | `\x1b[38;2;160;160;160m` (secondary) |
-| Summary values | `\x1b[38;2;224;224;224m` (primary) |
-| "brand: x" reference | `\x1b[38;2;102;102;102m` (tertiary) |
-| "fully pretty." | `\x1b[38;2;224;224;224m` (primary) |
-| Reset | `\x1b[0m` |
+Output as plain text using Unicode characters for visual hierarchy:
+
+- **Diamonds:** `◆` complete, `◈` active/in-progress, `◇` pending
+- **Dividers:** `─── Label ──────────────────` as section separators
+- **Pipeline flow:** phases connected by `───`, diamond prefix per phase
+- **Progress bar:** `████████░░░░░░░░░░░░ 40% (2/5)` — bar width 20 chars, filled = `Math.round(20 * completed / total)`
+- **Tree connectors:** `├──`, `└──`, `│` for file listings
+- **Arrows:** `→` for next skill routing
 </styling>
 
 <process>
@@ -78,7 +60,7 @@ If `config.json` is missing or unparseable for any instance, show the instance n
 
 ## Step 5: Display progress
 
-Output with ANSI color codes using the tokens from the styling section above.
+Output as plain text using the visual elements from the styling section above.
 
 ### Empty State
 

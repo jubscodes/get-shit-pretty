@@ -1,7 +1,7 @@
 ---
 name: brand-patterns
 description: Build your design system — tokens, components, preview
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Write
@@ -212,7 +212,7 @@ Tell the user: "Brand preview saved — open it in your browser to see the full 
 
 ## Step 5: Phase transition output
 
-Render the phase transition screen (see `references/phase-transitions.md` for ANSI color tokens):
+Render the phase transition screen (see `references/phase-transitions.md` for styling):
 
 ```
   ◆ system complete — design system built
@@ -231,7 +231,7 @@ Render the phase transition screen (see `references/phase-transitions.md` for AN
   ──────────────────────────────
 ```
 
-Then display the brand summary with ANSI styling:
+Then display the brand summary:
 
 ```
   brand complete — {brand-name}

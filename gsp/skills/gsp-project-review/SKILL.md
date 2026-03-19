@@ -1,7 +1,7 @@
 ---
 name: project-review
 description: QA review — validate implementation against designs
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Write
@@ -172,7 +172,7 @@ If verdict is **Fail**:
 
 ## Step 6: Phase transition output
 
-Render the phase transition screen (see `references/phase-transitions.md` for ANSI color tokens):
+Render the phase transition screen (see `references/phase-transitions.md` for styling):
 
 **If Pass/Conditional Pass:**
 

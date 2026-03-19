@@ -2,22 +2,14 @@
 
 Rendered at the end of every phase command. Confirms what was accomplished, shows output artifacts, and routes to next phase.
 
-## ANSI Color Tokens
+## Styling
 
-| Element | ANSI Code |
-|---------|-----------|
-| `◆` completion diamond | `\x1b[38;2;255;107;53m` (accent) |
-| Phase name | `\x1b[1m\x1b[38;2;255;107;53m` (accent + bold) |
-| "complete" text | `\x1b[38;2;224;224;224m` (primary) |
-| `—` dash | `\x1b[38;2;160;160;160m` (secondary) |
-| Completion message | `\x1b[38;2;160;160;160m` (secondary) |
-| Directory name | `\x1b[38;2;160;160;160m` (secondary) |
-| Tree connectors `├──`, `└──`, `│` | `\x1b[38;2;102;102;102m` (tertiary) |
-| File names | `\x1b[38;2;160;160;160m` (secondary) |
-| Divider `──────` | `\x1b[38;2;102;102;102m` (tertiary) |
-| "fully pretty." | `\x1b[38;2;224;224;224m` (primary) |
-| `◈` active (critique loop) | `\x1b[38;2;255;107;53m` (accent) |
-| Reset | `\x1b[0m` |
+Output as plain text using Unicode characters for visual hierarchy:
+
+- `◆` for completed phases
+- `◈` for active/in-progress phases
+- `──────` divider between sections
+- Tree connectors `├──`, `└──`, `│` for file listings
 
 ## Template
 
