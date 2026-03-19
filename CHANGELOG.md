@@ -2,39 +2,38 @@
 
 All notable changes to get-shit-pretty are documented here.
 
-## [Unreleased]
-
-### Added
-- `/gsp:accessibility` standalone composable skill — 5 modes: design audit, token audit, code audit, accessibility statement, quick contrast check
-- WCAG 2.2 new criteria in checklist — SC 2.4.11 Focus Not Obscured, SC 2.5.8 Target Size, SC 3.2.6 Consistent Help, SC 3.3.7 Redundant Entry, SC 3.3.8 Accessible Authentication
-- Token-specific accessibility checks section and APCA reference in wcag-checklist.md
-- Style base integration across branding diamond — presets from `/gsp:style` flow through research, strategy, identity, and system phases as shared aesthetic vocabulary
-- Custom style output per brand — system phase produces `{brand-name}.yml` and `{brand-name}.md` in the same format as the 34 built-in presets
-
-### Changed
-- Renamed `gsp-auditor` agent → `gsp-accessibility-auditor` for clarity and dual-spawning support
-- Critique phase reuses prior `/gsp:accessibility` output instead of re-running auditor
-- Review phase detects prior code accessibility audits from `/gsp:accessibility --code`
-- Help skill adds Composable section with all 4 composable skills
-- Brand config template gains `style_base` array in `system_config`
-
 ## [0.5.0] — 2026-03-15
 
 ### Added
 - Plugin architecture — manifest at `.claude-plugin/plugin.json`, MCP servers, hooks
 - 34 design style presets via `/gsp:style` — structured YAML tokens + AI-ready prompts from designprompts.dev
-- Multi-runtime installer — OpenCode, Gemini CLI, and Codex CLI support with tool name mapping, body replacements, and per-runtime discovery paths
+- `/gsp:accessibility` standalone composable skill — 5 modes: design audit, token audit, code audit, accessibility statement, quick contrast check
+- `/gsp:palette` and `/gsp:typescale` composable skills — OKLCH palettes and mathematical type scales
+- `/gsp:design-system` composable skill — workspace-level codebase scanner replacing inline scanner in `/gsp:start`
+- Brand-as-custom-style output — system phase produces `{brand-name}.yml` and `{brand-name}.md` matching built-in preset format
+- Style base integration across branding diamond — presets flow through all 4 phases as shared aesthetic vocabulary
+- Multi-runtime installer — OpenCode, Gemini CLI, and Codex CLI support with tool name mapping and body replacements
 - Agent runtime config — `maxTurns`, `disallowedTools`, `permissionMode` frontmatter
-- Dev tools: `/gsp-audit` (36-test integrity suite), `/gsp-housekeeping` (drift catcher), `/gsp-dev` (dev router), `/gsp-runtime-compat` (live doc drift checker)
+- WCAG 2.2 new criteria — SC 2.4.11, SC 2.5.8, SC 3.2.6, SC 3.3.7, SC 3.3.8 + APCA reference
+- Dev tools: `/gsp-audit` (37-test integrity suite), `/gsp-housekeeping`, `/gsp-dev`, `/gsp-runtime-compat`
+- C9/I1 audit test — verifies all skills have `user-invocable: true` frontmatter
 
 ### Changed
 - Skills-only architecture — removed commands, all functionality lives in `gsp/skills/*/SKILL.md`
 - Moved all GSP content under `gsp/` prefix (agents, skills, prompts, templates, references)
 - Merged verbal identity into strategy phase — branding diamond is now 4 phases (discover, strategy, identity, system)
 - Simplified brand agents with concise prompts and persona-focused methodology
+- Renamed `gsp-auditor` agent → `gsp-accessibility-auditor`
+- Critique phase reuses prior `/gsp:accessibility` output instead of re-running auditor
+- Sonnet model set on evaluation agents for faster feedback loops
+- Library-aware component strategy in builder agent
 
 ### Fixed
 - OpenCode installer — proper skills, agents, and body replacements
+- Removed ANSI escape codes from all skill text output — was printing literal `\x1b[` instead of rendering colors
+- Updated all skill frontmatter from `disable-model-invocation` to `user-invocable: true`
+- Brand-research style preset wiring
+- Installer banner sparkle line centering
 
 ## [0.4.3] — 2025-11-21
 
