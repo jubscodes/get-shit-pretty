@@ -1,7 +1,7 @@
 ---
 name: brand-research
 description: Research your market and competitors
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Write

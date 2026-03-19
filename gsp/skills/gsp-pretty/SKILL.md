@@ -1,7 +1,7 @@
 ---
 name: pretty
 description: "Surprise ASCII art in the terminal"
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Bash

@@ -1,7 +1,7 @@
 ---
 name: add-reference
 description: Add reference material to a project
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Write

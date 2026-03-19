@@ -1,7 +1,7 @@
 ---
 name: brand-strategy
 description: Define positioning, voice, and messaging
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Write

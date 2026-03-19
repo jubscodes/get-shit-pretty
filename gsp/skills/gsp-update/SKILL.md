@@ -1,7 +1,7 @@
 ---
 name: update
 description: Update GSP to the latest version
-disable-model-invocation: true
+user-invocable: true
 ---
 <objective>
 Check for GSP updates, show what's new, and run the update if the user confirms.

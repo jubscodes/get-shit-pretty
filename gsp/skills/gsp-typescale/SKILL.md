@@ -1,7 +1,7 @@
 ---
 name: typescale
 description: Generate a mathematical type scale — standalone or as a building block for identity
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Write

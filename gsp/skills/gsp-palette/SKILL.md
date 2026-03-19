@@ -1,7 +1,7 @@
 ---
 name: palette
 description: Generate OKLCH color palettes — standalone or as a building block for identity
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Write

@@ -1,7 +1,7 @@
 ---
 name: style
 description: Apply a design style — get tokens and foundations without the branding diamond
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Write

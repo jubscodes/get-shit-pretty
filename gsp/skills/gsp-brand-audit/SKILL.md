@@ -1,7 +1,7 @@
 ---
 name: brand-audit
 description: Audit an existing brand before evolving it
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Write

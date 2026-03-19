@@ -1,7 +1,7 @@
 ---
 name: brand-identity
 description: Create your visual identity — logo, color, typography
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Write

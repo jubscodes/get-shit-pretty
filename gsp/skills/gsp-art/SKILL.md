@@ -1,7 +1,7 @@
 ---
 name: art
 description: "Craft ASCII art interactively — you direct, the artist creates"
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Bash

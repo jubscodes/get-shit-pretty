@@ -1,7 +1,7 @@
 ---
 name: accessibility
 description: Accessibility audit — contrast checks, WCAG compliance, code audits, token verification
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Write

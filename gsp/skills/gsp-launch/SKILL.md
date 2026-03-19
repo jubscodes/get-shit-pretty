@@ -1,7 +1,7 @@
 ---
 name: launch
 description: Create launch and marketing assets
-disable-model-invocation: true
+user-invocable: true
 allowed-tools:
   - Read
   - Write
