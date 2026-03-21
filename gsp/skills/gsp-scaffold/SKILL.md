@@ -51,15 +51,39 @@ If STACK.md indicates the stack is already initialized (has framework, CSS, comp
 
 ## Step 3: Initialize stack
 
-Based on `tech_stack` and `implementation_target`, run the appropriate setup:
+Based on `tech_stack` and `implementation_target`, run the appropriate setup.
+
+**Important:** Always check if config files already exist before overwriting. Only create what's missing.
 
 ### Next.js + shadcn (greenfield)
 
-```bash
-# Only if no next.config exists yet
-npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias "@/*" --yes
+First, try `create-next-app`:
 
-# Initialize shadcn
+```bash
+npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias "@/*" --yes
+```
+
+**If `create-next-app` fails** (e.g., directory has existing files — common when the project lives inside an existing repo), fall back to manual setup:
+
+1. Install deps directly:
+```bash
+npm install --save-dev next react react-dom typescript @types/node @types/react @types/react-dom tailwindcss @tailwindcss/postcss postcss
+```
+
+2. Create config files (only if they don't exist):
+   - `next.config.mjs` — minimal Next.js config
+   - `tsconfig.json` — standard Next.js TypeScript config with `@/*` path alias pointing to `./src/*`
+   - `postcss.config.mjs` — see PostCSS section below
+
+3. Create minimal app structure:
+   - `src/app/layout.tsx` — root layout with metadata
+   - `src/app/page.tsx` — placeholder page
+   - `src/app/globals.css` — Tailwind import (see Tailwind v4 section below)
+
+4. Run `npx next build` to verify the base stack compiles before proceeding.
+
+Then initialize shadcn:
+```bash
 npx shadcn@latest init -d
 ```
 
@@ -82,18 +106,21 @@ npm install -D tailwindcss @tailwindcss/vite
 ### React Native + NativeWind
 
 ```bash
-# Install NativeWind deps
 npm install nativewind tailwindcss
 npx @react-native-reusables/cli init
 ```
 
-**Important:** Always check if config files already exist before overwriting. Only create what's missing.
-
 ### PostCSS config
 
-If using Tailwind and no `postcss.config.mjs` exists, create it:
+If using Tailwind and no `postcss.config.mjs` exists, create it.
+
+Check the installed Tailwind version first (`node -e "console.log(require('tailwindcss/package.json').version)"`):
+
+- **Tailwind v4:** Use `@tailwindcss/postcss` plugin
+- **Tailwind v3:** Use `tailwindcss` and `autoprefixer` plugins
 
 ```javascript
+// Tailwind v4
 /** @type {import('postcss-load-config').Config} */
 const config = {
   plugins: {
@@ -103,7 +130,17 @@ const config = {
 export default config;
 ```
 
-**Note:** Check what version of Tailwind was installed. Tailwind v4 uses `@tailwindcss/postcss` plugin. Tailwind v3 uses `tailwindcss` and `autoprefixer`. Read the installed `tailwindcss/package.json` to determine the version and configure accordingly.
+### Tailwind v4 source scoping
+
+**Critical:** Tailwind v4 auto-detects source files for class scanning. In repos that contain non-source files with CSS class names (e.g., `.design/` markdown specs, `gsp/` skill files that mention Tailwind utilities), the scanner will try to resolve arbitrary strings as modules and fail the build.
+
+When using the `@import "tailwindcss"` directive, scope the source to the app's source directory:
+
+```css
+@import "tailwindcss" source("../");
+```
+
+This limits scanning to `src/` and its siblings rather than the entire repo. Note that `shadcn init` may overwrite `globals.css` — if it does, verify its output still compiles. shadcn v4+ handles source scoping correctly in its own CSS output.
 
 ## Step 4: Install components from manifest
 
@@ -113,13 +150,22 @@ Parse the manifest for:
 1. **Component install commands** — `npx shadcn@latest add ...` or `npx @react-native-reusables/cli add ...`
 2. **Additional dependencies** — `npm install ...` commands
 
-Run each command. If a command fails, log the failure but continue with remaining installs.
-
 **Use the all-in-one command** if the manifest provides one (e.g., `npx shadcn@latest add comp1 comp2 comp3`).
+
+**If a batch install fails** (e.g., one component doesn't exist in the registry), retry without the failing component(s):
+1. Parse the error to identify which component(s) failed
+2. Remove those from the list
+3. Re-run with the remaining components
+4. Log each failed component with the reason (e.g., "not in registry")
+
+Common registry gaps:
+- `visually-hidden` — removed from some shadcn styles/registries. Implement as a simple utility during foundations phase instead.
+
+Run additional dependency installs (`npm install ...`) separately from component installs. If a dependency fails, log it but continue.
 
 ## Step 5: Verify build
 
-Determine the build command from the stack:
+Clear any build cache first (`rm -rf .next` for Next.js), then run the build command:
 
 | Stack | Build command |
 |-------|--------------|
@@ -128,14 +174,14 @@ Determine the build command from the stack:
 | TypeScript only | `npx tsc --noEmit` |
 | Generic | `npm run build` |
 
-Run the build command. Capture output.
-
 - **Success:** Log "Build compiles cleanly"
 - **Failure:** Log the error output. Attempt to fix common issues:
-  - Missing PostCSS config → create it
+  - `Module not found: Can't resolve '...'` with CSS class names in error → Tailwind v4 source scoping issue. Add `source("../")` to the `@import "tailwindcss"` directive in globals.css
+  - Missing PostCSS config → create it (see Step 3)
   - Missing tsconfig paths → fix them
-  - Import errors from shadcn init → resolve
-  - After fix attempt, re-run build once
+  - `jsx` set to `preserve` instead of `react-jsx` → Next.js fixes this on first build, just re-run
+  - Import errors from shadcn init → resolve missing deps
+  - After fix attempt, clear cache and re-run build once
 - **Second failure:** Log the error and stop. Do not loop.
 
 ## Step 6: Write scaffold log

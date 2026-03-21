@@ -2,128 +2,382 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+/* ---------------------------------------------------------------------------
+   GSP is dark-first. The default (no class) is dark mode.
+   Light mode is activated by adding class="light" on <html>.
+   We override shadcn's @custom-variant to match this inversion.
+   --------------------------------------------------------------------------- */
+@custom-variant dark (&:not(.light *));
+@custom-variant light (&:is(.light *));
 
+/* ---------------------------------------------------------------------------
+   THEME — maps Tailwind color/spacing/radius/font utilities to CSS variables
+   --------------------------------------------------------------------------- */
 @theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: var(--font-sans);
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
-    --color-ring: var(--ring);
-    --color-input: var(--input);
-    --color-border: var(--border);
-    --color-destructive: var(--destructive);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-accent: var(--accent);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-muted: var(--muted);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-secondary: var(--secondary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-primary: var(--primary);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-popover: var(--popover);
-    --color-card-foreground: var(--card-foreground);
-    --color-card: var(--card);
-    --color-foreground: var(--foreground);
-    --color-background: var(--background);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
-    --radius-2xl: calc(var(--radius) * 1.8);
-    --radius-3xl: calc(var(--radius) * 2.2);
-    --radius-4xl: calc(var(--radius) * 2.6);
+  /* --- Fonts --- */
+  --font-sans: var(--font-primary);
+  --font-mono: var(--font-mono);
+  --font-heading: var(--font-display);
+
+  /* --- shadcn color mappings (color-* consumed by Tailwind utilities) --- */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* --- Sidebar (shadcn) --- */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* --- Chart (shadcn) --- */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* --- Radius --- */
+  --radius-sm: var(--gsp-radius-sm);
+  --radius-md: var(--gsp-radius-md);
+  --radius-lg: var(--gsp-radius-lg);
+  --radius-xl: calc(var(--gsp-radius-lg) * 1.5);
+  --radius-2xl: calc(var(--gsp-radius-lg) * 2);
+  --radius-3xl: calc(var(--gsp-radius-lg) * 3);
+  --radius-4xl: var(--gsp-radius-full);
+
+  /* --- Spacing (gsp-*) --- */
+  --spacing-gsp-1: 4px;
+  --spacing-gsp-2: 8px;
+  --spacing-gsp-3: 12px;
+  --spacing-gsp-4: 16px;
+  --spacing-gsp-6: 24px;
+  --spacing-gsp-8: 32px;
+  --spacing-gsp-12: 48px;
+  --spacing-gsp-16: 64px;
+  --spacing-gsp-24: 96px;
 }
 
+/* ---------------------------------------------------------------------------
+   GSP DESIGN TOKENS — Dark (default)
+   --------------------------------------------------------------------------- */
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+  /* --- Foundation colors --- */
+  --gsp-bg: oklch(0.13 0 0);
+  --gsp-surface: oklch(0.18 0 0);
+  --gsp-surface-elevated: oklch(0.23 0 0);
+  --gsp-border: oklch(0.23 0 0);
+  --gsp-border-strong: oklch(0.33 0 0);
+
+  /* --- Text --- */
+  --gsp-text: oklch(0.93 0 0);
+  --gsp-text-bright: oklch(0.98 0 0);
+  --gsp-text-muted: oklch(0.50 0 0);
+  --gsp-text-disabled: oklch(0.33 0 0);
+
+  /* --- Accent (amber) --- */
+  --gsp-accent: oklch(0.754 0.155 77.29);
+  --gsp-accent-hover: oklch(0.851 0.123 72.89);
+  --gsp-accent-muted: oklch(0.50 0.08 77);
+  --gsp-accent-dim: oklch(0.35 0.05 77);
+  --gsp-accent-surface: oklch(0.20 0.03 77);
+  --gsp-on-accent: oklch(0.13 0 0);
+
+  /* --- Semantic --- */
+  --gsp-error: oklch(0.637 0.237 25.331);
+  --gsp-error-muted: oklch(0.40 0.10 25);
+  --gsp-success: oklch(0.696 0.17 142.5);
+  --gsp-success-muted: oklch(0.35 0.08 142);
+  --gsp-warning: oklch(0.714 0.14 85);
+  --gsp-warning-muted: oklch(0.40 0.07 85);
+  --gsp-info: oklch(0.70 0.12 250);
+  --gsp-info-muted: oklch(0.35 0.06 250);
+
+  /* --- Expression palette (web only) --- */
+  --gsp-lavender: oklch(0.75 0.06 290);
+  --gsp-lilac: oklch(0.83 0.06 300);
+  --gsp-mauve: oklch(0.65 0.07 295);
+  --gsp-rose: oklch(0.80 0.06 350);
+  --gsp-blush: oklch(0.88 0.04 350);
+
+  /* --- Radius tokens --- */
+  --gsp-radius-none: 0;
+  --gsp-radius-sm: 2px;
+  --gsp-radius-md: 4px;
+  --gsp-radius-lg: 8px;
+  --gsp-radius-full: 9999px;
+
+  /* --- Motion --- */
+  --gsp-motion-fast: 100ms;
+  --gsp-motion-normal: 150ms;
+  --gsp-motion-easing: linear;
+
+  /* --- Typography tokens --- */
+  --gsp-text-display-1: clamp(3.5rem, 8vw + 1rem, 10rem);
+  --gsp-text-display-2: clamp(2.5rem, 4vw + 1rem, 4.5rem);
+  --gsp-text-h1: 2.25rem;
+  --gsp-text-h2: 1.5rem;
+  --gsp-text-h3: 1.25rem;
+  --gsp-text-body: 1rem;
+  --gsp-text-body-sm: 0.875rem;
+  --gsp-text-caption: 0.75rem;
+  --gsp-text-overline: 0.6875rem;
+
+  --gsp-leading-none: 1.0;
+  --gsp-leading-tight: 1.1;
+  --gsp-leading-snug: 1.2;
+  --gsp-leading-normal: 1.4;
+  --gsp-leading-relaxed: 1.6;
+  --gsp-leading-loose: 1.7;
+
+  --gsp-tracking-tighter: -0.04em;
+  --gsp-tracking-tight: -0.02em;
+  --gsp-tracking-normal: 0;
+  --gsp-tracking-wide: 0.02em;
+  --gsp-tracking-wider: 0.04em;
+  --gsp-tracking-widest: 0.12em;
+
+  /* -----------------------------------------------------------------
+     shadcn variable overrides — map to GSP tokens
+     ----------------------------------------------------------------- */
+  --background: var(--gsp-bg);
+  --foreground: var(--gsp-text);
+  --card: var(--gsp-surface);
+  --card-foreground: var(--gsp-text);
+  --popover: var(--gsp-surface-elevated);
+  --popover-foreground: var(--gsp-text);
+  --primary: var(--gsp-accent);
+  --primary-foreground: var(--gsp-on-accent);
+  --secondary: var(--gsp-surface);
+  --secondary-foreground: var(--gsp-text);
+  --muted: var(--gsp-surface);
+  --muted-foreground: var(--gsp-text-muted);
+  --accent: var(--gsp-surface-elevated);
+  --accent-foreground: var(--gsp-text-bright);
+  --destructive: var(--gsp-error);
+  --destructive-foreground: var(--gsp-text-bright);
+  --border: var(--gsp-border);
+  --input: var(--gsp-border);
+  --ring: var(--gsp-accent);
+  --radius: var(--gsp-radius-sm);
+
+  /* Charts */
+  --chart-1: var(--gsp-accent);
+  --chart-2: var(--gsp-lavender);
+  --chart-3: var(--gsp-success);
+  --chart-4: var(--gsp-warning);
+  --chart-5: var(--gsp-rose);
+
+  /* Sidebar */
+  --sidebar: var(--gsp-surface);
+  --sidebar-foreground: var(--gsp-text);
+  --sidebar-primary: var(--gsp-accent);
+  --sidebar-primary-foreground: var(--gsp-on-accent);
+  --sidebar-accent: var(--gsp-surface-elevated);
+  --sidebar-accent-foreground: var(--gsp-text-bright);
+  --sidebar-border: var(--gsp-border);
+  --sidebar-ring: var(--gsp-accent);
 }
 
-.dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+/* ---------------------------------------------------------------------------
+   LIGHT MODE (alternate) — activated by .light on <html>
+   --------------------------------------------------------------------------- */
+.light {
+  --gsp-bg: oklch(0.98 0 0);
+  --gsp-surface: oklch(0.95 0 0);
+  --gsp-surface-elevated: oklch(0.92 0 0);
+  --gsp-border: oklch(0.88 0 0);
+  --gsp-border-strong: oklch(0.66 0 0);
+
+  --gsp-text: oklch(0.16 0 0);
+  --gsp-text-bright: oklch(0.10 0 0);
+  --gsp-text-muted: oklch(0.40 0 0);
+  --gsp-text-disabled: oklch(0.66 0 0);
+
+  --gsp-accent: oklch(0.60 0.155 77.29);
+  --gsp-accent-hover: oklch(0.754 0.155 77.29);
+  --gsp-accent-muted: oklch(0.50 0.08 77);
+  --gsp-accent-dim: oklch(0.75 0.04 77);
+  --gsp-accent-surface: oklch(0.95 0.02 77);
+  --gsp-on-accent: oklch(0.13 0 0);
+
+  --gsp-error: oklch(0.577 0.245 27.325);
+  --gsp-success: oklch(0.55 0.17 142.5);
+  --gsp-warning: oklch(0.60 0.14 85);
+  --gsp-info: oklch(0.55 0.12 250);
+
+  --gsp-lavender: oklch(0.65 0.06 290);
+  --gsp-lilac: oklch(0.73 0.06 300);
+  --gsp-mauve: oklch(0.55 0.07 295);
+  --gsp-rose: oklch(0.70 0.06 350);
+  --gsp-blush: oklch(0.78 0.04 350);
 }
 
+/* ---------------------------------------------------------------------------
+   BASE LAYER
+   --------------------------------------------------------------------------- */
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    }
+  }
+
   body {
     @apply bg-background text-foreground;
-    }
+    font-feature-settings: "liga" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
+  }
+
+  /* --- Focus ring --- */
+  :focus-visible {
+    outline: 2px solid var(--gsp-accent);
+    outline-offset: 2px;
+  }
+
+  /* --- Selection --- */
+  ::selection {
+    background: var(--gsp-accent);
+    color: var(--gsp-on-accent);
+  }
+
+  /* --- Reduced motion --- */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
+  }
+
+  /* --- Scrollbar styling (dark-first) --- */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--gsp-border-strong);
+    border-radius: var(--gsp-radius-full);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--gsp-text-muted);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   UTILITY CLASSES
+   --------------------------------------------------------------------------- */
+@layer utilities {
+  /* Typography utilities */
+  .text-display-1 {
+    font-family: var(--font-display);
+    font-size: var(--gsp-text-display-1);
+    line-height: var(--gsp-leading-none);
+    letter-spacing: var(--gsp-tracking-tighter);
+    font-weight: 700;
+  }
+
+  .text-display-2 {
+    font-family: var(--font-display);
+    font-size: var(--gsp-text-display-2);
+    line-height: var(--gsp-leading-tight);
+    letter-spacing: var(--gsp-tracking-tight);
+    font-weight: 600;
+  }
+
+  .text-h1 {
+    font-size: var(--gsp-text-h1);
+    line-height: var(--gsp-leading-snug);
+    letter-spacing: var(--gsp-tracking-tight);
+    font-weight: 700;
+  }
+
+  .text-h2 {
+    font-size: var(--gsp-text-h2);
+    line-height: var(--gsp-leading-snug);
+    letter-spacing: var(--gsp-tracking-normal);
+    font-weight: 700;
+  }
+
+  .text-h3 {
+    font-size: var(--gsp-text-h3);
+    line-height: var(--gsp-leading-snug);
+    letter-spacing: var(--gsp-tracking-normal);
+    font-weight: 700;
+  }
+
+  .text-body {
+    font-size: var(--gsp-text-body);
+    line-height: var(--gsp-leading-normal);
+    letter-spacing: var(--gsp-tracking-normal);
+  }
+
+  .text-body-sm {
+    font-size: var(--gsp-text-body-sm);
+    line-height: var(--gsp-leading-normal);
+    letter-spacing: var(--gsp-tracking-normal);
+  }
+
+  .text-caption {
+    font-size: var(--gsp-text-caption);
+    line-height: var(--gsp-leading-normal);
+    letter-spacing: var(--gsp-tracking-wide);
+  }
+
+  .text-overline {
+    font-size: var(--gsp-text-overline);
+    line-height: var(--gsp-leading-normal);
+    letter-spacing: var(--gsp-tracking-widest);
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* GSP brand color utilities */
+  .text-gsp-accent { color: var(--gsp-accent); }
+  .text-gsp-muted { color: var(--gsp-text-muted); }
+  .text-gsp-bright { color: var(--gsp-text-bright); }
+  .text-gsp-disabled { color: var(--gsp-text-disabled); }
+  .bg-gsp-surface { background-color: var(--gsp-surface); }
+  .bg-gsp-elevated { background-color: var(--gsp-surface-elevated); }
+  .border-gsp-strong { border-color: var(--gsp-border-strong); }
+
+  /* Expression palette */
+  .text-gsp-lavender { color: var(--gsp-lavender); }
+  .text-gsp-lilac { color: var(--gsp-lilac); }
+  .text-gsp-mauve { color: var(--gsp-mauve); }
+  .text-gsp-rose { color: var(--gsp-rose); }
+  .text-gsp-blush { color: var(--gsp-blush); }
 }

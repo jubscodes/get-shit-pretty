@@ -3,8 +3,8 @@
 ## Project: gsp-app
 **Brand:** get-shit-pretty-v2
 **Started:** 2026-03-19
-**Current Phase:** 4 (Critique complete)
-**Prettiness Level:** 67%
+**Current Phase:** 5 (Build complete)
+**Prettiness Level:** 83%
 
 ---
 
@@ -16,7 +16,7 @@
 | 2 | Research | complete | 2026-03-19 | 2026-03-19 |
 | 3 | Design | complete | 2026-03-19 | 2026-03-19 |
 | 4 | Critique | complete | 2026-03-19 | 2026-03-19 |
-| 5 | Build | pending | — | — |
+| 5 | Build | complete | 2026-03-20 | 2026-03-20 |
 | 6 | Review | pending | — | — |
 
 ## Git
@@ -32,6 +32,9 @@
 
 | # | Screen | Build Status | Review Status |
 |---|--------|-------------|---------------|
+| 01 | Landing | complete | pending |
+| 02 | Changelog List | complete | pending |
+| 03 | Changelog Post | complete | pending |
 
 <!-- Status: pending | in-progress | complete | needs-revision -->
 

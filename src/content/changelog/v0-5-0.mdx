@@ -1,0 +1,39 @@
+---
+title: "v0.5.0 -- Plugin architecture, multi-runtime installer, composable skills"
+date: "2026-03-15"
+excerpt: "GSP is now a Claude Code plugin with a full manifest, MCP servers, and hooks. The multi-runtime installer supports OpenCode, Gemini CLI, and Codex. New composable skills for accessibility, palettes, type scales, and design system scanning."
+tags: ["plugin", "multi-runtime", "composable-skills", "accessibility"]
+slug: "v0-5-0"
+---
+
+## Plugin Architecture
+
+GSP ships as a Claude Code plugin with manifest at `.claude-plugin/plugin.json`. MCP servers for GitHub and Figma are bundled. Hook scripts run automatically during the pipeline.
+
+## Multi-Runtime Installer
+
+The installer now converts Claude Code's native format into each runtime's expected layout:
+
+- **Claude Code** -- `.claude/skills/`, `.claude/agents/`
+- **OpenCode** -- `.opencode/skills/`, `.opencode/agents/`
+- **Gemini CLI** -- `.gemini/skills/`, `.gemini/agents/`
+- **Codex CLI** -- `.agents/skills/` (split layout, no agents)
+
+Tool names are mapped per runtime. Body-level replacements handle paths, invocation syntax, and variables.
+
+## Composable Skills
+
+New standalone skills that produce foundation chunks:
+
+- `/gsp:accessibility` -- 5 modes: design audit, token audit, code audit, accessibility statement, quick contrast check
+- `/gsp:palette` -- OKLCH palettes with perceptual uniformity
+- `/gsp:typescale` -- Mathematical type scales with fluid clamp values
+- `/gsp:design-system` -- Workspace-level codebase scanner
+
+## 34 Design Style Presets
+
+Structured YAML tokens and AI-ready prompts from designprompts.dev, available via `/gsp:style`.
+
+## Brand-as-Custom-Style
+
+The system phase now produces `{brand-name}.yml` and `{brand-name}.md` matching the built-in preset format, so your brand becomes a reusable style.

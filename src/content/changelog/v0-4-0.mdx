@@ -1,0 +1,28 @@
+---
+title: "v0.4.0 -- Dual-diamond architecture"
+date: "2025-10-20"
+excerpt: "Refactored from a single pipeline to the dual-diamond model. Full branding pipeline from research through system, plus /gsp:doctor for project health diagnostics and a design trend index with 9 enriched trend files."
+tags: ["architecture", "branding", "pipeline"]
+slug: "v0-4-0"
+---
+
+## Dual Diamond
+
+GSP now follows a dual-diamond process:
+
+1. **Branding diamond** -- discover, strategize, define identity, build system
+2. **Project diamond** -- brief, research, design, build, review
+
+Each phase produces real artifacts written to `.design/`. The filesystem is the integration layer between phases.
+
+## Full Branding Pipeline
+
+The branding diamond runs end-to-end: research, strategy, verbal identity, visual identity, and design system. Each phase has a dedicated agent with focused prompts.
+
+## Project Health
+
+`/gsp:doctor` checks your project state -- missing configs, stale artifacts, broken references. It reports issues and suggests fixes.
+
+## Design Trends
+
+A trend index with 9 enriched trend files covering current design directions. Research agents reference these during the discover phase.
