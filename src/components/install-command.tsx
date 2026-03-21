@@ -5,7 +5,7 @@ import { Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
-const INSTALL_COMMAND = "npm install -g get-shit-pretty";
+const INSTALL_COMMAND = "npx get-shit-pretty";
 
 export function InstallCommand({ className }: { className?: string }) {
   const [copied, setCopied] = useState(false);
@@ -24,7 +24,7 @@ export function InstallCommand({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "group inline-flex items-center gap-gsp-3 bg-card border border-border rounded-sm px-4 py-2 font-mono text-body-sm text-foreground",
+        "group inline-flex items-center gap-gsp-3 h-9 bg-card border border-border rounded-sm px-4 font-mono text-body-sm text-foreground",
         "transition-colors hover:border-muted-foreground/30",
         className
       )}

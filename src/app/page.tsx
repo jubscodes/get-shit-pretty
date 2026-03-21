@@ -73,7 +73,7 @@ export default function Home() {
               href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center h-9 gap-1.5 px-4 rounded-lg border border-border bg-background text-sm font-medium whitespace-nowrap transition-all hover:bg-muted hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+              className="inline-flex items-center justify-center h-9 gap-1.5 px-4 rounded-sm border border-border bg-background text-sm font-medium whitespace-nowrap transition-all hover:border-muted-foreground/30 hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
             >
               View on GitHub {"\u2192"}
             </Link>
