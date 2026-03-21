@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { Toaster } from "@/components/ui/sonner";
+import { AsciiHero } from "@/components/ascii-hero";
 import { InstallCommand } from "@/components/install-command";
 import { TerminalMock } from "@/components/terminal-mock";
 import { PipelineViz } from "@/components/pipeline-viz";
@@ -55,14 +56,8 @@ export default function Home() {
           <p className="text-overline text-muted-foreground mb-gsp-4">
             Design Engineering
           </p>
-          {/* Headline — ASCII shade blocks */}
-          <h1 className="mb-gsp-6 text-center overflow-x-auto" aria-label="Get Shit Pretty">
-            <pre className="font-mono text-foreground text-[clamp(0.5rem,1.4vw,1rem)] leading-[1.15] inline-block text-left select-none" aria-hidden="true">{` ▓▓▓▓▓▓  ▓▓▓▓▓▓▓ ▓▓▓▓▓▓▓▓     ▓▓▓▓▓▓▓ ▓▓   ▓▓ ▓▓ ▓▓▓▓▓▓▓▓     ▓▓▓▓▓▓  ▓▓▓▓▓▓  ▓▓▓▓▓▓▓ ▓▓▓▓▓▓▓▓ ▓▓▓▓▓▓▓▓ ▓▓    ▓▓
-▓▓       ▓▓         ▓▓        ▓▓      ▓▓   ▓▓ ▓▓    ▓▓        ▓▓   ▓▓ ▓▓   ▓▓ ▓▓         ▓▓       ▓▓     ▓▓  ▓▓
-░░   ░░░ ░░░░░      ░░        ░░░░░░░ ░░░░░░░ ░░    ░░        ░░░░░░  ░░░░░░  ░░░░░      ░░       ░░      ░░░░
-░░    ░░ ░░         ░░             ░░ ░░   ░░ ░░    ░░        ░░      ░░   ░░ ░░         ░░       ░░       ░░
- ▒▒▒▒▒▒  ▒▒▒▒▒▒▒    ▒▒        ▒▒▒▒▒▒▒ ▒▒   ▒▒ ▒▒    ▒▒        ▒▒      ▒▒   ▒▒ ▒▒▒▒▒▒▒    ▒▒       ▒▒       ▒▒`}</pre>
-          </h1>
+          {/* Headline — animated ASCII shade blocks */}
+          <AsciiHero />
 
           {/* Subhead */}
           <p className="text-body text-muted-foreground leading-loose max-w-lg mx-auto mb-gsp-8">
@@ -121,6 +116,7 @@ export default function Home() {
           </TerminalMock>
         </div>
       </section>
+
 
       {/* ===== WHAT IS GSP ===== */}
       <section className="py-gsp-16 md:py-gsp-24">
@@ -205,6 +201,7 @@ export default function Home() {
         </div>
       </section>
 
+
       {/* ===== PIPELINE ===== */}
       <section className="py-gsp-16 md:py-gsp-24">
         <div className="mx-auto max-w-[1200px] px-gsp-4 sm:px-gsp-6 lg:px-gsp-8 text-center">
@@ -217,6 +214,7 @@ export default function Home() {
           <PipelineViz />
         </div>
       </section>
+
 
       {/* ===== FEATURES GRID ===== */}
       <section className="py-gsp-16 md:py-gsp-24">
