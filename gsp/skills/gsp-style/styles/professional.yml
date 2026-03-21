@@ -1,0 +1,59 @@
+name: professional
+description: Clean business aesthetic — neutral palette, system fonts, balanced whitespace
+tags: [business, neutral, clean, safe, default]
+
+tokens:
+  color:
+    primary: "#1E40AF"
+    secondary: "#475569"
+    accent: "#0EA5E9"
+    background: "#FFFFFF"
+    surface: "#F8FAFC"
+    on-primary: "#FFFFFF"
+    on-background: "#0F172A"
+    error: "#DC2626"
+    success: "#16A34A"
+    warning: "#D97706"
+    info: "#2563EB"
+    muted: "#94A3B8"
+
+  typography:
+    font-family-primary: "Inter, system-ui, sans-serif"
+    font-family-mono: "SF Mono, Menlo, monospace"
+    font-weight-heading: 600
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.6
+
+  shape:
+    border-radius-sm: "6px"
+    border-radius-md: "8px"
+    border-radius-lg: "12px"
+    border-width: "1px"
+    border-color: "#E2E8F0"
+
+  elevation:
+    shadow-sm: "0 1px 2px rgba(0, 0, 0, 0.05)"
+    shadow-md: "0 4px 6px rgba(0, 0, 0, 0.07)"
+    shadow-lg: "0 10px 15px rgba(0, 0, 0, 0.10)"
+    shadow-xl: "0 20px 25px rgba(0, 0, 0, 0.12)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "150ms"
+    duration-normal: "250ms"
+    easing: "cubic-bezier(0.4, 0, 0.2, 1)"
+
+dark_mode:
+  color:
+    background: "#0F172A"
+    surface: "#1E293B"
+    on-background: "#F1F5F9"
+    border-color: "#334155"
+    muted: "#64748B"
+
+compatibility: [bento-grid, micro-interactions]
+clashes: [cyberpunk, vaporwave, neubrutalism]

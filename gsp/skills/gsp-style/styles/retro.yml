@@ -1,0 +1,65 @@
+name: retro
+description: 90s internet nostalgia — Windows 95 bevels, garish RGB colors, marquee text, zero smooth
+tags: [vintage, retro, nostalgic, 90s, windows95]
+
+tokens:
+  color:
+    primary: "#0000FF"
+    secondary: "#FF0000"
+    accent: "#FFFF00"
+    background: "#C0C0C0"
+    surface: "#FFFFFF"
+    on-primary: "#FFFFFF"
+    on-background: "#000000"
+    error: "#FF0000"
+    success: "#00FF00"
+    warning: "#FFFF00"
+    info: "#0000FF"
+
+  system:
+    titlebar: "#000080"
+    visited-link: "#800080"
+
+  typography:
+    font-family-primary: "MS Sans Serif, Tahoma, Verdana, sans-serif"
+    font-family-display: "Arial Black, Impact, sans-serif"
+    font-family-mono: "Courier New, monospace"
+    font-weight-heading: 700
+    font-weight-body: 400
+    font-size-base: "14px"
+    line-height-base: 1.4
+
+  shape:
+    border-radius-sm: "0px"
+    border-radius-md: "0px"
+    border-radius-lg: "0px"
+    border-width: "2px"
+    border-color: "#808080"
+
+  bevel:
+    outset: "border-color: #ffffff #808080 #808080 #ffffff"
+    inset: "border-color: #808080 #ffffff #ffffff #808080"
+
+  elevation:
+    shadow-sm: "inset -1px -1px 0 #404040, inset 1px 1px 0 #dfdfdf"
+    shadow-md: "inset -2px -2px 0 #404040, inset 2px 2px 0 #dfdfdf"
+    shadow-lg: "inset -1px -1px 0 #404040, inset 1px 1px 0 #dfdfdf, 2px 2px 0 #808080"
+    shadow-xl: "inset -2px -2px 0 #404040, inset 2px 2px 0 #dfdfdf, 3px 3px 0 #808080"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "0ms"
+    duration-normal: "0ms"
+    easing: "step-end"
+
+dark_mode:
+  color:
+    background: "#000080"
+    surface: "#000000"
+    on-background: "#C0C0C0"
+
+compatibility: [maximalism]
+clashes: [professional, luxury, modern-dark, swiss-minimalist]

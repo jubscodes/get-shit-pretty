@@ -1,0 +1,59 @@
+name: modern-dark
+description: Contemporary dark UI — Linear/Vercel aesthetic, ambient blobs, mouse-tracking spotlights
+tags: [modern, dark, cinematic, linear, vercel]
+
+tokens:
+  color:
+    primary: "#5E6AD2"
+    secondary: "#EC4899"
+    accent: "#06B6D4"
+    background: "#050506"
+    surface: "rgba(255,255,255,0.05)"
+    on-primary: "#FFFFFF"
+    on-background: "#FAFAFA"
+    error: "#EF4444"
+    success: "#22C55E"
+    warning: "#F59E0B"
+    info: "#3B82F6"
+    muted: "#A1A1AA"
+
+  typography:
+    font-family-primary: "Inter, Geist Sans, system-ui, sans-serif"
+    font-family-mono: "Geist Mono, JetBrains Mono, monospace"
+    font-weight-heading: 600
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.6
+
+  shape:
+    border-radius-sm: "8px"
+    border-radius-md: "16px"
+    border-radius-lg: "24px"
+    border-width: "1px"
+    border-color: "rgba(255,255,255,0.06)"
+
+  elevation:
+    shadow-sm: "0 0 0 1px rgba(255,255,255,0.06), 0 2px 20px rgba(0,0,0,0.4)"
+    shadow-md: "0 0 0 1px rgba(255,255,255,0.06), 0 4px 30px rgba(0,0,0,0.5)"
+    shadow-lg: "0 0 0 1px rgba(255,255,255,0.06), 0 8px 40px rgba(0,0,0,0.6), 0 0 40px rgba(94,106,210,0.1)"
+    shadow-xl: "0 0 0 1px rgba(94,106,210,0.5), 0 4px 12px rgba(94,106,210,0.3), inset 0 1px 0 rgba(255,255,255,0.2)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "200ms"
+    duration-normal: "300ms"
+    easing: "cubic-bezier(0.16, 1, 0.3, 1)"
+
+  ambient:
+    blob-size: "1200px"
+    blob-blur: "150px"
+    spotlight-size: "300px"
+    spotlight-opacity: 0.15
+
+  gradient-text: "bg-gradient-to-b from-white via-white/95 to-white/70"
+
+compatibility: [minimal-dark, glassmorphism]
+clashes: [flat-design, retro, neubrutalism]

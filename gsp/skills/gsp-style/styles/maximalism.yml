@@ -1,0 +1,58 @@
+name: maximalism
+description: Sensory overload — 5 rotating accent colors, floating shapes, clashing borders, animated everything
+tags: [bold, expressive, abundant, colorful, maximalist]
+
+tokens:
+  color:
+    primary: "#FF3AF2"
+    secondary: "#7B2FFF"
+    accent: "#00F5D4"
+    background: "#0D0D1A"
+    surface: "#1A1A2E"
+    on-primary: "#000000"
+    on-background: "#FFFFFF"
+    error: "#FF6B6B"
+    success: "#00F5D4"
+    warning: "#FFE600"
+    info: "#00BFFF"
+
+  color-rotate:
+    magenta: "#FF3AF2"
+    cyan: "#00F5D4"
+    yellow: "#FFE600"
+    orange: "#FF6B35"
+    purple: "#7B2FFF"
+
+  typography:
+    font-family-primary: "Outfit, DM Sans, sans-serif"
+    font-family-display: "Unbounded, Bungee, sans-serif"
+    font-family-mono: "JetBrains Mono, monospace"
+    font-weight-heading: 900
+    font-weight-body: 500
+    font-size-base: "16px"
+    line-height-base: 1.5
+
+  shape:
+    border-radius-sm: "0px"
+    border-radius-md: "12px"
+    border-radius-lg: "9999px"
+    border-width: "4px"
+    border-color: "#FF3AF2"
+
+  elevation:
+    shadow-sm: "4px 4px 0px rgba(236,72,153,0.3)"
+    shadow-md: "8px 8px 0px rgba(139,92,246,0.3)"
+    shadow-lg: "0 0 20px rgba(255,58,242,0.3), 8px 8px 0px rgba(0,245,212,0.3)"
+    shadow-xl: "0 0 40px rgba(255,58,242,0.4), 12px 12px 0px rgba(123,47,255,0.4)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "200ms"
+    duration-normal: "400ms"
+    easing: "cubic-bezier(0.34, 1.56, 0.64, 1)"
+
+compatibility: [vaporwave, cyberpunk]
+clashes: [swiss-minimalist, professional, monochrome]

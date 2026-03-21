@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GSP App -- Design Preview</title>
+<style>
+  :root {
+    --bg: #050505;
+    --surface: #111111;
+    --border: #1E1E1E;
+    --border-strong: #404040;
+    --text: #E8E8E8;
+    --text-bright: #FAFAFA;
+    --text-muted: #6B6B6B;
+    --accent: #E5A00D;
+    --accent-hover: #F5C842;
+    --expression-lavender: #B8A9D4;
+    --expression-rose: #E8B4C8;
+    --font-primary: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+    --font-display: 'Instrument Sans', 'Inter', system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-primary);
+    font-size: 14px;
+    line-height: 1.6;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 240px;
+    min-width: 240px;
+    border-right: 1px solid var(--border);
+    padding: 24px 16px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .sidebar h2 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+
+  .sidebar a {
+    display: block;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 6px 8px;
+    border-radius: 2px;
+    font-size: 13px;
+    transition: color 100ms linear;
+  }
+
+  .sidebar a:hover { color: var(--accent); }
+  .sidebar a.active { color: var(--text-bright); font-weight: 500; }
+
+  .sidebar .section-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--border-strong);
+    margin-top: 16px;
+    margin-bottom: 4px;
+    padding: 0 8px;
+  }
+
+  /* Main content */
+  .main {
+    flex: 1;
+    padding: 32px 48px;
+    max-width: 960px;
+  }
+
+  .main h1 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .main .subtitle {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 48px;
+  }
+
+  /* Screen section */
+  .screen {
+    margin-bottom: 64px;
+    scroll-margin-top: 32px;
+  }
+
+  .screen h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .screen .screen-desc {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+
+  /* Wireframe container */
+  .wireframe {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  /* Nav wireframe */
+  .wf-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    height: 44px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 13px;
+  }
+
+  .wf-nav .logo { color: var(--text-bright); font-weight: 700; }
+  .wf-nav .links { display: flex; gap: 16px; }
+  .wf-nav .links a { color: var(--text-muted); text-decoration: none; font-size: 12px; }
+
+  /* Hero wireframe */
+  .wf-hero {
+    position: relative;
+    text-align: center;
+    padding: 64px 24px;
+    overflow: hidden;
+  }
+
+  .wf-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(184,169,212,0.12), transparent 60%),
+      radial-gradient(ellipse at 70% 80%, rgba(232,180,200,0.08), transparent 50%);
+    pointer-events: none;
+  }
+
+  .wf-hero .overline {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .wf-hero .headline {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: -0.04em;
+    line-height: 1.0;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .wf-hero .subhead {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 400px;
+    margin: 0 auto 24px;
+    position: relative;
+  }
+
+  .wf-hero .ctas {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    font-family: var(--font-primary);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border: 1px solid var(--accent);
+    border-radius: 2px;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    font-family: var(--font-primary);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border: 1px solid var(--border-strong);
+    border-radius: 2px;
+    cursor: pointer;
+  }
+
+  /* Terminal mock */
+  .wf-terminal {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    max-width: 480px;
+    margin: 0 auto;
+    text-align: left;
+    position: relative;
+  }
+
+  .wf-terminal .bar {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 6px;
+  }
+
+  .wf-terminal .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-strong);
+  }
+
+  .wf-terminal .content {
+    padding: 16px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+
+  .wf-terminal .accent { color: var(--accent); }
+  .wf-terminal .bright { color: var(--text-bright); }
+
+  /* Two-column section */
+  .wf-twocol {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding: 48px 24px;
+    align-items: center;
+  }
+
+  .wf-twocol .prose .overline {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .wf-twocol .prose h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .wf-twocol .prose p {
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* Pipeline */
+  .wf-pipeline {
+    padding: 48px 24px;
+    text-align: center;
+  }
+
+  .wf-pipeline .overline {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .wf-pipeline h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 32px;
+    letter-spacing: -0.01em;
+  }
+
+  .pipeline-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .pipeline-row .label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--border-strong);
+    width: 100%;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .pipeline-node {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+  }
+
+  .pipeline-node.complete { color: var(--text); }
+  .pipeline-node.active { color: var(--accent); font-weight: 700; }
+  .pipeline-node.pending { color: var(--text-muted); }
+
+  .pipeline-connector {
+    color: var(--border);
+    font-size: 12px;
+    padding: 0 2px;
+  }
+
+  /* Features grid */
+  .wf-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 48px 24px;
+  }
+
+  .wf-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+  }
+
+  .wf-card .icon {
+    color: var(--accent);
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .wf-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 6px;
+  }
+
+  .wf-card p {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* Meta signal */
+  .wf-meta {
+    text-align: center;
+    padding: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .wf-meta p {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  /* CTA footer */
+  .wf-cta {
+    text-align: center;
+    padding: 48px 24px;
+  }
+
+  .wf-cta h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 24px;
+    letter-spacing: -0.01em;
+  }
+
+  .wf-install {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  .wf-install .copy {
+    color: var(--text-muted);
+    font-size: 11px;
+    cursor: pointer;
+  }
+
+  /* Footer wireframe */
+  .wf-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .wf-footer a { color: var(--text-muted); text-decoration: none; }
+
+  /* Changelog list */
+  .wf-changelog {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
+
+  .wf-changelog h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 32px;
+    letter-spacing: -0.02em;
+  }
+
+  .wf-entry {
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .wf-entry:last-child { border-bottom: none; }
+
+  .wf-entry .date {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .wf-entry h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .wf-entry p {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  .wf-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .wf-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text-muted);
+    background: var(--surface);
+    letter-spacing: 0.02em;
+  }
+
+  /* Post view */
+  .wf-post {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
+
+  .wf-post .back {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  .wf-post h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .wf-post .prose-block {
+    margin-top: 24px;
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+  }
+
+  .wf-post .prose-block p {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .wf-post .prose-block h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-top: 24px;
+    margin-bottom: 8px;
+  }
+
+  .wf-post .prose-block blockquote {
+    border-left: 2px solid #9B87B8;
+    padding-left: 16px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin: 16px 0;
+  }
+
+  .wf-post .prose-block .code-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 16px;
+    font-size: 12px;
+    line-height: 1.7;
+    margin: 16px 0;
+    overflow-x: auto;
+  }
+
+  .wf-post .prose-block .code-block .accent { color: var(--accent); }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { padding: 24px 16px; }
+    .wf-twocol { grid-template-columns: 1fr; }
+    .wf-features { grid-template-columns: 1fr; }
+    .pipeline-row { flex-direction: column; gap: 2px; }
+    .pipeline-connector { display: none; }
+  }
+
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .wf-features { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="sidebar">
+  <h2>Design Preview</h2>
+  <div class="section-label">Screens</div>
+  <a href="#screen-01" class="active">01 Landing Page</a>
+  <a href="#screen-02">02 Changelog List</a>
+  <a href="#screen-03">03 Changelog Post</a>
+</nav>
+
+<main class="main">
+  <h1>GSP App</h1>
+  <p class="subtitle">Wireframe preview -- design phase output</p>
+
+  <!-- Screen 01: Landing -->
+  <section class="screen" id="screen-01">
+    <h2>01 -- Landing Page</h2>
+    <p class="screen-desc">Entry point. Hero + What is GSP + Pipeline + Features + Meta + CTA</p>
+
+    <div class="wireframe">
+      <!-- Nav -->
+      <div class="wf-nav">
+        <span class="logo">/gsp: &#9671;&#9671;</span>
+        <div class="links">
+          <a>Changelog</a>
+          <a>GitHub &#8599;</a>
+        </div>
+      </div>
+
+      <!-- Hero -->
+      <div class="wf-hero">
+        <div class="overline">Design Engineering</div>
+        <div class="headline">Get Shit Pretty</div>
+        <div class="subhead">Design decisions, not design debt.<br>Brand-to-build in your terminal.</div>
+        <div class="ctas">
+          <button class="btn-primary">npm install -g get-shit-pretty</button>
+          <button class="btn-outline">View on GitHub</button>
+        </div>
+        <div class="wf-terminal">
+          <div class="bar">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <div class="content">
+            <div>$ <span class="bright">gsp</span></div>
+            <br>
+            <div><span class="bright">/gsp:</span> &#9671;&#9671;</div>
+            <br>
+            <div><span class="accent">&#9672;</span> discover &#9472;&#9472;&#9472; <span style="color:var(--text-muted)">&#9671;</span> strategy &#9472;&#9472;&#9472; <span style="color:var(--text-muted)">&#9671;</span> identity &#9472;&#9472;&#9472; <span style="color:var(--text-muted)">&#9671;</span> system</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- What is GSP -->
+      <div class="wf-twocol">
+        <div class="prose">
+          <div class="overline">How It Works</div>
+          <h3>A design engineer in your terminal</h3>
+          <p>GSP walks you through brand strategy to design tokens to component foundations. Real process, all in the CLI, all in your codebase. No Figma, no handoff, no gut calls.</p>
+        </div>
+        <div class="wf-terminal">
+          <div class="bar">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <div class="content">
+            <div>$ <span class="bright">gsp brand-identity</span></div>
+            <br>
+            <div><span class="accent">&#9672;</span> Generating palette...</div>
+            <br>
+            <div>Primary: <span class="accent">#E5A00D</span> (amber)</div>
+            <div>Surface: #111111</div>
+            <div>Text: &nbsp;&nbsp;&nbsp;#E8E8E8</div>
+            <br>
+            <div><span class="bright">&#9670;</span> Palette written to .design/tokens.json</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pipeline -->
+      <div class="wf-pipeline">
+        <div class="overline">The Process</div>
+        <h3>Dual diamond. Brand to build.</h3>
+
+        <div class="pipeline-row">
+          <div class="label">Branding</div>
+          <span class="pipeline-node complete">&#9670; discover</span>
+          <span class="pipeline-connector">&#9472;&#9472;&#9472;</span>
+          <span class="pipeline-node complete">&#9670; strategy</span>
+          <span class="pipeline-connector">&#9472;&#9472;&#9472;</span>
+          <span class="pipeline-node complete">&#9670; identity</span>
+          <span class="pipeline-connector">&#9472;&#9472;&#9472;</span>
+          <span class="pipeline-node complete">&#9670; system</span>
+        </div>
+
+        <div class="pipeline-row">
+          <div class="label">Project</div>
+          <span class="pipeline-node complete">&#9670; brief</span>
+          <span class="pipeline-connector">&#9472;&#9472;&#9472;</span>
+          <span class="pipeline-node complete">&#9670; research</span>
+          <span class="pipeline-connector">&#9472;&#9472;&#9472;</span>
+          <span class="pipeline-node active">&#9672; design</span>
+          <span class="pipeline-connector">&#9472;&#9472;&#9472;</span>
+          <span class="pipeline-node pending">&#9671; critique</span>
+          <span class="pipeline-connector">&#9472;&#9472;&#9472;</span>
+          <span class="pipeline-node pending">&#9671; build</span>
+          <span class="pipeline-connector">&#9472;&#9472;&#9472;</span>
+          <span class="pipeline-node pending">&#9671; review</span>
+        </div>
+      </div>
+
+      <!-- Features -->
+      <div class="wf-features">
+        <div class="wf-card">
+          <div class="icon">&#9670;</div>
+          <h4>Brand Strategy</h4>
+          <p>Positioning, archetype, voice. Strategy before pixels.</p>
+        </div>
+        <div class="wf-card">
+          <div class="icon">&#9670;</div>
+          <h4>Design Tokens</h4>
+          <p>Colors, type, spacing exported as code-ready tokens.</p>
+        </div>
+        <div class="wf-card">
+          <div class="icon">&#9670;</div>
+          <h4>Type & Color</h4>
+          <p>OKLCH palettes, fluid type scales, contrast-tested.</p>
+        </div>
+        <div class="wf-card">
+          <div class="icon">&#9670;</div>
+          <h4>Component Foundations</h4>
+          <p>Specs for buttons, cards, inputs, navigation.</p>
+        </div>
+        <div class="wf-card">
+          <div class="icon">&#9670;</div>
+          <h4>Terminal Native</h4>
+          <p>Runs inside Claude Code, OpenCode, Gemini CLI, Codex.</p>
+        </div>
+        <div class="wf-card">
+          <div class="icon">&#9670;</div>
+          <h4>Open Source</h4>
+          <p>MIT licensed. Your brand, your tokens, your codebase.</p>
+        </div>
+      </div>
+
+      <!-- Meta signal -->
+      <div class="wf-meta">
+        <p>This site was designed by GSP.</p>
+      </div>
+
+      <!-- CTA footer -->
+      <div class="wf-cta">
+        <h3>Ready to ship something pretty?</h3>
+        <div class="wf-install">
+          <span>$ npm install -g get-shit-pretty</span>
+          <span class="copy">[copy]</span>
+        </div>
+        <br>
+        <a style="color:var(--text-muted); font-size: 13px; text-decoration: none;">View on GitHub &#8599;</a>
+      </div>
+
+      <!-- Footer -->
+      <div class="wf-footer">
+        <span>/gsp: &#9671;&#9671;</span>
+        <div>
+          <a>npm</a> &middot; <a>GitHub</a> &middot; <a>MIT</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screen 02: Changelog List -->
+  <section class="screen" id="screen-02">
+    <h2>02 -- Changelog List</h2>
+    <p class="screen-desc">Reverse-chronological post list. Centered column, stacked entries.</p>
+
+    <div class="wireframe">
+      <div class="wf-nav">
+        <span class="logo">/gsp: &#9671;&#9671;</span>
+        <div class="links">
+          <a style="color:var(--text-bright); font-weight: 500;">Changelog</a>
+          <a>GitHub &#8599;</a>
+        </div>
+      </div>
+
+      <div class="wf-changelog">
+        <h3>Changelog</h3>
+
+        <div class="wf-entry">
+          <div class="date">March 2026</div>
+          <h4>v0.5.0 -- Design Systems</h4>
+          <p>Design system scanning, component inventory, and library-aware component strategy for shadcn, rn-reusables, and existing codebases.</p>
+          <div class="wf-tags">
+            <span class="wf-tag">shadcn</span>
+            <span class="wf-tag">design-system</span>
+          </div>
+        </div>
+
+        <div class="wf-entry">
+          <div class="date">March 2026</div>
+          <h4>v0.4.0 -- Composable Skills</h4>
+          <p>Palette generation, type scale calculation, and accessibility auditing as standalone composable skills.</p>
+          <div class="wf-tags">
+            <span class="wf-tag">palette</span>
+            <span class="wf-tag">typescale</span>
+            <span class="wf-tag">a11y</span>
+          </div>
+        </div>
+
+        <div class="wf-entry">
+          <div class="date">February 2026</div>
+          <h4>Designed by GSP</h4>
+          <p>This site was built using the GSP pipeline. The brand you see is the brand GSP generated.</p>
+          <div class="wf-tags">
+            <span class="wf-tag">meta</span>
+            <span class="wf-tag">launch</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="wf-footer">
+        <span>/gsp: &#9671;&#9671;</span>
+        <div>
+          <a>npm</a> &middot; <a>GitHub</a> &middot; <a>MIT</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screen 03: Changelog Post -->
+  <section class="screen" id="screen-03">
+    <h2>03 -- Changelog Post</h2>
+    <p class="screen-desc">Individual post. Centered reading column, MDX-rendered prose, terminal-style code blocks.</p>
+
+    <div class="wireframe">
+      <div class="wf-nav">
+        <span class="logo">/gsp: &#9671;&#9671;</span>
+        <div class="links">
+          <a style="color:var(--text-bright); font-weight: 500;">Changelog</a>
+          <a>GitHub &#8599;</a>
+        </div>
+      </div>
+
+      <div class="wf-post">
+        <div class="back">&larr; Back to Changelog</div>
+
+        <div class="date" style="font-size:11px; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-muted); font-weight:700; margin-bottom:8px;">March 2026</div>
+
+        <h3>Designed by GSP</h3>
+
+        <div class="wf-tags" style="margin-top:8px;">
+          <span class="wf-tag">meta</span>
+          <span class="wf-tag">launch</span>
+        </div>
+
+        <div class="prose-block">
+          <p>This site was built using the same GSP pipeline it documents. Every color, every type choice, every spacing decision traces to the brand system GSP generated.</p>
+
+          <h4>The process</h4>
+
+          <p>We ran the full dual-diamond pipeline: brand research through design system generation. The tokens you see in the CSS custom properties are the same tokens in our brand system files.</p>
+
+          <blockquote>"Design decisions, not design debt."</blockquote>
+
+          <div class="code-block">
+            <div>$ <span class="accent">gsp brand-strategy</span></div>
+            <br>
+            <div>&nbsp;&nbsp;Archetype: Creator + Guide</div>
+            <div>&nbsp;&nbsp;Voice: Clear, Warm, Lighthearted</div>
+            <br>
+            <div>&nbsp;&nbsp;&#9670; strategy complete</div>
+          </div>
+
+          <p>The result is a site where every visual decision has a rationale, and that rationale lives in the codebase alongside the code.</p>
+        </div>
+
+        <div style="border-top:1px solid var(--border); margin-top:32px; padding-top:24px;">
+          <div class="back">&larr; Back to Changelog</div>
+        </div>
+      </div>
+
+      <div class="wf-footer">
+        <span>/gsp: &#9671;&#9671;</span>
+        <div>
+          <a>npm</a> &middot; <a>GitHub</a> &middot; <a>MIT</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Sidebar active state on scroll
+  const sections = document.querySelectorAll('.screen');
+  const links = document.querySelectorAll('.sidebar a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const id = entry.target.id;
+        const link = document.querySelector(`.sidebar a[href="#${id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+name: saas
+description: Modern SaaS — electric blue gradient, inverted contrast sections, animated depth indicators
+tags: [saas, startup, modern, clean, gradient]
+
+tokens:
+  color:
+    primary: "#0052FF"
+    secondary: "#4D7CFF"
+    accent: "#F1F5F9"
+    background: "#FFFFFF"
+    surface: "#F8FAFC"
+    on-primary: "#FFFFFF"
+    on-background: "#0F172A"
+    error: "#EF4444"
+    success: "#10B981"
+    warning: "#F59E0B"
+    info: "#0052FF"
+    muted: "#64748B"
+
+  typography:
+    font-family-primary: "Calistoga, serif"
+    font-family-secondary: "Inter, sans-serif"
+    font-family-mono: "JetBrains Mono, monospace"
+    font-weight-heading: 700
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.6
+
+  shape:
+    border-radius-sm: "6px"
+    border-radius-md: "12px"
+    border-radius-lg: "9999px"
+    border-width: "1px"
+    border-color: "#E2E8F0"
+
+  gradient:
+    signature: "linear-gradient(135deg, #0052FF, #4D7CFF)"
+
+  elevation:
+    shadow-sm: "0 1px 2px rgba(0,0,0,0.05)"
+    shadow-md: "0 4px 6px rgba(0,0,0,0.07)"
+    shadow-lg: "0 10px 15px rgba(0,0,0,0.10)"
+    shadow-xl: "0 20px 25px rgba(0,0,0,0.12)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "150ms"
+    duration-normal: "300ms"
+    easing: "cubic-bezier(0.4, 0, 0.2, 1)"
+
+dark_mode:
+  color:
+    background: "#0F172A"
+    surface: "#1E293B"
+    on-background: "#F1F5F9"
+
+compatibility: [professional, enterprise]
+clashes: [retro, vaporwave, sketch]

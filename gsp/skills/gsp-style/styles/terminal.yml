@@ -1,0 +1,64 @@
+name: terminal
+description: Developer-native monospace UI — command-line aesthetic with syntax highlighting
+tags: [developer, monospace, dark, minimal, technical]
+
+tokens:
+  color:
+    primary: "#22C55E"
+    secondary: "#3B82F6"
+    accent: "#F59E0B"
+    background: "#0D1117"
+    surface: "#161B22"
+    on-primary: "#000000"
+    on-background: "#C9D1D9"
+    error: "#F85149"
+    success: "#3FB950"
+    warning: "#D29922"
+    info: "#58A6FF"
+    muted: "#8B949E"
+
+  syntax:
+    keyword: "#FF7B72"
+    string: "#A5D6FF"
+    function: "#D2A8FF"
+    variable: "#FFA657"
+    comment: "#8B949E"
+    constant: "#79C0FF"
+
+  typography:
+    font-family-primary: "JetBrains Mono, Fira Code, monospace"
+    font-family-mono: "JetBrains Mono, Fira Code, monospace"
+    font-weight-heading: 600
+    font-weight-body: 400
+    font-size-base: "14px"
+    line-height-base: 1.7
+
+  shape:
+    border-radius-sm: "4px"
+    border-radius-md: "6px"
+    border-radius-lg: "8px"
+    border-width: "1px"
+    border-color: "#30363D"
+
+  elevation:
+    shadow-sm: "0 1px 3px rgba(0, 0, 0, 0.3)"
+    shadow-md: "0 3px 6px rgba(0, 0, 0, 0.4)"
+    shadow-lg: "0 8px 24px rgba(0, 0, 0, 0.5)"
+    shadow-xl: "0 12px 40px rgba(0, 0, 0, 0.6)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "100ms"
+    duration-normal: "200ms"
+    easing: "ease"
+
+dark_mode:
+  color:
+    background: "#010409"
+    surface: "#0D1117"
+
+compatibility: [bento-grid, micro-interactions]
+clashes: [glassmorphism, liquid-glass, vaporwave]

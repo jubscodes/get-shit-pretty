@@ -1,0 +1,21 @@
+{
+  "version": "0.5.0",
+  "project_type": "design",
+  "project": {
+    "name": "gsp-app",
+    "created": "2026-03-19"
+  },
+  "preferences": {
+    "platform": "web",
+    "tech_stack": "Next.js + Tailwind + shadcn/ui",
+    "accessibility_level": "WCAG 2.2 AA",
+    "implementation_target": "shadcn",
+    "codebase_type": "greenfield",
+    "design_scope": "full",
+    "style_preset": ""
+  },
+  "git": {
+    "branch": "feat/v0.5.0",
+    "pr": ""
+  }
+}

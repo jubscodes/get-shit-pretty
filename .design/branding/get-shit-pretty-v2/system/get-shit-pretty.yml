@@ -1,0 +1,66 @@
+name: get-shit-pretty
+description: Terminal-native design system with warm amber accent, monospace-first typography, and void-black canvas
+tags: [terminal, monospace, dark, craft, warm, amber, cli, minimal]
+source: brand
+
+tokens:
+  color:
+    primary: "#E5A00D"
+    secondary: "#B8A9D4"
+    accent: "#E5A00D"
+    background: "#050505"
+    surface: "#111111"
+    on-primary: "#050505"
+    on-background: "#E8E8E8"
+    error: "#E54D42"
+    success: "#3FB950"
+    warning: "#D29922"
+    info: "#58A6FF"
+    muted: "#6B6B6B"
+
+  expression:
+    lavender: "#B8A9D4"
+    lilac: "#D4C1E8"
+    mauve: "#9B87B8"
+    rose: "#E8B4C8"
+    blush: "#F2D1DE"
+
+  typography:
+    font-family-primary: "JetBrains Mono, Fira Code, Source Code Pro, Cascadia Code, ui-monospace, monospace"
+    font-family-display: "Instrument Sans, Inter, system-ui, sans-serif"
+    font-family-mono: "JetBrains Mono, Fira Code, ui-monospace, monospace"
+    font-weight-heading: 700
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.7
+
+  shape:
+    border-radius-sm: "2px"
+    border-radius-md: "4px"
+    border-radius-lg: "8px"
+    border-width: "1px"
+    border-color: "#1E1E1E"
+
+  elevation:
+    shadow-sm: "none"
+    shadow-md: "none"
+    shadow-lg: "none"
+    shadow-xl: "none"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "100ms"
+    duration-normal: "150ms"
+    easing: "linear"
+
+dark_mode:
+  color:
+    background: "#050505"
+    surface: "#111111"
+    on-background: "#E8E8E8"
+
+compatibility: [monochrome, bold-typography]
+clashes: [cyberpunk, glassmorphism, liquid-glass, vaporwave]

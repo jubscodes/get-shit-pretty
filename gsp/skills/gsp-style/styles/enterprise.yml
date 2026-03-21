@@ -1,0 +1,62 @@
+name: enterprise
+description: Professional corporate — indigo-to-violet gradient, colored shadows, dashboard-dense
+tags: [corporate, professional, scalable, business, b2b]
+trend_ref: trends/enterprise.md
+
+tokens:
+  color:
+    primary: "#4F46E5"
+    secondary: "#7C3AED"
+    accent: "#0EA5E9"
+    background: "#F8FAFC"
+    surface: "#FFFFFF"
+    on-primary: "#FFFFFF"
+    on-background: "#0F172A"
+    error: "#EF4444"
+    success: "#10B981"
+    warning: "#F59E0B"
+    info: "#3B82F6"
+    muted: "#64748B"
+
+  typography:
+    font-family-primary: "Plus Jakarta Sans, Inter, sans-serif"
+    font-family-mono: "JetBrains Mono, monospace"
+    font-weight-heading: 800
+    font-weight-body: 400
+    font-size-base: "14px"
+    line-height-base: 1.5
+
+  shape:
+    border-radius-sm: "4px"
+    border-radius-md: "6px"
+    border-radius-lg: "8px"
+    border-width: "1px"
+    border-color: "#CBD5E1"
+
+  elevation:
+    shadow-sm: "0 1px 3px rgba(79,70,229,0.08)"
+    shadow-md: "0 4px 6px rgba(79,70,229,0.1)"
+    shadow-lg: "0 10px 20px rgba(79,70,229,0.12)"
+    shadow-xl: "0 20px 40px rgba(79,70,229,0.15)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "150ms"
+    duration-normal: "250ms"
+    easing: "cubic-bezier(0.4, 0, 0.2, 1)"
+
+  gradient:
+    signature: "linear-gradient(135deg, #4F46E5, #7C3AED)"
+
+dark_mode:
+  color:
+    background: "#0F172A"
+    surface: "#1E293B"
+    on-background: "#F1F5F9"
+    border-color: "#334155"
+
+compatibility: [professional, saas]
+clashes: [vaporwave, retro, neubrutalism]

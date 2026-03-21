@@ -1,0 +1,61 @@
+name: art-deco
+description: 1920s glamour — geometric ornamentation, gold on black, theatrical presentation
+tags: [luxury, 1920s, glamour, geometric, vintage]
+trend_ref: trends/art-deco.md
+
+tokens:
+  color:
+    primary: "#D4AF37"
+    secondary: "#1E3D59"
+    accent: "#F2F0E4"
+    background: "#0A0A0A"
+    surface: "#141414"
+    on-primary: "#000000"
+    on-background: "#F2F0E4"
+    error: "#DC2626"
+    success: "#16A34A"
+    warning: "#F59E0B"
+    info: "#3B82F6"
+
+  typography:
+    font-family-primary: "Josefin Sans, sans-serif"
+    font-family-display: "Marcellus, serif"
+    font-family-mono: "SF Mono, monospace"
+    font-weight-heading: 700
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.6
+
+  shape:
+    border-radius-sm: "0px"
+    border-radius-md: "2px"
+    border-radius-lg: "6px"
+    border-width: "1px"
+    border-color: "rgba(212, 175, 55, 0.3)"
+
+  elevation:
+    shadow-sm: "0 0 10px rgba(212,175,55,0.1)"
+    shadow-md: "0 0 15px rgba(212,175,55,0.2)"
+    shadow-lg: "0 0 20px rgba(212,175,55,0.3)"
+    shadow-xl: "0 0 25px rgba(212,175,55,0.4)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "200ms"
+    duration-normal: "400ms"
+    easing: "ease-in-out"
+
+  glow:
+    gold: "0 0 10px rgba(212,175,55,0.3)"
+    backdrop-blur: "8px"
+
+dark_mode:
+  color:
+    background: "#050505"
+    surface: "#0A0A0A"
+
+compatibility: [luxury, monochrome]
+clashes: [neubrutalism, retro, flat-design]

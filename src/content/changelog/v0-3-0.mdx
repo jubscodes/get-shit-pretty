@@ -1,0 +1,21 @@
+---
+title: "v0.3.0 -- Chunked exports and codebase-aware pipeline"
+date: "2025-10-01"
+excerpt: "Agents now produce 50-200 line chunks with INDEX.md manifests instead of monolithic files. The pipeline is codebase-aware, routing strategy based on what it finds in your project."
+tags: ["chunks", "codebase-aware", "exports"]
+slug: "v0-3-0"
+---
+
+## Chunked Export Format
+
+Every agent output is now a focused chunk: 50-200 lines with frontmatter, written to a predictable path. Each phase directory gets an `INDEX.md` manifest listing all chunks with descriptions.
+
+This keeps context lean. Downstream agents load only the chunks they need instead of entire monolith files.
+
+## Codebase-Aware Pipeline
+
+The pipeline now scans your codebase before making decisions. It detects your tech stack, existing design tokens, component libraries, and conventions. Strategy routing adapts based on what it finds -- a Next.js project with Tailwind gets different output than a bare HTML site.
+
+## Scope Routing
+
+Projects are classified by scope (brand-only, project-only, full pipeline) and the pipeline skips irrelevant phases automatically.

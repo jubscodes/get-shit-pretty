@@ -1,0 +1,63 @@
+name: fluent
+description: Microsoft Fluent 2 design — acrylic materials, semantic tokens, double focus rings
+tags: [fluent, microsoft, modern, professional, accessibility]
+trend_ref: trends/fluent.md
+
+tokens:
+  color:
+    primary: "#0F6CBD"
+    secondary: "#115EA3"
+    accent: "#0C3B5E"
+    background: "#F5F5F5"
+    surface: "#FFFFFF"
+    on-primary: "#FFFFFF"
+    on-background: "#242424"
+    error: "#C4314B"
+    success: "#0E7A0D"
+    warning: "#F7630C"
+    info: "#0F6CBD"
+    muted: "#616161"
+
+  typography:
+    font-family-primary: "Segoe UI Variable, Segoe UI, system-ui, sans-serif"
+    font-family-mono: "Cascadia Code, Consolas, monospace"
+    font-weight-heading: 600
+    font-weight-body: 400
+    font-size-base: "14px"
+    line-height-base: 1.43
+
+  shape:
+    border-radius-sm: "4px"
+    border-radius-md: "8px"
+    border-radius-lg: "12px"
+    border-width: "1px"
+    border-color: "#E0E0E0"
+
+  elevation:
+    shadow-sm: "0 1px 2px rgba(0,0,0,0.12)"
+    shadow-md: "0 2px 4px rgba(0,0,0,0.14)"
+    shadow-lg: "0 4px 8px rgba(0,0,0,0.14)"
+    shadow-xl: "0 8px 16px rgba(0,0,0,0.14)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "100ms"
+    duration-normal: "250ms"
+    easing: "cubic-bezier(0.33, 0.0, 0.67, 1.0)"
+
+  material:
+    acrylic-blur: "20px"
+    acrylic-tint-opacity: 0.6
+
+dark_mode:
+  color:
+    background: "#292929"
+    surface: "#1F1F1F"
+    on-background: "#FFFFFF"
+    border-color: "#404040"
+
+compatibility: [professional, enterprise]
+clashes: [neubrutalism, vaporwave, retro]

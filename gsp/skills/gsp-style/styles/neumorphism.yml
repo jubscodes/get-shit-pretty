@@ -1,0 +1,57 @@
+name: neumorphism
+description: Soft UI — dual opposing shadows, extruded/inset 3D, monochromatic surface continuity
+tags: [soft-ui, neumorphic, 3d, embossed, tactile]
+
+tokens:
+  color:
+    primary: "#6C63FF"
+    secondary: "#38B2AC"
+    accent: "#E0E5EC"
+    background: "#E0E5EC"
+    surface: "#E0E5EC"
+    on-primary: "#FFFFFF"
+    on-background: "#3D4852"
+    error: "#DC2626"
+    success: "#16A34A"
+    warning: "#D97706"
+    info: "#3B82F6"
+    muted: "#8B95A5"
+
+  typography:
+    font-family-primary: "Plus Jakarta Sans, DM Sans, sans-serif"
+    font-family-mono: "JetBrains Mono, monospace"
+    font-weight-heading: 700
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.5
+
+  shape:
+    border-radius-sm: "16px"
+    border-radius-md: "24px"
+    border-radius-lg: "32px"
+    border-radius-xl: "48px"
+    border-width: "0px"
+    border-color: "transparent"
+
+  elevation:
+    shadow-sm: "4px 4px 8px rgba(163,177,198,0.6), -4px -4px 8px rgba(255,255,255,0.5)"
+    shadow-md: "6px 6px 12px rgba(163,177,198,0.6), -6px -6px 12px rgba(255,255,255,0.5)"
+    shadow-lg: "9px 9px 16px rgba(163,177,198,0.6), -9px -9px 16px rgba(255,255,255,0.5)"
+    shadow-xl: "12px 12px 24px rgba(163,177,198,0.6), -12px -12px 24px rgba(255,255,255,0.5)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "200ms"
+    duration-normal: "300ms"
+    easing: "ease-out"
+
+  inset:
+    shadow-sm: "inset 4px 4px 8px rgba(163,177,198,0.7), inset -4px -4px 8px rgba(255,255,255,0.6)"
+    shadow-md: "inset 6px 6px 12px rgba(163,177,198,0.7), inset -6px -6px 12px rgba(255,255,255,0.6)"
+    shadow-lg: "inset 10px 10px 20px rgba(163,177,198,0.7), inset -10px -10px 20px rgba(255,255,255,0.6)"
+
+compatibility: [industrial, claymorphism]
+clashes: [neubrutalism, flat-design, monochrome]

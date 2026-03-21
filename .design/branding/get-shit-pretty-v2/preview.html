@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>get-shit-pretty — Brand Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #050505;
+    --surface: #111111;
+    --border: #1E1E1E;
+    --muted: #6B6B6B;
+    --text: #E8E8E8;
+    --bright: #FAFAFA;
+    --accent: #E5A00D;
+    --accent-bright: #F5C842;
+    --accent-muted: #8B6914;
+    --lavender: #B8A9D4;
+    --lilac: #D4C1E8;
+    --mauve: #9B87B8;
+    --rose: #E8B4C8;
+    --blush: #F2D1DE;
+    --error: #E54D42;
+    --success: #3FB950;
+    --warning: #D29922;
+    --info: #58A6FF;
+    --font-primary: 'JetBrains Mono', monospace;
+    --font-display: 'Instrument Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--void);
+    color: var(--text);
+    font-family: var(--font-primary);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: 1000px; margin: 0 auto; padding: 64px 32px; }
+
+  /* Sections */
+  section { margin-bottom: 96px; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+
+  /* Hero */
+  .hero { text-align: center; padding: 96px 0; }
+  .hero-mark {
+    font-family: var(--font-primary);
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--bright);
+    margin-bottom: 8px;
+  }
+  .hero-mark span { color: var(--accent); }
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--bright);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+  .hero-tagline {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .hero-diamonds {
+    font-size: 24px;
+    color: var(--accent);
+    margin-top: 32px;
+    letter-spacing: 0.3em;
+  }
+
+  /* Color Swatches */
+  .palette-group { margin-bottom: 48px; }
+  .palette-group h3 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .swatch-row {
+    display: flex;
+    gap: 4px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .swatch {
+    flex: 1;
+    height: 64px;
+    display: flex;
+    align-items: flex-end;
+    padding: 6px 8px;
+    font-size: 10px;
+    font-weight: 500;
+    transition: height 150ms linear;
+  }
+  .swatch:hover { height: 80px; }
+  .swatch-label { opacity: 0.8; }
+  .swatch.light-text .swatch-label { color: var(--bright); }
+  .swatch.dark-text .swatch-label { color: var(--void); }
+
+  /* Expression gradient */
+  .gradient-bar {
+    height: 48px;
+    border-radius: 4px;
+    margin-top: 16px;
+  }
+
+  /* Typography */
+  .type-sample { margin-bottom: 32px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+  .type-sample:last-child { border-bottom: none; }
+  .type-meta {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+  .type-display1 {
+    font-family: var(--font-display);
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--bright);
+    letter-spacing: -0.04em;
+    line-height: 1.0;
+  }
+  .type-display2 {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--bright);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+  .type-h1 {
+    font-family: var(--font-primary);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--bright);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .type-h2 {
+    font-family: var(--font-primary);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+  .type-body {
+    font-family: var(--font-primary);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .type-caption {
+    font-family: var(--font-primary);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
+  /* Voice */
+  .voice-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .voice-attr {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .voice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .voice-col h4 {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .voice-col p { font-size: 14px; color: var(--text); line-height: 1.6; }
+  .voice-col.dont p { color: var(--muted); }
+
+  /* Taglines */
+  .tagline {
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .tagline:last-child { border-bottom: none; }
+  .tagline-text {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--bright);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .tagline-desc { font-size: 14px; color: var(--muted); }
+
+  /* Logo */
+  .logo-direction {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 32px;
+    margin-bottom: 16px;
+  }
+  .logo-render {
+    font-family: var(--font-primary);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--bright);
+    margin-bottom: 16px;
+  }
+  .logo-render .accent { color: var(--accent); }
+  .logo-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .logo-rationale { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* Archetype */
+  .archetype-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 32px;
+  }
+  .archetype-primary {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .archetype-secondary {
+    font-size: 16px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .archetype-desc { font-size: 14px; color: var(--text); line-height: 1.7; }
+
+  /* Terminal mock */
+  .terminal {
+    background: var(--void);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+    font-family: var(--font-primary);
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-x: auto;
+  }
+  .t-accent { color: var(--accent); }
+  .t-muted { color: var(--muted); }
+  .t-bright { color: var(--bright); }
+  .t-success { color: var(--success); }
+  .t-error { color: var(--error); }
+  .t-info { color: var(--info); }
+  .t-bold { font-weight: 700; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 48px 0;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  @media (max-width: 768px) {
+    .hero-name { font-size: 40px; }
+    .hero-mark { font-size: 32px; }
+    .type-display1 { font-size: 40px; }
+    .type-display2 { font-size: 32px; }
+    .voice-grid { grid-template-columns: 1fr; }
+    .tagline-text { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-mark"><span>/</span>gsp</div>
+    <div class="hero-name">get shit pretty</div>
+    <div class="hero-tagline">The difference between shipping code and shipping a product is a design process. That's what this is.</div>
+    <div class="hero-diamonds">◆ ◆ ◆ ◆</div>
+  </section>
+
+  <!-- Colors -->
+  <section>
+    <div class="section-label">Color System</div>
+
+    <div class="palette-group">
+      <h3>Foundation</h3>
+      <div class="swatch-row">
+        <div class="swatch light-text" style="background:#050505"><span class="swatch-label">Void</span></div>
+        <div class="swatch light-text" style="background:#111111"><span class="swatch-label">Surface</span></div>
+        <div class="swatch light-text" style="background:#1E1E1E"><span class="swatch-label">Border</span></div>
+        <div class="swatch light-text" style="background:#6B6B6B"><span class="swatch-label">Muted</span></div>
+        <div class="swatch dark-text" style="background:#E8E8E8"><span class="swatch-label">Text</span></div>
+        <div class="swatch dark-text" style="background:#FAFAFA"><span class="swatch-label">Bright</span></div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <h3>Accent</h3>
+      <div class="swatch-row">
+        <div class="swatch dark-text" style="background:#FDF6E7"><span class="swatch-label">50</span></div>
+        <div class="swatch dark-text" style="background:#F9E8C4"><span class="swatch-label">100</span></div>
+        <div class="swatch dark-text" style="background:#F0D28B"><span class="swatch-label">200</span></div>
+        <div class="swatch dark-text" style="background:#F5C842"><span class="swatch-label">300</span></div>
+        <div class="swatch dark-text" style="background:#EDB21E"><span class="swatch-label">400</span></div>
+        <div class="swatch dark-text" style="background:#E5A00D"><span class="swatch-label">500</span></div>
+        <div class="swatch light-text" style="background:#B07B0A"><span class="swatch-label">600</span></div>
+        <div class="swatch light-text" style="background:#8B6914"><span class="swatch-label">700</span></div>
+        <div class="swatch light-text" style="background:#4A3810"><span class="swatch-label">800</span></div>
+        <div class="swatch light-text" style="background:#2E230A"><span class="swatch-label">900</span></div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <h3>Expression — Purple</h3>
+      <div class="swatch-row">
+        <div class="swatch dark-text" style="background:#F5F0FA"><span class="swatch-label">50</span></div>
+        <div class="swatch dark-text" style="background:#E8DDEF"><span class="swatch-label">100</span></div>
+        <div class="swatch dark-text" style="background:#D4C1E8"><span class="swatch-label">200</span></div>
+        <div class="swatch dark-text" style="background:#C4ADDD"><span class="swatch-label">300</span></div>
+        <div class="swatch dark-text" style="background:#B8A9D4"><span class="swatch-label">400</span></div>
+        <div class="swatch light-text" style="background:#9B87B8"><span class="swatch-label">500</span></div>
+        <div class="swatch light-text" style="background:#7E6A9C"><span class="swatch-label">600</span></div>
+        <div class="swatch light-text" style="background:#624F7E"><span class="swatch-label">700</span></div>
+        <div class="swatch light-text" style="background:#483861"><span class="swatch-label">800</span></div>
+        <div class="swatch light-text" style="background:#302445"><span class="swatch-label">900</span></div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <h3>Expression — Pink</h3>
+      <div class="swatch-row">
+        <div class="swatch dark-text" style="background:#FDF2F6"><span class="swatch-label">50</span></div>
+        <div class="swatch dark-text" style="background:#F8E1EA"><span class="swatch-label">100</span></div>
+        <div class="swatch dark-text" style="background:#F2D1DE"><span class="swatch-label">200</span></div>
+        <div class="swatch dark-text" style="background:#EABFCF"><span class="swatch-label">300</span></div>
+        <div class="swatch dark-text" style="background:#E8B4C8"><span class="swatch-label">400</span></div>
+        <div class="swatch dark-text" style="background:#CC8FA8"><span class="swatch-label">500</span></div>
+        <div class="swatch light-text" style="background:#AD6F8A"><span class="swatch-label">600</span></div>
+        <div class="swatch light-text" style="background:#8A546D"><span class="swatch-label">700</span></div>
+        <div class="swatch light-text" style="background:#6A3D53"><span class="swatch-label">800</span></div>
+        <div class="swatch light-text" style="background:#492A3A"><span class="swatch-label">900</span></div>
+      </div>
+      <div class="gradient-bar" style="background: linear-gradient(135deg, #B8A9D4 0%, #D4C1E8 25%, #F2D1DE 50%, #E8B4C8 75%, #9B87B8 100%)"></div>
+    </div>
+
+    <div class="palette-group">
+      <h3>Semantic</h3>
+      <div class="swatch-row">
+        <div class="swatch light-text" style="background:#E54D42"><span class="swatch-label">Error</span></div>
+        <div class="swatch light-text" style="background:#3FB950"><span class="swatch-label">Success</span></div>
+        <div class="swatch light-text" style="background:#D29922"><span class="swatch-label">Warning</span></div>
+        <div class="swatch light-text" style="background:#58A6FF"><span class="swatch-label">Info</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typography -->
+  <section>
+    <div class="section-label">Typography</div>
+
+    <div class="type-sample">
+      <div class="type-meta">Display 1 — Instrument Sans 700, 72px, -0.04em</div>
+      <div class="type-display1">Design that ships with the code.</div>
+    </div>
+
+    <div class="type-sample">
+      <div class="type-meta">Display 2 — Instrument Sans 700, 48px, -0.03em</div>
+      <div class="type-display2">Walk through it. Build it. Ship it.</div>
+    </div>
+
+    <div class="type-sample">
+      <div class="type-meta">Heading 1 — JetBrains Mono 700, 32px, -0.02em</div>
+      <div class="type-h1">Your terminal. Your brand.</div>
+    </div>
+
+    <div class="type-sample">
+      <div class="type-meta">Heading 2 — JetBrains Mono 700, 24px, -0.01em</div>
+      <div class="type-h2">Design decisions, not design debt.</div>
+    </div>
+
+    <div class="type-sample">
+      <div class="type-meta">Body — JetBrains Mono 400, 16px, 1.7 line-height</div>
+      <div class="type-body">GSP puts a design engineer on your team, inside the terminal. Brand strategy to design tokens to components — real process, all in the CLI, all in your codebase.</div>
+    </div>
+
+    <div class="type-sample">
+      <div class="type-meta">Caption — JetBrains Mono 400, 12px, 0.02em tracking</div>
+      <div class="type-caption">v2.0 · Generated 2026-03-19 · OKLCH color space · W3C Design Tokens</div>
+    </div>
+  </section>
+
+  <!-- Voice -->
+  <section>
+    <div class="section-label">Voice Attributes</div>
+
+    <div class="voice-card">
+      <div class="voice-attr">Clear</div>
+      <div class="voice-grid">
+        <div class="voice-col">
+          <h4>Means</h4>
+          <p>Every sentence has a point. Technical concepts land on the first read. No jargon without context.</p>
+        </div>
+        <div class="voice-col dont">
+          <h4>Doesn't mean</h4>
+          <p>Terse. Dumbed down. Robotic. Stripped of personality.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="voice-card">
+      <div class="voice-attr">Warm</div>
+      <div class="voice-grid">
+        <div class="voice-col">
+          <h4>Means</h4>
+          <p>Feels like help, not instruction. Acknowledges the builder's work before suggesting changes.</p>
+        </div>
+        <div class="voice-col dont">
+          <h4>Doesn't mean</h4>
+          <p>Soft. Avoidant. Overly enthusiastic. Emoji-heavy. Afraid to say something is wrong.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="voice-card">
+      <div class="voice-attr">Lighthearted</div>
+      <div class="voice-grid">
+        <div class="voice-col">
+          <h4>Means</h4>
+          <p>Serious about craft, not about itself. Personality shows in word choice, not in jokes.</p>
+        </div>
+        <div class="voice-col dont">
+          <h4>Doesn't mean</h4>
+          <p>Jokey. Irreverent for the sake of it. Sarcastic. Mocking. Trying to be funny.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Taglines -->
+  <section>
+    <div class="section-label">Tagline Directions</div>
+
+    <div class="tagline">
+      <div class="tagline-text">Design that ships with the code.</div>
+      <div class="tagline-desc">Integration — design is not a separate deliverable, it ships alongside the product.</div>
+    </div>
+
+    <div class="tagline">
+      <div class="tagline-text">Walk through it. Build it. Ship it.</div>
+      <div class="tagline-desc">The journey — three beats that mirror the process without jargon.</div>
+    </div>
+
+    <div class="tagline">
+      <div class="tagline-text">Your terminal. Your brand. Built together.</div>
+      <div class="tagline-desc">Ownership — the builder keeps control. GSP guides, doesn't dictate.</div>
+    </div>
+  </section>
+
+  <!-- Logo -->
+  <section>
+    <div class="section-label">Logo Direction — The Slash Mark</div>
+
+    <div class="logo-direction">
+      <div class="logo-render"><span class="accent">/</span>gsp</div>
+      <div class="logo-name">The Slash Mark</div>
+      <div class="logo-rationale">The forward slash is GSP's native punctuation — every skill invocation begins with /gsp:. The invocation IS the identity. Two forms: /gsp for brand contexts, /gsp: for CLI contexts with the trailing colon.</div>
+    </div>
+
+    <div class="logo-direction">
+      <div class="logo-render" style="font-size:20px"><span class="accent">/</span>gsp<span class="t-muted">:</span> <span style="color:var(--text)">◆◆</span></div>
+      <div class="logo-name">Inline CLI Mark</div>
+      <div class="logo-rationale">In terminal output, the brand mark includes state-aware diamonds. ◇ = pending, ◈ = active, ◆ = complete. The mark is alive — it reflects the state of your work.</div>
+    </div>
+  </section>
+
+  <!-- Archetype -->
+  <section>
+    <div class="section-label">Brand Archetype</div>
+
+    <div class="archetype-box">
+      <div class="archetype-primary">Creator + Guide</div>
+      <div class="archetype-secondary">The skilled friend who builds with precision and walks you through it</div>
+      <div class="archetype-desc">
+        Creator: craft, precision, building things that endure. Empowers others to create — GSP doesn't design for you, it walks you through designing.<br><br>
+        Guide: explains the why without making you feel lectured. Shows, doesn't just tell. Warm but direct — honest feedback that feels like help, not correction.
+      </div>
+    </div>
+  </section>
+
+  <!-- Terminal Mock -->
+  <section>
+    <div class="section-label">Terminal Output Sample</div>
+
+    <div class="terminal">
+      <span class="t-bold t-accent">/gsp:</span> <span class="t-bright">◆◆◆◆</span><br><br>
+      <span class="t-muted">───</span> <span class="t-bold" style="color:var(--muted)">brand complete</span> <span class="t-muted">──────────────────────────</span><br><br>
+      <span class="t-muted">  discover</span>       <span class="t-bright">market landscape, competitive audit</span><br>
+      <span class="t-muted">  strategy</span>       <span class="t-bright">Creator + Guide, design process</span><br>
+      <span class="t-muted">  identity</span>       <span class="t-bright">amber + expression, JetBrains Mono</span><br>
+      <span class="t-muted">  system</span>         <span class="t-bright">6 foundations, 15 components</span><br><br>
+      <span class="t-success">  ✓</span> <span class="t-bright">tokens.json written</span> <span class="t-muted">— 826 lines, W3C format</span><br>
+      <span class="t-success">  ✓</span> <span class="t-bright">get-shit-pretty.yml written</span> <span class="t-muted">— portable preset</span><br>
+      <span class="t-success">  ✓</span> <span class="t-bright">preview.html written</span> <span class="t-muted">— open in browser</span><br><br>
+      <span class="t-muted">  prettiness</span>     <span class="t-accent">████████████████████</span> <span class="t-bright">100%</span>
+    </div>
+  </section>
+
+  <div class="footer">
+    get-shit-pretty v2.0 · Brand preview generated 2026-03-19<br>
+    The difference between shipping code and shipping a product is a design process.
+  </div>
+
+</div>
+
+</body>
+</html>

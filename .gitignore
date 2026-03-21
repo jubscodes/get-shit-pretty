@@ -2,6 +2,7 @@ node_modules/
 .DS_Store
 
 # Local runtime dirs (installer-generated symlinks/copies + local config)
+.agents/
 .claude/
 .codex/
 .gemini/
@@ -9,3 +10,8 @@ node_modules/
 
 # Local dev notes
 .planning/
+
+# Next.js
+.next/
+out/
+next-env.d.ts

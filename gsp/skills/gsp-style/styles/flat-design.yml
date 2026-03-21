@@ -1,0 +1,58 @@
+name: flat-design
+description: Clean 2D aesthetic — solid colors, zero shadows, bold color blocks as structure
+tags: [flat, 2d, minimal, clean, colorful]
+trend_ref: trends/flat-design.md
+
+tokens:
+  color:
+    primary: "#2196F3"
+    secondary: "#4CAF50"
+    accent: "#FF9800"
+    background: "#FFFFFF"
+    surface: "#FAFAFA"
+    on-primary: "#FFFFFF"
+    on-background: "#212121"
+    error: "#F44336"
+    success: "#4CAF50"
+    warning: "#FF9800"
+    info: "#2196F3"
+    muted: "#9E9E9E"
+
+  typography:
+    font-family-primary: "Outfit, Open Sans, sans-serif"
+    font-family-mono: "Roboto Mono, monospace"
+    font-weight-heading: 700
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.5
+
+  shape:
+    border-radius-sm: "4px"
+    border-radius-md: "8px"
+    border-radius-lg: "12px"
+    border-width: "0px"
+    border-color: "transparent"
+
+  elevation:
+    shadow-sm: "none"
+    shadow-md: "none"
+    shadow-lg: "none"
+    shadow-xl: "none"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "150ms"
+    duration-normal: "200ms"
+    easing: "ease"
+
+dark_mode:
+  color:
+    background: "#212121"
+    surface: "#303030"
+    on-background: "#FAFAFA"
+
+compatibility: [bauhaus, swiss-minimalist]
+clashes: [glassmorphism, neumorphism, liquid-glass]

@@ -1,0 +1,189 @@
+# Content Strategy
+
+> Phase: research | Project: gsp-app | Generated: 2026-03-19
+
+---
+
+## Landing Page Copy
+
+### Hero Headline
+
+The brand voice is Clear, Warm, Lighthearted. The hero headline must answer "what is this?" in under 10 words. Best practices from the Evil Martians study and hero section analysis:
+
+- Focus on what the user becomes, not what the tool is
+- Use action verbs. Avoid passive descriptions
+- 6-9 words maximum for the primary headline
+
+**Headline direction examples (for design phase to refine):**
+
+| Approach | Example | Notes |
+|----------|---------|-------|
+| Benefit-first | "Make your CLI output beautiful" | Clear, direct, says the benefit |
+| Process-first | "Design engineering for the terminal" | Positions the category |
+| Personality | "Get shit pretty" | The brand name IS the headline (bold, memorable) |
+| Outcome | "Ship tools people love to look at" | Aspirational, addresses both personas |
+
+**Supporting line:** One sentence that explains the mechanism. "A design system that runs in your terminal. Brand strategy to pixel-perfect components, automated." This should be body-sm, muted text under the headline.
+
+### Section Copy Conventions
+
+Each landing page section should answer exactly one question:
+
+| Section | Question Answered | Tone |
+|---------|-------------------|------|
+| Hero | "What is this?" | Bold, confident |
+| What is GSP | "How does it work?" | Clear, explanatory |
+| Pipeline Viz | "What's the process?" | Visual-first, minimal text |
+| Features | "What can it do?" | Concise, specific |
+| Meta Signal | "Does it actually work?" | Lighthearted, self-aware |
+| CTA Footer | "How do I get it?" | Direct, actionable |
+
+### Copy Length Guidelines
+
+- **Headline:** 6-9 words
+- **Subheadline:** 15-25 words (one sentence)
+- **Section heading:** 3-6 words
+- **Feature card title:** 2-4 words
+- **Feature card description:** 15-25 words (one sentence)
+- **CTA button:** 2-4 words
+
+---
+
+## CTA Conventions
+
+### Primary CTA: The Install Command
+
+For CLI developer tools, the install command IS the CTA. Don't abstract it behind "Get started" or "Try it now." Developers trust specificity.
+
+**Pattern:**
+
+```
+[$ npm install -g get-shit-pretty]  [Copy]
+```
+
+Or the shorter npx variant:
+
+```
+[$ npx get-shit-pretty]  [Copy]
+```
+
+The `$` prefix signals a terminal command. The copy button (clipboard icon) provides the interaction. On copy, show a brief toast: "Copied to clipboard" via Sonner.
+
+**Secondary CTA:** "View on GitHub" with GitHub icon. Ghost button style.
+
+### Button Labels
+
+| Context | Label | Variant |
+|---------|-------|---------|
+| Hero primary | The install command itself | Primary (amber) |
+| Hero secondary | "View on GitHub" | Ghost |
+| Footer primary | Repeated install command | Primary (amber) |
+| Blog post nav | "Back to changelog" | Ghost with left arrow |
+
+---
+
+## Changelog Conventions
+
+### Date Formatting
+
+Use human-readable dates with full month names: "March 19, 2026" -- not "2026-03-19" or "3/19/26". In `<time>` elements, the `datetime` attribute uses ISO format for machine readability.
+
+### Version Numbering
+
+Follow semver: "v0.5.0". Always prefix with "v". Display as a badge alongside the date:
+
+```
+March 19, 2026  [v0.5.0]
+```
+
+### Category Tags
+
+Consistent tag vocabulary:
+
+| Tag | Color | Usage |
+|-----|-------|-------|
+| Feature | Amber (accent) | New capabilities |
+| Enhancement | Lavender (expression) | Improvements to existing |
+| Fix | Muted | Bug fixes |
+| Breaking | Destructive (red) | Breaking changes |
+| Composable | Muted | New composable skills |
+
+### "What Changed" vs. "Why It Changed"
+
+Developer changelogs should lead with what shipped, followed by why it matters. The title describes the what; the body paragraph explains the why.
+
+**Good:** "Add /gsp:design-system composable skill -- Scans your codebase for existing design patterns so the brand system builds on what you already have, not from scratch."
+
+**Bad:** "We've been working hard on making GSP smarter about your existing codebase..."
+
+---
+
+## Microcopy
+
+### Button States
+
+| State | Text | Visual |
+|-------|------|--------|
+| Default | "Copy" | Clipboard icon |
+| Copied | "Copied!" | Check icon, 2s timeout |
+| Hover | -- | Border accent |
+
+### Empty States
+
+Not applicable for launch scope (no search, no filters, no dynamic content). If changelog has zero posts: "No posts yet. Check back soon." -- but this shouldn't happen at launch since the first post ships with the site.
+
+### Loading States
+
+Not applicable -- all content is statically generated. No loading spinners, skeletons, or placeholder states needed.
+
+---
+
+## The Meta Narrative
+
+### "Designed by GSP" -- Approach
+
+This is the site's unique proof point. The challenge: communicate it naturally, not as a gimmick.
+
+**What works:**
+
+- A small callout section near the bottom: "This site was designed using GSP. The colors, typography, spacing, and components you see were generated by the same pipeline you're about to install."
+- Showing actual token values from the brand system alongside the rendered result
+- A subtle footer mark: "Designed by GSP" in muted text, same as "Built with Next.js" marks
+
+**What to avoid:**
+
+- Pop-ups or banners that break flow
+- Over-explaining ("We ate our own dogfood!")
+- Making it the hero message (it's proof, not the pitch)
+
+**The best execution:** Let the site's quality be the primary signal. The meta callout is a whisper, not a shout. The visitor should notice the quality first, then discover that GSP created it.
+
+---
+
+## Terminology
+
+### Vocabulary for the Landing Page
+
+| Term | Definition | Usage |
+|------|-----------|-------|
+| Design engineering | The practice of building with design quality | Position GSP's category |
+| Pipeline | The automated design workflow (dual diamond) | Feature explanation |
+| Composable skill | A self-contained design capability | Feature cards |
+| Brand system | The complete design token output | What GSP produces |
+| Terminal | The CLI environment where GSP runs | Visual context |
+
+### Words to Avoid
+
+- **"AI-powered"** -- GSP uses AI but leading with AI is generic and overused
+- **"Vibe coding"** -- Positions in a trend, not a category
+- **"Revolutionary"** -- Oversells
+- **"Easy"** -- Undermines the seriousness of the tool
+- **"Comprehensive"** -- Vague, says nothing
+
+---
+
+## Related
+
+- [Scope](../brief/scope.md)
+- [UX Patterns](./ux-patterns.md)
+- [Competitor UX](./competitor-ux.md)

@@ -1,0 +1,59 @@
+name: swiss-minimalist
+description: Clean grid-based design — Helvetica roots, generous whitespace, typographic hierarchy
+tags: [clean, grid, typographic, classic, professional]
+
+tokens:
+  color:
+    primary: "#000000"
+    secondary: "#DC2626"
+    accent: "#2563EB"
+    background: "#FFFFFF"
+    surface: "#FAFAFA"
+    on-primary: "#FFFFFF"
+    on-background: "#111111"
+    error: "#DC2626"
+    success: "#16A34A"
+    warning: "#CA8A04"
+    info: "#2563EB"
+    muted: "#6B7280"
+
+  typography:
+    font-family-primary: "Helvetica Neue, Helvetica, Arial, sans-serif"
+    font-family-mono: "SF Mono, Monaco, monospace"
+    font-weight-heading: 700
+    font-weight-body: 300
+    font-size-base: "16px"
+    line-height-base: 1.6
+
+  shape:
+    border-radius-sm: "0px"
+    border-radius-md: "0px"
+    border-radius-lg: "0px"
+    border-width: "1px"
+    border-color: "#E5E7EB"
+
+  elevation:
+    shadow-sm: "none"
+    shadow-md: "0 1px 2px rgba(0, 0, 0, 0.05)"
+    shadow-lg: "0 4px 12px rgba(0, 0, 0, 0.08)"
+    shadow-xl: "0 8px 24px rgba(0, 0, 0, 0.10)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 16, 24, 32, 48, 64, 96, 128]
+
+  motion:
+    duration-fast: "100ms"
+    duration-normal: "200ms"
+    easing: "ease-out"
+
+dark_mode:
+  color:
+    background: "#111111"
+    surface: "#1A1A1A"
+    on-background: "#F5F5F5"
+    border-color: "#333333"
+    muted: "#9CA3AF"
+
+compatibility: [bento-grid]
+clashes: [neubrutalism, cyberpunk, vaporwave]

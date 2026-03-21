@@ -1,0 +1,61 @@
+name: minimal-dark
+description: Atmospheric layered darkness — three dark layers, warm amber accent, glass-effect cards
+tags: [minimal, dark, atmospheric, amber, layered]
+
+tokens:
+  color:
+    primary: "#F59E0B"
+    secondary: "#A1A1AA"
+    accent: "#FFFFFF"
+    background: "#0A0A0F"
+    surface: "#12121A"
+    on-primary: "#000000"
+    on-background: "#FAFAFA"
+    error: "#EF4444"
+    success: "#22C55E"
+    warning: "#F59E0B"
+    info: "#3B82F6"
+    muted: "#71717A"
+
+  typography:
+    font-family-primary: "Space Grotesk, Inter, sans-serif"
+    font-family-mono: "JetBrains Mono, monospace"
+    font-weight-heading: 600
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.6
+
+  shape:
+    border-radius-sm: "8px"
+    border-radius-md: "12px"
+    border-radius-lg: "16px"
+    border-width: "1px"
+    border-color: "rgba(255,255,255,0.06)"
+
+  elevation:
+    shadow-sm: "0 1px 2px rgba(0,0,0,0.2)"
+    shadow-md: "0 4px 6px rgba(0,0,0,0.3)"
+    shadow-lg: "0 8px 24px rgba(0,0,0,0.4)"
+    shadow-xl: "0 0 20px rgba(245,158,11,0.2)"
+
+  spacing:
+    base: 8
+    scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "150ms"
+    duration-normal: "250ms"
+    easing: "ease-out"
+
+  glass:
+    backdrop-blur: "8px"
+    surface-opacity: 0.6
+    border-opacity: 0.06
+
+  layers:
+    deep: "#0A0A0F"
+    base: "#12121A"
+    elevated: "#1A1A24"
+
+compatibility: [modern-dark, terminal]
+clashes: [botanical, flat-design]
