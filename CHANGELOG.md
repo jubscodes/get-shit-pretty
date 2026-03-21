@@ -4,10 +4,12 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
-## [0.5.0] — 2026-03-15
+## [0.5.0] — 2026-03-21
 
 ### Added
 - Plugin architecture — manifest at `.claude-plugin/plugin.json`, MCP servers, hooks
+- Quick mode for `/gsp:start` — skip the branding diamond entirely, start from a style preset and go straight to project brief
+- Phased build pipeline — `/gsp:scaffold` skill for deterministic stack setup, wave-based agent execution with lean context per agent
 - 34 design style presets via `/gsp:style` — structured YAML tokens + AI-ready prompts from designprompts.dev
 - `/gsp:accessibility` standalone composable skill — 5 modes: design audit, token audit, code audit, accessibility statement, quick contrast check
 - `/gsp:palette` and `/gsp:typescale` composable skills — OKLCH palettes and mathematical type scales
@@ -16,9 +18,11 @@ All notable changes to get-shit-pretty are documented here.
 - Style base integration across branding diamond — presets flow through all 4 phases as shared aesthetic vocabulary
 - Multi-runtime installer — OpenCode, Gemini CLI, and Codex CLI support with tool name mapping and body replacements
 - Agent runtime config — `maxTurns`, `disallowedTools`, `permissionMode` frontmatter
+- Automated installer test suite — 37 tests across 5 suites (versions, contracts, installer, runtime, templates)
+- Color composition strategies reference — 30-60-10 ratio guidance for design agents
 - WCAG 2.2 new criteria — SC 2.4.11, SC 2.5.8, SC 3.2.6, SC 3.3.7, SC 3.3.8 + APCA reference
 - Dev tools: `/gsp-audit` (37-test integrity suite), `/gsp-housekeeping`, `/gsp-dev`, `/gsp-runtime-compat`
-- C9/I1 audit test — verifies all skills have `user-invocable: true` frontmatter
+- 27 skills, 15 agents (up from 21 skills, 12 agents in v0.4.x)
 
 ### Changed
 - Skills-only architecture — removed commands, all functionality lives in `gsp/skills/*/SKILL.md`
@@ -31,11 +35,29 @@ All notable changes to get-shit-pretty are documented here.
 - Library-aware component strategy in builder agent
 
 ### Fixed
-- OpenCode installer — proper skills, agents, and body replacements
+- Cross-runtime installer — OpenCode, Gemini CLI, and Codex CLI now produce correct formats
 - Removed ANSI escape codes from all skill text output — was printing literal `\x1b[` instead of rendering colors
 - Updated all skill frontmatter from `disable-model-invocation` to `user-invocable: true`
 - Brand-research style preset wiring
 - Installer banner sparkle line centering
+
+### Migration guide (v0.4.x → v0.5.0)
+
+**Breaking: directory structure changed.** All GSP content moved under `gsp/` prefix:
+- `agents/` → `gsp/agents/`
+- `skills/` → `gsp/skills/`
+- `prompts/` → `gsp/prompts/`
+- `templates/` → `gsp/templates/`
+- `references/` → `gsp/references/`
+
+**Breaking: commands removed.** All functionality is now skills-only (`gsp/skills/*/SKILL.md`). If you had custom workflows referencing GSP commands, update them to use `/gsp:` skill invocations.
+
+**Breaking: branding diamond is 4 phases, not 5.** Verbal identity is merged into the strategy phase. If you have existing `.design/branding/` output from v0.4.x, the verbal artifacts are still valid — strategy now produces them inline.
+
+**Upgrade path:**
+1. Run `npx get-shit-pretty` (or `npm install -g get-shit-pretty && gsp`) to reinstall
+2. Existing `.design/` project output is compatible — no migration needed for design artifacts
+3. If you have custom hooks or scripts referencing old paths, update to `gsp/` prefix
 
 ## [0.4.3] — 2025-11-21
 
