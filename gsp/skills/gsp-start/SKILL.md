@@ -99,6 +99,7 @@ Then use `AskUserQuestion` with options:
 - **Brand identity** — "define who you are — strategy, voice, visuals"
 - **Design project** — "design screens and flows for something you're building"
 - **Both (brand + project)** — "full pipeline — brand first, then design"
+- **Quick project** — "skip branding — pick a style preset and start designing"
 
 **Legacy `.design/` detected (flat structure, pre-0.4.0):**
 Acknowledge the legacy project, note it still works with current commands. Use `AskUserQuestion`:
@@ -145,6 +146,7 @@ From the greeting exchange, determine which flow to run:
 - **Brand identity (evolve)** → Brand flow (Step 3) with `brand_mode: "evolve"`. Detect evolve signals: user mentions existing brand, assets, guidelines, rebrand, refresh, modernize, evolve, update, redesign.
 - **Design project** → Check for brands first. If none exist, explain they need a brand first. Offer to create one, then auto-transition to project flow.
 - **Full design (brand + project)** → Brand flow (Step 3), with E2E flag so brand completion auto-transitions to project flow (Step 4)
+- **Quick project** → Quick flow (Step 5)
 - **Continue existing work** → route to `/gsp:progress`
 
 ## Step 3: Brand flow
@@ -305,4 +307,95 @@ Skip or compress rounds if the user gives enough upfront. Don't over-ask.
   - **Continue to scoping** — "Scope the project now" → invoke `/gsp:project-brief` via Skill tool
   - **Stop here** — "I'll come back later" → confirm files are saved, show how to resume with `/gsp:start`
   - **What happens next?** — "Explain the scoping phase" → explain what project-brief does (screen list, component adaptations, gap analysis) and how it uses the brief
+
+## Step 5: Quick project flow
+
+For users who want to skip branding and start designing immediately with a style preset.
+
+### 5a: Style selection
+
+Read the style presets index at `${CLAUDE_SKILL_DIR}/../../skills/gsp-style/styles/INDEX.yml` and present grouped options:
+
+```
+  ─── pick a style ─────────────────────
+
+  minimal       swiss-minimalist, clean-modern, scandinavian
+  bold          neubrutalism, brutalist, cyberpunk
+  dark          modern-dark, midnight, hacker-terminal
+  editorial     editorial, magazine, newspaper
+  warm          organic, earthy, handcrafted
+  playful       retro-futurism, vaporwave, memphis
+```
+
+Use `AskUserQuestion` with:
+- One option per mood group (showing the first 2-3 preset names as preview)
+- **Surprise me** — "pick something unexpected for my stack"
+
+When user picks a group, show the specific presets in that group with 1-line descriptions from INDEX.yml. Use `AskUserQuestion` to pick the specific preset.
+
+If the user names a preset directly at any point, skip the group step.
+
+**"Surprise me" logic:** Pick a preset weighted by codebase type from the background scan:
+- Developer tools / CLI → dark or minimal presets
+- Content / blog → editorial presets
+- SaaS / dashboard → minimal or bold presets
+- E-commerce → warm or playful presets
+- No codebase detected → truly random pick
+
+### 5b: Create minimal brand
+
+1. Create brand directory:
+```bash
+mkdir -p .design/branding/_style-{preset}/system/
+```
+
+2. Invoke `/gsp:style {preset}` via Skill tool — this writes:
+   - `tokens.json` (W3C design tokens)
+   - Foundation chunks (color, typography, spacing, elevation, radius)
+   - `INDEX.md`
+
+3. Write `.design/branding/_style-{preset}/config.json`:
+```json
+{
+  "version": "0.5.0",
+  "project_type": "brand",
+  "brand_mode": "quick",
+  "style_preset": "{preset}",
+  "system_config": {
+    "system_strategy": "generate"
+  }
+}
+```
+
+4. Write `.design/branding/_style-{preset}/STATE.md` with:
+   - Phase 0 (Audit): `skipped`
+   - Phase 1 (Discover): `skipped`
+   - Phase 2 (Strategy): `skipped`
+   - Phase 3 (Identity): `skipped`
+   - Phase 4 (System): `complete`
+
+### 5c: Transition to project
+
+Display:
+```
+  style applied — {preset}
+  ◇◇◇◇◆ brand: _style-{preset} (style-only)
+
+  now let's scope your project.
+```
+
+Continue directly to Step 4 (project flow) with these modifications:
+- Skip "show available brands" — auto-select `_style-{preset}`
+- Go straight to asking for project name
+- Set `style_preset: "{preset}"` in the project's `config.json`
+- Set `identity_hash: "style-only"` in `brand.ref`
+- Proceed with the normal 2-round project brief gathering
+
+### Upgrade path
+
+If a user later wants full branding, they can:
+1. Run `/gsp:start` → "Brand identity" to create a real brand
+2. Full diamond produces identity + system with real tokens
+3. Update the project's `brand.ref` to point to the new brand
+4. Re-run build phases — they pick up the new tokens automatically
 </process>

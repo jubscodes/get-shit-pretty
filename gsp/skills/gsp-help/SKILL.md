@@ -74,11 +74,15 @@ Skill names are left-padded with 4 spaces. Descriptions start at column 27 (4 in
   ─── Flow ─────────────────────────────
 
     brand first, then build.
+    — or —
+    quick mode: pick a style → jump straight to project.
 
     branding   research → strategy → identity → patterns
     project    brief → research → design → critique → build → review
                                     ↑                    ↑
                               critique loop         QA loop
+
+    quick      style → brief → research → design → critique → build → review
 
     run any skill directly — routing is optional.
 
