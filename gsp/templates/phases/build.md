@@ -2,7 +2,33 @@
 
 > Phase: build | Project: {PROJECT_NAME} | Generated: {DATE}
 
+## Phases
+
+The build phase runs as a 4-phase pipeline:
+
+### Phase 1: Scaffold
+Stack setup via `/gsp:scaffold` — install deps, create configs, verify build compiles. Produces `build/SCAFFOLD-LOG.md`.
+
+### Phase 2: Foundations
+Token integration, global styles, layout primitives. Agent mode: `foundations`. Checkpoint: build must compile after foundations.
+
+### Phase 3: Foundation Review
+Interactive checkpoint — present summary of foundations to user for confirmation before building screens.
+
+### Phase 4: Screens
+One agent per screen, sequential. Agent mode: `screen`. Each screen gets its design chunk + referenced components only. Checkpoint: compile check after each screen.
+
+---
+
 ## Chunks
+
+### `build/SCAFFOLD-LOG.md`
+
+Stack setup manifest:
+- **Stack** — Framework, CSS, component library with versions
+- **Commands Run** — Each setup command and its status
+- **Components Installed** — Component library primitives added
+- **Build Verification** — Build command result (pass/fail)
 
 ### `build/BUILD-LOG.md`
 

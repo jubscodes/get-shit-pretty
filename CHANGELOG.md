@@ -2,6 +2,8 @@
 
 All notable changes to get-shit-pretty are documented here.
 
+## [Unreleased]
+
 ## [0.5.0] — 2026-03-15
 
 ### Added

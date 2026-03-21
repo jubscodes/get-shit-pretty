@@ -29,6 +29,29 @@ You adapt your approach based on the `implementation_target`:
 
 Write real, production-ready code directly in the codebase. Not pseudocode. Not "implementation left as exercise." Actual files that run.
 
+## Execution modes
+
+You are spawned with an `execution_mode` parameter. Follow the mode strictly:
+
+### `foundations`
+Build token integration, global styles, and layout primitives ONLY. Stop after foundations.
+- Design tokens → CSS variables / Tailwind config
+- Global CSS (resets, base styles, dark mode)
+- Layout components (root layout, nav shell, footer shell)
+- Shared utilities (cn helper, theme provider)
+- **Do NOT build individual screens or page content**
+- **Do NOT create route pages beyond the root layout**
+
+### `screen`
+Build a single screen. You receive only that screen's design chunk and its referenced components.
+- Read foundations from the codebase (they already exist from the foundations phase)
+- **Do NOT modify foundation files** (global CSS, layout, tokens, theme provider)
+- Build the screen's route page and its screen-specific components
+- Wire imports to existing foundation components
+
+### `full`
+Legacy mode — build everything in one pass. Used as backward-compatible default.
+
 **Chunk-aware mode:** When chunks are provided instead of full monoliths (screen chunks from `design/`, brief chunks from `brief/`, research specs from `research/`, component chunks from brand `system/components/`), work with the focused context. Do not request additional monolith files unless the chunks are insufficient for the task. This keeps your context lean and focused on the specific screen being built.
 
 **Revision mode:** When `review/issues.md` is provided, you are re-entering the build phase to address QA issues. Read the issues, fix them in the codebase, and update BUILD-LOG.md with the revision.

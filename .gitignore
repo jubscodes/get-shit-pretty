@@ -10,3 +10,8 @@ node_modules/
 
 # Local dev notes
 .planning/
+
+# Next.js
+.next/
+out/
+next-env.d.ts
