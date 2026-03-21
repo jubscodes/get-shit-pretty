@@ -50,10 +50,10 @@ export default function Home() {
       {/* ===== HERO ===== */}
       <section
         id="main"
-        className="py-gsp-16 md:py-gsp-24"
+        className="py-gsp-12 md:py-gsp-16"
       >
         <div className="mx-auto max-w-[1200px] px-gsp-4 sm:px-gsp-6 lg:px-gsp-8 text-center">
-          <p className="text-overline text-muted-foreground mb-gsp-4">
+          <p className="text-overline text-primary mb-gsp-4">
             Design Engineering
           </p>
           {/* Headline — animated ASCII shade blocks */}
@@ -73,7 +73,7 @@ export default function Home() {
               href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center h-9 gap-1.5 px-4 rounded-sm border border-border bg-background text-sm font-medium whitespace-nowrap transition-all hover:border-muted-foreground/30 hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+              className="inline-flex items-center justify-center h-9 gap-1.5 px-4 rounded-sm border border-border bg-background text-sm font-medium whitespace-nowrap transition-all hover:border-primary/50 hover:text-primary focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
             >
               View on GitHub {"\u2192"}
             </Link>
@@ -124,7 +124,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-gsp-8 lg:gap-gsp-12 items-center">
             {/* Prose */}
             <div className="lg:col-span-5">
-              <p className="text-overline text-muted-foreground mb-gsp-4">
+              <p className="text-overline text-primary mb-gsp-4">
                 How It Works
               </p>
               <h2 className="text-h2 text-foreground mb-gsp-6">
@@ -205,7 +205,7 @@ export default function Home() {
       {/* ===== PIPELINE ===== */}
       <section className="py-gsp-16 md:py-gsp-24">
         <div className="mx-auto max-w-[1200px] px-gsp-4 sm:px-gsp-6 lg:px-gsp-8 text-center">
-          <p className="text-overline text-muted-foreground mb-gsp-4">
+          <p className="text-overline text-primary mb-gsp-4">
             The Process
           </p>
           <h2 className="text-h2 text-foreground mb-gsp-12">
@@ -220,7 +220,7 @@ export default function Home() {
       <section className="py-gsp-16 md:py-gsp-24">
         <div className="mx-auto max-w-[1200px] px-gsp-4 sm:px-gsp-6 lg:px-gsp-8">
           <div className="text-center mb-gsp-12">
-            <p className="text-overline text-muted-foreground mb-gsp-4">
+            <p className="text-overline text-primary mb-gsp-4">
               Capabilities
             </p>
             <h2 className="text-h2 text-foreground">
@@ -253,7 +253,7 @@ export default function Home() {
       <section className="py-gsp-16 md:py-gsp-24">
         <div className="mx-auto max-w-[1200px] px-gsp-4 sm:px-gsp-6 lg:px-gsp-8 text-center">
           <h2 className="text-h2 text-foreground mb-gsp-8">
-            Ready to ship something pretty?
+            Code is commodity, your brand is not
           </h2>
           <div className="flex flex-col items-center gap-gsp-4">
             <InstallCommand />

@@ -11,7 +11,7 @@ export function FeatureCard({ title, description, className }: FeatureCardProps)
     <div
       className={cn(
         "bg-card border border-border rounded-md p-6",
-        "transition-colors hover:border-muted-foreground/30",
+        "transition-colors hover:border-primary/40",
         className
       )}
       style={{

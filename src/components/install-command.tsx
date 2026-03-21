@@ -24,8 +24,8 @@ export function InstallCommand({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "group inline-flex items-center gap-gsp-3 h-9 bg-card border border-border rounded-sm px-4 font-mono text-body-sm text-foreground",
-        "transition-colors hover:border-muted-foreground/30",
+        "group inline-flex items-center gap-gsp-3 h-9 bg-primary border border-primary rounded-sm px-4 font-mono text-body-sm text-primary-foreground",
+        "transition-colors hover:bg-primary/90",
         className
       )}
       style={{
@@ -36,7 +36,7 @@ export function InstallCommand({ className }: { className?: string }) {
       <code className="select-all">{INSTALL_COMMAND}</code>
       <button
         onClick={handleCopy}
-        className="shrink-0 p-1 text-muted-foreground hover:text-foreground rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="shrink-0 p-1 text-primary-foreground/60 hover:text-primary-foreground rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         aria-label={copied ? "Copied" : "Copy install command to clipboard"}
         style={{
           transitionDuration: "var(--gsp-motion-normal)",

@@ -96,7 +96,7 @@ export function AsciiHero() {
   }, []);
 
   return (
-    <h1 className="mb-gsp-6 text-center overflow-x-auto" aria-label="Get Shit Pretty">
+    <h1 className="mb-gsp-8 text-center overflow-x-auto" aria-label="Get Shit Pretty">
       <pre
         ref={preRef}
         className="font-mono text-foreground text-[clamp(0.5rem,1.4vw,1rem)] leading-[1.15] inline-block text-left select-none"
