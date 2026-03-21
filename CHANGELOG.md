@@ -22,7 +22,7 @@ All notable changes to get-shit-pretty are documented here.
 - Color composition strategies reference — 30-60-10 ratio guidance for design agents
 - WCAG 2.2 new criteria — SC 2.4.11, SC 2.5.8, SC 3.2.6, SC 3.3.7, SC 3.3.8 + APCA reference
 - Dev tools: `/gsp-audit` (37-test integrity suite), `/gsp-housekeeping`, `/gsp-dev`, `/gsp-runtime-compat`
-- 27 skills, 15 agents (up from 21 skills, 12 agents in v0.4.x)
+- 27 skills, 14 agents (up from 21 skills, 12 agents in v0.4.x)
 
 ### Changed
 - Skills-only architecture — removed commands, all functionality lives in `gsp/skills/*/SKILL.md`
