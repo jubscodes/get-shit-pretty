@@ -26,6 +26,7 @@ Build the brand's visual identity.
 <execution_context>
 @${CLAUDE_SKILL_DIR}/../../prompts/02-brand-identity-creator.md
 @${CLAUDE_SKILL_DIR}/../../templates/phases/identity.md
+@${CLAUDE_SKILL_DIR}/../../references/color-composition.md
 </execution_context>
 
 <rules>

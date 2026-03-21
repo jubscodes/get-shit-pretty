@@ -28,6 +28,7 @@ Critique design quality and audit accessibility compliance.
 @${CLAUDE_SKILL_DIR}/../../templates/phases/critique.md
 @${CLAUDE_SKILL_DIR}/../../references/nielsen-heuristics.md
 @${CLAUDE_SKILL_DIR}/../../references/wcag-checklist.md
+@${CLAUDE_SKILL_DIR}/../../references/color-composition.md
 </execution_context>
 
 <process>
