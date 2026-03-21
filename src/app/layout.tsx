@@ -5,41 +5,26 @@ import { cn } from "@/lib/utils";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
-const neueMontreal = localFont({
+const mori = localFont({
   src: [
-    { path: "../fonts/PPNeueMontreal-Light.woff2", weight: "300" },
-    { path: "../fonts/PPNeueMontreal-Regular.woff2", weight: "400" },
-    { path: "../fonts/PPNeueMontreal-Medium.woff2", weight: "500" },
-    { path: "../fonts/PPNeueMontreal-Bold.woff2", weight: "700" },
+    { path: "../fonts/PPMori-Extralight.woff2", weight: "200" },
+    { path: "../fonts/PPMori-Book.woff2", weight: "400" },
+    { path: "../fonts/PPMori-Regular.woff2", weight: "500" },
+    { path: "../fonts/PPMori-SemiBold.woff2", weight: "600" },
+    { path: "../fonts/PPMori-ExtraBold.woff2", weight: "800" },
   ],
   variable: "--font-primary",
   display: "swap",
 });
 
-const neueMontrealMono = localFont({
+const modelMono = localFont({
   src: [
-    { path: "../fonts/PPNeueMontrealMono-Regular.woff2", weight: "400" },
-    { path: "../fonts/PPNeueMontrealMono-Medium.woff2", weight: "500" },
-    { path: "../fonts/PPNeueMontrealMono-Bold.woff2", weight: "700" },
+    { path: "../fonts/PPModelMono-Light.woff2", weight: "300" },
+    { path: "../fonts/PPModelMono-Book.woff2", weight: "400" },
+    { path: "../fonts/PPModelMono-Medium.woff2", weight: "500" },
+    { path: "../fonts/PPModelMono-Bold.woff2", weight: "700" },
   ],
-  variable: "--font-mono",
-  display: "swap",
-});
-
-const monumentExtended = localFont({
-  src: [
-    { path: "../fonts/PPMonumentExtended-Light.woff2", weight: "300" },
-    { path: "../fonts/PPMonumentExtended-Regular.woff2", weight: "400" },
-    { path: "../fonts/PPMonumentExtended-Bold.woff2", weight: "700" },
-    { path: "../fonts/PPMonumentExtended-Black.woff2", weight: "900" },
-  ],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const playground = localFont({
-  src: "../fonts/PPPlayground-Regular.woff2",
-  variable: "--font-accent",
+  variable: "--font-mono-face",
   display: "swap",
 });
 
@@ -57,12 +42,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn(
-        neueMontreal.variable,
-        neueMontrealMono.variable,
-        monumentExtended.variable,
-        playground.variable,
-      )}
+      className={cn(mori.variable, modelMono.variable)}
       suppressHydrationWarning
     >
       <body className="min-h-dvh flex flex-col">

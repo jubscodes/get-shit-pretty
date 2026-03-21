@@ -16,8 +16,8 @@
 @theme inline {
   /* --- Fonts --- */
   --font-sans: var(--font-primary);
-  --font-mono: var(--font-mono);
-  --font-heading: var(--font-display);
+  --font-mono: "SF Mono", Menlo, Monaco, ui-monospace, monospace;
+  --font-heading: var(--font-primary);
 
   /* --- shadcn color mappings (color-* consumed by Tailwind utilities) --- */
   --color-background: var(--background);
@@ -95,12 +95,12 @@
   --gsp-text-muted: oklch(0.50 0 0);
   --gsp-text-disabled: oklch(0.33 0 0);
 
-  /* --- Accent (amber) --- */
-  --gsp-accent: oklch(0.754 0.155 77.29);
-  --gsp-accent-hover: oklch(0.851 0.123 72.89);
-  --gsp-accent-muted: oklch(0.50 0.08 77);
-  --gsp-accent-dim: oklch(0.35 0.05 77);
-  --gsp-accent-surface: oklch(0.20 0.03 77);
+  /* --- Accent (orange — #FF6B35) --- */
+  --gsp-accent: oklch(0.68 0.20 38);
+  --gsp-accent-hover: oklch(0.75 0.18 38);
+  --gsp-accent-muted: oklch(0.50 0.12 38);
+  --gsp-accent-dim: oklch(0.35 0.08 38);
+  --gsp-accent-surface: oklch(0.20 0.05 38);
   --gsp-on-accent: oklch(0.13 0 0);
 
   /* --- Semantic --- */
@@ -214,12 +214,12 @@
   --gsp-text-muted: oklch(0.40 0 0);
   --gsp-text-disabled: oklch(0.66 0 0);
 
-  --gsp-accent: oklch(0.60 0.155 77.29);
-  --gsp-accent-hover: oklch(0.754 0.155 77.29);
-  --gsp-accent-muted: oklch(0.50 0.08 77);
-  --gsp-accent-dim: oklch(0.75 0.04 77);
-  --gsp-accent-surface: oklch(0.95 0.02 77);
-  --gsp-on-accent: oklch(0.13 0 0);
+  --gsp-accent: oklch(0.58 0.20 38);
+  --gsp-accent-hover: oklch(0.68 0.20 38);
+  --gsp-accent-muted: oklch(0.45 0.12 38);
+  --gsp-accent-dim: oklch(0.75 0.06 38);
+  --gsp-accent-surface: oklch(0.95 0.03 38);
+  --gsp-on-accent: oklch(0.98 0 0);
 
   --gsp-error: oklch(0.577 0.245 27.325);
   --gsp-success: oklch(0.55 0.17 142.5);

@@ -59,9 +59,9 @@ export function SiteFooter() {
             <li aria-hidden="true">{"\u00b7"}</li>
             <li>
               <span>
-                Type by{" "}
+                Set in{" "}
                 <Link
-                  href="https://pangrampangram.com"
+                  href="https://pangrampangram.com/products/model"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="transition-colors hover:text-foreground"
@@ -70,7 +70,7 @@ export function SiteFooter() {
                     transitionTimingFunction: "var(--gsp-motion-easing)",
                   }}
                 >
-                  Pangram Pangram
+                  PP Model
                 </Link>
               </span>
             </li>

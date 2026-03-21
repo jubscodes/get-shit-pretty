@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { Toaster } from "@/components/ui/sonner";
-import { AtmosphericBg } from "@/components/atmospheric-bg";
 import { InstallCommand } from "@/components/install-command";
 import { TerminalMock } from "@/components/terminal-mock";
 import { PipelineViz } from "@/components/pipeline-viz";
@@ -50,27 +49,19 @@ export default function Home() {
       {/* ===== HERO ===== */}
       <section
         id="main"
-        className="relative py-gsp-16 md:py-gsp-24 overflow-hidden"
+        className="py-gsp-16 md:py-gsp-24"
       >
-        <AtmosphericBg />
-
-        <div className="relative mx-auto max-w-[1200px] px-gsp-4 sm:px-gsp-6 lg:px-gsp-8 text-center">
-          {/* Overline */}
+        <div className="mx-auto max-w-[1200px] px-gsp-4 sm:px-gsp-6 lg:px-gsp-8 text-center">
           <p className="text-overline text-muted-foreground mb-gsp-4">
             Design Engineering
           </p>
-
-          {/* Headline */}
-          <h1 className="flex flex-col items-center leading-none mb-gsp-6">
-            <span className="text-[clamp(1rem,2vw+0.5rem,1.5rem)] font-light uppercase tracking-[0.2em] text-muted-foreground">
-              get
-            </span>
-            <span className="font-heading font-black uppercase text-foreground text-[clamp(4rem,12vw+1rem,14rem)] tracking-tighter leading-[0.85]">
-              SHIT
-            </span>
-            <span className="text-foreground text-[clamp(2.5rem,6vw+1rem,7rem)]" style={{ fontFamily: "var(--font-accent)" }}>
-              Pretty
-            </span>
+          {/* Headline — ASCII shade blocks */}
+          <h1 className="mb-gsp-6 text-center overflow-x-auto" aria-label="Get Shit Pretty">
+            <pre className="font-mono text-foreground text-[clamp(0.5rem,1.4vw,1rem)] leading-[1.15] inline-block text-left select-none" aria-hidden="true">{` ▓▓▓▓▓▓  ▓▓▓▓▓▓▓ ▓▓▓▓▓▓▓▓     ▓▓▓▓▓▓▓ ▓▓   ▓▓ ▓▓ ▓▓▓▓▓▓▓▓     ▓▓▓▓▓▓  ▓▓▓▓▓▓  ▓▓▓▓▓▓▓ ▓▓▓▓▓▓▓▓ ▓▓▓▓▓▓▓▓ ▓▓    ▓▓
+▓▓       ▓▓         ▓▓        ▓▓      ▓▓   ▓▓ ▓▓    ▓▓        ▓▓   ▓▓ ▓▓   ▓▓ ▓▓         ▓▓       ▓▓     ▓▓  ▓▓
+░░   ░░░ ░░░░░      ░░        ░░░░░░░ ░░░░░░░ ░░    ░░        ░░░░░░  ░░░░░░  ░░░░░      ░░       ░░      ░░░░
+░░    ░░ ░░         ░░             ░░ ░░   ░░ ░░    ░░        ░░      ░░   ░░ ░░         ░░       ░░       ░░
+ ▒▒▒▒▒▒  ▒▒▒▒▒▒▒    ▒▒        ▒▒▒▒▒▒▒ ▒▒   ▒▒ ▒▒    ▒▒        ▒▒      ▒▒   ▒▒ ▒▒▒▒▒▒▒    ▒▒       ▒▒       ▒▒`}</pre>
           </h1>
 
           {/* Subhead */}

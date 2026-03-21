@@ -30,13 +30,7 @@ function NodeGlyph({ status }: { status: PipelineNode["status"] }) {
       );
     case "active":
       return (
-        <span
-          className="text-primary font-bold"
-          style={{
-            textShadow: "0 0 8px var(--gsp-lavender), 0 0 16px var(--gsp-lavender)",
-          }}
-          aria-hidden="true"
-        >
+        <span className="text-primary font-bold" aria-hidden="true">
           {"\u25c8"}
         </span>
       );
