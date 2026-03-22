@@ -235,7 +235,7 @@ No upgrade concerns → PASS
 ### Installation Health Checks
 
 **Check I1: Skills have `user-invocable: true`**
-Glob for all SKILL.md files in the skills directory (`.claude/skills/*/SKILL.md` or equivalent runtime path). For each skill (except the plugin entry point `get-shit-pretty`), check frontmatter for `user-invocable: true`.
+Glob for all SKILL.md files in the skills directory (`{runtime-dir}/skills/*/SKILL.md` — e.g. `.claude/skills/` for Claude Code, `.opencode/skills/` for OpenCode, `.gemini/skills/` for Gemini). For each skill (except the plugin entry point `get-shit-pretty`), check frontmatter for `user-invocable: true`.
 - All present → PASS
 - Missing → WARN: "Skills missing `user-invocable: true`: {list}. They won't appear in the slash-command menu. Re-run the installer or add the field manually."
 

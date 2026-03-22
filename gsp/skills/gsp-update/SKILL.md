@@ -11,10 +11,13 @@ Check for GSP updates, show what's new, and run the update if the user confirms.
 
 ## Step 1 — Detect installation
 
-Check for a `VERSION` file to determine install type:
+Check for a `VERSION` file to determine install type. The runtime directory varies by tool:
+- Claude Code: `.claude/` (local) or `~/.claude/` (global)
+- OpenCode: `.opencode/` (local) or `~/.config/opencode/` (global)
+- Gemini: `.gemini/` (local) or `~/.gemini/` (global)
+- Codex: `.codex/` (local) or `~/.codex/` (global)
 
-1. **Local install**: `.claude/get-shit-pretty/VERSION` relative to the current working directory
-2. **Global install**: `~/.claude/get-shit-pretty/VERSION`
+Look for `{runtime-dir}/get-shit-pretty/VERSION` in both local and global locations.
 
 If neither exists, tell the user GSP doesn't appear to be installed and suggest running:
 ```
@@ -82,14 +85,10 @@ Show the output to the user.
 
 ## Step 8 — Clear update cache
 
-Remove the update cache so the statusline reflects the new state:
+Remove the update cache so the statusline reflects the new state. Check both global and local runtime directories (same paths as Step 1):
 ```bash
-rm -f ~/.claude/get-shit-pretty/.update-cache.json
-```
-
-Also check for a local cache:
-```bash
-rm -f .claude/get-shit-pretty/.update-cache.json
+rm -f {global-runtime-dir}/get-shit-pretty/.update-cache.json
+rm -f {local-runtime-dir}/get-shit-pretty/.update-cache.json
 ```
 
 ## Step 9 — Remind to restart

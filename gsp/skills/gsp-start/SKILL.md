@@ -41,6 +41,11 @@ Through 2-3 rounds of natural conversation, gather a complete brief and create t
 @${CLAUDE_SKILL_DIR}/../../templates/exports-index.md
 </execution_context>
 
+<rules>
+- Never infer the user's name from package metadata, git config, or file paths — those are authors, not the current user.
+- Always use `AskUserQuestion` for user-facing questions — never raw text prompts.
+</rules>
+
 <questioning_principles>
 Follow these principles throughout all conversations:
 
@@ -67,7 +72,7 @@ Scan `.design/` for existing brands and projects:
 
 Spawn a background agent with `run_in_background: true` that follows the `/gsp:design-system` skill methodology:
 - Use `subagent_type: "general-purpose"`
-- Prompt: "Follow the /gsp:design-system skill methodology. Scan the codebase and produce `.design/system/{STACK,COMPONENTS,TOKENS,CONVENTIONS,CONCERNS}.md`. Read the templates from `.claude/templates/system/` for output format. If no package.json exists, write minimal greenfield versions."
+- Prompt: "Follow the /gsp:design-system skill methodology. Scan the codebase and produce `.design/system/{STACK,COMPONENTS,TOKENS,CONVENTIONS,CONCERNS}.md`. Read the templates from the GSP templates/system/ directory for output format. If no package.json exists, write minimal greenfield versions."
 - Store the task reference — you'll read results in Step 3 Round 2 or Step 4.
 
 This produces workspace-level documents consumed by downstream skills and agents.
