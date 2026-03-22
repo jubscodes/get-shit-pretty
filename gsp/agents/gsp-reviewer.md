@@ -69,7 +69,7 @@ Write each chunk following the format in `references/chunk-format.md`:
 
 - `acceptance-report.md` links to design chunks: `../design/screen-{NN}-{name}.md`
 - `issues.md` links to actual codebase files (e.g., `src/components/Button.tsx:42`)
-- Both reference brand system: `{BRAND_PATH}/system/components/{name}.md`
+- Both reference brand system: `{BRAND_PATH}/patterns/components/{name}.md`
 
 ### `INDEX.md`
 

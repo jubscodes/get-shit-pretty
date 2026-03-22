@@ -491,7 +491,7 @@ if should_run templates; then
   fi
 
   # T3: Phase templates exist for all expected phases
-  BRAND_PHASES="discover strategy identity system"
+  BRAND_PHASES="discover strategy identity patterns"
   PROJECT_PHASES="brief research design critique build review"
   PHASE_OK=true
   for phase in $BRAND_PHASES $PROJECT_PHASES; do

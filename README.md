@@ -110,7 +110,7 @@ Create your visual identity — logo directions, color palette, typography syste
 
 Translate your brand into tokens, components, and a living design system. Everything codified and ready to build with.
 
-**Creates:** `.design/branding/{brand}/system/`
+**Creates:** `.design/branding/{brand}/patterns/`
 
 ---
 

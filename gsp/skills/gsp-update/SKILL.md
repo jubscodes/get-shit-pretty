@@ -83,6 +83,10 @@ Based on the detected install type from Step 1:
 
 Show the output to the user.
 
+## Step 7.5 — Run migrations
+
+Scan `.design/branding/` for brand directories. For each brand, if `{brand}/system/` exists but `{brand}/patterns/` does not, rename via `mv` and log the migration. This handles the v0.5.0 → v0.5.1 rename.
+
 ## Step 8 — Clear update cache
 
 Remove the update cache so the statusline reflects the new state. Check both global and local runtime directories (same paths as Step 1):

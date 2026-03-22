@@ -59,7 +59,7 @@ Each screen chunk includes:
 - Interactions and gestures
 - Accessibility notes (VoiceOver order, focus management)
 
-Screen chunks link to component chunks in the brand system: `{BRAND_PATH}/system/components/{name}.md`.
+Screen chunks link to component chunks in the brand system: `{BRAND_PATH}/patterns/components/{name}.md`.
 
 ### Shared chunks
 

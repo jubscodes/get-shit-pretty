@@ -99,7 +99,7 @@ mkdir -p .design/system
 2. **CSS custom properties** in `globals.css` / `global.css`
 3. **Theme files** — `theme.ts`, `tokens.json`, `tokens.ts`
 4. **Dark mode setup** — next-themes, class strategy, media query
-5. **Prior GSP tokens** — scan `.design/branding/*/system/` for existing brand tokens
+5. **Prior GSP tokens** — scan `.design/branding/*/patterns/` for existing brand tokens
 
 6. **Write `.design/system/TOKENS.md`** from the TOKENS template
 

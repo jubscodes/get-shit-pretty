@@ -38,5 +38,5 @@
 **Status:** pending
 **Command:** `/gsp:brand-patterns`
 **Input:** Identity + Strategy + BRIEF.md
-**Output:** `system/` (foundations, components, tokens.json) + `preview.html`
-**Goal:** Build design system, generate brand preview, transition to project diamond.
+**Output:** `patterns/` (foundations, components, tokens.json) + `guidelines.html`
+**Goal:** Build design system, generate brand guidelines, transition to project diamond.

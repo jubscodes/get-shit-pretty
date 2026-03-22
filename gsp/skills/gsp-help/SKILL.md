@@ -96,7 +96,7 @@ Skill names are left-padded with 4 spaces. Descriptions start at column 27 (4 in
     │       ├── discover/         research chunks
     │       ├── strategy/         strategy + voice and messaging
     │       ├── identity/         visual identity
-    │       └── system/           tokens + components
+    │       └── patterns/         tokens + components
     └── projects/
         └── {project}/
             ├── config.json       project config

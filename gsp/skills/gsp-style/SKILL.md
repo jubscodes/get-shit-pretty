@@ -30,7 +30,7 @@ Apply a named style preset to produce production-ready design tokens and foundat
 @${CLAUDE_SKILL_DIR}/styles/INDEX.yml
 @${CLAUDE_SKILL_DIR}/../../references/design-tokens.md
 @${CLAUDE_SKILL_DIR}/../../references/chunk-format.md
-@${CLAUDE_SKILL_DIR}/../../templates/phases/system.md
+@${CLAUDE_SKILL_DIR}/../../templates/phases/patterns.md
 </execution_context>
 
 <rules>
@@ -163,18 +163,18 @@ Determine where to write the system output:
 
 ### Within a brand
 If a brand context exists (`.design/branding/{brand}/`):
-- Write to `{BRAND_PATH}/system/`
-- This replaces the system phase of the branding diamond
+- Write to `{BRAND_PATH}/patterns/`
+- This replaces the patterns phase of the branding diamond
 
 ### Within a project (quick mode)
 If invoked from a project context (`.design/projects/{project}/`):
 - Check if a `brand.ref` exists pointing to a brand with a completed system
-- If no brand system exists, write to `.design/branding/_style-{preset-name}/system/`
+- If no brand system exists, write to `.design/branding/_style-{preset-name}/patterns/`
 - Create a minimal brand directory with just the system output
 - Update the project's `brand.ref` to point to this auto-generated brand
 
 ### Standalone (no .design/ context)
-- Write to `.design/branding/_style-{preset-name}/system/`
+- Write to `.design/branding/_style-{preset-name}/patterns/`
 - Create minimal brand directory structure
 
 ## Step 5: Preview mode (`--preview`)
@@ -507,7 +507,7 @@ Write `{OUTPUT_PATH}/INDEX.md`:
 ## Step 10: Update state
 
 If a brand STATE.md exists at the brand path:
-- Set system phase status to `complete`
+- Set patterns phase status to `complete`
 - Record style preset name and completion date
 - Set Prettiness Level to 60% (foundations only, no components)
 

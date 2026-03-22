@@ -13,7 +13,7 @@ allowed-tools:
 <context>
 Phase 6 of the GSP project diamond. QA validates that the actual codebase implementation matches the design intent — checking real source files for token usage, screen coverage, component quality, and accessibility compliance.
 
-Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/system/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
+Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/patterns/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 </context>
 
 <objective>
@@ -56,8 +56,8 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 **Design:** Read `{PROJECT_PATH}/design/INDEX.md` → load all screen chunks.
 Fallback: `{PROJECT_PATH}/screens/INDEX.md` (legacy).
 
-**Brand system:** Read `{BRAND_PATH}/system/INDEX.md` → load foundation + component chunks.
-Also read `{BRAND_PATH}/system/tokens.json`.
+**Brand patterns:** Read `{BRAND_PATH}/patterns/INDEX.md` → load foundation + component chunks.
+Also read `{BRAND_PATH}/patterns/tokens.json`.
 
 **Brief:** Read `{PROJECT_PATH}/brief/INDEX.md` → load scope and adaptations.
 

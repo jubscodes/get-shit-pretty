@@ -52,8 +52,8 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 **Identity:** Read `{BRAND_PATH}/identity/INDEX.md` → load all chunks.
 Fallback: `{BRAND_PATH}/identity/IDENTITY.md`.
 
-**System:** Read `{BRAND_PATH}/system/INDEX.md` → load all chunks.
-Fallback: `{BRAND_PATH}/system/SYSTEM.md`.
+**Patterns:** Read `{BRAND_PATH}/patterns/INDEX.md` → load all chunks.
+Fallback: `{BRAND_PATH}/patterns/SYSTEM.md`.
 
 **Design:** Read `{PROJECT_PATH}/design/INDEX.md` → load all chunks.
 Fallback: `{PROJECT_PATH}/design/SCREENS.md` or `{PROJECT_PATH}/screens/INDEX.md` (legacy).

@@ -66,6 +66,7 @@ Scan `.design/` for existing brands and projects:
 - Check `.design/projects/` for project directories (each has a `config.json` with `project_type: "design"`)
 - Check for legacy flat `.design/config.json` at root (pre-0.4.0 structure)
 - For each brand/project found, read its `config.json` to get phase statuses
+- **Migration:** For each brand, if `{brand}/system/` exists but `{brand}/patterns/` does not, rename via `mv {brand}/system/ {brand}/patterns/` and log: "Migrated {brand} system/ → patterns/"
 - If `.design/CHANGELOG.md` doesn't exist, create it from `templates/changelog.md`
 
 ### Step 1b: Run design system scan (background)
@@ -161,7 +162,7 @@ From the greeting exchange, determine which flow to run:
 1. Ask for brand name (kebab-case, e.g., "acme-corp")
 2. Create directory structure:
 ```bash
-mkdir -p .design/branding/{name}/{audit,discover,strategy,identity,system}
+mkdir -p .design/branding/{name}/{audit,discover,strategy,identity,patterns}
 ```
 
 3. Gather brand brief in 3 rounds. The brief is the single source of truth for business and persona definition — invest here.
@@ -359,7 +360,7 @@ If the user names a preset directly at any point, skip the group step.
 
 1. Create brand directory:
 ```bash
-mkdir -p .design/branding/_style-{preset}/system/
+mkdir -p .design/branding/_style-{preset}/patterns/
 ```
 
 2. Invoke `/gsp:style {preset}` via Skill tool — this writes:
@@ -408,7 +409,7 @@ Continue directly to Step 4 (project flow) with these modifications:
 
 If a user later wants full branding, they can:
 1. Run `/gsp:start` → "Brand identity" to create a real brand
-2. Full diamond produces identity + system with real tokens
+2. Full diamond produces identity + patterns with real tokens
 3. Update the project's `brand.ref` to point to the new brand
 4. Re-run build phases — they pick up the new tokens automatically
 </process>

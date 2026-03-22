@@ -27,7 +27,7 @@ All notable changes to get-shit-pretty are documented here.
 ### Changed
 - Skills-only architecture — removed commands, all functionality lives in `gsp/skills/*/SKILL.md`
 - Moved all GSP content under `gsp/` prefix (agents, skills, prompts, templates, references)
-- Merged verbal identity into strategy phase — branding diamond is now 4 phases (discover, strategy, identity, system)
+- Merged verbal identity into strategy phase — branding diamond is now 4 phases (discover, strategy, identity, patterns)
 - Simplified brand agents with concise prompts and persona-focused methodology
 - Renamed `gsp-auditor` agent → `gsp-accessibility-auditor`
 - Critique phase reuses prior `/gsp:accessibility` output instead of re-running auditor

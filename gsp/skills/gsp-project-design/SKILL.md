@@ -13,7 +13,7 @@ allowed-tools:
 <context>
 Phase 3 of the GSP project diamond. Uses the UI/UX Pattern Master prompt to design core screens following Apple HIG and the brand's design system.
 
-Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/system/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
+Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/patterns/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 </context>
 
 <objective>
@@ -57,11 +57,11 @@ Check `{PROJECT_PATH}/STATE.md` for design status. If status is `needs-revision`
 
 If `{PROJECT_PATH}/references/` exists, scan for files (images, PDFs, markdown, URLs). Pass any found references to the designer agent as additional context.
 
-### Brand system (chunk-first)
+### Brand patterns (chunk-first)
 
-Read `{BRAND_PATH}/system/INDEX.md`. If it exists, load all foundation chunks + selective component chunks.
+Read `{BRAND_PATH}/patterns/INDEX.md`. If it exists, load all foundation chunks + selective component chunks.
 
-Fallback: read `{BRAND_PATH}/system/SYSTEM.md` (legacy monolith). Log: "⚠️ Legacy system format detected — consider re-running /gsp:brand-patterns for chunk output."
+Fallback: read `{BRAND_PATH}/patterns/SYSTEM.md` (legacy monolith). Log: "⚠️ Legacy format detected — consider re-running /gsp:brand-patterns for chunk output."
 
 If neither exists, tell the user to run `/gsp:brand-patterns` first.
 

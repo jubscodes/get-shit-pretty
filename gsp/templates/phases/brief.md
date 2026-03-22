@@ -37,7 +37,7 @@ Each chunk follows the format in `references/chunk-format.md`. Below is the stru
 - **Component adaptations:** brand components that need project-specific variants
 - **Platform considerations:** platform-specific adjustments (mobile, desktop, etc.)
 - **Implementation target mapping:** design components → target primitives (shadcn, rn-reusables, existing, code)
-- Links to brand system components: `{BRAND_PATH}/system/components/{name}.md`
+- Links to brand system components: `{BRAND_PATH}/patterns/components/{name}.md`
 
 ### install-manifest.md
 - Install commands for all needed components

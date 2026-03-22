@@ -13,7 +13,7 @@ Edit source under `gsp/`; the installer keeps runtimes in sync. Never edit insid
 
 ## Architecture
 
-Dual-diamond: **Branding** (discover → strategy → identity → system) + **Project** (brief → research → design → critique → build → review). Optional: launch. Verbal identity is merged into brand-strategy (4 phases, not 5).
+Dual-diamond: **Branding** (discover → strategy → identity → patterns) + **Project** (brief → research → design → critique → build → review). Optional: launch. Verbal identity is merged into brand-strategy (4 phases, not 5).
 
 ### Composable skills
 

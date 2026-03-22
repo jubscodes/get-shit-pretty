@@ -38,7 +38,7 @@ Show the pipeline line **only when 2+ phases are complete** (i.e., the user is c
 
 #### Branding phases
 
-`discover ─── strategy ─── identity ─── system`
+`discover ─── strategy ─── identity ─── patterns`
 
 If audit phase exists (evolve mode), prepend: `audit ─── `
 
@@ -87,8 +87,8 @@ Use judgment — if the user explicitly asked for one skill, don't push them int
 | audit | brand assessed | discover — `/gsp:brand-research` |
 | discover | market landscape mapped | strategy — `/gsp:brand-strategy` |
 | strategy | brand platform defined | identity — `/gsp:brand-identity` |
-| identity | visual system designed | system — `/gsp:brand-patterns` |
-| system | design system built | project — `/gsp:project-brief` (or done) |
+| identity | visual system designed | patterns — `/gsp:brand-patterns` |
+| patterns | design system built | project — `/gsp:project-brief` (or done) |
 
 ### Project Phases
 

@@ -15,7 +15,7 @@ allowed-tools:
 <context>
 Phase 5 of the GSP project diamond. Uses a 4-phase pipeline with verification checkpoints to implement designs directly in the codebase as production-ready frontend components.
 
-Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/system/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
+Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/patterns/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 
 **Pipeline architecture:**
 ```
@@ -111,7 +111,7 @@ Spawn `gsp-builder` agent with **execution_mode: foundations**.
 
 | File | Purpose |
 |------|---------|
-| `{BRAND_PATH}/system/tokens.json` | Design tokens |
+| `{BRAND_PATH}/patterns/tokens.json` | Design tokens |
 | `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations for target |
 | `.design/system/STACK.md` | Stack state |
 | `.design/system/CONVENTIONS.md` | Codebase conventions (if exists) |
@@ -179,7 +179,7 @@ Build screens sequentially. For each screen in `SCREENS`:
 | File | Purpose |
 |------|---------|
 | `{PROJECT_PATH}/design/screen-{NN}-{name}.md` | This screen's design chunk |
-| Referenced component chunks from `{BRAND_PATH}/system/components/` | Only components referenced in this screen's chunk |
+| Referenced component chunks from `{BRAND_PATH}/patterns/components/` | Only components referenced in this screen's chunk |
 | `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations |
 | `{PROJECT_PATH}/research/reference-specs.md` (if exists) | Technical specs |
 | `{PROJECT_PATH}/critique/prioritized-fixes.md` (if exists) | Critique fixes relevant to this screen |
