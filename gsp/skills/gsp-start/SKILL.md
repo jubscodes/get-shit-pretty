@@ -239,6 +239,8 @@ Skip or compress rounds if the user gives enough upfront. Don't over-ask.
 
 ## Step 4: Project flow
 
+**Background:** Run `git branch --show-current` with `run_in_background: true` now — result will be ready by the time we need it for git context detection.
+
 1. Show available brands:
 ```
 Available brands:
@@ -261,8 +263,9 @@ mkdir -p .design/projects/{name}/{brief,research,design,critique,build,review,co
 
 ### Detect git context
 
-1. Run `git branch --show-current` to detect current branch
-2. If a branch is detected, use `AskUserQuestion`: "I see you're on `{branch}` — track this as the project branch?"
+Use the git branch detected earlier (run `git branch --show-current` in background at the start of Step 4, while asking for project name — result is ready by now).
+
+1. If a branch was detected, use `AskUserQuestion`: "I see you're on `{branch}` — track this as the project branch?"
    - **Yes, use this branch** — "Track `{branch}`"
    - **Different branch** — "I want to use a different branch name"
 3. Store in config.json `git.branch` and STATE.md `## Git` table
