@@ -208,7 +208,7 @@ Generate a single self-contained HTML file with:
 - **Logo direction descriptions** — each direction with rationale
 - **Archetype summary** — the selected archetype and its expression
 
-Tell the user: "Brand preview saved — open it in your browser to see the full brand at a glance."
+Tell the user: "Brand kit saved to `preview.html` — open it in your browser to see your colors, typography, voice, and messaging in one page. You can also print or export to PDF as a shareable brand guide."
 
 ## Step 5: Phase transition output
 
