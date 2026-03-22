@@ -61,6 +61,13 @@ Set `PROJECT_PATH` = `.design/projects/{project}`
 Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
 - Set `BRAND_PATH` = `.design/branding/{brand}`
 
+## Step 0.5: Validate prerequisites
+
+Read `{PROJECT_PATH}/STATE.md`. Check that Design (Phase 3) is `complete` or `needs-revision` (revision means critique ran and is feeding back).
+If design is `pending` or missing: "No designs found. Run `/gsp:project-design` first — building without designs leads to poor results." Then stop.
+
+Exception: if `design_scope` is `tokens` in config.json, skip this check (tokens-only projects don't need design).
+
 ## Step 1: Load config and check state
 
 Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`, `codebase_type`.

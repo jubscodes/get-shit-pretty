@@ -40,6 +40,13 @@ Set `PROJECT_PATH` = `.design/projects/{project}`
 Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
 - Set `BRAND_PATH` = `.design/branding/{brand}`
 
+## Step 0.5: Validate prerequisites
+
+Read `{PROJECT_PATH}/STATE.md`. Check that Brief (Phase 1) is `complete`.
+If not: "Brief hasn't been completed yet. Run `/gsp:project-brief` first." Then stop.
+
+Research (Phase 2) is recommended but not required — if skipped, log: "No research artifacts found — designing from brief only."
+
 ## Step 1: Load context
 
 Read `{PROJECT_PATH}/config.json` — get `implementation_target`, `design_scope`, `codebase_type`.

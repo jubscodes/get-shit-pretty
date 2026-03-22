@@ -214,6 +214,8 @@ Tell the user: "Brand kit saved to `guidelines.html` — open it in your browser
 
 Render phase transition (see `references/phase-transitions.md`).
 
+**Critical:** When the user chooses "Start a project", invoke `/gsp:start` via the Skill tool. Do NOT attempt to handle project setup inline — `/gsp:start` has the codebase scanning, questioning rounds, and brief-writing logic needed for a proper project setup. The branding agent's context is spent on brand work and lacks the project setup methodology.
+
 Also display a brand summary after the standard transition — this is the final branding phase:
 
 ```

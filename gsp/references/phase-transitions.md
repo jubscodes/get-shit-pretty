@@ -88,7 +88,7 @@ Use judgment — if the user explicitly asked for one skill, don't push them int
 | discover | market landscape mapped | strategy — `/gsp:brand-strategy` |
 | strategy | brand platform defined | identity — `/gsp:brand-identity` |
 | identity | visual system designed | patterns — `/gsp:brand-patterns` |
-| patterns | design system built | project — `/gsp:project-brief` (or done) |
+| patterns | design system built | project setup — `/gsp:start` (scans codebase, gathers brief, creates project) |
 
 ### Project Phases
 
