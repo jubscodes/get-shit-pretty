@@ -212,26 +212,9 @@ Tell the user: "Brand preview saved — open it in your browser to see the full 
 
 ## Step 5: Phase transition output
 
-Render the phase transition screen (see `references/phase-transitions.md` for styling):
+Render phase transition (see `references/phase-transitions.md`).
 
-```
-  ◆ system complete — design system built
-
-    system/
-    ├── foundations/
-    │   ├── {foundation files}
-    ├── components/
-    │   ├── {component files}
-    ├── principles.md
-    ├── tokens.json
-    ├── {brand-name}.yml
-    ├── {brand-name}.md
-    └── INDEX.md
-
-  ──────────────────────────────
-```
-
-Then display the brand summary:
+Also display a brand summary after the standard transition — this is the final branding phase:
 
 ```
   brand complete — {brand-name}
@@ -243,9 +226,4 @@ Then display the brand summary:
 
     preview: {BRAND_PATH}/preview.html
 ```
-
-Then use `AskUserQuestion` with 3 options:
-- **Start a project** — "scope what you're building with this brand"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
 </process>

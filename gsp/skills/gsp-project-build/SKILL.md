@@ -251,24 +251,7 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ### Phase transition output
 
-```
-  ◆ build complete — code implemented
-
-    build/
-    ├── SCAFFOLD-LOG.md
-    ├── BUILD-LOG.md
-    └── INDEX.md
-
-    Screens: {done}/{total}
-    Build: compiles ✓
-
-  ──────────────────────────────
-```
-
-Then use `AskUserQuestion` with 3 options:
-- **Continue to review** — "QA validate implementation against designs"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
+Render phase transition (see `references/phase-transitions.md`). Include screen count and build status in the output.
 
 ---
 

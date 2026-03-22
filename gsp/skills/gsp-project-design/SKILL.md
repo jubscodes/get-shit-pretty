@@ -120,25 +120,6 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ## Step 5: Phase transition output
 
-Render the phase transition screen (see `references/phase-transitions.md` for styling):
-
-```
-  ◆ design complete — screens designed
-
-    design/
-    ├── {actual screen chunks}
-    ├── shared/
-    │   ├── {shared chunks}
-    │   └── component-plan.md
-    ├── preview.html
-    └── INDEX.md
-
-  ──────────────────────────────
-```
-
-Then use `AskUserQuestion` with 3 options:
-- **Continue to critique** — "critique designs + accessibility audit"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
+Render phase transition (see `references/phase-transitions.md`).
 </process>
 </output>

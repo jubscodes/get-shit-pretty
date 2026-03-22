@@ -78,8 +78,5 @@ Update `{BRAND_PATH}/STATE.md`: set Phase 1 (Discover) to `complete`.
 
 ## Step 5: Phase transition
 
-Render phase transition screen, then use `AskUserQuestion`:
-- **Continue to strategy** — "define positioning, voice, and messaging"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
+Render phase transition (see `references/phase-transitions.md`).
 </process>

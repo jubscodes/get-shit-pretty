@@ -88,8 +88,7 @@ Update `{PROJECT_PATH}/STATE.md`:
 - Add Launch status to `complete` under the Launch section
 - Record completion date
 
-## Step 4: Done
+## Step 4: Phase transition output
 
-Display campaign summary and:
-"Launch assets complete! Run `/gsp:progress` to see the full journey."
+Render phase transition (see `references/phase-transitions.md`). This is the final phase.
 </process>

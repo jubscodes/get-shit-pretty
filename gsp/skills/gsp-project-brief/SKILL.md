@@ -138,21 +138,6 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ## Step 5: Phase transition output
 
-Render the phase transition screen (see `references/phase-transitions.md` for styling):
-
-```
-  ◆ brief complete — project scoped
-
-    brief/
-    ├── {actual files written}
-    └── INDEX.md
-
-  ──────────────────────────────
-```
-
-Then use `AskUserQuestion` with 3 options:
-- **Continue to research** — "research UX patterns and approaches"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
+Render phase transition (see `references/phase-transitions.md`).
 </process>
 </output>

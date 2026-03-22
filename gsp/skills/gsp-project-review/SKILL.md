@@ -172,38 +172,5 @@ If verdict is **Fail**:
 
 ## Step 6: Phase transition output
 
-Render the phase transition screen (see `references/phase-transitions.md` for styling):
-
-**If Pass/Conditional Pass:**
-
-```
-  ◆ review complete — implementation validated
-
-    review/
-    ├── acceptance-report.md
-    ├── issues.md
-    └── INDEX.md
-
-  ──────────────────────────────
-
-  fully pretty.
-```
-
-Then use `AskUserQuestion` with 3 options:
-- **Launch campaign** — "create launch and marketing assets"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
-
-**If Fail:**
-
-```
-  ◈ review — QA found issues, needs revision
-
-  ──────────────────────────────
-```
-
-Then use `AskUserQuestion` with 3 options:
-- **Fix and rebuild** — "address issues in review/issues.md"
-- **View issues** — "see the full QA report"
-- **Done for now** — "pick up later with /gsp:start"
+Render phase transition (see `references/phase-transitions.md`). This phase has pass/fail variants — the reference covers both.
 </process>

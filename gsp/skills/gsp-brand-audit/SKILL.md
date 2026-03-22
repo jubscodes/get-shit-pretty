@@ -85,7 +85,5 @@ Update `evolution_scope` in `{BRAND_PATH}/config.json` with confirmed decisions.
 
 Update `{BRAND_PATH}/STATE.md`: set Phase 0 (Audit) to `complete`.
 
-Use `AskUserQuestion`:
-- **Continue to research** — "validate brand position against the market"
-- **Done for now** — "pick up later with /gsp:start"
+Render phase transition (see `references/phase-transitions.md`).
 </process>

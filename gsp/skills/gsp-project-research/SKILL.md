@@ -128,21 +128,6 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ## Step 4: Phase transition output
 
-Render the phase transition screen (see `references/phase-transitions.md` for styling):
-
-```
-  ◆ research complete — patterns and approaches researched
-
-    research/
-    ├── {actual files written}
-    └── INDEX.md
-
-  ──────────────────────────────
-```
-
-Then use `AskUserQuestion` with 3 options:
-- **Continue to design** — "design screens and flows"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
+Render phase transition (see `references/phase-transitions.md`).
 </process>
 </output>
