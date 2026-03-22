@@ -61,7 +61,7 @@ export function SiteFooter() {
               <span>
                 Set in{" "}
                 <Link
-                  href="https://pangrampangram.com/products/model"
+                  href="https://pangrampangram.com/products/pp-mori"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="transition-colors hover:text-foreground"
@@ -70,7 +70,20 @@ export function SiteFooter() {
                     transitionTimingFunction: "var(--gsp-motion-easing)",
                   }}
                 >
-                  PP Model
+                  PP Mori
+                </Link>
+                {" & "}
+                <Link
+                  href="https://pangrampangram.com/products/pp-model"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-foreground"
+                  style={{
+                    transitionDuration: "var(--gsp-motion-normal)",
+                    transitionTimingFunction: "var(--gsp-motion-easing)",
+                  }}
+                >
+                  PP Model Mono
                 </Link>
               </span>
             </li>
