@@ -54,9 +54,21 @@
 - **Trust signals:** {trust / distrust triggers}
 
 ## Brand Essence
+
+### Promise
+- **Core promise:** {whenever someone interacts with this brand, they should feel X}
+- **Functional promise:** {what it delivers — saves time, reduces complexity, etc.}
+- **Emotional promise:** {what it makes them feel — confident, seen, ahead, safe, etc.}
+
+### Point of View
+- **Category disagreement:** {what this brand disagrees with in the status quo}
+- **Underestimated truth:** {what truth does this brand hold that others ignore?}
+- **Manifesto line:** {if the brand could defend one idea, what would it be?}
+
+### Personality
 - **Personality:** {3 words — e.g. precise, inventive, grounded}
 - **Personality reference:** {brand comparison — "like Stripe meets Notion"}
-- **Emotional outcome:** {how should someone feel after interacting with this brand?}
+- **Not us:** {2 words that are definitely not this brand — e.g. corporate, cute}
 - **Never be:** {what the brand should never feel like — e.g. corporate, cold, try-hard}
 - **Tone:** {default communication tone}
 
