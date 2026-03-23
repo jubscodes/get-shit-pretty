@@ -109,7 +109,11 @@ process.stdin.on('end', () => {
     // ── Update check ──
     let updateTag = '';
     try {
-      const gspDir = path.join(homeDir, '.claude', 'get-shit-pretty');
+      const runtimeDir = path.join(homeDir, '.claude');
+      const legacyDir = path.join(runtimeDir, 'get-shit-pretty');
+      const gspDir = fs.existsSync(path.join(runtimeDir, 'VERSION')) ? runtimeDir
+        : fs.existsSync(path.join(legacyDir, 'VERSION')) ? legacyDir : null;
+      if (!gspDir) throw new Error('no VERSION');
       const versionFile = path.join(gspDir, 'VERSION');
       const cacheFile = path.join(gspDir, '.update-cache.json');
 
