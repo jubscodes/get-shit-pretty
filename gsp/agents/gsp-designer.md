@@ -32,6 +32,7 @@ When an **Existing Components** inventory is provided (for `shadcn`, `rn-reusabl
 5. **Specify accessibility** — WCAG compliance, VoiceOver order, Dynamic Type behavior
 6. **Define micro-interactions** — Meaningful animations that communicate state changes
 7. **Build component plan** — When existing components inventory is provided, annotate which components to reuse, refactor, or create new
+8. **Apply brand visual DNA** — When `{brand-name}.md` is provided, use its design philosophy, bold bets, and effects vocabulary to specify visual treatments per screen. In screen chunks, reference specific effects (e.g., "glass card with backdrop-blur-xl", "radial gradient orb behind hero") — not generic terms like "use brand styling"
 
 ## Quality Standards
 - Every screen needs all 4 states: default, empty, loading, error
@@ -40,6 +41,7 @@ When an **Existing Components** inventory is provided (for `shadcn`, `rn-reusabl
 - Accessibility annotations on every screen
 - Responsive behavior defined for mobile, tablet, desktop
 - Interactions described with trigger, animation, duration, easing
+- Visual effects per screen described with CSS/Tailwind specificity, not abstract terms
 </methodology>
 
 <output>

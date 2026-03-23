@@ -49,6 +49,8 @@ Implement designs as production-ready code in the codebase via phased pipeline w
 <execution_context>
 @${CLAUDE_SKILL_DIR}/../../prompts/09-design-to-code-translator.md
 @${CLAUDE_SKILL_DIR}/../../templates/phases/build.md
+@${CLAUDE_SKILL_DIR}/../../references/visual-effects.md
+@${CLAUDE_SKILL_DIR}/../../references/block-patterns.md
 </execution_context>
 
 <process>
@@ -119,6 +121,7 @@ Spawn `gsp-builder` agent with **execution_mode: foundations**.
 | File | Purpose |
 |------|---------|
 | `{BRAND_PATH}/patterns/tokens.json` | Design tokens |
+| `{BRAND_PATH}/patterns/{brand-name}.md` | Brand visual DNA — effects, component stylings, bold bets (if exists) |
 | `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations for target |
 | `.design/system/STACK.md` | Stack state |
 | `.design/system/CONVENTIONS.md` | Codebase conventions (if exists) |
@@ -136,9 +139,10 @@ Spawn `gsp-builder` agent with **execution_mode: foundations**.
 > 2. Create global CSS (resets, base styles, font imports, dark mode setup)
 > 3. Create root layout with nav shell and footer shell (structure only — no page content)
 > 4. Create shared utilities (cn helper, theme provider if needed)
-> 5. Do NOT build individual screens or page content
-> 6. Write code directly to the codebase, not to `.design/`
-> 7. Leave changes unstaged
+> 5. Apply the brand style prompt's visual effects and signature patterns — create CSS utilities or Tailwind extensions for the brand's signature effects (glass, glow, gradients, shadows, motion patterns)
+> 6. Do NOT build individual screens or page content
+> 7. Write code directly to the codebase, not to `.design/`
+> 8. Leave changes unstaged
 >
 > After completing foundations, write `{PROJECT_PATH}/build/BUILD-LOG.md` with what was done (foundations section only).
 
@@ -207,6 +211,7 @@ Build screens sequentially. For each screen in `SCREENS`:
 > 4. Do NOT modify foundation files (global CSS, layout, tokens, theme provider)
 > 5. Write code directly to the codebase, not to `.design/`
 > 6. Leave changes unstaged
+> 7. The brand's visual effects were implemented as utilities during foundations — use those utilities/classes rather than re-reading the brand style document
 >
 > After completing this screen, append to `{PROJECT_PATH}/build/BUILD-LOG.md` — add this screen's files and status to the existing log.
 

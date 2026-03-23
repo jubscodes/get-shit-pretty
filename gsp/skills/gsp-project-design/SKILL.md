@@ -28,6 +28,8 @@ Design core UI/UX screens and interaction flows.
 @${CLAUDE_SKILL_DIR}/../../prompts/03-ui-ux-pattern-master.md
 @${CLAUDE_SKILL_DIR}/../../templates/phases/design.md
 @${CLAUDE_SKILL_DIR}/../../references/apple-hig-patterns.md
+@${CLAUDE_SKILL_DIR}/../../references/visual-effects.md
+@${CLAUDE_SKILL_DIR}/../../references/block-patterns.md
 </execution_context>
 
 <process>
@@ -77,6 +79,14 @@ If neither exists, tell the user to run `/gsp:brand-patterns` first.
 Read `{BRAND_PATH}/identity/INDEX.md`. If it exists, load `color-system.md` and `typography.md`.
 Fallback: read `{BRAND_PATH}/identity/IDENTITY.md`.
 
+### Brand style prompt (visual DNA)
+
+Scan `{BRAND_PATH}/patterns/` for a `.md` file that is NOT `INDEX.md`, `principles.md`, or inside `foundations/` or `components/`. This is the brand's custom style prompt (`{brand-name}.md`).
+
+If found, read it. Pass to the designer agent in Step 3 as the **primary visual direction** — it contains design philosophy, bold visual bets, effects vocabulary, and component stylings with CSS/Tailwind hints.
+
+If not found, proceed without it (older brands may not have this file).
+
 ### Brief (chunk-first)
 
 Read `{PROJECT_PATH}/brief/INDEX.md`. If it exists, load `scope.md` and `target-adaptations.md`.
@@ -108,7 +118,7 @@ When `implementation_target` is not `figma`:
 
 ## Step 3: Spawn designer
 
-Spawn the `gsp-designer` agent with all prior artifacts, the UI/UX Pattern Master prompt (03), design output template, Apple HIG patterns reference, implementation_target, design_scope, codebase_type, target screens (when partial), existing components inventory, custom references (when available), and critique fixes (when in revision mode).
+Spawn the `gsp-designer` agent with all prior artifacts, the UI/UX Pattern Master prompt (03), design output template, Apple HIG patterns reference, brand style prompt ({brand-name}.md when available), implementation_target, design_scope, codebase_type, target screens (when partial), existing components inventory, custom references (when available), and critique fixes (when in revision mode).
 
 **Output path:** `{PROJECT_PATH}/design/`
 

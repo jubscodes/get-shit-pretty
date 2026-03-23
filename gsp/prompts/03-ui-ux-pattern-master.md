@@ -37,5 +37,7 @@ Reference existing components and patterns from [COMPONENTS]. Use existing compo
 - State designs (empty, error, loading)
 - Accessibility (WCAG, VoiceOver, Dynamic Type)
 - Micro-interactions
+- Visual effects direction per screen (background treatment, depth strategy, entrance animation, signature brand effects)
+- Block composition pattern per section (hero variant, feature layout, CTA treatment)
 - Responsive behavior
 - Designer's notes
