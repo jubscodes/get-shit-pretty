@@ -53,7 +53,7 @@ If brief doesn't exist, tell the user to run `/gsp:project-brief` first.
 
 ### Brand system (selective)
 
-Read `{BRAND_PATH}/system/INDEX.md`. If it exists, load foundation chunks (to understand the design system constraints).
+Read `{BRAND_PATH}/patterns/INDEX.md`. If it exists, load foundation chunks (to understand the design system constraints).
 
 ### Brand discovery (selective)
 
@@ -77,7 +77,13 @@ Read:
 3. Route: "Run `/gsp:project-build`."
 4. Stop here.
 
+## Step 1.75: Pre-fetch references (background)
+
+If competitor URLs or reference sites are mentioned in BRIEF.md or `{PROJECT_PATH}/references/`, use `WebFetch` with `run_in_background: true` to pre-fetch them. This warms content for the researcher agent.
+
 ## Step 2: Spawn project researcher
+
+Include any pre-fetched reference content in the agent context.
 
 Spawn the `gsp-project-researcher` agent with:
 - Brief scope chunks
@@ -128,21 +134,6 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ## Step 4: Phase transition output
 
-Render the phase transition screen (see `references/phase-transitions.md` for styling):
-
-```
-  ◆ research complete — patterns and approaches researched
-
-    research/
-    ├── {actual files written}
-    └── INDEX.md
-
-  ──────────────────────────────
-```
-
-Then use `AskUserQuestion` with 3 options:
-- **Continue to design** — "design screens and flows"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
+Render phase transition (see `references/phase-transitions.md`).
 </process>
 </output>

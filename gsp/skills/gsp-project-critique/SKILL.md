@@ -52,8 +52,8 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 **Identity:** Read `{BRAND_PATH}/identity/INDEX.md` → load all chunks.
 Fallback: `{BRAND_PATH}/identity/IDENTITY.md`.
 
-**System:** Read `{BRAND_PATH}/system/INDEX.md` → load all chunks.
-Fallback: `{BRAND_PATH}/system/SYSTEM.md`.
+**Patterns:** Read `{BRAND_PATH}/patterns/INDEX.md` → load all chunks.
+Fallback: `{BRAND_PATH}/patterns/SYSTEM.md`.
 
 **Design:** Read `{PROJECT_PATH}/design/INDEX.md` → load all chunks.
 Fallback: `{PROJECT_PATH}/design/SCREENS.md` or `{PROJECT_PATH}/screens/INDEX.md` (legacy).
@@ -147,36 +147,6 @@ If verdict is **Fail**:
 
 ## Step 6: Phase transition output
 
-Render the phase transition screen (see `references/phase-transitions.md` for styling):
-
-**If Pass/Conditional Pass:**
-
-```
-  ◆ critique complete — designs critiqued
-
-    critique/
-    ├── {actual files written}
-    └── INDEX.md
-
-  ──────────────────────────────
-```
-
-Then use `AskUserQuestion` with 3 options:
-- **Continue to build** — "implement designs in the codebase"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
-
-**If Fail:**
-
-```
-  ◈ critique — critical issues found, revising designs
-
-  ──────────────────────────────
-```
-
-Then use `AskUserQuestion` with 3 options:
-- **Revise designs** — "address critical issues and re-run critique"
-- **Override and continue** — "accept current designs and move to build"
-- **View issues** — "see the full critique report"
+Render phase transition (see `references/phase-transitions.md`). This phase has pass/fail variants — the reference covers both.
 </process>
 </output>

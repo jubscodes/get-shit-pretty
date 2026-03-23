@@ -55,23 +55,23 @@ For each instance, read:
 
 **Check B1: Brand Structure**
 Required: config.json, STATE.md, BRIEF.md
-Required dirs: discover/, strategy/, identity/, system/
+Required dirs: discover/, strategy/, identity/, patterns/
 Missing → FAIL
 
 **Check B2: Brand Phase Ordering**
-No phase complete if earlier phase is pending (discover < strategy < identity < system).
+No phase complete if earlier phase is pending (discover < strategy < identity < patterns).
 Exception: strategy can proceed without discover.
 
 **Check B3: Brand Completeness**
 If all 4 phases complete, check:
 - `identity/INDEX.md` exists (chunk format)
 - `identity/palettes.json` exists (WARN if missing)
-- `system/INDEX.md` exists (chunk format)
-- `system/tokens.json` exists (WARN if missing)
+- `patterns/INDEX.md` exists (chunk format)
+- `patterns/tokens.json` exists (WARN if missing)
 - If monolith exists without INDEX.md → WARN: "Legacy monolith format"
 
 **Check B4: Legacy Monolith Detection**
-For each brand phase directory (discover, strategy, identity, system):
+For each brand phase directory (discover, strategy, identity, patterns):
 - If monolith exists but no INDEX.md → WARN: "Legacy format in {phase}/ — re-run /gsp:brand-{phase} for chunk output"
 
 ### Per-Project Checks (6-phase)
@@ -128,7 +128,7 @@ All phases in order (or validly skipped) → PASS
 Only check phases that are `complete`. All paths relative to the project instance directory.
 
 **When `system_strategy` is `extend`:**
-- Check if brand's `system/` output contains "Component Audit" or "KEEP" or "RESTYLE" or "REFACTOR" or "REPLACE"
+- Check if brand's `patterns/` output contains "Component Audit" or "KEEP" or "RESTYLE" or "REFACTOR" or "REPLACE"
 - If none found → WARN: "Strategy is `extend` but system output lacks component audit table. Re-run `/gsp:brand-patterns`."
 
 **When `implementation_target` is `shadcn`:**
@@ -235,7 +235,7 @@ No upgrade concerns → PASS
 ### Installation Health Checks
 
 **Check I1: Skills have `user-invocable: true`**
-Glob for all SKILL.md files in the skills directory (`.claude/skills/*/SKILL.md` or equivalent runtime path). For each skill (except the plugin entry point `get-shit-pretty`), check frontmatter for `user-invocable: true`.
+Glob for all SKILL.md files in the skills directory (`{runtime-dir}/skills/*/SKILL.md` — e.g. `.claude/skills/` for Claude Code, `.opencode/skills/` for OpenCode, `.gemini/skills/` for Gemini). For each skill (except the plugin entry point `get-shit-pretty`), check frontmatter for `user-invocable: true`.
 - All present → PASS
 - Missing → WARN: "Skills missing `user-invocable: true`: {list}. They won't appear in the slash-command menu. Re-run the installer or add the field manually."
 

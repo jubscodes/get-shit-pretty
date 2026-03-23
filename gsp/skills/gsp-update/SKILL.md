@@ -11,12 +11,17 @@ Check for GSP updates, show what's new, and run the update if the user confirms.
 
 ## Step 1 — Detect installation
 
-Check for a `VERSION` file to determine install type:
+Check for a `VERSION` file to determine install type. The runtime directory varies by tool:
+- Claude Code: `.claude/` (local) or `~/.claude/` (global)
+- OpenCode: `.opencode/` (local) or `~/.config/opencode/` (global)
+- Gemini: `.gemini/` (local) or `~/.gemini/` (global)
+- Codex: `.codex/` (local) or `~/.codex/` (global)
 
-1. **Local install**: `.claude/get-shit-pretty/VERSION` relative to the current working directory
-2. **Global install**: `~/.claude/get-shit-pretty/VERSION`
+Look for the VERSION file in both local and global locations. Check two paths per location (current layout first, legacy fallback):
+1. `{runtime-dir}/VERSION` (v0.5.0+)
+2. `{runtime-dir}/get-shit-pretty/VERSION` (legacy v0.4.x)
 
-If neither exists, tell the user GSP doesn't appear to be installed and suggest running:
+If neither exists in either location, tell the user GSP doesn't appear to be installed and suggest running:
 ```
 npx get-shit-pretty
 ```
@@ -50,7 +55,7 @@ Update available: v{installed} → v{latest}
 
 Fetch the changelog to show what changed:
 ```bash
-curl -sf https://raw.githubusercontent.com/jubs-cloud/get-shit-pretty/main/CHANGELOG.md
+curl -sf https://raw.githubusercontent.com/jubscodes/get-shit-pretty/main/CHANGELOG.md
 ```
 
 If the fetch succeeds, extract and display the section for the latest version. If it fails, skip — changelog display is optional.
@@ -80,16 +85,19 @@ Based on the detected install type from Step 1:
 
 Show the output to the user.
 
+## Step 7.5 — Run migrations
+
+Scan `.design/branding/` for brand directories. For each brand, if `{brand}/system/` exists but `{brand}/patterns/` does not, rename via `mv` and log the migration. This handles the v0.5.0 → v0.5.1 rename.
+
 ## Step 8 — Clear update cache
 
-Remove the update cache so the statusline reflects the new state:
+Remove the update cache so the statusline reflects the new state. Clear cache from the same directory where VERSION was found in Step 1:
 ```bash
-rm -f ~/.claude/get-shit-pretty/.update-cache.json
+rm -f {version-dir}/.update-cache.json
 ```
-
-Also check for a local cache:
+Also clean the legacy path if it exists:
 ```bash
-rm -f .claude/get-shit-pretty/.update-cache.json
+rm -f {runtime-dir}/get-shit-pretty/.update-cache.json
 ```
 
 ## Step 9 — Remind to restart

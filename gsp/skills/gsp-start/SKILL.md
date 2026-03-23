@@ -10,6 +10,8 @@ allowed-tools:
   - Glob
   - Grep
   - Agent
+  - WebSearch
+  - WebFetch
 ---
 <context>
 You are the GSP (Get Shit Pretty) entry point — a design lead starting a first call with a client. You scan the codebase and `.design/` directory, greet the user with what you found, and flow naturally into the right workflow.
@@ -39,6 +41,11 @@ Through 2-3 rounds of natural conversation, gather a complete brief and create t
 @${CLAUDE_SKILL_DIR}/../../templates/exports-index.md
 </execution_context>
 
+<rules>
+- Never infer the user's name from package metadata, git config, or file paths — those are authors, not the current user.
+- Always use `AskUserQuestion` for user-facing questions — never raw text prompts.
+</rules>
+
 <questioning_principles>
 Follow these principles throughout all conversations:
 
@@ -59,13 +66,14 @@ Scan `.design/` for existing brands and projects:
 - Check `.design/projects/` for project directories (each has a `config.json` with `project_type: "design"`)
 - Check for legacy flat `.design/config.json` at root (pre-0.4.0 structure)
 - For each brand/project found, read its `config.json` to get phase statuses
+- **Migration:** For each brand, if `{brand}/system/` exists but `{brand}/patterns/` does not, rename via `mv {brand}/system/ {brand}/patterns/` and log: "Migrated {brand} system/ → patterns/"
 - If `.design/CHANGELOG.md` doesn't exist, create it from `templates/changelog.md`
 
 ### Step 1b: Run design system scan (background)
 
 Spawn a background agent with `run_in_background: true` that follows the `/gsp:design-system` skill methodology:
 - Use `subagent_type: "general-purpose"`
-- Prompt: "Follow the /gsp:design-system skill methodology. Scan the codebase and produce `.design/system/{STACK,COMPONENTS,TOKENS,CONVENTIONS,CONCERNS}.md`. Read the templates from `.claude/templates/system/` for output format. If no package.json exists, write minimal greenfield versions."
+- Prompt: "Follow the /gsp:design-system skill methodology. Scan the codebase and produce `.design/system/{STACK,COMPONENTS,TOKENS,CONVENTIONS,CONCERNS}.md`. Read the templates from the GSP templates/system/ directory for output format. If no package.json exists, write minimal greenfield versions."
 - Store the task reference — you'll read results in Step 3 Round 2 or Step 4.
 
 This produces workspace-level documents consumed by downstream skills and agents.
@@ -154,7 +162,7 @@ From the greeting exchange, determine which flow to run:
 1. Ask for brand name (kebab-case, e.g., "acme-corp")
 2. Create directory structure:
 ```bash
-mkdir -p .design/branding/{name}/{audit,discover,strategy,identity,system}
+mkdir -p .design/branding/{name}/{audit,discover,strategy,identity,patterns}
 ```
 
 3. Gather brand brief in 3 rounds. The brief is the single source of truth for business and persona definition — invest here.
@@ -163,20 +171,26 @@ mkdir -p .design/branding/{name}/{audit,discover,strategy,identity,system}
 - Company name, industry, stage
 - What problem does this business solve? For whom? How differently?
 - Business model (how it makes money)
+- Who are the main competitors? (users usually know their top 2-3)
 - Primary persona — use `AskUserQuestion` to confirm or build: present an inferred persona profile (name, role, day-in-the-life, frustration, aspiration, discovery, trust signals) and let user correct. If they say "fintech for Gen Z" → infer and present a concrete persona.
 - Secondary persona (if relevant)
 - Mission and vision
 
-This round is the most important. The personas should feel like real people, not demographic buckets.
+This round is the most important. The personas should feel like real people, not demographic buckets. Dig into the emotional layer: anxiety, ambition, frustration, curiosity, status, safety.
 
 **Round 2 — Brand Essence & Landscape:**
-- Brand personality — use `AskUserQuestion` with 2-3 concrete personality directions:
-  - **Precise & exacting** — "Like Stripe or Linear" / preview: "Your dashboard is ready. Zero errors, zero clutter."
-  - **Warm & human** — "Like Mailchimp or Notion" / preview: "Hey! Your project's looking great. Here's what's next."
-  - **Bold & unapologetic** — "Like Figma or Vercel" / preview: "Ship it. We'll make it beautiful."
+
+Before presenting personality options, **internally synthesize** from Round 1:
+- **Promise:** what should someone feel when they interact with this brand? (derived from persona frustrations + aspirations)
+- **Point of view:** what does this brand disagree with in the category? (derived from the problem + how it solves it differently)
+
+You do NOT ask the user these directly — you use them to ground the personality options.
+
+- Brand personality — use `AskUserQuestion` with 2-3 concrete personality directions. **Each option must explain WHY it fits this brand's audience and problem** — not just a style label:
+  - Each option: **Label** (3 adjectives) / **Description** (why this personality fits their specific audience and competitive position — reference the persona by name, the problem, or the gap) / **Preview** (example sentence in that voice, using their product context)
   - **Surprise me** — craft an unexpected direction inspired by the user's industry and personas
 - What the brand should NEVER feel like
-- Competitive landscape — who are the main competitors? What sets this brand apart?
+- Competitive landscape — use `WebSearch` to enrich the competitors named in Round 1. Present the map for confirmation.
 - Brands admired / styles to avoid
 
 **Round 3 — Constraints & confirmation:**
@@ -225,6 +239,8 @@ Skip or compress rounds if the user gives enough upfront. Don't over-ask.
 
 ## Step 4: Project flow
 
+**Background:** Run `git branch --show-current` with `run_in_background: true` now — result will be ready by the time we need it for git context detection.
+
 1. Show available brands:
 ```
 Available brands:
@@ -247,8 +263,9 @@ mkdir -p .design/projects/{name}/{brief,research,design,critique,build,review,co
 
 ### Detect git context
 
-1. Run `git branch --show-current` to detect current branch
-2. If a branch is detected, use `AskUserQuestion`: "I see you're on `{branch}` — track this as the project branch?"
+Use the git branch detected earlier (run `git branch --show-current` in background at the start of Step 4, while asking for project name — result is ready by now).
+
+1. If a branch was detected, use `AskUserQuestion`: "I see you're on `{branch}` — track this as the project branch?"
    - **Yes, use this branch** — "Track `{branch}`"
    - **Different branch** — "I want to use a different branch name"
 3. Store in config.json `git.branch` and STATE.md `## Git` table
@@ -346,7 +363,7 @@ If the user names a preset directly at any point, skip the group step.
 
 1. Create brand directory:
 ```bash
-mkdir -p .design/branding/_style-{preset}/system/
+mkdir -p .design/branding/_style-{preset}/patterns/
 ```
 
 2. Invoke `/gsp:style {preset}` via Skill tool — this writes:
@@ -395,7 +412,7 @@ Continue directly to Step 4 (project flow) with these modifications:
 
 If a user later wants full branding, they can:
 1. Run `/gsp:start` → "Brand identity" to create a real brand
-2. Full diamond produces identity + system with real tokens
+2. Full diamond produces identity + patterns with real tokens
 3. Update the project's `brand.ref` to point to the new brand
 4. Re-run build phases — they pick up the new tokens automatically
 </process>

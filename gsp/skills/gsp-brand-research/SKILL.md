@@ -53,7 +53,13 @@ Present a compact research plan, then use `AskUserQuestion`:
 - **Looks good** — "Start research with this scope"
 - **Adjust** — "I want to add competitors or shift emphasis"
 
+## Step 2.5: Pre-fetch competitor sites (background)
+
+While preparing the agent context, use `WebFetch` with `run_in_background: true` for each competitor URL or website found in BRIEF.md's competitive landscape. This warms the cache so the researcher agent has content ready instead of fetching sequentially during research.
+
 ## Step 3: Spawn researcher
+
+Include any pre-fetched competitor content in the agent context.
 
 Spawn the `gsp-researcher` agent with:
 - BRIEF.md content
@@ -78,8 +84,5 @@ Update `{BRAND_PATH}/STATE.md`: set Phase 1 (Discover) to `complete`.
 
 ## Step 5: Phase transition
 
-Render phase transition screen, then use `AskUserQuestion`:
-- **Continue to strategy** — "define positioning, voice, and messaging"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
+Render phase transition (see `references/phase-transitions.md`).
 </process>

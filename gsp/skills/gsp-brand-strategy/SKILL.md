@@ -142,8 +142,5 @@ If adjust → loop back. If confirmed → proceed.
 
 Update `{BRAND_PATH}/STATE.md`: set Phase 2 (Strategy) to `complete`.
 
-Render phase transition, then use `AskUserQuestion`:
-- **Continue to identity** — "create visual identity"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
+Render phase transition (see `references/phase-transitions.md`).
 </process>

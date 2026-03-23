@@ -124,8 +124,5 @@ Use `AskUserQuestion`:
 
 Update `{BRAND_PATH}/STATE.md`: set Phase 3 (Identity) to `complete`, Prettiness Level to 80%.
 
-Render phase transition, then use `AskUserQuestion`:
-- **Continue to patterns** — "build tokens and components"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
+Render phase transition (see `references/phase-transitions.md`).
 </process>

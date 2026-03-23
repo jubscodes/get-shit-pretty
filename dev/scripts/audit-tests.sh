@@ -327,6 +327,31 @@ if should_run installer; then
   else
     fail "I14 Dead tool names found" "Tool mappings contain removed tools ($DEAD_TOOLS)"
   fi
+  # I15: Statusline VERSION detection matches installer write path
+  SL_FILE="scripts/gsp-statusline.js"
+  if [[ -f "$SL_FILE" ]]; then
+    SL_OK=true
+    # Installer writes VERSION to targetDir (e.g. ~/.claude/VERSION)
+    # Statusline must check {runtimeDir}/VERSION (current) with fallback to {runtimeDir}/get-shit-pretty/VERSION (legacy)
+    if ! grep -q "VERSION" "$SL_FILE"; then
+      SL_OK=false
+    fi
+    # Must have fallback logic for legacy path
+    if ! grep -q "get-shit-pretty" "$SL_FILE"; then
+      SL_OK=false
+    fi
+    # Must detect which path exists (current vs legacy)
+    if ! grep -q "existsSync" "$SL_FILE"; then
+      SL_OK=false
+    fi
+    if $SL_OK; then
+      pass "I15 Statusline VERSION detection has current + legacy fallback"
+    else
+      fail "I15 Statusline VERSION path" "scripts/gsp-statusline.js must detect VERSION at {runtimeDir}/VERSION with legacy fallback"
+    fi
+  else
+    warn "I15 Statusline not found" "$SL_FILE missing"
+  fi
 fi
 
 # ── R: Runtime Compatibility ────────────────────────
@@ -491,7 +516,7 @@ if should_run templates; then
   fi
 
   # T3: Phase templates exist for all expected phases
-  BRAND_PHASES="discover strategy identity system"
+  BRAND_PHASES="discover strategy identity patterns"
   PROJECT_PHASES="brief research design critique build review"
   PHASE_OK=true
   for phase in $BRAND_PHASES $PROJECT_PHASES; do

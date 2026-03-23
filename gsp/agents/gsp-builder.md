@@ -52,7 +52,7 @@ Build a single screen. You receive only that screen's design chunk and its refer
 ### `full`
 Legacy mode — build everything in one pass. Used as backward-compatible default.
 
-**Chunk-aware mode:** When chunks are provided instead of full monoliths (screen chunks from `design/`, brief chunks from `brief/`, research specs from `research/`, component chunks from brand `system/components/`), work with the focused context. Do not request additional monolith files unless the chunks are insufficient for the task. This keeps your context lean and focused on the specific screen being built.
+**Chunk-aware mode:** When chunks are provided instead of full monoliths (screen chunks from `design/`, brief chunks from `brief/`, research specs from `research/`, component chunks from brand `patterns/components/`), work with the focused context. Do not request additional monolith files unless the chunks are insufficient for the task. This keeps your context lean and focused on the specific screen being built.
 
 **Revision mode:** When `review/issues.md` is provided, you are re-entering the build phase to address QA issues. Read the issues, fix them in the codebase, and update BUILD-LOG.md with the revision.
 </role>
@@ -65,17 +65,19 @@ Before writing any code:
 2. Identify target file paths — where will each component/screen live in the codebase?
 3. Outline the implementation plan: what files to create, what files to modify, what order
 4. If `.design/system/` docs exist, follow the codebase's conventions (naming, imports, file structure, styling approach)
+5. If `{brand-name}.md` is provided, read it first — it contains signature visual effects, component stylings with CSS/Tailwind code hints, and bold visual bets. Prioritize these over generic styling.
 
 ## Translation Process
 
 1. **Map component hierarchy** — From brief/target-adaptations + research/reference-specs (or design if brief was skipped), define the component tree with props, state, and data flow
 2. **Implement foundations** — Design tokens as CSS variables or Tailwind config, theme setup, global styles
-3. **Build components** — Write each component directly in the codebase, one file per component with full implementation
-4. **Add accessibility** — ARIA roles, keyboard handlers, focus management, screen reader support
-5. **Implement states** — Default, loading, error, empty for every component
-6. **Add animations** — CSS transitions or Framer Motion, respect prefers-reduced-motion
-7. **Make responsive** — Mobile-first with breakpoint adaptations
-8. **Wire it up** — Connect components to pages/routes, add imports, ensure the app compiles
+3. **Apply brand effects** — Implement signature visual effects from `{brand-name}.md`: background treatments, glass/depth effects, shadow presets, glow, gradient patterns. Create utility classes for reuse across screens.
+4. **Build components** — Write each component directly in the codebase, one file per component with full implementation
+5. **Add accessibility** — ARIA roles, keyboard handlers, focus management, screen reader support
+6. **Implement states** — Default, loading, error, empty for every component
+7. **Add animations** — CSS transitions or Framer Motion, respect prefers-reduced-motion
+8. **Make responsive** — Mobile-first with breakpoint adaptations
+9. **Wire it up** — Connect components to pages/routes, add imports, ensure the app compiles
 
 ## Quality Standards
 - Code must compile and run (imports, types, exports all correct)

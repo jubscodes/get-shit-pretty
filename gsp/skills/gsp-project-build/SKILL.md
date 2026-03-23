@@ -15,7 +15,7 @@ allowed-tools:
 <context>
 Phase 5 of the GSP project diamond. Uses a 4-phase pipeline with verification checkpoints to implement designs directly in the codebase as production-ready frontend components.
 
-Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/system/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
+Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/patterns/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 
 **Pipeline architecture:**
 ```
@@ -49,6 +49,8 @@ Implement designs as production-ready code in the codebase via phased pipeline w
 <execution_context>
 @${CLAUDE_SKILL_DIR}/../../prompts/09-design-to-code-translator.md
 @${CLAUDE_SKILL_DIR}/../../templates/phases/build.md
+@${CLAUDE_SKILL_DIR}/../../references/visual-effects.md
+@${CLAUDE_SKILL_DIR}/../../references/block-patterns.md
 </execution_context>
 
 <process>
@@ -60,6 +62,13 @@ Set `PROJECT_PATH` = `.design/projects/{project}`
 
 Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
 - Set `BRAND_PATH` = `.design/branding/{brand}`
+
+## Step 0.5: Validate prerequisites
+
+Read `{PROJECT_PATH}/STATE.md`. Check that Design (Phase 3) is `complete` or `needs-revision` (revision means critique ran and is feeding back).
+If design is `pending` or missing: "No designs found. Run `/gsp:project-design` first — building without designs leads to poor results." Then stop.
+
+Exception: if `design_scope` is `tokens` in config.json, skip this check (tokens-only projects don't need design).
 
 ## Step 1: Load config and check state
 
@@ -111,7 +120,8 @@ Spawn `gsp-builder` agent with **execution_mode: foundations**.
 
 | File | Purpose |
 |------|---------|
-| `{BRAND_PATH}/system/tokens.json` | Design tokens |
+| `{BRAND_PATH}/patterns/tokens.json` | Design tokens |
+| `{BRAND_PATH}/patterns/{brand-name}.md` | Brand visual DNA — effects, component stylings, bold bets (if exists) |
 | `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations for target |
 | `.design/system/STACK.md` | Stack state |
 | `.design/system/CONVENTIONS.md` | Codebase conventions (if exists) |
@@ -129,9 +139,10 @@ Spawn `gsp-builder` agent with **execution_mode: foundations**.
 > 2. Create global CSS (resets, base styles, font imports, dark mode setup)
 > 3. Create root layout with nav shell and footer shell (structure only — no page content)
 > 4. Create shared utilities (cn helper, theme provider if needed)
-> 5. Do NOT build individual screens or page content
-> 6. Write code directly to the codebase, not to `.design/`
-> 7. Leave changes unstaged
+> 5. Apply the brand style prompt's visual effects and signature patterns — create CSS utilities or Tailwind extensions for the brand's signature effects (glass, glow, gradients, shadows, motion patterns)
+> 6. Do NOT build individual screens or page content
+> 7. Write code directly to the codebase, not to `.design/`
+> 8. Leave changes unstaged
 >
 > After completing foundations, write `{PROJECT_PATH}/build/BUILD-LOG.md` with what was done (foundations section only).
 
@@ -179,7 +190,7 @@ Build screens sequentially. For each screen in `SCREENS`:
 | File | Purpose |
 |------|---------|
 | `{PROJECT_PATH}/design/screen-{NN}-{name}.md` | This screen's design chunk |
-| Referenced component chunks from `{BRAND_PATH}/system/components/` | Only components referenced in this screen's chunk |
+| Referenced component chunks from `{BRAND_PATH}/patterns/components/` | Only components referenced in this screen's chunk |
 | `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations |
 | `{PROJECT_PATH}/research/reference-specs.md` (if exists) | Technical specs |
 | `{PROJECT_PATH}/critique/prioritized-fixes.md` (if exists) | Critique fixes relevant to this screen |
@@ -200,6 +211,7 @@ Build screens sequentially. For each screen in `SCREENS`:
 > 4. Do NOT modify foundation files (global CSS, layout, tokens, theme provider)
 > 5. Write code directly to the codebase, not to `.design/`
 > 6. Leave changes unstaged
+> 7. The brand's visual effects were implemented as utilities during foundations — use those utilities/classes rather than re-reading the brand style document
 >
 > After completing this screen, append to `{PROJECT_PATH}/build/BUILD-LOG.md` — add this screen's files and status to the existing log.
 
@@ -251,24 +263,7 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ### Phase transition output
 
-```
-  ◆ build complete — code implemented
-
-    build/
-    ├── SCAFFOLD-LOG.md
-    ├── BUILD-LOG.md
-    └── INDEX.md
-
-    Screens: {done}/{total}
-    Build: compiles ✓
-
-  ──────────────────────────────
-```
-
-Then use `AskUserQuestion` with 3 options:
-- **Continue to review** — "QA validate implementation against designs"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
+Render phase transition (see `references/phase-transitions.md`). Include screen count and build status in the output.
 
 ---
 

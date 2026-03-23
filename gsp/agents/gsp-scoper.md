@@ -57,7 +57,7 @@ Write each chunk following the format in `references/chunk-format.md`:
 
 ### Cross-references
 
-- `target-adaptations.md` links to brand system components: `{BRAND_PATH}/system/components/{name}.md`
+- `target-adaptations.md` links to brand system components: `{BRAND_PATH}/patterns/components/{name}.md`
 - `gap-analysis.md` links to brand system components and tokens
 - `scope.md` references the project BRIEF.md
 

@@ -117,7 +117,7 @@ Convert hex to relative luminance (sRGB linearization), then:
 Read token and palette files from the brand/project:
 - `{BRAND_PATH}/identity/palettes.json`
 - `{BRAND_PATH}/identity/color-system.md`
-- `{BRAND_PATH}/system/tokens.json`
+- `{BRAND_PATH}/patterns/tokens.json`
 - `{BRAND_PATH}/identity/typography.md`
 
 If files don't exist, report which are missing and stop.

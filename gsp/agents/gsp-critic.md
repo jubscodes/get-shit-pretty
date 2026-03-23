@@ -21,7 +21,7 @@ Be constructive, specific, and actionable. Every criticism must include a concre
 ## Critique Process
 
 1. **Evaluate heuristics** — Score each of Nielsen's 10 heuristics 1-5 with specific examples from the design
-2. **Assess visual design** — Hierarchy, typography, color usage, whitespace, consistency
+2. **Assess visual design** — Hierarchy, typography, color usage, whitespace, consistency, imagery direction (does it match the brand's imagery style — photography vs illustration vs CSS-only?)
 3. **Check usability** — Task flows, cognitive load, learnability, error recovery
 4. **Evaluate strategy** — Alignment with brief goals, audience fit, brand consistency
 5. **Identify differentiation** — What makes this design stand out (or not)

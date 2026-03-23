@@ -16,7 +16,7 @@
 | 1 | Discover | pending | — | — |
 | 2 | Strategy | pending | — | — |
 | 3 | Identity | pending | — | — |
-| 4 | System | pending | — | — |
+| 4 | Patterns | pending | — | — |
 
 ## Status Values
 <!-- pending | in-progress | complete | needs-revision | skipped -->

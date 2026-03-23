@@ -13,7 +13,7 @@ allowed-tools:
 <context>
 Phase 3 of the GSP project diamond. Uses the UI/UX Pattern Master prompt to design core screens following Apple HIG and the brand's design system.
 
-Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/system/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
+Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/patterns/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 </context>
 
 <objective>
@@ -28,6 +28,8 @@ Design core UI/UX screens and interaction flows.
 @${CLAUDE_SKILL_DIR}/../../prompts/03-ui-ux-pattern-master.md
 @${CLAUDE_SKILL_DIR}/../../templates/phases/design.md
 @${CLAUDE_SKILL_DIR}/../../references/apple-hig-patterns.md
+@${CLAUDE_SKILL_DIR}/../../references/visual-effects.md
+@${CLAUDE_SKILL_DIR}/../../references/block-patterns.md
 </execution_context>
 
 <process>
@@ -39,6 +41,13 @@ Set `PROJECT_PATH` = `.design/projects/{project}`
 
 Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
 - Set `BRAND_PATH` = `.design/branding/{brand}`
+
+## Step 0.5: Validate prerequisites
+
+Read `{PROJECT_PATH}/STATE.md`. Check that Brief (Phase 1) is `complete`.
+If not: "Brief hasn't been completed yet. Run `/gsp:project-brief` first." Then stop.
+
+Research (Phase 2) is recommended but not required — if skipped, log: "No research artifacts found — designing from brief only."
 
 ## Step 1: Load context
 
@@ -57,18 +66,26 @@ Check `{PROJECT_PATH}/STATE.md` for design status. If status is `needs-revision`
 
 If `{PROJECT_PATH}/references/` exists, scan for files (images, PDFs, markdown, URLs). Pass any found references to the designer agent as additional context.
 
-### Brand system (chunk-first)
+### Brand patterns (chunk-first)
 
-Read `{BRAND_PATH}/system/INDEX.md`. If it exists, load all foundation chunks + selective component chunks.
+Read `{BRAND_PATH}/patterns/INDEX.md`. If it exists, load all foundation chunks + selective component chunks.
 
-Fallback: read `{BRAND_PATH}/system/SYSTEM.md` (legacy monolith). Log: "⚠️ Legacy system format detected — consider re-running /gsp:brand-patterns for chunk output."
+Fallback: read `{BRAND_PATH}/patterns/SYSTEM.md` (legacy monolith). Log: "⚠️ Legacy format detected — consider re-running /gsp:brand-patterns for chunk output."
 
 If neither exists, tell the user to run `/gsp:brand-patterns` first.
 
 ### Brand context (selective)
 
-Read `{BRAND_PATH}/identity/INDEX.md`. If it exists, load `color-system.md` and `typography.md`.
+Read `{BRAND_PATH}/identity/INDEX.md`. If it exists, load `color-system.md`, `typography.md`, and `imagery-style.md`.
 Fallback: read `{BRAND_PATH}/identity/IDENTITY.md`.
+
+### Brand style prompt (visual DNA)
+
+Scan `{BRAND_PATH}/patterns/` for a `.md` file that is NOT `INDEX.md`, `principles.md`, or inside `foundations/` or `components/`. This is the brand's custom style prompt (`{brand-name}.md`).
+
+If found, read it. Pass to the designer agent in Step 3 as the **primary visual direction** — it contains design philosophy, bold visual bets, effects vocabulary, and component stylings with CSS/Tailwind hints.
+
+If not found, proceed without it (older brands may not have this file).
 
 ### Brief (chunk-first)
 
@@ -101,7 +118,7 @@ When `implementation_target` is not `figma`:
 
 ## Step 3: Spawn designer
 
-Spawn the `gsp-designer` agent with all prior artifacts, the UI/UX Pattern Master prompt (03), design output template, Apple HIG patterns reference, implementation_target, design_scope, codebase_type, target screens (when partial), existing components inventory, custom references (when available), and critique fixes (when in revision mode).
+Spawn the `gsp-designer` agent with all prior artifacts, the UI/UX Pattern Master prompt (03), design output template, Apple HIG patterns reference, brand style prompt ({brand-name}.md when available), implementation_target, design_scope, codebase_type, target screens (when partial), existing components inventory, custom references (when available), and critique fixes (when in revision mode).
 
 **Output path:** `{PROJECT_PATH}/design/`
 
@@ -120,25 +137,6 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ## Step 5: Phase transition output
 
-Render the phase transition screen (see `references/phase-transitions.md` for styling):
-
-```
-  ◆ design complete — screens designed
-
-    design/
-    ├── {actual screen chunks}
-    ├── shared/
-    │   ├── {shared chunks}
-    │   └── component-plan.md
-    ├── preview.html
-    └── INDEX.md
-
-  ──────────────────────────────
-```
-
-Then use `AskUserQuestion` with 3 options:
-- **Continue to critique** — "critique designs + accessibility audit"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
+Render phase transition (see `references/phase-transitions.md`).
 </process>
 </output>

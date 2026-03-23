@@ -15,7 +15,7 @@ Phase 1 of the GSP project diamond. Scopes the project by determining what scree
 
 Encourages treating the project as a bounded issue (or set of issues) and a PR — ship small, ship complete.
 
-Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/system/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
+Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/patterns/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 </context>
 
 <objective>
@@ -46,15 +46,15 @@ If brand.ref doesn't exist, tell the user to run `/gsp:start` to set up the proj
 
 ## Step 1: Load context
 
-### Brand system (chunk-first)
+### Brand patterns (chunk-first)
 
-Read `{BRAND_PATH}/system/INDEX.md`. If it exists, load all foundation chunks + selective component chunks.
+Read `{BRAND_PATH}/patterns/INDEX.md`. If it exists, load all foundation chunks + selective component chunks.
 
-Fallback: read `{BRAND_PATH}/system/SYSTEM.md` (legacy monolith). Log: "⚠️ Legacy system format detected."
+Fallback: read `{BRAND_PATH}/patterns/SYSTEM.md` (legacy monolith). Log: "⚠️ Legacy format detected."
 
-If neither exists, tell the user to run `/gsp:brand-patterns` first to create the brand's design system.
+If neither exists, tell the user to run `/gsp:brand-patterns` first to create the brand's design patterns.
 
-Also read `{BRAND_PATH}/system/tokens.json`.
+Also read `{BRAND_PATH}/patterns/tokens.json`.
 
 ### Project context
 
@@ -138,21 +138,6 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ## Step 5: Phase transition output
 
-Render the phase transition screen (see `references/phase-transitions.md` for styling):
-
-```
-  ◆ brief complete — project scoped
-
-    brief/
-    ├── {actual files written}
-    └── INDEX.md
-
-  ──────────────────────────────
-```
-
-Then use `AskUserQuestion` with 3 options:
-- **Continue to research** — "research UX patterns and approaches"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
+Render phase transition (see `references/phase-transitions.md`).
 </process>
 </output>

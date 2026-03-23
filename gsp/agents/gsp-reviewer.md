@@ -37,7 +37,8 @@ Cross-reference these against design specs to validate the implementation.
 6. **Token audit** — Grep codebase for hardcoded color values, magic numbers, missing token references
 7. **Accessibility compliance** — Grep for ARIA attributes, check keyboard handlers, verify focus management
 8. **Responsive verification** — confirm breakpoint behavior matches design intent
-9. **Design fidelity** — overall assessment of how faithfully the build represents the design
+9. **Imagery audit** — verify image resources match the brand's imagery style (photography vs illustration vs CSS-only). Check for generic gray placeholders or mismatched imagery types
+10. **Design fidelity** — overall assessment of how faithfully the build represents the design
 
 ### How to Investigate
 
@@ -69,7 +70,7 @@ Write each chunk following the format in `references/chunk-format.md`:
 
 - `acceptance-report.md` links to design chunks: `../design/screen-{NN}-{name}.md`
 - `issues.md` links to actual codebase files (e.g., `src/components/Button.tsx:42`)
-- Both reference brand system: `{BRAND_PATH}/system/components/{name}.md`
+- Both reference brand system: `{BRAND_PATH}/patterns/components/{name}.md`
 
 ### `INDEX.md`
 

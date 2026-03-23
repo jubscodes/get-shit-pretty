@@ -1,6 +1,6 @@
 ---
 name: brand-patterns
-description: Build your design system — tokens, components, preview
+description: Build your design system — tokens, components, brand guidelines
 user-invocable: true
 allowed-tools:
   - Read
@@ -11,22 +11,22 @@ allowed-tools:
   - Glob
 ---
 <context>
-Phase 4 of the GSP branding diamond. Builds the design system (foundations, components, tokens), generates a self-contained brand preview HTML, and transitions the user from the branding diamond to the project diamond.
+Phase 4 of the GSP branding diamond. Builds the design system (foundations, components, tokens), generates a self-contained brand guidelines HTML, and transitions the user from the branding diamond to the project diamond.
 
 Adapts strategy based on codebase context — generates from scratch, extends an existing system, or redesigns with migration mapping.
 </context>
 
 <objective>
-Build the design system, generate brand preview, and complete the branding diamond.
+Build the design system, generate brand guidelines, and complete the branding diamond.
 
 **Input:** Brand identity + strategy + BRIEF.md
-**Output:** `{brand}/system/` (foundations/, components/, principles.md, tokens.json, {brand-name}.yml, {brand-name}.md, INDEX.md) + `{brand}/preview.html`
-**Agent:** `gsp-system-architect`
+**Output:** `{brand}/patterns/` (foundations/, components/, principles.md, tokens.json, {brand-name}.yml, {brand-name}.md, INDEX.md) + `{brand}/guidelines.html`
+**Agent:** `gsp-pattern-architect`
 </objective>
 
 <execution_context>
 @${CLAUDE_SKILL_DIR}/../../prompts/01-design-system-architect.md
-@${CLAUDE_SKILL_DIR}/../../templates/phases/system.md
+@${CLAUDE_SKILL_DIR}/../../templates/phases/patterns.md
 @${CLAUDE_SKILL_DIR}/../../references/design-tokens.md
 </execution_context>
 
@@ -106,24 +106,24 @@ Redesign the system from the ground up, informed by what exists.
 4. Preserve conventions unless the brand requires changes
 5. Flag breaking changes explicitly
 
-## Step 3: Spawn system architect — Pass 1: Foundations
+## Step 3: Spawn pattern architect — Pass 1: Foundations
 
-Spawn the `gsp-system-architect` agent with:
+Spawn the `gsp-pattern-architect` agent with:
 - All identity chunks (or IDENTITY.md fallback) + palettes.json
 - The BRIEF.md content
 - The Design System Architect prompt (01)
-- The system output template
+- The patterns output template
 - The design tokens reference
 - The `system_strategy` and `tech_stack` values
 - The `style_base` value + preset `.yml`/`.md` files (if loaded)
 - The `.design/system/STACK.md`, `COMPONENTS.md`, `TOKENS.md` content (when exist)
 - **Execution mode:** `"foundations"`
-- **Output path:** `{BRAND_PATH}/system/`
+- **Output path:** `{BRAND_PATH}/patterns/`
 
 The agent writes foundations only:
-- `system/foundations/` (6 foundation chunks)
-- `system/principles.md`
-- `system/tokens.json` (foundations-only)
+- `patterns/foundations/` (6 foundation chunks)
+- `patterns/principles.md`
+- `patterns/tokens.json` (foundations-only)
 
 ## Step 3.5: Foundation review (interactive)
 
@@ -159,9 +159,9 @@ Before building components, load persona profiles from `{BRAND_PATH}/BRIEF.md` a
 If user wants changes → update foundations.
 If confirmed → proceed to components pass.
 
-## Step 4: Spawn system architect — Pass 2: Components
+## Step 4: Spawn pattern architect — Pass 2: Components
 
-Spawn the `gsp-system-architect` agent with:
+Spawn the `gsp-pattern-architect` agent with:
 - The existing foundations from Pass 1
 - All identity chunks + palettes.json
 - Strategy chunks: voice-and-tone.md, archetype.md, positioning.md (needed for custom style output)
@@ -169,25 +169,25 @@ Spawn the `gsp-system-architect` agent with:
 - The `style_base` value + preset `.yml`/`.md` files (if loaded)
 - **Execution mode:** `"components"`
 - Confirmed component scope from Step 1.5
-- **Output path:** `{BRAND_PATH}/system/`
+- **Output path:** `{BRAND_PATH}/patterns/`
 
 The agent writes components + custom style:
-- `system/components/` (one per component)
-- Updates `system/tokens.json` (adds component tokens)
-- `system/{brand-name}.yml` (custom style preset — portable, reusable)
-- `system/{brand-name}.md` (custom style prompt — AI-ready)
-- `system/INDEX.md`
+- `patterns/components/` (one per component)
+- Updates `patterns/tokens.json` (adds component tokens)
+- `patterns/{brand-name}.yml` (custom style preset — portable, reusable)
+- `patterns/{brand-name}.md` (custom style prompt — AI-ready)
+- `patterns/INDEX.md`
 
 ## Step 4.5: Update state
 
 Update `{BRAND_PATH}/STATE.md`:
-- Set Phase 4 (System) status to `complete`
+- Set Phase 4 (Patterns) status to `complete`
 - Record completion date
 - Set Prettiness Level to 100%
 
-## Step 4.75: Generate brand preview
+## Step 4.75: Generate brand guidelines
 
-Create a self-contained HTML file at `{BRAND_PATH}/preview.html`.
+Create a self-contained HTML file at `{BRAND_PATH}/guidelines.html`.
 
 Read all available brand outputs:
 - `{BRAND_PATH}/identity/palettes.json` — color palette data
@@ -208,30 +208,15 @@ Generate a single self-contained HTML file with:
 - **Logo direction descriptions** — each direction with rationale
 - **Archetype summary** — the selected archetype and its expression
 
-Tell the user: "Brand preview saved — open it in your browser to see the full brand at a glance."
+Tell the user: "Brand kit saved to `guidelines.html` — open it in your browser to see your colors, typography, voice, and messaging in one page. You can also print or export to PDF as a shareable brand guide."
 
 ## Step 5: Phase transition output
 
-Render the phase transition screen (see `references/phase-transitions.md` for styling):
+Render phase transition (see `references/phase-transitions.md`).
 
-```
-  ◆ system complete — design system built
+**Critical:** When the user chooses "Start a project", invoke `/gsp:start` via the Skill tool. Do NOT attempt to handle project setup inline — `/gsp:start` has the codebase scanning, questioning rounds, and brief-writing logic needed for a proper project setup. The branding agent's context is spent on brand work and lacks the project setup methodology.
 
-    system/
-    ├── foundations/
-    │   ├── {foundation files}
-    ├── components/
-    │   ├── {component files}
-    ├── principles.md
-    ├── tokens.json
-    ├── {brand-name}.yml
-    ├── {brand-name}.md
-    └── INDEX.md
-
-  ──────────────────────────────
-```
-
-Then display the brand summary:
+Also display a brand summary after the standard transition — this is the final branding phase:
 
 ```
   brand complete — {brand-name}
@@ -239,13 +224,8 @@ Then display the brand summary:
     discover       {key finding}
     strategy       {archetype}, {positioning}, {top voice attributes}
     identity       {colors}, {typefaces}
-    system         {N} foundations, {N} components
+    patterns       {N} foundations, {N} components
 
-    preview: {BRAND_PATH}/preview.html
+    guidelines: {BRAND_PATH}/guidelines.html
 ```
-
-Then use `AskUserQuestion` with 3 options:
-- **Start a project** — "scope what you're building with this brand"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
 </process>

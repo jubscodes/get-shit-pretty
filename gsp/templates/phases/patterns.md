@@ -7,7 +7,7 @@
 
 ---
 
-> This phase produces foundation chunks in `system/foundations/`, component chunks in `system/components/`, plus `principles.md`, `tokens.json`, and `INDEX.md`.
+> This phase produces foundation chunks in `patterns/foundations/`, component chunks in `patterns/components/`, plus `principles.md`, `tokens.json`, and `INDEX.md`.
 
 ## Inputs
 - identity/color-system.md → foundations/color-system.md
@@ -20,7 +20,7 @@
 
 ## Chunk Mapping
 
-### Foundations (`system/foundations/`)
+### Foundations (`patterns/foundations/`)
 
 | Chunk File | Content |
 |-----------|---------|
@@ -31,7 +31,7 @@
 | `foundations/elevation.md` | 5 shadow levels with use cases and values |
 | `foundations/border-radius.md` | Token scale (none, sm, md, lg, xl, full) |
 
-### Components (`system/components/`)
+### Components (`patterns/components/`)
 
 Component output is library-aware:
 

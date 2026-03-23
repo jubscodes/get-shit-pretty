@@ -13,7 +13,7 @@ allowed-tools:
 <context>
 Phase 6 of the GSP project diamond. QA validates that the actual codebase implementation matches the design intent — checking real source files for token usage, screen coverage, component quality, and accessibility compliance.
 
-Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/system/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
+Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/patterns/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 </context>
 
 <objective>
@@ -56,8 +56,10 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 **Design:** Read `{PROJECT_PATH}/design/INDEX.md` → load all screen chunks.
 Fallback: `{PROJECT_PATH}/screens/INDEX.md` (legacy).
 
-**Brand system:** Read `{BRAND_PATH}/system/INDEX.md` → load foundation + component chunks.
-Also read `{BRAND_PATH}/system/tokens.json`.
+**Brand patterns:** Read `{BRAND_PATH}/patterns/INDEX.md` → load foundation + component chunks.
+Also read `{BRAND_PATH}/patterns/tokens.json`.
+
+**Brand identity (selective):** Read `{BRAND_PATH}/identity/imagery-style.md` (if exists) — needed for imagery audit.
 
 **Brief:** Read `{PROJECT_PATH}/brief/INDEX.md` → load scope and adaptations.
 
@@ -172,38 +174,5 @@ If verdict is **Fail**:
 
 ## Step 6: Phase transition output
 
-Render the phase transition screen (see `references/phase-transitions.md` for styling):
-
-**If Pass/Conditional Pass:**
-
-```
-  ◆ review complete — implementation validated
-
-    review/
-    ├── acceptance-report.md
-    ├── issues.md
-    └── INDEX.md
-
-  ──────────────────────────────
-
-  fully pretty.
-```
-
-Then use `AskUserQuestion` with 3 options:
-- **Launch campaign** — "create launch and marketing assets"
-- **View progress** — "see the full dashboard"
-- **Done for now** — "pick up later with /gsp:start"
-
-**If Fail:**
-
-```
-  ◈ review — QA found issues, needs revision
-
-  ──────────────────────────────
-```
-
-Then use `AskUserQuestion` with 3 options:
-- **Fix and rebuild** — "address issues in review/issues.md"
-- **View issues** — "see the full QA report"
-- **Done for now** — "pick up later with /gsp:start"
+Render phase transition (see `references/phase-transitions.md`). This phase has pass/fail variants — the reference covers both.
 </process>

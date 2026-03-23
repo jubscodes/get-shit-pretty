@@ -37,4 +37,4 @@ Each chunk follows the format in `references/chunk-format.md`. Below is the stru
 - **Minor:** polish items, minor inconsistencies
 - Links to design chunks: `../design/screen-{NN}-{name}.md`
 - Links to actual codebase files: `{path/to/file}:{line}`
-- Links to brand system: `{BRAND_PATH}/system/components/{name}.md`
+- Links to brand system: `{BRAND_PATH}/patterns/components/{name}.md`
