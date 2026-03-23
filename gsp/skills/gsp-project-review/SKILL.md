@@ -59,6 +59,8 @@ Fallback: `{PROJECT_PATH}/screens/INDEX.md` (legacy).
 **Brand patterns:** Read `{BRAND_PATH}/patterns/INDEX.md` → load foundation + component chunks.
 Also read `{BRAND_PATH}/patterns/tokens.json`.
 
+**Brand identity (selective):** Read `{BRAND_PATH}/identity/imagery-style.md` (if exists) — needed for imagery audit.
+
 **Brief:** Read `{PROJECT_PATH}/brief/INDEX.md` → load scope and adaptations.
 
 **Research:** Read `{PROJECT_PATH}/research/INDEX.md` → load `reference-specs.md` (to verify specs were followed).

@@ -59,5 +59,5 @@ You work directly in the codebase — not in `.design/build/`:
 - Hover/focus/active transitions on all interactive elements
 - Background treatments (gradient, texture, or decorative — never plain)
 - Brand signature effects from {brand-name}.md when provided
-- Image resources implemented per screen chunk specs — use placeholder images (CSS gradients, SVG patterns) when no image source is available. Never leave empty image areas.
+- Image resources implemented per screen chunk specs. Match the brand's imagery style: if the brand uses photography, use real stock photos (Unsplash/Pexels URLs) or descriptive `alt` text placeholders sized correctly; if illustration, create SVG or CSS illustrations in brand colors; if CSS-only, use branded gradients and patterns. Never use generic gray boxes.
 - BUILD-LOG.md documenting what was done
