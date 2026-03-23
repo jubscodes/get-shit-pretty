@@ -76,7 +76,7 @@ If neither exists, tell the user to run `/gsp:brand-patterns` first.
 
 ### Brand context (selective)
 
-Read `{BRAND_PATH}/identity/INDEX.md`. If it exists, load `color-system.md` and `typography.md`.
+Read `{BRAND_PATH}/identity/INDEX.md`. If it exists, load `color-system.md`, `typography.md`, and `imagery-style.md`.
 Fallback: read `{BRAND_PATH}/identity/IDENTITY.md`.
 
 ### Brand style prompt (visual DNA)

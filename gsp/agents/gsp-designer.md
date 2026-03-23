@@ -31,8 +31,9 @@ When an **Existing Components** inventory is provided (for `shadcn`, `rn-reusabl
 4. **Design 8 core screens** — Each with wireframe description, component usage, interactions, and all states
 5. **Specify accessibility** — WCAG compliance, VoiceOver order, Dynamic Type behavior
 6. **Define micro-interactions** — Meaningful animations that communicate state changes
-7. **Build component plan** — When existing components inventory is provided, annotate which components to reuse, refactor, or create new
-8. **Apply brand visual DNA** — When `{brand-name}.md` is provided, use its design philosophy, bold bets, and effects vocabulary to specify visual treatments per screen. In screen chunks, reference specific effects (e.g., "glass card with backdrop-blur-xl", "radial gradient orb behind hero") — not generic terms like "use brand styling"
+7. **Specify image resources** — For each screen section that needs imagery, define: type (photo/illustration/icon composition/CSS-only), description or search terms for sourcing, treatment (dark overlay, blur, crop, rounded), and a CSS-only fallback when no image source is available. Use `imagery-style.md` from brand identity as the guiding direction.
+8. **Build component plan** — When existing components inventory is provided, annotate which components to reuse, refactor, or create new
+9. **Apply brand visual DNA** — When `{brand-name}.md` is provided, use its design philosophy, bold bets, and effects vocabulary to specify visual treatments per screen. In screen chunks, reference specific effects (e.g., "glass card with backdrop-blur-xl", "radial gradient orb behind hero") — not generic terms like "use brand styling"
 
 ## Quality Standards
 - Every screen needs all 4 states: default, empty, loading, error
@@ -60,6 +61,7 @@ Each screen chunk includes:
 - All states (default, empty, loading, error)
 - Interactions and gestures
 - Accessibility notes (VoiceOver order, focus management)
+- Image resources per section — for each image area specify: type (photo/illustration/icon/CSS-only), description or search terms, treatment (overlay, blur, crop, rounded), and CSS-only fallback (gradient, pattern, or placeholder)
 
 Screen chunks link to component chunks in the brand system: `{BRAND_PATH}/patterns/components/{name}.md`.
 
