@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # GSP Integrity Test Suite
 # Run from repo root: bash dev/scripts/audit-tests.sh [suite]
-# Suites: all, versions, contracts, installer, runtime, templates, unit
+# Suites: all, versions, contracts, installer, runtime, templates, unit, prompts
 # Exit code: number of failures
 
 set -uo pipefail
@@ -572,6 +572,157 @@ if should_run templates; then
     fi
   done
   $BR_OK && pass "T7 Brief templates present"
+fi
+
+# ── P: Prompt Quality ─────────────────────────────────
+
+if should_run prompts; then
+  header "Prompt Quality"
+
+  # P1: Line count budgets — skills ≤300, agents ≤150, prompts ≤80
+  P1_OVER=()
+  for skill in gsp/skills/*/SKILL.md; do
+    dir=$(basename "$(dirname "$skill")")
+    lines=$(wc -l < "$skill" | tr -d ' ')
+    if [[ "$lines" -gt 300 ]]; then
+      P1_OVER+=("$dir:${lines}L")
+    fi
+  done
+  for agent in gsp/agents/gsp-*.md; do
+    name=$(basename "$agent" .md)
+    lines=$(wc -l < "$agent" | tr -d ' ')
+    if [[ "$lines" -gt 150 ]]; then
+      P1_OVER+=("$name:${lines}L")
+    fi
+  done
+  for prompt in gsp/prompts/*.md; do
+    name=$(basename "$prompt")
+    lines=$(wc -l < "$prompt" | tr -d ' ')
+    if [[ "$lines" -gt 80 ]]; then
+      P1_OVER+=("$name:${lines}L")
+    fi
+  done
+  if [[ ${#P1_OVER[@]} -eq 0 ]]; then
+    pass "P1 All files within line budgets"
+  else
+    warn "P1 Files over line budget" "${P1_OVER[*]}"
+  fi
+
+  # P2: <rules> sections should only appear in skills, not agents or prompts
+  P2_BAD=()
+  for agent in gsp/agents/gsp-*.md; do
+    if grep -q '<rules>' "$agent"; then
+      P2_BAD+=("$(basename "$agent")")
+    fi
+  done
+  for prompt in gsp/prompts/*.md; do
+    if grep -q '<rules>' "$prompt"; then
+      P2_BAD+=("$(basename "$prompt")")
+    fi
+  done
+  if [[ ${#P2_BAD[@]} -eq 0 ]]; then
+    pass "P2 <rules> only in skills"
+  else
+    warn "P2 <rules> in non-skill files" "${P2_BAD[*]}"
+  fi
+
+  # P3: <rules> size budget — flag >30 lines
+  P3_OVER=()
+  for skill in gsp/skills/*/SKILL.md; do
+    if grep -q '<rules>' "$skill"; then
+      dir=$(basename "$(dirname "$skill")")
+      rules_lines=$(sed -n '/<rules>/,/<\/rules>/p' "$skill" | wc -l | tr -d ' ')
+      if [[ "$rules_lines" -gt 30 ]]; then
+        P3_OVER+=("$dir:${rules_lines}L")
+      fi
+    fi
+  done
+  if [[ ${#P3_OVER[@]} -eq 0 ]]; then
+    pass "P3 <rules> sections within budget (≤30 lines)"
+  else
+    warn "P3 Large <rules> sections" "${P3_OVER[*]}"
+  fi
+
+  # P4: Cross-file duplicate lines — lines appearing in 3+ files
+  # Extract non-blank, non-header, non-trivial lines (>30 chars) from all files
+  P4_DUPES=0
+  ALL_PROMPT_FILES=$(find gsp/skills -name 'SKILL.md' && find gsp/agents -name 'gsp-*.md' && find gsp/prompts -name '*.md')
+  P4_RESULT=$(echo "$ALL_PROMPT_FILES" | xargs grep -hx '.\{30,\}' 2>/dev/null \
+    | grep -v '^#\|^---\|^$\|^\s*$\|^```\|^|' \
+    | sort | uniq -c | sort -rn | awk '$1 >= 3 { print }' | head -10)
+  if [[ -z "$P4_RESULT" ]]; then
+    pass "P4 No cross-file duplicate lines (≥3 files)"
+  else
+    P4_DUPES=$(echo "$P4_RESULT" | wc -l | tr -d ' ')
+    warn "P4 Cross-file duplicates ($P4_DUPES patterns)" "Run with verbose for details"
+  fi
+
+  # P5: Skill↔agent instruction overlap — shared non-trivial lines between paired files
+  P5_OVERLAPS=()
+  for skill in gsp/skills/gsp-*/SKILL.md; do
+    dir=$(basename "$(dirname "$skill")")
+    # Find agents this skill references
+    for agent in gsp/agents/gsp-*.md; do
+      agent_name=$(basename "$agent" .md)
+      if grep -q "$agent_name" "$skill"; then
+        # Count shared lines (>20 chars, not headers/formatting)
+        shared=$(comm -12 \
+          <(grep -x '.\{20,\}' "$skill" | grep -v '^#\|^---\|^$\|^```\|^|' | sort -u) \
+          <(grep -x '.\{20,\}' "$agent" | grep -v '^#\|^---\|^$\|^```\|^|' | sort -u) \
+          | wc -l | tr -d ' ')
+        if [[ "$shared" -gt 3 ]]; then
+          P5_OVERLAPS+=("$dir↔$agent_name:${shared}shared")
+        fi
+      fi
+    done
+  done
+  if [[ ${#P5_OVERLAPS[@]} -eq 0 ]]; then
+    pass "P5 No significant skill↔agent instruction overlap"
+  else
+    warn "P5 Skill↔agent overlap" "${P5_OVERLAPS[*]}"
+  fi
+
+  # P6: Verbosity ratio — rules/constraints vs process/methodology
+  # Approximate: count lines in <rules> + lines with constraint keywords
+  # vs total non-blank lines. Flag >40%
+  P6_VERBOSE=()
+  for skill in gsp/skills/*/SKILL.md; do
+    dir=$(basename "$(dirname "$skill")")
+    total=$(grep -cvE '^$|^---|^#|^```' "$skill" | tr -d '[:space:]')
+    [[ -z "$total" || "$total" -lt 10 ]] && continue
+    rules_count=$(grep -ciE 'must |never |always |do not |forbidden|required|shall not' "$skill" | tr -d '[:space:]')
+    [[ -z "$rules_count" ]] && rules_count=0
+    rules_section=$(sed -n '/<rules>/,/<\/rules>/p' "$skill" | wc -l | tr -d '[:space:]')
+    [[ -z "$rules_section" ]] && rules_section=0
+    constraint_lines=$((rules_count + rules_section))
+    ratio=$((constraint_lines * 100 / total))
+    if [[ "$ratio" -gt 40 ]]; then
+      P6_VERBOSE+=("$dir:${ratio}%")
+    fi
+  done
+  if [[ ${#P6_VERBOSE[@]} -eq 0 ]]; then
+    pass "P6 No files with >40% constraint ratio"
+  else
+    warn "P6 High constraint ratio" "${P6_VERBOSE[*]}"
+  fi
+
+  # P7: Vague directive detection — known anti-patterns
+  P7_VAGUE=()
+  VAGUE_PATTERNS='be natural|use good tone|write clean|be helpful|ensure quality|be thorough|be creative|be professional|use best practices'
+  for file in $(find gsp/skills -name 'SKILL.md' && find gsp/agents -name 'gsp-*.md' && find gsp/prompts -name '*.md'); do
+    matches=$(grep -ciE "$VAGUE_PATTERNS" "$file" 2>/dev/null | tr -d '[:space:]')
+    [[ -z "$matches" ]] && matches=0
+    if [[ "$matches" -gt 0 ]]; then
+      name=$(basename "$file" .md)
+      [[ "$name" == "SKILL" ]] && name=$(basename "$(dirname "$file")")
+      P7_VAGUE+=("$name:${matches}hits")
+    fi
+  done
+  if [[ ${#P7_VAGUE[@]} -eq 0 ]]; then
+    pass "P7 No vague directives detected"
+  else
+    warn "P7 Vague directives found" "${P7_VAGUE[*]}"
+  fi
 fi
 
 # ── U: Unit Tests ──────────────────────────────────────
