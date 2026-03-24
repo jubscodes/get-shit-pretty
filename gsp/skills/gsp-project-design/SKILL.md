@@ -36,12 +36,9 @@ Design core UI/UX screens and interaction flows.
 <process>
 ## Step 0: Resolve project and brand
 
-Scan `.design/projects/` for project directories. If only one project exists, use it. If multiple, ask the user which project to work on.
+Resolve project from `.design/projects/` (one → use it, multiple → ask). Set `PROJECT_PATH`.
 
-Set `PROJECT_PATH` = `.design/projects/{project}`
-
-Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
-- Set `BRAND_PATH` = `.design/branding/{brand}`
+Read `{PROJECT_PATH}/brand.ref` → set `BRAND_PATH`.
 
 ## Step 0.5: Validate prerequisites
 
@@ -71,14 +68,11 @@ If `{PROJECT_PATH}/references/` exists, scan for files (images, PDFs, markdown, 
 
 Read `{BRAND_PATH}/patterns/INDEX.md`. If it exists, load all foundation chunks + selective component chunks.
 
-Fallback: read `{BRAND_PATH}/patterns/SYSTEM.md` (legacy monolith). Log: "⚠️ Legacy format detected — consider re-running /gsp:brand-patterns for chunk output."
-
-If neither exists, tell the user to run `/gsp:brand-patterns` first.
+If it doesn't exist, tell the user to run `/gsp:brand-patterns` first.
 
 ### Brand context (selective)
 
 Read `{BRAND_PATH}/identity/INDEX.md`. If it exists, load `color-system.md`, `typography.md`, and `imagery-style.md`.
-Fallback: read `{BRAND_PATH}/identity/IDENTITY.md`.
 
 ### Brand style prompt (visual DNA)
 

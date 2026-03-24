@@ -45,10 +45,7 @@ Compare a project's shipped state against its source brand across all dimensions
 <process>
 ## Step 0: Resolve brand and project
 
-Scan `.design/branding/` for brand directories. One brand → use it. Multiple → use `AskUserQuestion`.
-
-Set `BRAND_PATH` = `.design/branding/{brand}`
-
+Resolve brand from `.design/branding/` (one → use it, multiple → ask). Set `BRAND_PATH`.
 Check that the brand has at least one of: `patterns/tokens.json`, `strategy/`, `identity/`. If none exist, tell the user: "No brand system found. Run `/gsp:brand-patterns` first."
 
 Verify the project codebase has shipped output — source files with components, copy, or styles.
@@ -74,6 +71,7 @@ Read `{BRAND_PATH}/sync/SYNC-REPORT.md`. Present a compact summary per dimension
 - **Tokens only** — just sync the quantitative token changes
 - **Pick by dimension** — choose which dimensions to sync
 - **Review each** — walk through every divergence individually
+- **Refine manually** — run `/gsp:brand-refine` to make targeted token adjustments instead
 - **Skip** — don't update the brand
 
 If "Pick by dimension", ask per dimension. If "Review each", walk through the Update Map from the report.

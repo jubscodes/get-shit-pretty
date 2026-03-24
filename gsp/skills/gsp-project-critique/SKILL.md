@@ -36,12 +36,9 @@ Critique design quality and audit accessibility compliance.
 <process>
 ## Step 0: Resolve project and brand
 
-Scan `.design/projects/` for project directories. If only one project exists, use it. If multiple, ask the user which project to work on.
+Resolve project from `.design/projects/` (one → use it, multiple → ask). Set `PROJECT_PATH`.
 
-Set `PROJECT_PATH` = `.design/projects/{project}`
-
-Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
-- Set `BRAND_PATH` = `.design/branding/{brand}`
+Read `{PROJECT_PATH}/brand.ref` → set `BRAND_PATH`.
 
 ## Step 1: Load context
 
@@ -52,13 +49,10 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 **BRIEF:** `{PROJECT_PATH}/BRIEF.md`
 
 **Identity:** Read `{BRAND_PATH}/identity/INDEX.md` → load all chunks.
-Fallback: `{BRAND_PATH}/identity/IDENTITY.md`.
 
 **Patterns:** Read `{BRAND_PATH}/patterns/INDEX.md` → load all chunks.
-Fallback: `{BRAND_PATH}/patterns/SYSTEM.md`.
 
 **Design:** Read `{PROJECT_PATH}/design/INDEX.md` → load all chunks.
-Fallback: `{PROJECT_PATH}/design/SCREENS.md` or `{PROJECT_PATH}/screens/INDEX.md` (legacy).
 
 **Brief:** Read `{PROJECT_PATH}/brief/INDEX.md` → load all chunks (if exists).
 
@@ -150,5 +144,7 @@ If verdict is **Fail**:
 ## Step 6: Phase transition output
 
 Render phase transition (see `references/phase-transitions.md`). This phase has pass/fail variants — the reference covers both.
+
+If critique identified brand-level issues (palette contrast, typography weight, spacing scale), note: "Some issues are brand-level — run `/gsp:brand-refine` to adjust tokens without re-running identity."
 </process>
 </output>

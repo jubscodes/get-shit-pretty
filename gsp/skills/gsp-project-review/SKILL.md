@@ -32,12 +32,9 @@ QA validate the codebase implementation against design intent.
 <process>
 ## Step 0: Resolve project and brand
 
-Scan `.design/projects/` for project directories. If only one project exists, use it. If multiple, ask the user which project to work on.
+Resolve project from `.design/projects/` (one → use it, multiple → ask). Set `PROJECT_PATH`.
 
-Set `PROJECT_PATH` = `.design/projects/{project}`
-
-Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
-- Set `BRAND_PATH` = `.design/branding/{brand}`
+Read `{PROJECT_PATH}/brand.ref` → set `BRAND_PATH`.
 
 ## Step 1: Load context
 
@@ -54,7 +51,6 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 **Git diff:** Run `git diff` (and `git diff --cached`) to see what actually changed in the codebase. Cross-reference against BUILD-LOG.md.
 
 **Design:** Read `{PROJECT_PATH}/design/INDEX.md` → load all screen chunks.
-Fallback: `{PROJECT_PATH}/screens/INDEX.md` (legacy).
 
 **Brand patterns:** Read `{BRAND_PATH}/patterns/INDEX.md` → load foundation + component chunks.
 Also read `{BRAND_PATH}/patterns/tokens.json`.
@@ -175,4 +171,6 @@ If verdict is **Fail**:
 ## Step 6: Phase transition output
 
 Render phase transition (see `references/phase-transitions.md`). This phase has pass/fail variants — the reference covers both.
+
+If review identified brand-level issues (token values that don't work in context), note: "Some issues are brand-level — run `/gsp:brand-refine` to adjust tokens without re-running identity."
 </process>

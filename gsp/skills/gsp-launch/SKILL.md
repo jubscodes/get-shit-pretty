@@ -31,12 +31,9 @@ Create marketing campaign assets for product launch.
 <process>
 ## Step 0: Resolve project and brand
 
-Scan `.design/projects/` for project directories. If only one project exists, use it. If multiple, ask the user which project to work on.
+Resolve project from `.design/projects/` (one → use it, multiple → ask). Set `PROJECT_PATH`.
 
-Set `PROJECT_PATH` = `.design/projects/{project}`
-
-Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
-- Set `BRAND_PATH` = `.design/branding/{brand}`
+Read `{PROJECT_PATH}/brand.ref` → set `BRAND_PATH`.
 
 ## Step 1: Load context
 
@@ -49,9 +46,8 @@ Read `{PROJECT_PATH}/config.json` to get `design_scope`.
 ### Identity (selective, chunk-first)
 
 Read `{BRAND_PATH}/identity/INDEX.md`. If it exists, load all identity chunks.
-Fallback: read `{BRAND_PATH}/identity/IDENTITY.md`. Log: "⚠️ Legacy identity format detected."
 
-If neither exists, tell the user to complete the brand identity first.
+If it doesn't exist, tell the user to complete the brand identity first.
 
 ### Voice and Messaging (from strategy)
 
@@ -60,7 +56,6 @@ Read `{BRAND_PATH}/strategy/voice-and-tone.md` and `{BRAND_PATH}/strategy/messag
 ### Design (chunk-first)
 
 Read `{PROJECT_PATH}/design/INDEX.md`. If it exists, load all screen chunks.
-Fallback: read `{PROJECT_PATH}/screens/INDEX.md` (legacy path).
 
 ### Other
 

@@ -38,9 +38,7 @@ Build the brand's visual identity.
 <process>
 ## Step 0: Resolve brand
 
-Scan `.design/branding/` for brand directories. One brand → use it. Multiple → use `AskUserQuestion`.
-
-Set `BRAND_PATH` = `.design/branding/{brand}`
+Resolve brand from `.design/branding/` (one → use it, multiple → ask). Set `BRAND_PATH`.
 If missing, tell user to run `/gsp:start` first.
 
 ## Step 1: Validate prerequisites

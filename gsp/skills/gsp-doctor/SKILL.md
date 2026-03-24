@@ -72,7 +72,7 @@ If all 4 phases complete, check:
 
 **Check B4: Legacy Monolith Detection**
 For each brand phase directory (discover, strategy, identity, patterns):
-- If monolith exists but no INDEX.md → WARN: "Legacy format in {phase}/ — re-run /gsp:brand-{phase} for chunk output"
+- If monolith exists but no INDEX.md → WARN: "Monolith files are no longer supported in GSP v0.6.0+. Re-run `/gsp:brand-{phase}` to generate chunk output."
 
 ### Per-Project Checks (6-phase)
 

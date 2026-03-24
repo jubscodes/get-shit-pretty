@@ -71,12 +71,7 @@ Scan `.design/` for existing brands and projects:
 
 ### Step 1b: Run design system scan (background)
 
-Spawn a background agent with `run_in_background: true` that follows the `/gsp:design-system` skill methodology:
-- Use `subagent_type: "general-purpose"`
-- Prompt: "Follow the /gsp:design-system skill methodology. Scan the codebase and produce `.design/system/{STACK,COMPONENTS,TOKENS,CONVENTIONS,CONCERNS}.md`. Read the templates from the GSP templates/system/ directory for output format. If no package.json exists, write minimal greenfield versions."
-- Store the task reference — you'll read results in Step 3 Round 2 or Step 4.
-
-This produces workspace-level documents consumed by downstream skills and agents.
+Spawn `/gsp:design-system` as a background agent (`run_in_background: true`, `subagent_type: "general-purpose"`). It writes to `.design/system/` — don't wait for it. Store the task reference for Step 3 Round 2 or Step 4.
 
 ### Step 1c: Greet
 
@@ -92,39 +87,15 @@ Adapt the greeting based on what the scan revealed. Use plain text with Unicode 
 - **Summary box:** `┌──┐│└──┘` border with key-value pairs inside
 
 **Fresh start (no `.design/`):**
-```
-  /gsp: ◇◇
-
-  looks like a fresh start.
-```
-
-If `package.json` exists, append:
-```
-  i scanning your codebase in the background — i'll factor in what i find.
-```
-
-Then use `AskUserQuestion` with options:
-- **Brand identity** — "define who you are — strategy, voice, visuals"
-- **Design project** — "design screens and flows for something you're building"
-- **Both (brand + project)** — "full pipeline — brand first, then design"
-- **Quick project** — "skip branding — pick a style preset and start designing"
+Show `  /gsp: ◇◇\n  looks like a fresh start.` (append codebase scanning note if `package.json` exists). Use `AskUserQuestion` with: Brand identity, Design project, Both (brand + project), Quick project.
 
 **Legacy `.design/` detected (flat structure, pre-0.4.0):**
-Acknowledge the legacy project, note it still works with current commands. Use `AskUserQuestion`:
-- **Start fresh brand** — "new dual-diamond brand alongside your legacy project"
-- **Start design project** — "new project using the updated pipeline"
-- **Keep working** — "continue with the legacy structure"
+Acknowledge the legacy project. Use `AskUserQuestion`: Start fresh brand, Start design project, Keep working.
 
 **Brands exist, no projects:**
-Show brand name + pipeline flow. Then use `AskUserQuestion` with:
-- One option per existing brand — "start a project with {brand name}"
-- **Create new brand** — "start a new brand identity"
+Show brand name + pipeline flow (compact single-line if complete, full pipeline if incomplete). Use `AskUserQuestion`: one option per existing brand + Create new brand.
 
-When brand is complete, show compact single-line: `  acme-corp                                          ◆ complete`
-
-When brand is incomplete, show full pipeline flow + `→ next: /gsp:{next-command}`
-
-**Brands + projects exist:**
+**Brands + projects exist (canonical format):**
 Show compact brand (single-line if complete) + full project pipeline flow. Then `AskUserQuestion`:
 - **Continue {project}** — "pick up at {next phase}"
 - **New project** — "start a new design project"
@@ -144,7 +115,7 @@ When codebase has been scanned (`.design/system/STACK.md` exists), show a Summar
 ```
 
 **Codebase signals found (any state):**
-Weave in what you found: "I see you've got a [Next.js/React Native/etc.] project here with [Tailwind/shadcn/etc.] — I'll factor that into the design scope."
+Weave in what you found naturally: framework, styling, component count.
 
 ## Step 2: Route based on conversation
 
@@ -169,22 +140,15 @@ mkdir -p .design/branding/{name}/{audit,discover,strategy,identity,patterns}
 
 **Round 1 — Business & People:**
 - Company name, industry, stage
-- What problem does this business solve? For whom? How differently?
-- Business model (how it makes money)
-- Who are the main competitors? (users usually know their top 2-3)
-- Primary persona — use `AskUserQuestion` to confirm or build: present an inferred persona profile (name, role, day-in-the-life, frustration, aspiration, discovery, trust signals) and let user correct. If they say "fintech for Gen Z" → infer and present a concrete persona.
+- Problem / audience / differentiation
+- Business model, main competitors (2-3)
+- Primary persona — infer a concrete profile (name, role, frustration, aspiration) from context and present for correction. Personas should feel like real people — dig into the emotional layer.
 - Secondary persona (if relevant)
 - Mission and vision
 
-This round is the most important. The personas should feel like real people, not demographic buckets. Dig into the emotional layer: anxiety, ambition, frustration, curiosity, status, safety.
-
 **Round 2 — Brand Essence & Landscape:**
 
-Before presenting personality options, **internally synthesize** from Round 1:
-- **Promise:** what should someone feel when they interact with this brand? (derived from persona frustrations + aspirations)
-- **Point of view:** what does this brand disagree with in the category? (derived from the problem + how it solves it differently)
-
-You do NOT ask the user these directly — you use them to ground the personality options.
+Before presenting personality options, **internally synthesize** promise (what should someone feel?) and point of view (what does this brand disagree with?) from Round 1. Don't ask these directly — use them to ground personality options.
 
 - Brand personality — use `AskUserQuestion` with 2-3 concrete personality directions. **Each option must explain WHY it fits this brand's audience and problem** — not just a style label:
   - Each option: **Label** (3 adjectives) / **Description** (why this personality fits their specific audience and competitive position — reference the persona by name, the problem, or the gap) / **Preview** (example sentence in that voice, using their product context)
@@ -218,39 +182,18 @@ Skip or compress rounds if the user gives enough upfront. Don't over-ask.
 
 5. Set `brand_mode` in config.json based on Step 2 routing decision.
 
-6. Route using `AskUserQuestion`:
+6. Route using `AskUserQuestion` — always offer Continue / Stop here / What happens next:
 
-- **Brand-only, new →** Use `AskUserQuestion`: "Brand brief created! Want to keep going?"
-  - **Continue to research** — "Start brand research now" → invoke `/gsp:brand-research` via Skill tool
-  - **Stop here** — "I'll come back later" → confirm files are saved, show how to resume with `/gsp:start`
-  - **What happens next?** — "Explain the next phase" → explain what brand research does and how it uses the brief
-
-- **Brand-only, evolve →** Use `AskUserQuestion`: "Brand brief created! Let's audit your current brand."
-  - **Continue to audit** — "Audit my existing brand now" → invoke `/gsp:brand-audit` via Skill tool
-  - **Stop here** — "I'll come back later" → confirm files are saved, show how to resume with `/gsp:start`
-  - **What happens next?** — "Explain the audit phase" → explain what the brand audit does and why it comes before strategy
-
-- **E2E, new →** "Brand brief created. Now let's scope the design project." → continue to Step 4.
-
-- **E2E, evolve →** Use `AskUserQuestion`: "Brand brief created! Let's audit your existing brand before the design project."
-  - **Continue to audit** — "Audit my existing brand now" → invoke `/gsp:brand-audit` via Skill tool
-  - **Stop here** — "I'll come back later" → confirm files are saved, show how to resume with `/gsp:start`
-  - **What happens next?** — "Explain the audit phase" → explain what the brand audit does and how it feeds into the rest of the pipeline
+- **Brand-only, new →** continue to `/gsp:brand-research`
+- **Brand-only, evolve →** continue to `/gsp:brand-audit`
+- **E2E, new →** auto-continue to Step 4
+- **E2E, evolve →** continue to `/gsp:brand-audit` (then Step 4 after audit)
 
 ## Step 4: Project flow
 
 **Background:** Run `git branch --show-current` with `run_in_background: true` now — result will be ready by the time we need it for git context detection.
 
-1. Show available brands:
-```
-Available brands:
-  • acme-corp (complete — all 4 phases)
-  • beta-labs (in progress — 2/4 phases)
-```
-
-If no brands exist, explain that a brand is needed first and offer to create one.
-If only one complete brand exists, suggest it as default.
-If multiple brands exist, use `AskUserQuestion` with one option per brand (include status in description).
+1. Show available brands with phase status. No brands → offer to create one. One complete → suggest as default. Multiple → `AskUserQuestion` with one option per brand.
 
 2. User selects a brand.
 
@@ -263,27 +206,11 @@ mkdir -p .design/projects/{name}/{brief,research,design,critique,build,review,co
 
 ### Detect git context
 
-Use the git branch detected earlier (run `git branch --show-current` in background at the start of Step 4, while asking for project name — result is ready by now).
+Use the background `git branch --show-current` result. If detected, confirm branch with `AskUserQuestion`. Store in config.json `git.branch` + STATE.md `## Git`. No git repo → skip silently.
 
-1. If a branch was detected, use `AskUserQuestion`: "I see you're on `{branch}` — track this as the project branch?"
-   - **Yes, use this branch** — "Track `{branch}`"
-   - **Different branch** — "I want to use a different branch name"
-3. Store in config.json `git.branch` and STATE.md `## Git` table
-4. If no git repo detected, skip silently — leave fields as "—"
+5. Write `.design/projects/{name}/brand.ref` — brand name, relative path, consumed_at ISO date, identity_hash (first 8 chars md5 of IDENTITY.md, or "pending").
 
-5. Write `brand.ref`:
-```
-brand: {brand-name}
-path: ../../branding/{brand-name}/
-consumed_at: {ISO_DATE}
-identity_hash: {first 8 chars of md5 of IDENTITY.md content, or "pending" if identity not complete}
-```
-Write to `.design/projects/{name}/brand.ref`
-
-6. Consume design system scan results:
-- Read `.design/system/STACK.md` (guaranteed done by now — conversation has been going for multiple rounds)
-- Note classification for config.json
-- Auto-infer `implementation_target` from STACK.md tech stack and COMPONENTS.md component inventory
+6. Consume `.design/system/STACK.md` — note classification for config.json, auto-infer `implementation_target` from STACK.md + COMPONENTS.md.
 
 7. Gather project brief in 2 rounds:
 
@@ -331,33 +258,9 @@ For users who want to skip branding and start designing immediately with a style
 
 ### 5a: Style selection
 
-Read the style presets index at `${CLAUDE_SKILL_DIR}/../../skills/gsp-style/styles/INDEX.yml` and present grouped options:
+Read `${CLAUDE_SKILL_DIR}/../../skills/gsp-style/styles/INDEX.yml` and present styles grouped by category. Use `AskUserQuestion` with one option per mood group (showing 2-3 preset names as preview) plus **Surprise me**. When user picks a group, drill into specific presets. If user names a preset directly, skip the group step.
 
-```
-  ─── pick a style ─────────────────────
-
-  minimal       swiss-minimalist, clean-modern, scandinavian
-  bold          neubrutalism, brutalist, cyberpunk
-  dark          modern-dark, midnight, hacker-terminal
-  editorial     editorial, magazine, newspaper
-  warm          organic, earthy, handcrafted
-  playful       retro-futurism, vaporwave, memphis
-```
-
-Use `AskUserQuestion` with:
-- One option per mood group (showing the first 2-3 preset names as preview)
-- **Surprise me** — "pick something unexpected for my stack"
-
-When user picks a group, show the specific presets in that group with 1-line descriptions from INDEX.yml. Use `AskUserQuestion` to pick the specific preset.
-
-If the user names a preset directly at any point, skip the group step.
-
-**"Surprise me" logic:** Pick a preset weighted by codebase type from the background scan:
-- Developer tools / CLI → dark or minimal presets
-- Content / blog → editorial presets
-- SaaS / dashboard → minimal or bold presets
-- E-commerce → warm or playful presets
-- No codebase detected → truly random pick
+**"Surprise me" logic:** Weight by codebase type — dev tools → dark/minimal, content → editorial, SaaS → minimal/bold, e-commerce → warm/playful, unknown → random.
 
 ### 5b: Create minimal brand
 

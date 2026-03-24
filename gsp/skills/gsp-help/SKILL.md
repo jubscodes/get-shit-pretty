@@ -42,6 +42,7 @@ Skill names are left-padded with 4 spaces. Descriptions start at column 27 (4 in
     /gsp:brand-identity    create visual identity
     /gsp:brand-patterns    build design system tokens and components
     /gsp:brand-sync        sync brand to match a project's shipped state
+    /gsp:brand-refine      tweak brand tokens mid-project without re-running identity
     /gsp:brand-audit       audit existing brand before evolving (optional)
 
   ─── Project ──────────────────────────

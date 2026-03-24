@@ -33,10 +33,7 @@ Build the design system, generate brand guidelines, and complete the branding di
 <process>
 ## Step 0: Resolve brand
 
-Scan `.design/branding/` for brand directories. If only one brand exists, use it. If multiple, ask the user which brand to work on.
-
-Set `BRAND_PATH` = `.design/branding/{brand}`
-
+Resolve brand from `.design/branding/` (one → use it, multiple → ask). Set `BRAND_PATH`.
 If BRAND_PATH doesn't exist, tell the user to run `/gsp:start` first.
 
 ## Step 1: Load context
@@ -45,14 +42,11 @@ If BRAND_PATH doesn't exist, tell the user to run `/gsp:start` first.
 
 Read `{BRAND_PATH}/identity/INDEX.md`. If it exists, load all identity chunks + `palettes.json`.
 
-Fallback: read `{BRAND_PATH}/identity/IDENTITY.md` (legacy monolith) + `palettes.json`. Log: "⚠️ Legacy identity format detected — consider re-running /gsp:brand-identity for chunk output."
-
-If neither exists, check if identity phase is complete in brand STATE.md. If not, tell the user to complete brand identity first (run `/gsp:brand-identity`).
+If INDEX.md doesn't exist, check if identity phase is complete in brand STATE.md. If not, tell the user to complete brand identity first (run `/gsp:brand-identity`).
 
 ### Strategy (selective, chunk-first)
 
 Read `{BRAND_PATH}/strategy/INDEX.md`. If it exists, load selective chunks (voice-and-tone.md, brand-platform.md).
-Fallback: read `{BRAND_PATH}/strategy/STRATEGY.md`.
 
 ### Brand context
 
@@ -109,7 +103,7 @@ Redesign the system from the ground up, informed by what exists.
 ## Step 3: Spawn pattern architect — Pass 1: Foundations
 
 Spawn the `gsp-pattern-architect` agent with:
-- All identity chunks (or IDENTITY.md fallback) + palettes.json
+- All identity chunks + palettes.json
 - The BRIEF.md content
 - The Design System Architect prompt (01)
 - The patterns output template
