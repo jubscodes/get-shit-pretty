@@ -240,7 +240,7 @@ GSP works across all major AI coding tools. The installer converts Claude Code's
 
 | Feature | Claude Code | OpenCode | Gemini CLI | Codex CLI |
 |---------|:-----------:|:--------:|:----------:|:---------:|
-| Skills | 24 | 24 | 24 | 24 |
+| Skills | 30 | 30 | 30 | 30 |
 | Agents | 15 | 15 | 15 (experimental) | — |
 | Slash syntax | `/gsp:command` | `/gsp-command` | `/gsp:command` | `$gsp-command` |
 | Prompts + templates | Yes | Yes | Yes | Yes |
@@ -329,8 +329,7 @@ get-shit-pretty/
 ├── scripts/               Hook scripts and utilities
 ├── gsp/                   Source of truth for all content
 │   ├── agents/            15 subagents (gsp-*.md)
-│   ├── commands/gsp/      20 slash commands (backward compat)
-│   ├── skills/            24 skills (*/SKILL.md — primary)
+│   ├── skills/            30 skills (*/SKILL.md)
 │   ├── hooks/             Plugin-level hooks (hooks.json)
 │   ├── prompts/           12 agent system prompts
 │   ├── templates/         Config, state, brief, roadmap templates
@@ -343,7 +342,7 @@ get-shit-pretty/
 └── CLAUDE.md              AI agent instructions for this repo
 ```
 
-Skills take precedence over commands when both exist. The installer reads from `gsp/` and writes to each runtime's config directory.
+The installer reads from `gsp/` and writes to each runtime's config directory.
 
 ---
 
