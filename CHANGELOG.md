@@ -4,6 +4,30 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+## [0.5.2] — 2026-03-24
+
+### Added
+- Brand sync skill (`/gsp:brand-sync`) — standalone reverse-propagation of project changes back to brand across four dimensions: tokens, voice & tone, visual patterns, and personality (#50)
+- Brand feedback loop in build pipeline — detect brand-level changes at three checkpoints (foundation review, extraction, revision) and sync back to brand system (#49)
+- Build quality gates — component extraction checkpoint, progressive token adoption, opt-in preview verification (#33)
+- Context management — SessionStart hook for state recovery after context compaction, per-chunk and per-phase output budgets (#40)
+- Prompt audit tooling — 7 automated checks (P1–P7) in audit suite + AI-driven `gsp-prompt-audit` dev skill for semantic analysis (#46)
+- Visual taste evaluation — anti-patterns reference (AI convergence counters), 15-item taste checklist scored alongside Nielsen's heuristics, advanced visual effects and block patterns
+- Style preset schema extracted to `references/style-preset-schema.md`
+- Publish dev skill (`/gsp-publish`) for orchestrated releases
+
+### Changed
+- Trimmed 848 lines across 27 skills/agents/prompts — prompts slimmed to role-only headers, agents own methodology, dead weight removed (#43)
+- Critic now produces dual scores: usability (/50) + taste (/75)
+- Designer, builder, and critic wired to anti-patterns reference
+- Skills count: 27 → 28, agents count: 14 → 15
+
+### Fixed
+- Installer agent installation — `copyAgents()` clean option prevents second call from wiping first call's work (#51)
+- Installer banner redesigned — left-aligned box with centered sparkle field
+- Vague spacing directive replaced with concrete 4/8px guidance
+- Duplicated Nielsen scoring table removed from critic agent
+
 ## [0.5.1] — 2026-03-23
 
 ### Added

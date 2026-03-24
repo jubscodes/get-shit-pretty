@@ -286,7 +286,7 @@ describe('copyAgents integration', () => {
     // Create non-GSP agent that should survive
     fs.writeFileSync(path.join(agentsDest, 'my-custom-agent.md'), 'keep');
 
-    copyAgents(path.join(FIXTURES, 'agents'), agentsDest, './.claude/', 'claude');
+    copyAgents(path.join(FIXTURES, 'agents'), agentsDest, './.claude/', 'claude', { clean: true });
 
     assert.ok(
       !fs.existsSync(path.join(agentsDest, 'gsp-old-agent.md')),

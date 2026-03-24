@@ -1,0 +1,38 @@
+---
+title: "v0.5.2 -- Lean pipeline, rich output"
+date: "2026-03-24"
+excerpt: "848 lines trimmed from prompts. Brand feedback loops close the gap between shipped projects and brand specs. Build quality gates catch extraction issues. Visual taste scoring sits alongside usability heuristics."
+tags: ["lean", "brand-sync", "quality-gates", "taste", "context-management"]
+slug: "v0-5-2"
+---
+
+## Lean Prompts
+
+AI-driven prompt audit tool (P1--P7 automated checks + semantic analysis) identified dead weight, contradictions, and over-specification across 27 skills, 14 agents, and 12 system prompts. Result: 848 lines cut. Prompts slimmed to role-only headers -- agents own their methodology instead of repeating it from skills.
+
+## Brand Feedback Loops
+
+Two new mechanisms keep brands in sync with shipped projects:
+
+- **Build-time feedback** -- at three pipeline checkpoints (foundation review, extraction scan, revision mode), the build detects when changes affect brand-level values and asks whether to propagate back. A background agent syncs tokens.json and brand chunks while the build continues.
+- **Standalone `/gsp:brand-sync`** -- run anytime to diff a project's shipped state against its source brand across four dimensions: tokens, voice and tone, visual patterns, and personality. Shows before/after divergences with file-level evidence. User picks what to sync back.
+
+## Build Quality Gates
+
+Three new checkpoints in the build pipeline:
+
+- **Component extraction** -- post-build scan for duplicated Tailwind clusters, hardcoded values, and repeated JSX patterns. User-approved, not auto-applied.
+- **Progressive tokens** -- foundations writes global tokens only; screen agents add screen-specific tokens as needed.
+- **Preview verification** -- opt-in check after foundations compile (catches blank pages, broken tokens, missing fonts).
+
+## Visual Taste
+
+The critic now produces dual scores: usability (/50, Nielsen's heuristics) + taste (/75, 15-item checklist covering typography tension, color restraint, spatial rhythm, surface depth, and more). Three new references give agents a concrete visual vocabulary: anti-patterns (AI convergence counters), advanced visual effects (spotlight borders, magnetic buttons, liquid glass), and advanced block compositions (bento 2.0, curtain reveals, sticky sequences).
+
+## Context Management
+
+SessionStart hook re-injects active brand/project state after context compaction. Per-chunk and per-phase output budgets keep agent output focused. Context recovery script handles the handoff automatically.
+
+## Installer Fix
+
+Fixed a bug where `copyAgents()` wiped its own work when called twice for main + custom agents. Also redesigned the installer banner -- left-aligned box layout.
