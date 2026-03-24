@@ -195,6 +195,21 @@ Present a summary of what the foundations phase produced:
 Use `AskUserQuestion`: "Foundations look good? Continue building screens, or review first?"
 - **Continue** → proceed to Step 5
 - **Review first** → pause, let user inspect, resume when ready
+- **Adjust** → user requests changes (colors, typography, spacing, etc.)
+
+### Brand feedback loop
+
+If the user requests adjustments during foundation review:
+
+1. Apply the changes to the project codebase first (directly or via a quick builder re-run)
+2. Ask: "Should this change also update the brand system? (Other projects using this brand would inherit it)"
+3. If yes, spawn a background `gsp-pattern-architect` agent to update brand patterns:
+   - Pass: the specific changes made (what tokens/values changed, old → new)
+   - Pass: `{BRAND_PATH}/patterns/tokens.json` and relevant identity chunks
+   - Agent updates tokens.json, foundation chunks, and style preset YAML if applicable
+   - Agent writes to `{BRAND_PATH}/` — the brand source of truth
+   - Run in background (`run_in_background: true`) so the build pipeline continues
+4. Continue to Step 5 without waiting for brand sync
 
 ## Step 5: Phase 4 — SCREENS
 
@@ -280,6 +295,13 @@ Use `AskUserQuestion`: "Apply these extractions, skip, or cherry-pick?"
 
 This step is **not auto-applied** — the user decides what to extract.
 
+### Brand feedback on extraction
+
+If the extraction scan finds hardcoded values that should be tokens (finding type #2), and those tokens are missing from the brand system:
+
+1. After applying fixes in the project, ask: "These token gaps also exist in the brand. Update brand patterns?"
+2. If yes, spawn a background `gsp-pattern-architect` agent with the missing token definitions to add them to `{BRAND_PATH}/patterns/tokens.json` and relevant foundation chunks.
+
 ## Step 6: Finalize
 
 After all screens complete (or pipeline stops):
@@ -328,5 +350,14 @@ For `implementation_target: figma`, skip the phased pipeline. Spawn a single `gs
 
 ## Step 8: Revision mode
 
-For `needs-revision` status, spawn a single `gsp-builder` agent with execution_mode: `full` and `review/issues.md` contents. The agent fixes QA issues in the codebase and appends revision sections to BUILD-LOG.md. Then continue from Step 6 (finalize).
+For `needs-revision` status, spawn a single `gsp-builder` agent with execution_mode: `full` and `review/issues.md` contents. The agent fixes QA issues in the codebase and appends revision sections to BUILD-LOG.md.
+
+### Brand feedback on revisions
+
+After the revision agent completes, check if any QA fixes changed token-level values (colors, typography, spacing, shadows). If so:
+
+1. Ask: "These revisions changed brand-level values. Update brand patterns so future projects inherit the fix?"
+2. If yes, spawn a background `gsp-pattern-architect` agent with the changed values to update `{BRAND_PATH}/patterns/`.
+
+Then continue from Step 6 (finalize).
 </process>
