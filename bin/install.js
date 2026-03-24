@@ -1704,6 +1704,9 @@ function finishInstall(settingsPath, settings, statuslineCommand, shouldInstallS
   if (!onboardingShown && !hasQuiet) {
     onboardingShown = true;
     console.log(`
+  ${c.secondary}Design engineering for AI coding tools.${c.reset}
+  ${c.secondary}Brand strategy, visual identity, design systems, UI — built by agents.${c.reset}
+
   ${c.bold}Get started:${c.reset}
     ${c.accent}${newCmd}${c.reset}     ${c.secondary}start here — brand, project, or both${c.reset}
     ${c.accent}${helpCmd}${c.reset}      ${c.secondary}all commands${c.reset}
