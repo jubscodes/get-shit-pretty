@@ -1,0 +1,36 @@
+---
+title: "v0.6.1 -- User testing fixes"
+date: "2026-03-24T22:00:00"
+excerpt: "First user testing run surfaced two critical issues: brand discovery dumped question walls instead of conversational flow, and global installs broke skills with sibling files. Both fixed, plus 5 new audit tests to prevent regression."
+tags: ["ux", "installer", "testing", "audit", "questioning"]
+slug: "v0-6-1"
+---
+
+## One Decision Per Question
+
+The first user testing session revealed that brand discovery was dumping 5–6 questions in a single wall of text. Users were overwhelmed before they even started.
+
+The fix is structural: "one message per round" has been replaced with **"one decision per question"** as the primary questioning principle. Every user-facing question is now its own `AskUserQuestion` call — ask one thing, wait, adapt, ask the next. The brand brief flow went from 3 batched rounds to 18 sequential numbered questions that skip intelligently based on prior answers.
+
+A new **"never re-ask"** rule prevents downstream phases from asking what the user already answered. Brand-audit reads assets from BRIEF.md instead of re-asking. Brand-strategy builds on the personality direction from start instead of re-establishing it. Both rules are now enforced across all 13 interactive skills.
+
+The brand flow also got a cleaner entry gate: **"brand name → have materials? → yes/no"** replaces signal-word detection for new vs evolve mode. And the E2E flow (brand + project) now completes the entire brand pipeline before gathering the project brief — it was previously batching 22 questions before any work happened.
+
+## Installer: Sibling Files + Prefix Guard
+
+Two installer bugs that broke global installs:
+
+**`copyClaudeSkills` was missing the `gsp-` prefix guard** that all other runtimes (OpenCode, Gemini, Codex) already had. The `get-shit-pretty` orchestrator skill was installed without the prefix.
+
+**All 4 runtime copy functions only copied `SKILL.md`**, skipping sibling files entirely. This meant `gsp-style/styles/` — 74 preset files that power the style system — was missing in every global install. A new `copySiblingFiles()` helper now recursively copies the full skill directory for all runtimes.
+
+## Audit Coverage
+
+Five new automated tests catch these classes of issues going forward:
+
+- **C10**: Update skill stays aligned with installer runtime flags and bundle layout
+- **I16**: Every `execution_context` reference in skills resolves to an existing source file
+- **I17**: Skills with sibling files get full directory copy, not just SKILL.md
+- **I18**: All 4 copy functions have the `gsp-` prefix guard
+
+`/gsp:doctor` also gained 3 new installation health checks (skill completeness, bundle directories, VERSION file) so end users can self-diagnose broken installs.
