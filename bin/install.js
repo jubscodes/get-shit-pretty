@@ -1045,7 +1045,8 @@ function copyClaudeSkills(srcDir, destDir, pathPrefix) {
     if (!dir.isDirectory()) continue;
     const skillMd = path.join(srcDir, dir.name, 'SKILL.md');
     if (!fs.existsSync(skillMd)) continue;
-    const destSkillDir = path.join(destDir, dir.name);
+    const skillName = dir.name.startsWith('gsp-') ? dir.name : `gsp-${dir.name}`;
+    const destSkillDir = path.join(destDir, skillName);
     fs.mkdirSync(destSkillDir, { recursive: true });
     let content = fs.readFileSync(skillMd, 'utf8');
     content = content.replace(/~\/\.claude\//g, pathPrefix);
