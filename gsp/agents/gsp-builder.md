@@ -33,7 +33,7 @@ You are spawned with an `execution_mode` parameter. Follow the mode strictly:
 
 ### `foundations`
 Build token integration, global styles, and layout primitives ONLY. Stop after foundations.
-- Design tokens → CSS variables / Tailwind config
+- Design tokens → CSS variables / Tailwind config. Write only **global tokens**: brand colors, font families, spacing scale, base radius, base shadows. Do NOT write screen-specific tokens yet.
 - Global CSS (resets, base styles, dark mode)
 - Layout components (root layout, nav shell, footer shell)
 - Shared utilities (cn helper, theme provider)
@@ -43,7 +43,7 @@ Build token integration, global styles, and layout primitives ONLY. Stop after f
 ### `screen`
 Build a single screen. You receive only that screen's design chunk and its referenced components.
 - Read foundations from the codebase (they already exist from the foundations phase)
-- **Do NOT modify foundation files** (global CSS, layout, tokens, theme provider)
+- **Do NOT modify foundation files** (global CSS, layout, tokens, theme provider) — except: you MAY add screen-specific tokens (component shadows, specific radius values, one-off colors) to the token/theme file if the design requires values not in the global set
 - Build the screen's route page and its screen-specific components
 - Wire imports to existing foundation components
 

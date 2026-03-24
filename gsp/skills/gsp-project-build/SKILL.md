@@ -157,8 +157,23 @@ After the foundations agent completes, run the build command:
 | TypeScript only | `npx tsc --noEmit` |
 | Generic | `npm run build` |
 
-**Pass:** Continue to Step 4.
+**Pass:** Continue to preview verification, then Step 4.
 **Fail:** Log the error. Do NOT re-spawn the agent. Surface the error to the user and ask how to proceed.
+
+### Preview verification (opt-in)
+
+After compile passes, verify the foundations actually render:
+
+1. Check if dev server is already running (`lsof -i :3000` or `:5173`)
+2. If running, use `curl -s http://localhost:{port}` to fetch the page
+3. Check the HTML response for:
+   - **Not blank** — response body has more than just the shell/boilerplate (>500 chars of content)
+   - **Tokens resolved** — grep the response for CSS variables or Tailwind classes from the token config. If `var(--` appears but no matching custom property is defined, tokens may be broken.
+   - **Font loaded** — check for the expected Google Fonts import or `@font-face` rule
+
+If dev server is not running, skip verification silently — do not start one. This keeps it zero-config.
+
+Report any issues found: "⚠️ Preview check: {issue}. This may be cosmetic — continue or investigate?"
 
 ## Step 4: Phase 3 — FOUNDATION REVIEW
 
@@ -224,6 +239,46 @@ After each screen agent completes, run the build command.
 - **Fix** → re-run build, surface errors for manual resolution
 - **Skip** → mark screen as `partial` in BUILD-LOG, continue
 - **Stop** → halt pipeline, save progress
+
+## Step 5.5: Component extraction checkpoint
+
+After all screens complete, audit the codebase for duplicated patterns before review.
+
+### Automated scan
+
+Run these checks in the built codebase:
+
+1. **Duplicated Tailwind class clusters** — Use Grep to find identical `className` strings (>3 classes) appearing in 2+ files. These are extraction candidates.
+2. **Inline color/spacing values** — Grep for hardcoded hex colors, rgb(), pixel values that should be tokens. Flag any that don't reference CSS variables or Tailwind tokens.
+3. **Repeated component patterns** — Look for similar JSX structures across screen files (e.g., similar card layouts, repeated list items, identical button groups).
+
+### Surface proposals
+
+Present findings to the user as a numbered list:
+
+```
+  ◆ extraction candidates
+
+    1. Card pattern in 3 screens (landing, changelog-list, dashboard)
+       className="rounded-lg border bg-card p-6 shadow-sm"
+       → extract to <Card> component
+
+    2. Hardcoded colors in 2 files
+       text-[#FF6B35] in hero.tsx, cta.tsx
+       → use text-brand-accent token
+
+    3. Badge pattern in changelog-list, changelog-post
+       → extract to <Badge> component
+
+  ──────────────────────────────
+```
+
+Use `AskUserQuestion`: "Apply these extractions, skip, or cherry-pick?"
+- **Apply all** → make the changes inline (no agent spawn needed, these are mechanical refactors)
+- **Cherry-pick** → apply selected ones
+- **Skip** → continue to finalize
+
+This step is **not auto-applied** — the user decides what to extract.
 
 ## Step 6: Finalize
 
