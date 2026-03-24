@@ -89,3 +89,47 @@ Single row: logo + horizontal link list + copyright. Centered or space-between. 
 | Testimonials | 3 cards | 2 cards | 1 card or scroll |
 | Pricing cards | Side by side | Side by side | Stacked |
 | Rich footer | 4 columns | 2×2 grid | Stacked |
+
+---
+
+## Advanced Compositions
+
+### Bento 2.0
+
+Asymmetric grid where every cell is alive — each tile runs a perpetual micro-animation (pulse, float, shimmer, or infinite mini-carousel). Cells are self-contained components with their own animation loops, creating ambient motion across the grid. Mixed sizes: 1×1 through 2×2, 3-4 column grid.
+**Responsive:** Collapse to 2-col then 1-col. Animations persist at all breakpoints — they're per-tile, not layout-dependent.
+
+### Split-screen scroll
+
+Viewport divided into two vertical halves that scroll in opposite directions. Left pane scrolls content upward while right pane scrolls downward (or vice versa), creating a parallax tension effect. Content in each half is independent — typically images vs. text, or two complementary narratives.
+**Responsive:** Stack vertically with normal unified scroll direction. No split on viewports < 768px.
+
+### Curtain reveal
+
+Hero section that splits down the center like a curtain as the user scrolls, revealing the next section behind it. Each half translates outward (left half → left, right half → right) tied to scroll position. Content behind is fixed-position until fully revealed.
+**Responsive:** Replace curtain split with a simple crossfade on mobile — the split effect requires sufficient viewport width to read.
+
+### Sticky scroll sequence
+
+Image or video frames tied to scroll position, advancing one frame per scroll increment (like Apple product pages). A tall scroll container (300-500vh) drives a fixed-position media element through a sequence of states. Text callouts appear at keyframe positions.
+**Responsive:** Replace scroll-tied frames with auto-playing video or animated sequence. Maintain text callouts as overlay cards.
+
+### Accordion image slider
+
+5-7 narrow vertical strips displayed side by side, each showing a slice of its full image. On hover, the targeted strip expands to full width while others compress. Creates an explorable gallery in a single viewport-height section.
+**Responsive:** Convert to standard horizontal carousel with snap points on mobile. Hover-expand doesn't translate to touch.
+
+### Mega menu reveal
+
+Full-viewport-width dropdown panel triggered by nav hover or click. Content organized in 3-5 columns with staggered fade-in (80ms per column). Includes category headers, link lists, optional featured image or CTA card. Overlay dims page content behind.
+**Responsive:** Replace with full-screen slide-in panel from the side. Stagger animation applies to rows instead of columns.
+
+### Dynamic island
+
+Pill-shaped floating UI component that morphs shape and content contextually — expanding to show notifications, progress bars, media controls, or status updates. Uses `border-radius` transitions and `layout` animation (Framer Motion `layoutId`) for smooth shape-shifting.
+**Responsive:** Same behavior at all breakpoints. Adjust max-width and font size. Pin to top or bottom of viewport on mobile.
+
+### Command palette
+
+`⌘K` / `Ctrl+K` triggered search overlay with fuzzy matching, keyboard navigation (arrow keys + enter), and grouped results (pages, actions, settings). Modal with input field, scrollable results list, and keyboard shortcut hints. Escape or click-outside to dismiss.
+**Responsive:** Full-screen takeover on mobile with larger touch targets. Input auto-focused. Results fill available height.

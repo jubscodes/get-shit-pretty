@@ -9,7 +9,7 @@ allowed-tools:
   - WebFetch
   - WebSearch
   - Agent
-argument-hint: "[focus] e.g. 'all', 'contracts', 'installer', 'runtime', 'versions', 'templates'"
+argument-hint: "[focus] e.g. 'all', 'contracts', 'installer', 'runtime', 'versions', 'templates', 'prompts'"
 disable-model-invocation: true
 ---
 
@@ -17,8 +17,8 @@ disable-model-invocation: true
 GSP internal integrity checker for maintainers. Verifies that the plugin's moving parts stay consistent as the codebase evolves. This is NOT the user-facing `/gsp:doctor` (which checks `.design/` project health) — this checks the GSP *source code* itself.
 
 Source layout:
-- `gsp/skills/` — 24 skills (SKILL.md files)
-- `gsp/agents/` — 15 agents (gsp-*.md files)
+- `gsp/skills/` — 27 skills (SKILL.md files)
+- `gsp/agents/` — 14 agents (gsp-*.md files)
 - `gsp/templates/` — config, state, brief, roadmap templates
 - `gsp/references/` — shared reference material
 - `gsp/prompts/` — 12 system prompts
@@ -43,7 +43,7 @@ Run the test suite first — it covers versions, contracts, installer, runtime, 
 bash dev/scripts/audit-tests.sh $ARGUMENTS
 ```
 
-The script accepts: `all` (default), `versions`, `contracts`, `installer`, `runtime`, `templates`.
+The script accepts: `all` (default), `versions`, `contracts`, `installer`, `runtime`, `templates`, `prompts`.
 
 Review the output. If all tests pass, report the clean result. If any tests fail or warn, investigate each issue using the deeper analysis steps below.
 
@@ -56,6 +56,7 @@ Review the output. If all tests pass, report the clean result. If any tests fail
 - **`runtime`** — runtime compatibility checks (uses gsp-runtime-compat baseline)
 - **`versions`** — version sync checks only
 - **`templates`** — template coherence checks only
+- **`prompts`** — prompt quality checks only (line budgets, duplication, vague directives)
 
 ## Step 2: Version Sync (V)
 
@@ -180,6 +181,31 @@ Grep each `apply*BodyReplacements` for `(?=` near `Skill` — ensures the replac
 ### T1-T7: Config fields, state templates, phase templates, exports index, chunk format, state/brief templates
 See automated test suite for details.
 
+## Step 6b: Prompt Quality (P)
+
+Automated checks for prompt engineering hygiene across all skills, agents, and prompts.
+
+### P1: Line count budgets
+Flag files exceeding size thresholds: skills >300 lines, agents >150 lines, prompts >80 lines.
+
+### P2: `<rules>` placement
+`<rules>` sections should only appear in skills, not in agent definitions or system prompts.
+
+### P3: `<rules>` size budget
+Flag `<rules>` sections exceeding 30 lines — large rules blocks dilute focus.
+
+### P4: Cross-file duplicate lines
+Find non-trivial lines (>30 chars) appearing in 3+ files — signals copy-paste drift.
+
+### P5: Skill↔agent instruction overlap
+When a skill spawns an agent, check for repeated instructions between them. Overlap means the agent gets the same instruction twice (from skill context + its own definition).
+
+### P6: Verbosity ratio
+Ratio of constraint keywords (must, never, always, forbidden, required) + `<rules>` lines vs total content. Flag >40% — indicates over-prompting.
+
+### P7: Vague directive detection
+Grep for known anti-patterns: "be natural", "use good tone", "write clean", "be helpful", "ensure quality", "be thorough", "be creative", "be professional", "use best practices". These are instructions the model can't act on consistently.
+
 ## Step 7: Report
 
 Output a terminal-formatted report:
@@ -225,9 +251,18 @@ Runtime Compatibility
 Templates
   ✅ T1-T7. All template checks ..... PASS
 
+Prompt Quality
+  ✅ P1. Line budgets ............... PASS
+  ✅ P2. <rules> placement .......... PASS
+  ✅ P3. <rules> size ............... PASS
+  ✅ P4. Cross-file duplicates ...... PASS
+  ✅ P5. Skill↔agent overlap ....... PASS
+  ✅ P6. Verbosity ratio ............ PASS
+  ✅ P7. Vague directives ........... PASS
+
 ─── Summary ───────────────────────────
 
-  30 PASS · 1 WARN · 0 FAIL
+  37 PASS · 1 WARN · 0 FAIL
   GSP pipeline is healthy with minor issues.
 ```
 

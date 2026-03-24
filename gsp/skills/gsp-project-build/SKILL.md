@@ -51,6 +51,7 @@ Implement designs as production-ready code in the codebase via phased pipeline w
 @${CLAUDE_SKILL_DIR}/../../templates/phases/build.md
 @${CLAUDE_SKILL_DIR}/../../references/visual-effects.md
 @${CLAUDE_SKILL_DIR}/../../references/block-patterns.md
+@${CLAUDE_SKILL_DIR}/../../references/anti-patterns.md
 </execution_context>
 
 <process>
@@ -157,8 +158,23 @@ After the foundations agent completes, run the build command:
 | TypeScript only | `npx tsc --noEmit` |
 | Generic | `npm run build` |
 
-**Pass:** Continue to Step 4.
+**Pass:** Continue to preview verification, then Step 4.
 **Fail:** Log the error. Do NOT re-spawn the agent. Surface the error to the user and ask how to proceed.
+
+### Preview verification (opt-in)
+
+After compile passes, verify the foundations actually render:
+
+1. Check if dev server is already running (`lsof -i :3000` or `:5173`)
+2. If running, use `curl -s http://localhost:{port}` to fetch the page
+3. Check the HTML response for:
+   - **Not blank** — response body has more than just the shell/boilerplate (>500 chars of content)
+   - **Tokens resolved** — grep the response for CSS variables or Tailwind classes from the token config. If `var(--` appears but no matching custom property is defined, tokens may be broken.
+   - **Font loaded** — check for the expected Google Fonts import or `@font-face` rule
+
+If dev server is not running, skip verification silently — do not start one. This keeps it zero-config.
+
+Report any issues found: "⚠️ Preview check: {issue}. This may be cosmetic — continue or investigate?"
 
 ## Step 4: Phase 3 — FOUNDATION REVIEW
 
@@ -180,6 +196,21 @@ Present a summary of what the foundations phase produced:
 Use `AskUserQuestion`: "Foundations look good? Continue building screens, or review first?"
 - **Continue** → proceed to Step 5
 - **Review first** → pause, let user inspect, resume when ready
+- **Adjust** → user requests changes (colors, typography, spacing, etc.)
+
+### Brand feedback loop
+
+If the user requests adjustments during foundation review:
+
+1. Apply the changes to the project codebase first (directly or via a quick builder re-run)
+2. Ask: "Should this change also update the brand system? (Other projects using this brand would inherit it)"
+3. If yes, spawn a background `gsp-pattern-architect` agent to update brand patterns:
+   - Pass: the specific changes made (what tokens/values changed, old → new)
+   - Pass: `{BRAND_PATH}/patterns/tokens.json` and relevant identity chunks
+   - Agent updates tokens.json, foundation chunks, and style preset YAML if applicable
+   - Agent writes to `{BRAND_PATH}/` — the brand source of truth
+   - Run in background (`run_in_background: true`) so the build pipeline continues
+4. Continue to Step 5 without waiting for brand sync
 
 ## Step 5: Phase 4 — SCREENS
 
@@ -224,6 +255,53 @@ After each screen agent completes, run the build command.
 - **Fix** → re-run build, surface errors for manual resolution
 - **Skip** → mark screen as `partial` in BUILD-LOG, continue
 - **Stop** → halt pipeline, save progress
+
+## Step 5.5: Component extraction checkpoint
+
+After all screens complete, audit the codebase for duplicated patterns before review.
+
+### Automated scan
+
+Run these checks in the built codebase:
+
+1. **Duplicated Tailwind class clusters** — Use Grep to find identical `className` strings (>3 classes) appearing in 2+ files. These are extraction candidates.
+2. **Inline color/spacing values** — Grep for hardcoded hex colors, rgb(), pixel values that should be tokens. Flag any that don't reference CSS variables or Tailwind tokens.
+3. **Repeated component patterns** — Look for similar JSX structures across screen files (e.g., similar card layouts, repeated list items, identical button groups).
+
+### Surface proposals
+
+Present findings to the user as a numbered list:
+
+```
+  ◆ extraction candidates
+
+    1. Card pattern in 3 screens (landing, changelog-list, dashboard)
+       className="rounded-lg border bg-card p-6 shadow-sm"
+       → extract to <Card> component
+
+    2. Hardcoded colors in 2 files
+       text-[#FF6B35] in hero.tsx, cta.tsx
+       → use text-brand-accent token
+
+    3. Badge pattern in changelog-list, changelog-post
+       → extract to <Badge> component
+
+  ──────────────────────────────
+```
+
+Use `AskUserQuestion`: "Apply these extractions, skip, or cherry-pick?"
+- **Apply all** → make the changes inline (no agent spawn needed, these are mechanical refactors)
+- **Cherry-pick** → apply selected ones
+- **Skip** → continue to finalize
+
+This step is **not auto-applied** — the user decides what to extract.
+
+### Brand feedback on extraction
+
+If the extraction scan finds hardcoded values that should be tokens (finding type #2), and those tokens are missing from the brand system:
+
+1. After applying fixes in the project, ask: "These token gaps also exist in the brand. Update brand patterns?"
+2. If yes, spawn a background `gsp-pattern-architect` agent with the missing token definitions to add them to `{BRAND_PATH}/patterns/tokens.json` and relevant foundation chunks.
 
 ## Step 6: Finalize
 
@@ -273,5 +351,14 @@ For `implementation_target: figma`, skip the phased pipeline. Spawn a single `gs
 
 ## Step 8: Revision mode
 
-For `needs-revision` status, spawn a single `gsp-builder` agent with execution_mode: `full` and `review/issues.md` contents. The agent fixes QA issues in the codebase and appends revision sections to BUILD-LOG.md. Then continue from Step 6 (finalize).
+For `needs-revision` status, spawn a single `gsp-builder` agent with execution_mode: `full` and `review/issues.md` contents. The agent fixes QA issues in the codebase and appends revision sections to BUILD-LOG.md.
+
+### Brand feedback on revisions
+
+After the revision agent completes, check if any QA fixes changed token-level values (colors, typography, spacing, shadows). If so:
+
+1. Ask: "These revisions changed brand-level values. Update brand patterns so future projects inherit the fix?"
+2. If yes, spawn a background `gsp-pattern-architect` agent with the changed values to update `{BRAND_PATH}/patterns/`.
+
+Then continue from Step 6 (finalize).
 </process>

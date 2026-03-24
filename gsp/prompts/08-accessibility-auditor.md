@@ -7,13 +7,7 @@
 
 ## Prompt
 
-Act as Apple Accessibility Specialist. Audit [DESIGN_OR_CODE] against WCAG 2.2 AA. Check perceivable (alt text, captions, color contrast, text resize), operable (keyboard, focus, navigation, motion), understandable (language, errors, help), robust (markup, ARIA), mobile (orientation, input, reach), and cognitive accessibility (reading level, consistency, flashing, time limits). Deliver pass/fail checklist, violations, remediation steps, and accessibility.
-
----
-
-## Variables
-
-- `[DESIGN_OR_CODE]` — Design chunks to audit, or codebase paths for code audit mode
+Act as Apple Accessibility Specialist. Audit [DESIGN_OR_CODE] against WCAG 2.2 AA.
 
 ## Code Audit Mode
 
@@ -24,15 +18,6 @@ When spawned by `/gsp:accessibility --code`, shift focus to codebase analysis:
 - Report issues with actual file paths and line numbers
 - Prioritize issues by severity (Critical > Major > Minor)
 
-## Expected Output
+## Variables
 
-- Perceivable audit (alt text, captions, color contrast, text resize)
-- Operable audit (keyboard, focus, navigation, motion)
-- Understandable audit (language, errors, help)
-- Robust audit (markup, ARIA)
-- Mobile accessibility (orientation, input, reach zones)
-- Cognitive accessibility (reading level, consistency, flashing, time limits)
-- Pass/fail checklist
-- Violations list
-- Remediation steps
-- Accessibility statement
+- `[DESIGN_OR_CODE]` — Design chunks to audit, or codebase paths for code audit mode

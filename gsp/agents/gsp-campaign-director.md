@@ -77,24 +77,4 @@ After writing all chunks, write `INDEX.md` in the launch directory:
 | Social Media | [social-media.md](./social-media.md) | ~{N} |
 | Sales & Content | [sales-content.md](./sales-content.md) | ~{N} |
 ```
-
-### Update project exports/INDEX.md
-
-After generating chunks, update the project's `exports/INDEX.md`:
-
-1. If INDEX.md doesn't exist, copy it from `templates/exports-index.md`
-2. Replace everything between `<!-- BEGIN:launch -->` and `<!-- END:launch -->` with populated tables:
-
-```markdown
-<!-- BEGIN:launch -->
-| Section | File |
-|---------|------|
-| Campaign Strategy | [campaign-strategy.md](../launch/campaign-strategy.md) |
-| Digital Ads | [digital-ads.md](../launch/digital-ads.md) |
-| Email Sequences | [email-sequences.md](../launch/email-sequences.md) |
-| Landing Page | [landing-page.md](../launch/landing-page.md) |
-| Social Media | [social-media.md](../launch/social-media.md) |
-| Sales & Content | [sales-content.md](../launch/sales-content.md) |
-<!-- END:launch -->
-```
 </output>

@@ -35,8 +35,6 @@ Apply a named style preset to produce production-ready design tokens and foundat
 
 <rules>
 - Always use `AskUserQuestion` for user interaction — never prompt via plain text
-- Presets are the source of truth — expand tokens deterministically, don't improvise values
-- Foundation chunks follow `references/chunk-format.md` format exactly
 - `tokens.json` follows W3C Design Tokens format from `references/design-tokens.md`
 - When mixing styles, later style values override earlier ones (last-wins precedence)
 - Never mix clashing styles — check the compatibility matrix first
@@ -221,226 +219,25 @@ Stop here. Do not write any files.
 
 Transform the YAML preset tokens into the full W3C Design Tokens JSON structure.
 
-### Color tokens
-Map preset colors to the W3C structure with `$value` and `$type` fields:
+### Token expansion mapping
 
-```json
-{
-  "color": {
-    "brand": {
-      "primary": { "$value": "{preset.color.primary}", "$type": "color" },
-      "secondary": { "$value": "{preset.color.secondary}", "$type": "color" },
-      "accent": { "$value": "{preset.color.accent}", "$type": "color" }
-    },
-    "semantic": {
-      "background": { "$value": "{preset.color.background}", "$type": "color" },
-      "surface": { "$value": "{preset.color.surface}", "$type": "color" },
-      "on-primary": { "$value": "{preset.color.on-primary}", "$type": "color" },
-      "on-background": { "$value": "{preset.color.on-background}", "$type": "color" },
-      "error": { "$value": "{preset.color.error}", "$type": "color" },
-      "success": { "$value": "{preset.color.success}", "$type": "color" },
-      "warning": { "$value": "{preset.color.warning}", "$type": "color" },
-      "info": { "$value": "{preset.color.info}", "$type": "color" }
-    }
-  }
-}
-```
+Transform each YAML preset section into W3C Design Tokens JSON with `$value` and `$type` fields:
 
-### Typography tokens
-```json
-{
-  "font": {
-    "family": {
-      "primary": { "$value": "{preset.typography.font-family-primary}", "$type": "fontFamily" },
-      "mono": { "$value": "{preset.typography.font-family-mono}", "$type": "fontFamily" }
-    }
-  },
-  "typography": {
-    "display": {
-      "$value": {
-        "fontFamily": "{font.family.primary}",
-        "fontSize": "48px",
-        "fontWeight": "{preset.typography.font-weight-heading}",
-        "lineHeight": 1.1,
-        "letterSpacing": "-0.02em"
-      },
-      "$type": "typography"
-    },
-    "heading-1": {
-      "$value": {
-        "fontFamily": "{font.family.primary}",
-        "fontSize": "36px",
-        "fontWeight": "{preset.typography.font-weight-heading}",
-        "lineHeight": 1.2,
-        "letterSpacing": "-0.01em"
-      },
-      "$type": "typography"
-    },
-    "heading-2": {
-      "$value": {
-        "fontFamily": "{font.family.primary}",
-        "fontSize": "28px",
-        "fontWeight": "{preset.typography.font-weight-heading}",
-        "lineHeight": 1.3,
-        "letterSpacing": "0"
-      },
-      "$type": "typography"
-    },
-    "heading-3": {
-      "$value": {
-        "fontFamily": "{font.family.primary}",
-        "fontSize": "22px",
-        "fontWeight": "{preset.typography.font-weight-heading}",
-        "lineHeight": 1.4,
-        "letterSpacing": "0"
-      },
-      "$type": "typography"
-    },
-    "body-large": {
-      "$value": {
-        "fontFamily": "{font.family.primary}",
-        "fontSize": "18px",
-        "fontWeight": "{preset.typography.font-weight-body}",
-        "lineHeight": "{preset.typography.line-height-base}",
-        "letterSpacing": "0"
-      },
-      "$type": "typography"
-    },
-    "body": {
-      "$value": {
-        "fontFamily": "{font.family.primary}",
-        "fontSize": "{preset.typography.font-size-base}",
-        "fontWeight": "{preset.typography.font-weight-body}",
-        "lineHeight": "{preset.typography.line-height-base}",
-        "letterSpacing": "0"
-      },
-      "$type": "typography"
-    },
-    "body-small": {
-      "$value": {
-        "fontFamily": "{font.family.primary}",
-        "fontSize": "14px",
-        "fontWeight": "{preset.typography.font-weight-body}",
-        "lineHeight": "{preset.typography.line-height-base}",
-        "letterSpacing": "0"
-      },
-      "$type": "typography"
-    },
-    "caption": {
-      "$value": {
-        "fontFamily": "{font.family.primary}",
-        "fontSize": "12px",
-        "fontWeight": "{preset.typography.font-weight-body}",
-        "lineHeight": 1.4,
-        "letterSpacing": "0.01em"
-      },
-      "$type": "typography"
-    },
-    "overline": {
-      "$value": {
-        "fontFamily": "{font.family.primary}",
-        "fontSize": "11px",
-        "fontWeight": 600,
-        "lineHeight": 1.5,
-        "letterSpacing": "0.08em"
-      },
-      "$type": "typography"
-    }
-  }
-}
-```
+| Preset section | Token path | $type | Notes |
+|---------------|------------|-------|-------|
+| `color.*` | `color.brand.{key}`, `color.semantic.{key}` | `color` | Split into brand (primary, secondary, accent) and semantic (background, surface, on-primary, on-background, error, success, warning, info) |
+| `typography.*` | `font.family.{primary,mono}` | `fontFamily` | — |
+| `typography.*` | `typography.{level}` | `typography` | Composite: fontFamily, fontSize, fontWeight, lineHeight, letterSpacing. 9 levels: display, heading-1 through heading-3, body-large, body, body-small, caption, overline |
+| `spacing.*` | `spacing.{xs,sm,md,lg,xl,2xl,3xl,4xl}` | `dimension` | — |
+| `elevation.*` | `shadow.{sm,md,lg,xl}` | `shadow` | Parse CSS shadow shorthand into structured format |
+| `shape.*` | `radius.{none,sm,md,lg,full}` | `dimension` | `full` = 9999px |
+| `motion.*` | `motion.duration.{fast,normal}`, `motion.easing.default` | `duration`, `cubicBezier` | — |
 
-### Spacing tokens
-Generate from the preset's spacing scale:
+**Style-specific tokens:** If preset has extra groups (e.g., `glass`, `glow`, `gradient`, `syntax`), include under `$extensions.gsp-style-specific`.
 
-```json
-{
-  "spacing": {
-    "xs": { "$value": "4px", "$type": "dimension" },
-    "sm": { "$value": "8px", "$type": "dimension" },
-    "md": { "$value": "16px", "$type": "dimension" },
-    "lg": { "$value": "24px", "$type": "dimension" },
-    "xl": { "$value": "32px", "$type": "dimension" },
-    "2xl": { "$value": "48px", "$type": "dimension" },
-    "3xl": { "$value": "64px", "$type": "dimension" },
-    "4xl": { "$value": "96px", "$type": "dimension" }
-  }
-}
-```
+**Dark mode:** If preset has `dark_mode` section, include under `$extensions.dark` with semantic color overrides.
 
-### Shadow tokens
-Map preset elevation values to W3C shadow format. Parse the CSS shadow shorthand from the preset into the structured format:
-
-```json
-{
-  "shadow": {
-    "sm": { "$value": "{parsed from preset.elevation.shadow-sm}", "$type": "shadow" },
-    "md": { "$value": "{parsed from preset.elevation.shadow-md}", "$type": "shadow" },
-    "lg": { "$value": "{parsed from preset.elevation.shadow-lg}", "$type": "shadow" },
-    "xl": { "$value": "{parsed from preset.elevation.shadow-xl}", "$type": "shadow" }
-  }
-}
-```
-
-### Border radius tokens
-```json
-{
-  "radius": {
-    "none": { "$value": "0px", "$type": "dimension" },
-    "sm": { "$value": "{preset.shape.border-radius-sm}", "$type": "dimension" },
-    "md": { "$value": "{preset.shape.border-radius-md}", "$type": "dimension" },
-    "lg": { "$value": "{preset.shape.border-radius-lg}", "$type": "dimension" },
-    "full": { "$value": "9999px", "$type": "dimension" }
-  }
-}
-```
-
-### Style-specific token groups
-If the preset has extra token groups (e.g., `glass` for glassmorphism, `glow` for cyberpunk, `gradient` for vaporwave, `syntax` for terminal), include them under an `$extensions` key:
-
-```json
-{
-  "$extensions": {
-    "gsp-style": "{preset-name}",
-    "gsp-style-specific": {
-      // style-specific tokens preserved as-is from the preset
-    }
-  }
-}
-```
-
-### Dark mode
-If the preset has a `dark_mode` section, include it under `$extensions.dark`:
-
-```json
-{
-  "$extensions": {
-    "dark": {
-      "color": {
-        "semantic": {
-          "background": { "$value": "{preset.dark_mode.color.background}" },
-          "surface": { "$value": "{preset.dark_mode.color.surface}" }
-        }
-      }
-    }
-  }
-}
-```
-
-### Motion tokens
-```json
-{
-  "motion": {
-    "duration": {
-      "fast": { "$value": "{preset.motion.duration-fast}", "$type": "duration" },
-      "normal": { "$value": "{preset.motion.duration-normal}", "$type": "duration" }
-    },
-    "easing": {
-      "default": { "$value": "{preset.motion.easing}", "$type": "cubicBezier" }
-    }
-  }
-}
-```
+**Extensions metadata:** Always include `$extensions.gsp-style` with the preset name.
 
 ## Step 7: Write tokens.json
 
