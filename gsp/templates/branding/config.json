@@ -6,6 +6,7 @@
     "created": ""
   },
   "brand_mode": "new",
+  "e2e": false,
   "evolution_scope": {
     "preserve": [],
     "evolve": [],

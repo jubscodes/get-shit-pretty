@@ -30,6 +30,11 @@ Build the design system, generate brand guidelines, and complete the branding di
 @${CLAUDE_SKILL_DIR}/../../references/design-tokens.md
 </execution_context>
 
+<rules>
+- Always use `AskUserQuestion` for user-facing questions — never raw text prompts
+- One decision per question — never batch multiple questions in a single message
+</rules>
+
 <process>
 ## Step 0: Resolve brand
 
@@ -66,14 +71,20 @@ If `style_base` is empty or missing, load `${CLAUDE_SKILL_DIR}/../gsp-style/styl
 
 **Always scan:** If `.design/system/` docs don't exist, invoke `/gsp:design-system` via Skill tool to scan the codebase. If they already exist, read them. Either way, load STACK.md, COMPONENTS.md, and TOKENS.md before continuing.
 
-Then ask the user:
-1. "Will this brand target a specific tech stack?" (React + Tailwind, React Native + NativeWind, vanilla CSS, etc.)
-   - If the scan detected a stack, present it as the default: "I see you're using {framework} with {styling} — build on that?"
-   - Store answer in `{BRAND_PATH}/config.json` → `system_config.tech_stack`
-2. Based on scan results, determine system strategy:
-   - If scan found existing tokens/components: "You have an existing design system. Want to evolve it, rethink it from scratch, or ignore it?"
-   - Store strategy in `{BRAND_PATH}/config.json` → `system_config.system_strategy`
-   - If scan found no tokens/components (greenfield/boilerplate): default to `generate`, skip the question
+Then ask the user (each as its own `AskUserQuestion`):
+
+1. Tech stack — if the scan detected a stack, use `AskUserQuestion`:
+   - **Yes, build on {framework} + {styling}** — "Use what's already here"
+   - **Different stack** — "I want to target a different tech stack"
+   If no stack detected, use open-ended `AskUserQuestion`: "What tech stack will this brand target?"
+   Store answer in `{BRAND_PATH}/config.json` → `system_config.tech_stack`
+
+2. System strategy — only ask if scan found existing tokens/components. Use `AskUserQuestion`:
+   - **Evolve** — "Extend the existing design system"
+   - **Rethink** — "Redesign from scratch, informed by what exists"
+   - **Ignore** — "Start fresh, don't reference the existing system"
+   Store strategy in `{BRAND_PATH}/config.json` → `system_config.system_strategy`
+   If scan found no tokens/components (greenfield/boilerplate): default to `generate`, skip this question
 
 ## Step 2: Determine system strategy
 
@@ -121,37 +132,37 @@ The agent writes foundations only:
 
 ## Step 3.5: Foundation review (interactive)
 
-Read the foundation outputs and present:
+Read the foundation outputs and present a compact summary:
 
-"Here are the design system foundations:
+"Design system foundations:
  Color: {semantic mapping summary from foundations/color-system.md}
  Typography: {type scale summary from foundations/typography.md}
  Spacing: 8px base → {scale from foundations/spacing.md}
- Design principles: {list from principles.md}
+ Design principles: {list from principles.md}"
 
- Everything right? Adjustments before building components?"
+Use `AskUserQuestion`:
+- **Looks good** — "Build components on these foundations"
+- **Adjust colors** — "I want to tweak the color system"
+- **Adjust typography** — "I want to tweak the type scale"
+- **Adjust other** — "I want to change spacing, principles, or other foundations"
 
-Wait for user input. If adjustments needed, update the relevant foundation chunks.
+If adjustments needed, update the relevant foundation chunks, then re-present.
 
 ## Step 3.75: Perspective check
 
 Before building components, load persona profiles from `{BRAND_PATH}/BRIEF.md` and present stakeholder reactions:
 
-"Before we build the component library on these foundations:
+"Before we build the component library:
 
- The Customer ({primary persona name from BRIEF.md}):
- "{would a user recognize this as {brand}? Does the system feel like the brand?}"
+ {primary persona name}: {would they recognize this as {brand}? Does it feel right?}
+ Skeptic: {are the tokens flexible enough? Are the principles actionable?}
+ {top competitor}: {how does this compare to industry standards?}"
 
- The Skeptic (internal stakeholder):
- "{challenges system decisions — are the tokens flexible enough? Are the principles actionable?}"
+Use `AskUserQuestion`:
+- **Build components** — "These foundations are solid, let's go"
+- **Adjust** — "One of these concerns resonates — I want to change something"
 
- The Competitor ({top competitor name}):
- "{how does this system compare to industry standards? Any gaps?}"
-
- Any of these concerns resonate? Want to adjust foundations before building components?"
-
-If user wants changes → update foundations.
-If confirmed → proceed to components pass.
+If adjust → update foundations and re-present. If confirmed → proceed to components pass.
 
 ## Step 4: Spawn pattern architect — Pass 2: Components
 
@@ -208,7 +219,9 @@ Tell the user: "Brand kit saved to `guidelines.html` — open it in your browser
 
 Render phase transition (see `references/phase-transitions.md`).
 
-**Critical:** When the user chooses "Start a project", invoke `/gsp:start` via the Skill tool. Do NOT attempt to handle project setup inline — `/gsp:start` has the codebase scanning, questioning rounds, and brief-writing logic needed for a proper project setup. The branding agent's context is spent on brand work and lacks the project setup methodology.
+**E2E mode:** Read `{BRAND_PATH}/config.json`. If `e2e` is `true`, auto-invoke `/gsp:start` via Skill tool — it will detect the completed brand and route directly to project setup (Step 4). No need to ask the user.
+
+**Non-E2E:** When the user chooses "Start a project", invoke `/gsp:start` via the Skill tool. Do NOT attempt to handle project setup inline — `/gsp:start` has the codebase scanning, questioning rounds, and brief-writing logic needed for a proper project setup. The branding agent's context is spent on brand work and lacks the project setup methodology.
 
 Also display a brand summary after the standard transition — this is the final branding phase:
 
