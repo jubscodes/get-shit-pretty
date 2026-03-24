@@ -30,6 +30,7 @@ Design core UI/UX screens and interaction flows.
 @${CLAUDE_SKILL_DIR}/../../references/apple-hig-patterns.md
 @${CLAUDE_SKILL_DIR}/../../references/visual-effects.md
 @${CLAUDE_SKILL_DIR}/../../references/block-patterns.md
+@${CLAUDE_SKILL_DIR}/../../references/anti-patterns.md
 </execution_context>
 
 <process>

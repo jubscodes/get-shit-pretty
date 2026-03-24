@@ -51,6 +51,7 @@ Implement designs as production-ready code in the codebase via phased pipeline w
 @${CLAUDE_SKILL_DIR}/../../templates/phases/build.md
 @${CLAUDE_SKILL_DIR}/../../references/visual-effects.md
 @${CLAUDE_SKILL_DIR}/../../references/block-patterns.md
+@${CLAUDE_SKILL_DIR}/../../references/anti-patterns.md
 </execution_context>
 
 <process>
