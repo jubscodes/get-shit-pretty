@@ -4,6 +4,22 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+## [0.6.1] — 2026-03-24
+
+### Fixed
+- Brand discovery no longer batches questions — each question is its own `AskUserQuestion` call with exactly one decision. "One message per round" replaced with "one decision per question" as the primary questioning principle (#65)
+- Added "never re-ask" rule across all phases — if user answered in a prior phase, downstream skills read from BRIEF.md instead of re-asking (#65)
+- Brand flow restructured: "brand name → have materials? → path selection" gate replaces signal-word detection for new vs evolve mode (#65)
+- E2E flow fixed — brand pipeline completes fully before project brief gathering (was batching 22 questions before any work happened) (#65)
+- `copyClaudeSkills` now adds `gsp-` prefix to skill dirs that don't have it — matches all other runtimes (#64)
+- All 4 runtime copy functions now recursively copy sibling files in skill directories, not just SKILL.md — fixes `gsp-style/styles/` (74 preset files) missing in global installs (#64)
+- `/gsp:update` aligned with installer — supports all 4 runtimes, references current bundle layout, uses `AskUserQuestion`
+
+### Added
+- 5 new audit tests: C10 (update-installer alignment), I16 (execution_context ref resolution), I17 (sibling file copy), I18 (gsp- prefix guard)
+- `/gsp:doctor` installation checks: I2 (skill completeness), I3 (bundle directories), I4 (VERSION file)
+- "One decision per question" rule added to all 13 interactive skills
+
 ## [0.6.0] — 2026-03-24
 
 ### Added
