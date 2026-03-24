@@ -34,6 +34,7 @@ Generate a production-ready typography system with fluid responsive sizing, vert
 
 <rules>
 - Always use `AskUserQuestion` for user interaction — never prompt via plain text
+- One decision per question — never batch multiple questions in a single message
 - Foundation chunks follow `references/chunk-format.md` format exactly
 - All sizes include px, rem, AND fluid clamp() values for headings
 - Line heights snap to a 4px grid for vertical rhythm (body 24px = 6 × 4px)

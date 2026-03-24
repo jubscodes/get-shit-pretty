@@ -31,6 +31,7 @@ Accept natural language feedback about brand visuals, identify which tokens are 
 
 <rules>
 - Always use `AskUserQuestion` for user interaction — never prompt via plain text
+- One decision per question — never batch multiple questions in a single message
 - Never update artifacts without showing before/after and getting confirmation
 - Only touch tokens directly affected by the feedback
 - Preserve existing token structure — edit values in place, don't restructure

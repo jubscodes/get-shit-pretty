@@ -31,6 +31,7 @@ Generate production-ready OKLCH color palettes from hex colors.
 
 <rules>
 - Always use `AskUserQuestion` for user interaction — never prompt via plain text
+- One decision per question — never batch multiple questions in a single message
 - Palettes are deterministic — same hex input always produces the same OKLCH scales
 - Foundation chunks follow `references/chunk-format.md` format exactly
 - Every palette gets the full 11-stop scale: 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950

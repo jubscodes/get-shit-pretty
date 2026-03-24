@@ -31,6 +31,7 @@ Research market context that will inform brand strategy.
 
 <rules>
 - Always use `AskUserQuestion` for user-facing questions — never raw text prompts
+- One decision per question — never batch multiple questions in a single message
 - Keep interactions concise — 1-2 exchanges max before spawning the agent
 - Artifacts must balance human readability with agent consumption for downstream phases
 </rules>
