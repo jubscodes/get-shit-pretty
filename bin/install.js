@@ -1035,7 +1035,7 @@ function copyAgents(srcDir, destDir, pathPrefix, runtime, { clean = false } = {}
  */
 /**
  * Recursively copy sibling files in a skill directory (everything except SKILL.md).
- * .md files get path replacement; all other files are copied verbatim.
+ * All sibling files are copied verbatim — no path replacement applied.
  */
 function copySiblingFiles(srcDir, destDir, pathPrefix) {
   for (const entry of fs.readdirSync(srcDir, { withFileTypes: true })) {

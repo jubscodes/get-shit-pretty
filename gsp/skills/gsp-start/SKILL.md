@@ -206,8 +206,8 @@ Skip any question you can already answer from prior context. Don't over-ask.
 
 - **Brand-only, new →** continue to `/gsp:brand-research`
 - **Brand-only, evolve →** continue to `/gsp:brand-audit`
-- **E2E, new →** continue to `/gsp:brand-research` (complete the entire brand pipeline first — research → strategy → identity → patterns — then auto-transition to Step 4 for project setup). Set E2E flag in config.json so brand-patterns knows to route to project flow after completion.
-- **E2E, evolve →** continue to `/gsp:brand-audit` (complete full brand pipeline, then auto-transition to Step 4)
+- **E2E, new →** continue to `/gsp:brand-research` (complete the entire brand pipeline first — research → strategy → identity → patterns — then auto-transition to Step 4 for project setup). Set `"e2e": true` in config.json so brand-patterns knows to route to project flow after completion.
+- **E2E, evolve →** continue to `/gsp:brand-audit` (complete full brand pipeline, then auto-transition to Step 4). Set `"e2e": true` in config.json.
 
 ## Step 4: Project flow
 
