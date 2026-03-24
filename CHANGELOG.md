@@ -4,6 +4,26 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+## [0.6.0] — 2026-03-24
+
+### Added
+- Brand refine skill (`/gsp:brand-refine`) — surgical token/palette adjustments mid-project without re-running the branding diamond. Self-contained with tints.dev API and contrast checks inline (#35)
+- Accessibility audit skill (`/gsp:accessibility-audit`) — split from `/gsp:accessibility` for agent-spawning modes (design audit, code audit, statement generation) (#60)
+- Overwrite guards in `/gsp:palette` and `/gsp:style` — warn before clobbering upstream artifacts (#55)
+- Installer onboarding philosophy blurb ("Design engineering for AI coding tools")
+
+### Changed
+- **BREAKING:** Dropped monolith fallback from 7 skills + builder agent. Skills now require chunk format (INDEX.md + chunks). `/gsp:doctor` B4 check flags monolith files as unsupported (#54)
+- Compressed path resolution from ~5 to ~2 lines across 17 skills (#56)
+- Trimmed `/gsp:start` (418 → 321 lines) — cut greeting examples, verbose questioning (#57)
+- Trimmed `/gsp:typescale` (355 → 232 lines) — cut standard math, kept GSP-specific decisions (#58)
+- Trimmed `/gsp:style` (341 → 178 lines) — cut hardcoded catalog, kept token mapping (#59)
+- Split `/gsp:accessibility` (349 lines) into inline checks (213 lines) + agent audit (218 lines) (#60)
+- Skills count: 28 → 30, agents count: 15
+
+### Removed
+- Legacy monolith format support (IDENTITY.md, STRATEGY.md, SYSTEM.md, SCREENS.md fallbacks)
+
 ## [0.5.2] — 2026-03-24
 
 ### Added
