@@ -149,10 +149,10 @@ const tagline = taglines[Math.floor(Math.random() * taglines.length)];
 
 // ── Sparkle field + density ramp banner ──
 
-function sparkleLine(width) {
-  const chars = ['✧', '.', '·'];
+function sparkleLine(width, density = 'normal') {
+  const chars = ['.', '.', '·', '·', '*', '+'];
   const line = Array(width).fill(' ');
-  const count = 4 + Math.floor(Math.random() * 5);
+  const count = density === 'dense' ? 8 + Math.floor(Math.random() * 6) : 4 + Math.floor(Math.random() * 5);
   for (let i = 0; i < count; i++) {
     const pos = Math.floor(Math.random() * width);
     line[pos] = chars[Math.floor(Math.random() * chars.length)];
@@ -168,17 +168,34 @@ function center(text, width) {
 
 const columns = process.stdout.columns || 80;
 const rampText = `${c.accent}░▒▓█${c.reset} ${c.bold} GET SHIT PRETTY ${c.reset} ${c.accent}█▓▒░${c.reset}`;
-const sparkleWidth = Math.min(34, columns - 4);
-const showSparkles = columns >= 40;
+const boxWidth = 48;
+const innerWidth = boxWidth - 2; // inside the border chars
+const showSparkles = columns >= 44;
 
-const banner = '\n\n' +
-  (showSparkles ? center(`${c.dim}${sparkleLine(sparkleWidth)}${c.reset}`, columns) + '\n' : '') +
-  (showSparkles ? center(`${c.dim}${sparkleLine(sparkleWidth)}${c.reset}`, columns) + '\n' : '') +
-  '\n' +
-  center(rampText, columns) + '\n' +
-  '\n' +
-  (showSparkles ? center(`${c.dim}${sparkleLine(sparkleWidth)}${c.reset}`, columns) + '\n' : '') +
-  (showSparkles ? center(`${c.dim}${sparkleLine(sparkleWidth)}${c.reset}`, columns) + '\n' : '') +
+function centerInBox(text, width) {
+  const stripped = text.replace(/\x1b\[[0-9;]*m/g, '');
+  const pad = Math.max(0, Math.floor((width - stripped.length) / 2));
+  const rightPad = Math.max(0, width - stripped.length - pad);
+  return ' '.repeat(pad) + text + ' '.repeat(rightPad);
+}
+
+const indent = '  ';
+const topBorder =    `${indent}${c.dim}╭${'─'.repeat(innerWidth)}╮${c.reset}`;
+const bottomBorder = `${indent}${c.dim}╰${'─'.repeat(innerWidth)}╯${c.reset}`;
+const emptyLine =    `${indent}${c.dim}│${c.reset}${' '.repeat(innerWidth)}${c.dim}│${c.reset}`;
+const boxLine = (content) => `${indent}${c.dim}│${c.reset}${centerInBox(content, innerWidth)}${c.dim}│${c.reset}`;
+const sparkle = (d) => boxLine(`${c.dim}${sparkleLine(innerWidth - 4, d)}${c.reset}`);
+
+const banner = '\n' +
+  topBorder + '\n' +
+  (showSparkles ? sparkle('dense') + '\n' : '') +
+  (showSparkles ? sparkle('dense') + '\n' : '') +
+  emptyLine + '\n' +
+  boxLine(rampText) + '\n' +
+  emptyLine + '\n' +
+  (showSparkles ? sparkle('dense') + '\n' : '') +
+  (showSparkles ? sparkle('dense') + '\n' : '') +
+  bottomBorder + '\n' +
   '\n' +
   `  ${c.bold}${c.accent}/gsp:${c.reset} ${c.tertiary}◇◇${c.reset}  ${c.dim}v${pkg.version}${c.reset}\n` +
   `  ${c.dim}${tagline}${c.reset}\n`;
@@ -979,13 +996,15 @@ function copyGeminiSkills(srcDir, destDir, pathPrefix) {
  * Returns count of gsp- agents installed.
  * runtime: 'claude' | 'opencode' | 'gemini'  (Codex skips agents entirely)
  */
-function copyAgents(srcDir, destDir, pathPrefix, runtime) {
+function copyAgents(srcDir, destDir, pathPrefix, runtime, { clean = false } = {}) {
   fs.mkdirSync(destDir, { recursive: true });
 
-  // Remove old GSP agents before copying new ones
-  for (const file of fs.readdirSync(destDir)) {
-    if (file.startsWith('gsp-') && file.endsWith('.md')) {
-      fs.unlinkSync(path.join(destDir, file));
+  // Remove old GSP agents before copying new ones (only when clean=true)
+  if (clean) {
+    for (const file of fs.readdirSync(destDir)) {
+      if (file.startsWith('gsp-') && file.endsWith('.md')) {
+        fs.unlinkSync(path.join(destDir, file));
+      }
     }
   }
 
@@ -1347,7 +1366,7 @@ function install(isGlobal, runtime = 'claude') {
     const agentsSrc = path.join(gspRoot, 'agents');
     if (fs.existsSync(agentsSrc)) {
       const agentsDest = path.join(targetDir, 'agents');
-      const agentCount = copyAgents(agentsSrc, agentsDest, pathPrefix, runtime);
+      const agentCount = copyAgents(agentsSrc, agentsDest, pathPrefix, runtime, { clean: true });
 
       // ── Custom agents (agents/custom/) ──
       const customAgentsSrc = path.join(agentsSrc, 'custom');
