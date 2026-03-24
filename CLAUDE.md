@@ -30,8 +30,8 @@ GSP is a Claude Code plugin. The manifest is at `.claude-plugin/plugin.json` wit
 | Directory | Contents |
 |-----------|----------|
 | `.claude-plugin/` | Plugin manifest (`plugin.json`) |
-| `gsp/skills/` | 27 skills — each is a `<name>/SKILL.md` directory (single source for all runtimes) |
-| `gsp/agents/` | 14 subagents (`gsp-{name}.md`) |
+| `gsp/skills/` | 28 skills — each is a `<name>/SKILL.md` directory (single source for all runtimes) |
+| `gsp/agents/` | 15 subagents (`gsp-{name}.md`) |
 | `gsp/hooks/` | Plugin-level hooks (`hooks.json`) |
 | `gsp/prompts/` | 12 agent system prompts |
 | `gsp/templates/` | Project/brand config, state, brief, roadmap templates |
