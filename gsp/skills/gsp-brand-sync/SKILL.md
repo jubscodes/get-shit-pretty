@@ -71,6 +71,7 @@ Read `{BRAND_PATH}/sync/SYNC-REPORT.md`. Present a compact summary per dimension
 - **Tokens only** — just sync the quantitative token changes
 - **Pick by dimension** — choose which dimensions to sync
 - **Review each** — walk through every divergence individually
+- **Refine manually** — run `/gsp:brand-refine` to make targeted token adjustments instead
 - **Skip** — don't update the brand
 
 If "Pick by dimension", ask per dimension. If "Review each", walk through the Update Map from the report.

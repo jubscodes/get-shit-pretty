@@ -171,4 +171,6 @@ If verdict is **Fail**:
 ## Step 6: Phase transition output
 
 Render phase transition (see `references/phase-transitions.md`). This phase has pass/fail variants — the reference covers both.
+
+If review identified brand-level issues (token values that don't work in context), note: "Some issues are brand-level — run `/gsp:brand-refine` to adjust tokens without re-running identity."
 </process>
