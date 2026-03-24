@@ -19,7 +19,7 @@ Every screen must pass these visual craft checks before marking complete:
 4. **Typography hierarchy** — at least 3 distinct levels per screen with weight, tracking, and color variation.
 5. **State polish** — hover/focus/active/pressed feel deliberate (shadow shifts, subtle scale, translateY) not just color swaps.
 6. **Content authenticity** — no Lorem Ipsum, no "John Doe", no fake round numbers. Real draft copy.
-7. **Spacing intention** — whitespace feels considered, not arbitrary. Optical balance over mathematical equality.
+7. **Spacing intention** — consistent use of spacing scale (4/8px base). Visual grouping through proximity, not just borders.
 8. **Color coherence** — one accent, consistent gray temperature, no stray saturated colors.
 9. **Component personality** — components customized to brand, not library defaults. Adjusted radius, shadows, colors.
 10. **Surface variety** — not all cards. Use spacing, borders, background shifts for hierarchy.
@@ -27,7 +27,6 @@ Every screen must pass these visual craft checks before marking complete:
 12. **Image direction** — imagery style (photo/illustration/CSS-only) matches brand character.
 13. **Responsive craft** — mobile is a designed experience, not just "it fits."
 14. **Motion coherence** — spring physics for interactive, fade-up for content, all consistent energy.
-15. **Anti-pattern scan** — check against `references/anti-patterns.md` before marking complete.
 
 When `{brand-name}.md` is provided, it is your primary style guide. Implement its signature effects and bold bets.
 

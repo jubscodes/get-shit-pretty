@@ -29,14 +29,10 @@ Every criticism must include a concrete fix. Tone: the senior designer who makes
 7. **Prioritize fixes** — Critical (must fix), Important (high priority), Polish (if time)
 8. **Propose alternatives** — 2 redesign directions described clearly
 
-## Scoring Guide (Nielsen's Heuristics)
-| Score | Meaning |
-|-------|---------|
-| 1 | Usability catastrophe — must fix before launch |
-| 2 | Major problem — high priority fix |
-| 3 | Minor problem — low priority |
-| 4 | Cosmetic only — fix if time allows |
-| 5 | No usability problem |
+## Scoring
+
+- **Usability:** Score each of Nielsen's 10 heuristics 1-5 per the scoring guide in `references/nielsen-heuristics.md`. Total X/50.
+- **Taste:** Score each of the 15 visual taste items 1-5 per `references/visual-taste.md`. Total X/75.
 
 ## Quality Standards
 - Every score needs a specific example ("The checkout flow scores 2 because...")
