@@ -159,6 +159,36 @@ if should_run contracts; then
     fail "C9 Skills missing user-invocable: true" "${MISSING_INVOCABLE[*]}"
   fi
 
+  # C10: Update skill references valid installer flags
+  UPDATE_SKILL="gsp/skills/gsp-update/SKILL.md"
+  if [[ -f "$UPDATE_SKILL" ]]; then
+    C10_OK=true
+    # Must reference all runtime flags the installer accepts
+    for flag in --claude --opencode --gemini --codex --local --global --all; do
+      if ! grep -q -- "$flag" "$UPDATE_SKILL"; then
+        C10_OK=false
+      fi
+    done
+    # Must NOT reference legacy bundle layout (get-shit-pretty/*)
+    if grep -q 'get-shit-pretty/\*\|get-shit-pretty/  ' "$UPDATE_SKILL" 2>/dev/null; then
+      # Allow legacy VERSION fallback path, but not as a "what gets replaced" item
+      if grep -B2 'get-shit-pretty/' "$UPDATE_SKILL" | grep -q 'replaces\|update.*replaces\|clean install'; then
+        C10_OK=false
+      fi
+    fi
+    # Must reference current bundle dirs (prompts/, templates/, references/)
+    for dir in prompts templates references; do
+      if ! grep -q "$dir/" "$UPDATE_SKILL"; then
+        C10_OK=false
+      fi
+    done
+    if $C10_OK; then
+      pass "C10 Update skill aligned with installer"
+    else
+      fail "C10 Update skill drifted from installer" "Check runtime flags, bundle layout, or directory references in gsp-update/SKILL.md"
+    fi
+  fi
+
   # C8: Claude-only field usage matches known set (canary)
   EXPECTED_CLAUDE_ONLY="gsp-builder.md gsp-reviewer.md"
   ACTUAL_CLAUDE_ONLY=$(grep -rlE '^(memory|background|hooks|isolation|skills|mcpServers):' gsp/agents/ 2>/dev/null | xargs -I{} basename {} | sort -u | tr '\n' ' ' | sed 's/ $//')
