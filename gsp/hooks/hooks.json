@@ -1,5 +1,16 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/gsp-context-recovery.sh"
+          }
+        ]
+      }
+    ],
     "SubagentStop": [
       {
         "matcher": "gsp-builder",
