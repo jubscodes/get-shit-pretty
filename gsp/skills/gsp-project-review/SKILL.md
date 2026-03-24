@@ -54,7 +54,6 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 **Git diff:** Run `git diff` (and `git diff --cached`) to see what actually changed in the codebase. Cross-reference against BUILD-LOG.md.
 
 **Design:** Read `{PROJECT_PATH}/design/INDEX.md` → load all screen chunks.
-Fallback: `{PROJECT_PATH}/screens/INDEX.md` (legacy).
 
 **Brand patterns:** Read `{BRAND_PATH}/patterns/INDEX.md` → load foundation + component chunks.
 Also read `{BRAND_PATH}/patterns/tokens.json`.

@@ -241,6 +241,8 @@ Transform each YAML preset section into W3C Design Tokens JSON with `$value` and
 
 ## Step 7: Write tokens.json
 
+If `{OUTPUT_PATH}/tokens.json` already exists, use `AskUserQuestion`: "tokens.json already exists — overwrite with style preset? Existing component-level tokens will be replaced." with options **Overwrite** and **Cancel**. If cancelled, skip writing tokens.json and proceed to the next step.
+
 Write the complete W3C Design Tokens JSON to `{OUTPUT_PATH}/tokens.json`.
 
 ## Step 8: Write foundation chunks

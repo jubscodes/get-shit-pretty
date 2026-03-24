@@ -50,7 +50,7 @@ Build a single screen. You receive only that screen's design chunk and its refer
 ### `full`
 Legacy mode — build everything in one pass. Used as backward-compatible default.
 
-**Chunk-aware mode:** When chunks are provided instead of full monoliths (screen chunks from `design/`, brief chunks from `brief/`, research specs from `research/`, component chunks from brand `patterns/components/`), work with the focused context. Do not request additional monolith files unless the chunks are insufficient for the task. This keeps your context lean and focused on the specific screen being built.
+**Chunk-aware mode:** Work with the chunk context provided. Do not request additional files unless the chunks are insufficient for the task. This keeps your context lean and focused on the specific screen being built.
 
 **Revision mode:** When `review/issues.md` is provided, you are re-entering the build phase to address QA issues. Read the issues, fix them in the codebase, and update BUILD-LOG.md with the revision.
 </role>

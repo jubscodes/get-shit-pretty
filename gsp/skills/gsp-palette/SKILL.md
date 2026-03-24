@@ -138,6 +138,8 @@ If a brand context exists (`.design/branding/{brand}/`):
 
 ## Step 5: Write palettes.json
 
+If `{OUTPUT_PATH}/palettes.json` already exists, use `AskUserQuestion`: "palettes.json already exists — overwrite with new palette?" with options **Overwrite** and **Cancel**. If cancelled, skip writing palettes.json and proceed to the next step.
+
 Write `{OUTPUT_PATH}/palettes.json` with the full OKLCH scales:
 
 ```json

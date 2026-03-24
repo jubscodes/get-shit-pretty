@@ -52,13 +52,10 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 **BRIEF:** `{PROJECT_PATH}/BRIEF.md`
 
 **Identity:** Read `{BRAND_PATH}/identity/INDEX.md` → load all chunks.
-Fallback: `{BRAND_PATH}/identity/IDENTITY.md`.
 
 **Patterns:** Read `{BRAND_PATH}/patterns/INDEX.md` → load all chunks.
-Fallback: `{BRAND_PATH}/patterns/SYSTEM.md`.
 
 **Design:** Read `{PROJECT_PATH}/design/INDEX.md` → load all chunks.
-Fallback: `{PROJECT_PATH}/design/SCREENS.md` or `{PROJECT_PATH}/screens/INDEX.md` (legacy).
 
 **Brief:** Read `{PROJECT_PATH}/brief/INDEX.md` → load all chunks (if exists).
 

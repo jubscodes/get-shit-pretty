@@ -49,9 +49,8 @@ Read `{PROJECT_PATH}/config.json` to get `design_scope`.
 ### Identity (selective, chunk-first)
 
 Read `{BRAND_PATH}/identity/INDEX.md`. If it exists, load all identity chunks.
-Fallback: read `{BRAND_PATH}/identity/IDENTITY.md`. Log: "⚠️ Legacy identity format detected."
 
-If neither exists, tell the user to complete the brand identity first.
+If it doesn't exist, tell the user to complete the brand identity first.
 
 ### Voice and Messaging (from strategy)
 
@@ -60,7 +59,6 @@ Read `{BRAND_PATH}/strategy/voice-and-tone.md` and `{BRAND_PATH}/strategy/messag
 ### Design (chunk-first)
 
 Read `{PROJECT_PATH}/design/INDEX.md`. If it exists, load all screen chunks.
-Fallback: read `{PROJECT_PATH}/screens/INDEX.md` (legacy path).
 
 ### Other
 

@@ -50,9 +50,7 @@ If brand.ref doesn't exist, tell the user to run `/gsp:start` to set up the proj
 
 Read `{BRAND_PATH}/patterns/INDEX.md`. If it exists, load all foundation chunks + selective component chunks.
 
-Fallback: read `{BRAND_PATH}/patterns/SYSTEM.md` (legacy monolith). Log: "⚠️ Legacy format detected."
-
-If neither exists, tell the user to run `/gsp:brand-patterns` first to create the brand's design patterns.
+If it doesn't exist, tell the user to run `/gsp:brand-patterns` first to create the brand's design patterns.
 
 Also read `{BRAND_PATH}/patterns/tokens.json`.
 
