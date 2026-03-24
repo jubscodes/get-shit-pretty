@@ -36,9 +36,7 @@ Audit an existing brand. Produce evolution map that guides research, strategy, a
 <process>
 ## Step 1: Resolve brand
 
-Scan `.design/branding/` for brand directories. One brand → use it. Multiple → use `AskUserQuestion`.
-
-Set `BRAND_PATH` = `.design/branding/{brand}`
+Resolve brand from `.design/branding/` (one → use it, multiple → ask). Set `BRAND_PATH`.
 
 Read `{BRAND_PATH}/BRIEF.md` for aspirational direction.
 Read `{BRAND_PATH}/config.json` to confirm `brand_mode` is `evolve`.

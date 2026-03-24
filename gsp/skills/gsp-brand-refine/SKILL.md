@@ -45,10 +45,7 @@ Extract feedback from the user's input (everything after `/gsp:brand-refine`).
 
 If no feedback provided, use `AskUserQuestion`: "What would you like to adjust? (e.g., 'accent is too muted', 'heading font feels too heavy', 'spacing too tight')"
 
-Scan `.design/branding/` for brand directories. One → use it. Multiple → `AskUserQuestion`.
-
-Set `BRAND_PATH` = `.design/branding/{brand}`
-
+Resolve brand from `.design/branding/` (one → use it, multiple → ask). Set `BRAND_PATH`.
 Check that `{BRAND_PATH}/patterns/tokens.json` exists. If not: "No tokens found. Run `/gsp:brand-patterns` first."
 
 ## Step 1: Read current state

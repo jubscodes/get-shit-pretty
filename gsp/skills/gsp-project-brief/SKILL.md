@@ -34,15 +34,9 @@ Scope the project and plan adaptations from the brand system.
 <process>
 ## Step 0: Resolve project and brand
 
-Scan `.design/projects/` for project directories. If only one project exists, use it. If multiple, ask the user which project to work on.
+Resolve project from `.design/projects/` (one → use it, multiple → ask). Set `PROJECT_PATH`.
 
-Set `PROJECT_PATH` = `.design/projects/{project}`
-
-Read `{PROJECT_PATH}/brand.ref` to resolve brand path:
-- Extract `brand` name and `path` from brand.ref
-- Set `BRAND_PATH` = `.design/branding/{brand}`
-
-If brand.ref doesn't exist, tell the user to run `/gsp:start` to set up the project with a brand reference.
+Read `{PROJECT_PATH}/brand.ref` → set `BRAND_PATH`. If brand.ref doesn't exist, tell the user to run `/gsp:start`.
 
 ## Step 1: Load context
 

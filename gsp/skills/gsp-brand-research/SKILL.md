@@ -38,9 +38,7 @@ Research market context that will inform brand strategy.
 <process>
 ## Step 1: Resolve brand
 
-Scan `.design/branding/` for brand directories. One brand → use it. Multiple → use `AskUserQuestion` with one option per brand.
-
-Set `BRAND_PATH` = `.design/branding/{brand}`
+Resolve brand from `.design/branding/` (one → use it, multiple → ask). Set `BRAND_PATH`.
 
 Read `{BRAND_PATH}/BRIEF.md`. If missing, tell user to run `/gsp:start` first.
 Read `{BRAND_PATH}/config.json` for `brand_mode`.

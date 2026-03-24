@@ -33,10 +33,7 @@ Build the design system, generate brand guidelines, and complete the branding di
 <process>
 ## Step 0: Resolve brand
 
-Scan `.design/branding/` for brand directories. If only one brand exists, use it. If multiple, ask the user which brand to work on.
-
-Set `BRAND_PATH` = `.design/branding/{brand}`
-
+Resolve brand from `.design/branding/` (one → use it, multiple → ask). Set `BRAND_PATH`.
 If BRAND_PATH doesn't exist, tell the user to run `/gsp:start` first.
 
 ## Step 1: Load context

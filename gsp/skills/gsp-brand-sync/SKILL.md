@@ -45,10 +45,7 @@ Compare a project's shipped state against its source brand across all dimensions
 <process>
 ## Step 0: Resolve brand and project
 
-Scan `.design/branding/` for brand directories. One brand → use it. Multiple → use `AskUserQuestion`.
-
-Set `BRAND_PATH` = `.design/branding/{brand}`
-
+Resolve brand from `.design/branding/` (one → use it, multiple → ask). Set `BRAND_PATH`.
 Check that the brand has at least one of: `patterns/tokens.json`, `strategy/`, `identity/`. If none exist, tell the user: "No brand system found. Run `/gsp:brand-patterns` first."
 
 Verify the project codebase has shipped output — source files with components, copy, or styles.

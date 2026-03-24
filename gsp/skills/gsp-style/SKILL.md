@@ -55,73 +55,12 @@ Read the user's input to determine the mode:
 
 ## Step 1: List mode (`--list`)
 
-If `--list`, read `styles/INDEX.yml` and display all presets:
-
-Read `styles/INDEX.yml` and render every style grouped by category. Format:
+Read `styles/INDEX.yml` and display all presets grouped by category. Format each as `{name}  {one-line description}` with `─── Category ────` separators and footer showing usage. Example:
 
 ```
-  /gsp:style
-  ═══════════════════════════════════════
-
-  34 styles available
-
   ─── Minimal ────────────────────────
     swiss-minimalist     Helvetica and whitespace — let the content breathe
     flat-design          Solid colors, zero shadows — bold color blocks as structure
-    monochrome           Pure black and white — typographic depth, zero decoration
-    minimal-dark         Three layers of darkness with warm amber accents
-
-  ─── Modern ─────────────────────────
-    professional         The sensible default — clean, trustworthy, gets out of the way
-    saas                 Electric blue gradient — modern SaaS landing page energy
-    enterprise           Indigo-to-violet gradient — dashboard-ready corporate
-    fluent               Microsoft Fluent 2 — acrylic materials, semantic tokens
-    material             Material Design 3 — adaptive, organic, expressive
-    modern-dark          Linear/Vercel aesthetic — ambient blobs, mouse spotlights
-    glassmorphism        Frosted glass panels floating over rich backgrounds
-    liquid-glass         Apple's 2025 design language — refractive, fluid, alive
-
-  ─── Creative ───────────────────────
-    neubrutalism         Gumroad meets Figma — thick borders, hard shadows
-    cyberpunk            Neon-soaked interfaces from a dystopian future
-    maximalism           MORE IS MORE — sensory overload, 5 rotating accent colors
-    bold-typography      Typography IS the design — massive headlines, poster aesthetic
-    playful-geometric    Memphis-inspired candy buttons and confetti cards
-    sketch               Wobbly borders and marker red on warm paper
-    kinetic              Viewport-width type, marquees, extreme scale hierarchy
-
-  ─── Elegant ────────────────────────
-    luxury               Gold accent, slow reveals, asymmetric restraint
-    art-deco             1920s theatrical glamour — gold on obsidian black
-    academia             Victorian study halls — mahogany, brass, and serif type
-    humanist-literary    Warm paper canvas, terracotta accent — quiet intelligence
-
-  ─── Organic ────────────────────────
-    botanical            Deep greens, paper grain, nature-inspired serif elegance
-    organic              Moss and terracotta — blob shapes, no straight lines
-
-  ─── Editorial ──────────────────────
-    newsprint            Multi-column layouts, drop caps, high information density
-
-  ─── Nostalgic ──────────────────────
-    retro                Windows 95 bevels, marquee text — the ugliness IS the beauty
-    vaporwave            80s/90s digital nostalgia with neon gradients and CRT scanlines
-
-  ─── Tactile ────────────────────────
-    claymorphism         Vinyl toy aesthetic — 4-layer shadows, super-rounded, squish
-    neumorphism          Dual opposing shadows — extruded and inset on continuous surface
-    industrial           Precision machinery — carbon fiber, dual-shadow, safety orange
-
-  ─── Tech ───────────────────────────
-    terminal             Your favorite code editor as a design system
-    web3                 Bitcoin orange luminescence on void black
-
-  ─── Geometric ──────────────────────
-    bauhaus              Form follows function — Bauhaus primary colors, hard shadows
-
-  ─────────────────────────────────────
-  Usage: /gsp:style {name}
-         /gsp:style --preview {name}
 ```
 
 Stop here. Do not write any files.
@@ -177,43 +116,7 @@ If invoked from a project context (`.design/projects/{project}/`):
 
 ## Step 5: Preview mode (`--preview`)
 
-If `--preview`, display the expanded tokens without writing files:
-
-```
-  /gsp:style preview — {name}
-  ═══════════════════════════════════════
-
-  Color
-    primary       {value}
-    secondary     {value}
-    accent        {value}
-    background    {value}
-    surface       {value}
-
-  Typography
-    heading       {font-family} @ {weight}
-    body          {font-family} @ {weight}
-    base size     {size}
-
-  Shape
-    radius        {sm} / {md} / {lg}
-    border        {width} {color}
-
-  Elevation
-    sm            {value}
-    md            {value}
-    lg            {value}
-
-  Motion
-    fast          {duration}
-    normal        {duration}
-    easing        {value}
-
-  ─────────────────────────────────────
-  Run /gsp:style {name} to apply.
-```
-
-Stop here. Do not write any files.
+If `--preview`, display expanded tokens grouped by section (Color, Typography, Shape, Elevation, Motion) as key-value pairs. Footer: usage hint to apply. Stop here — do not write any files.
 
 ## Step 6: Expand tokens to W3C format
 
@@ -249,59 +152,15 @@ Write the complete W3C Design Tokens JSON to `{OUTPUT_PATH}/tokens.json`.
 
 Write 5 foundation chunks to `{OUTPUT_PATH}/foundations/`, each following `references/chunk-format.md`:
 
-### foundations/color-system.md
-- Document the full color palette from the preset
-- Include brand colors (primary, secondary, accent)
-- Include semantic colors (background, surface, on-primary, on-background, error, success, warning, info)
-- Include dark mode mapping if present
-- Note WCAG contrast considerations based on the color values
-
-### foundations/typography.md
-- Document the 9-level type scale (Display → Overline) with all properties
-- Include font family details and where to load them (Google Fonts link if applicable)
-- Include heading and body weight rationale
-
-### foundations/spacing.md
-- Document the spacing scale from the preset
-- Include base unit and full scale with usage guidelines
-
-### foundations/elevation.md
-- Document the shadow/elevation scale from the preset
-- Include use cases for each level (flat, cards, dropdowns, modals, popovers)
-- Include any style-specific elevation notes (e.g., hard shadows for neubrutalism, glow for cyberpunk)
-
-### foundations/border-radius.md
-- Document the radius token scale
-- Include style-specific shape notes (e.g., sharp corners for swiss-minimalist, chunky for neubrutalism)
+- **color-system.md** — brand colors, semantic colors, dark mode mapping, WCAG contrast notes
+- **typography.md** — 9-level type scale, font family details + Google Fonts link, weight rationale
+- **spacing.md** — spacing scale with base unit and usage guidelines
+- **elevation.md** — shadow scale with use cases per level + style-specific notes
+- **border-radius.md** — radius token scale + style-specific shape notes
 
 ## Step 9: Write INDEX.md
 
-Write `{OUTPUT_PATH}/INDEX.md`:
-
-```markdown
-# System
-> Phase: system | Style: {preset-name} | Generated: {DATE}
-
-## Applied Style
-
-**{preset-name}** — {preset description}
-
-## Foundations
-
-| Chunk | File | ~Lines |
-|-------|------|--------|
-| Color System | [color-system.md](./foundations/color-system.md) | ~{N} |
-| Typography | [typography.md](./foundations/typography.md) | ~{N} |
-| Spacing | [spacing.md](./foundations/spacing.md) | ~{N} |
-| Elevation | [elevation.md](./foundations/elevation.md) | ~{N} |
-| Border Radius | [border-radius.md](./foundations/border-radius.md) | ~{N} |
-
-## Tokens
-
-| File | Description |
-|------|-------------|
-| [tokens.json](./tokens.json) | W3C Design Tokens |
-```
+Write `{OUTPUT_PATH}/INDEX.md` — header with phase/style/date, applied style name + description, foundations table (chunk name, file link, ~lines), tokens table (tokens.json link).
 
 ## Step 10: Update state
 
@@ -315,29 +174,5 @@ If a project config.json exists:
 
 ## Step 11: Completion output
 
-Display the result:
-
-```
-  /gsp:style — {name} applied
-  ═══════════════════════════════════════
-
-  {OUTPUT_PATH}/
-  ├── foundations/
-  │   ├── color-system.md
-  │   ├── typography.md
-  │   ├── spacing.md
-  │   ├── elevation.md
-  │   └── border-radius.md
-  ├── tokens.json
-  └── INDEX.md
-
-  ─────────────────────────────────────
-```
-
-Then use `AskUserQuestion` with routing options:
-
-- **Start a project** — "scope what you're building with this style" → route to `/gsp:project-brief`
-- **Build components** — "extend with a full component library" → route to `/gsp:brand-patterns` (components pass only)
-- **Preview tokens** — "see the token values" → show tokens.json summary
-- **Try a different style** — "apply a different preset" → restart at Step 2
+Show: header (`/gsp:style — {name} applied`), file tree (foundations/ + tokens.json + INDEX.md). Then `AskUserQuestion`: Start a project → `/gsp:project-brief`, Build components → `/gsp:brand-patterns`, Preview tokens, Try a different style → restart Step 2.
 </process>
