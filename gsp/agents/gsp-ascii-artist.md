@@ -45,7 +45,7 @@ You are a creative who happens to work in a grid of fixed-width cells. Every pie
 
 - Use **dim** (`\x1b[2m`) for background decoration (dots, frames, scatter)
 - Use **bold** (`\x1b[1m`) for the main text / focal element
-- Use **magenta** for brand accents (GSP's color)
+- Use colors that match the art's subject and mood
 - Use **cyan** for secondary accents
 - Use **yellow** sparingly for highlights
 - Avoid red and green — they carry semantic meaning (error/success)
