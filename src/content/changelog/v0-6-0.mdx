@@ -1,0 +1,35 @@
+---
+title: "v0.6.0 -- Structural cleanup"
+date: "2026-03-24"
+excerpt: "Breaking: monolith format dropped. 337 lines removed across 24 files. Skills trimmed for agent efficiency, accessibility split into focused modes, brand-refine wired into the pipeline."
+tags: ["breaking", "cleanup", "trim", "accessibility", "brand-refine"]
+slug: "v0-6-0"
+---
+
+## Breaking: Monolith Format Dropped
+
+Legacy monolith fallbacks (IDENTITY.md, STRATEGY.md, SYSTEM.md, SCREENS.md) removed from 7 skills and the builder agent. Skills now require chunk format -- INDEX.md plus individual chunk files. The doctor's B4 check flags any remaining monolith files with migration guidance. This affects no one in practice -- monolith format predates v0.5.0 and was never used in production.
+
+## Leaner Skills
+
+Full structural audit led to aggressive trimming, with agent context efficiency as the goal. Standard math the agent already knows was cut; GSP-specific decisions that produce prettier output were kept.
+
+- **gsp-start** -- 418 to 321 lines. Cut duplicate greeting examples and verbose questioning scripts.
+- **gsp-typescale** -- 355 to 232 lines. Kept 4px grid snapping, letter-spacing curves, fluid clamp step-down map. Cut formula explanations.
+- **gsp-style** -- 341 to 178 lines. Replaced hardcoded 34-style catalog with INDEX.yml reads. Kept token mapping and mixing logic.
+- **Path resolution** -- compressed from 5 to 2 lines across 17 skills.
+
+## Accessibility Split
+
+The single 349-line accessibility skill handled 4 modes (quick check, token audit, design audit, code audit). Now split into two focused skills so each invocation loads only what it needs:
+
+- `/gsp:accessibility` (213 lines) -- inline quick checks and token audits. No agent needed.
+- `/gsp:accessibility-audit` (218 lines) -- full design and code audits with agent delegation. Statement generation.
+
+## Brand Refine
+
+New `/gsp:brand-refine` skill for surgical token adjustments mid-project. Takes natural language feedback ("accent too muted", "heading weight too heavy"), proposes before/after token changes, validates contrast, and applies confirmed edits. Self-contained with tints.dev API for palette regeneration. Wired into help, critique, review, and brand-sync as a routing option.
+
+## Overwrite Guards
+
+`/gsp:palette` and `/gsp:style` now check for existing files before writing. If palettes.json or tokens.json already exists from an upstream phase, the user is asked to confirm before overwriting.
