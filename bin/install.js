@@ -915,6 +915,7 @@ function copyOpencodeSkills(srcDir, destDir, pathPrefix) {
     content = content.replace(/\.\/\.claude\//g, './.opencode/');
     content = convertClaudeSkillToOpencode(content, skillName);
     fs.writeFileSync(path.join(skillDest, 'SKILL.md'), content);
+    copySiblingFiles(path.join(srcDir, dir.name), skillDest, pathPrefix);
     count++;
   }
 
@@ -946,6 +947,7 @@ function copyCodexSkillsFromSource(srcDir, destDir, pathPrefix) {
     content = content.replace(/~\/\.claude\//g, pathPrefix);
     content = convertClaudeSkillToCodex(content, skillName);
     fs.writeFileSync(path.join(skillDest, 'SKILL.md'), content);
+    copySiblingFiles(path.join(srcDir, dir.name), skillDest, pathPrefix);
     count++;
   }
   return count;
@@ -986,6 +988,7 @@ function copyGeminiSkills(srcDir, destDir, pathPrefix) {
     content = content.replace(/\.\/\.claude\//g, './.gemini/');
     content = convertClaudeSkillToGemini(content, skillName);
     fs.writeFileSync(path.join(skillDest, 'SKILL.md'), content);
+    copySiblingFiles(path.join(srcDir, dir.name), skillDest, pathPrefix);
     count++;
   }
   return count;
@@ -1030,6 +1033,24 @@ function copyAgents(srcDir, destDir, pathPrefix, runtime, { clean = false } = {}
  * Copy Claude Code skills (global install path — no body conversion, only path replacement).
  * Returns skill count.
  */
+/**
+ * Recursively copy sibling files in a skill directory (everything except SKILL.md).
+ * All sibling files are copied verbatim — no path replacement applied.
+ */
+function copySiblingFiles(srcDir, destDir, pathPrefix) {
+  for (const entry of fs.readdirSync(srcDir, { withFileTypes: true })) {
+    if (entry.name === 'SKILL.md') continue; // already handled by caller
+    const srcPath = path.join(srcDir, entry.name);
+    const destPath = path.join(destDir, entry.name);
+    if (entry.isDirectory()) {
+      fs.mkdirSync(destPath, { recursive: true });
+      copySiblingFiles(srcPath, destPath, pathPrefix);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
 function copyClaudeSkills(srcDir, destDir, pathPrefix) {
   fs.mkdirSync(destDir, { recursive: true });
 
@@ -1045,11 +1066,13 @@ function copyClaudeSkills(srcDir, destDir, pathPrefix) {
     if (!dir.isDirectory()) continue;
     const skillMd = path.join(srcDir, dir.name, 'SKILL.md');
     if (!fs.existsSync(skillMd)) continue;
-    const destSkillDir = path.join(destDir, dir.name);
+    const skillName = dir.name.startsWith('gsp-') ? dir.name : `gsp-${dir.name}`;
+    const destSkillDir = path.join(destDir, skillName);
     fs.mkdirSync(destSkillDir, { recursive: true });
     let content = fs.readFileSync(skillMd, 'utf8');
     content = content.replace(/~\/\.claude\//g, pathPrefix);
     fs.writeFileSync(path.join(destSkillDir, 'SKILL.md'), content);
+    copySiblingFiles(path.join(srcDir, dir.name), destSkillDir, pathPrefix);
     skillCount++;
   }
   return skillCount;

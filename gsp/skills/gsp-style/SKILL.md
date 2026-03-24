@@ -35,6 +35,7 @@ Apply a named style preset to produce production-ready design tokens and foundat
 
 <rules>
 - Always use `AskUserQuestion` for user interaction — never prompt via plain text
+- One decision per question — never batch multiple questions in a single message
 - `tokens.json` follows W3C Design Tokens format from `references/design-tokens.md`
 - When mixing styles, later style values override earlier ones (last-wins precedence)
 - Never mix clashing styles — check the compatibility matrix first

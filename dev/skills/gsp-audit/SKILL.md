@@ -17,8 +17,8 @@ disable-model-invocation: true
 GSP internal integrity checker for maintainers. Verifies that the plugin's moving parts stay consistent as the codebase evolves. This is NOT the user-facing `/gsp:doctor` (which checks `.design/` project health) — this checks the GSP *source code* itself.
 
 Source layout:
-- `gsp/skills/` — 27 skills (SKILL.md files)
-- `gsp/agents/` — 14 agents (gsp-*.md files)
+- `gsp/skills/` — 30 skills (SKILL.md files)
+- `gsp/agents/` — 15 agents (gsp-*.md files)
 - `gsp/templates/` — config, state, brief, roadmap templates
 - `gsp/references/` — shared reference material
 - `gsp/prompts/` — 12 system prompts
@@ -106,6 +106,9 @@ Every skill in `gsp/skills/` (except `get-shit-pretty`, which is the plugin entr
 - All present → PASS
 - Missing → FAIL with list of skills
 
+### C10: Update skill aligned with installer
+Verify `gsp-update/SKILL.md` references all installer runtime flags (`--claude`, `--opencode`, `--gemini`, `--codex`, `--local`, `--global`, `--all`), current bundle layout (`prompts/`, `templates/`, `references/`), and doesn't reference legacy bundle paths in "what gets replaced" sections. Catches drift when installer evolves but update skill doesn't.
+
 ### C8: Claude-only field usage matches known set
 Canary test — grep agents for `memory:`, `background:`, `hooks:`, `isolation:`, `skills:`, `mcpServers:`. Compare against expected list (gsp-builder.md, gsp-reviewer.md). WARN if set changes so developer verifies converters handle new fields.
 
@@ -152,6 +155,18 @@ Grep each `apply*BodyReplacements` function for `Skill` replacement pattern. FAI
 
 ### I14: No dead tool names in mappings
 Grep tool mapping objects for known-dead names (e.g. `Task`). Regression guard — FAIL if dead tools reappear.
+
+### I15: Statusline VERSION detection
+Verify `scripts/gsp-statusline.js` checks both current (`{runtimeDir}/VERSION`) and legacy (`{runtimeDir}/get-shit-pretty/VERSION`) paths.
+
+### I16: Skill execution_context refs resolve
+Every `@${CLAUDE_SKILL_DIR}/../../` reference in skill `<execution_context>` blocks must point to an existing source file. FAIL if any ref is broken.
+
+### I17: Skills with sibling files get full directory copy
+If a skill directory contains files beyond SKILL.md (e.g. `gsp-style/styles/`), verify the installer's copy functions handle subdirectories (not just SKILL.md). FAIL if copy functions don't support siblings.
+
+### I18: All copy functions have gsp- prefix guard
+Every runtime's copy function (`copyClaudeSkills`, `copyOpencodeSkills`, `copyGeminiSkills`, `copyCodexSkillsFromSource`) must add the `gsp-` prefix to dirs that don't have it. FAIL if any function is missing the guard.
 
 ## Step 5: Runtime Compatibility (R)
 
@@ -240,6 +255,10 @@ Installer
   ✅ I12. Multi-line block strip .... PASS
   ✅ I13. Skill tool rename ......... PASS
   ✅ I14. No dead tool names ........ PASS
+  ✅ I15. Statusline VERSION ....... PASS
+  ✅ I16. Skill refs resolve ....... PASS
+  ✅ I17. Sibling file copy ........ PASS
+  ✅ I18. gsp- prefix guard ........ PASS
 
 Runtime Compatibility
   ✅ R1. Discovery paths ............ PASS

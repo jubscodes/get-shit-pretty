@@ -37,6 +37,7 @@ Run full accessibility audits — design screen reviews, codebase ARIA/keyboard/
 
 <rules>
 - Always use `AskUserQuestion` for user interaction — never prompt via plain text
+- One decision per question — never batch multiple questions in a single message
 - Statement mode reads prior audit results — fails gracefully if none exist
 - Default conformance level is AA unless overridden by `--level AAA` or config
 - Foundation chunks follow `references/chunk-format.md` format

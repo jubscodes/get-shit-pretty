@@ -37,6 +37,7 @@ Compare a project's shipped state against its source brand across all dimensions
 
 <rules>
 - Always use `AskUserQuestion` for user interaction — never prompt via plain text
+- One decision per question — never batch multiple questions in a single message
 - Never update the brand without explicit user confirmation
 - Show before/after for every change — no silent updates
 - Only update dimensions that actually diverged — don't regenerate the entire brand

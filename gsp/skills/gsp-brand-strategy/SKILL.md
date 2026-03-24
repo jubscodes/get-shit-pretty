@@ -32,6 +32,8 @@ Define brand strategy and voice through interactive creative direction, then pro
 
 <rules>
 - Always use `AskUserQuestion` for user-facing questions — never raw text prompts
+- One decision per question — never batch multiple questions in a single message
+- Never re-ask what the user already answered in a prior phase — read BRIEF.md and build on it
 - Push opinionated recommendations but let the user decide
 - Quality gate: if you could swap in a competitor's name and it still works, it's too generic
 - Artifacts must balance human readability with agent consumption for downstream phases
@@ -61,9 +63,11 @@ Frame as: "Here's where this brand can win." Keep it to 4-6 lines.
 
 ## Step 3: Archetype selection
 
-Use `AskUserQuestion` with 2-3 archetype candidates. Each option:
+Read the personality direction from BRIEF.md (gathered during `/gsp:start`). Use it as the starting point — don't re-ask for personality. Deepen it into a structural archetype.
+
+Use `AskUserQuestion` with 2-3 archetype candidates that align with the chosen personality direction. Each option:
 - **Label:** archetype name
-- **Description:** strategic reasoning — why it fits the personas and gaps
+- **Description:** strategic reasoning — why it fits the personas and gaps, and how it builds on the personality direction from the brief
 - **Preview:** example sentence in that archetype's voice
 
 Push a recommendation. Let user choose, adjust, or blend.

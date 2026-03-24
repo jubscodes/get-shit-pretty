@@ -29,6 +29,7 @@ Audit an existing brand. Produce evolution map that guides research, strategy, a
 
 <rules>
 - Always use `AskUserQuestion` for user-facing questions — never raw text prompts
+- One decision per question — never batch multiple questions in a single message
 - Keep interactions concise — gather assets, confirm scope, spawn agent
 - Artifacts must balance human readability with agent consumption for downstream phases
 </rules>
@@ -43,13 +44,15 @@ Read `{BRAND_PATH}/config.json` to confirm `brand_mode` is `evolve`.
 
 If missing, tell user to run `/gsp:start` first.
 
-## Step 2: Gather brand assets
+## Step 2: Load brand assets from brief
 
-Use `AskUserQuestion` to prompt for assets:
+Read `{BRAND_PATH}/BRIEF.md` — brand assets were already gathered during `/gsp:start`. Extract any logos, colors, guidelines, URLs, or descriptions the user provided.
+
+If the brief has no asset information (legacy or incomplete brief), use `AskUserQuestion`:
 - **Share assets now** — "I have guidelines, colors, fonts, voice samples, or URLs to share"
 - **Describe the brand** — "I'll describe it in my own words"
 
-Accept whatever format. Infer from partial info. If URLs provided, use WebFetch. Don't over-ask — work with what's given.
+If URLs were provided (in brief or just now), use WebFetch. Don't re-ask for information already in the brief.
 
 ## Step 3: Spawn auditor
 

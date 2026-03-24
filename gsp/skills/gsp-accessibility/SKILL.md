@@ -30,6 +30,7 @@ Run lightweight accessibility checks inline — contrast ratio lookups and token
 
 <rules>
 - Always use `AskUserQuestion` for user interaction — never prompt via plain text
+- One decision per question — never batch multiple questions in a single message
 - Quick check mode (`--check`) produces display output only — no files written
 - Token audit mode runs inline — no agent spawned
 - Default conformance level is AA unless overridden by `--level AAA` or config

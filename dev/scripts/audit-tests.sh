@@ -159,6 +159,36 @@ if should_run contracts; then
     fail "C9 Skills missing user-invocable: true" "${MISSING_INVOCABLE[*]}"
   fi
 
+  # C10: Update skill references valid installer flags
+  UPDATE_SKILL="gsp/skills/gsp-update/SKILL.md"
+  if [[ -f "$UPDATE_SKILL" ]]; then
+    C10_OK=true
+    # Must reference all runtime flags the installer accepts
+    for flag in --claude --opencode --gemini --codex --local --global --all; do
+      if ! grep -q -- "$flag" "$UPDATE_SKILL"; then
+        C10_OK=false
+      fi
+    done
+    # Must NOT reference legacy bundle layout (get-shit-pretty/*)
+    if grep -q 'get-shit-pretty/\*\|get-shit-pretty/  ' "$UPDATE_SKILL" 2>/dev/null; then
+      # Allow legacy VERSION fallback path, but not as a "what gets replaced" item
+      if grep -B2 'get-shit-pretty/' "$UPDATE_SKILL" | grep -q 'replaces\|update.*replaces\|clean install'; then
+        C10_OK=false
+      fi
+    fi
+    # Must reference current bundle dirs (prompts/, templates/, references/)
+    for dir in prompts templates references; do
+      if ! grep -q "$dir/" "$UPDATE_SKILL"; then
+        C10_OK=false
+      fi
+    done
+    if $C10_OK; then
+      pass "C10 Update skill aligned with installer"
+    else
+      fail "C10 Update skill drifted from installer" "Check runtime flags, bundle layout, or directory references in gsp-update/SKILL.md"
+    fi
+  fi
+
   # C8: Claude-only field usage matches known set (canary)
   EXPECTED_CLAUDE_ONLY="gsp-builder.md gsp-reviewer.md"
   ACTUAL_CLAUDE_ONLY=$(grep -rlE '^(memory|background|hooks|isolation|skills|mcpServers):' gsp/agents/ 2>/dev/null | xargs -I{} basename {} | sort -u | tr '\n' ' ' | sed 's/ $//')
@@ -352,6 +382,59 @@ if should_run installer; then
   else
     warn "I15 Statusline not found" "$SL_FILE missing"
   fi
+
+  # I16: Skill execution_context refs point to existing source files
+  BAD_REFS=()
+  for skill in gsp/skills/*/SKILL.md; do
+    dir=$(basename "$(dirname "$skill")")
+    # Extract @${CLAUDE_SKILL_DIR}/../../ refs from execution_context
+    while IFS= read -r ref; do
+      # Resolve: CLAUDE_SKILL_DIR = gsp/skills/<dir>, so ../../ = gsp/
+      resolved=$(echo "$ref" | sed "s|\${CLAUDE_SKILL_DIR}/\.\./\.\./|gsp/|" | sed "s|\${CLAUDE_SKILL_DIR}/\.\./|gsp/skills/|" | sed "s|\${CLAUDE_SKILL_DIR}/|gsp/skills/${dir}/|")
+      # Strip trailing description after space (e.g. "file.md (index only — ...)")
+      resolved=$(echo "$resolved" | sed 's/ (.*//')
+      # Skip dynamic refs with {} placeholders
+      echo "$resolved" | grep -q '{' && continue
+      if [[ ! -e "$resolved" ]]; then
+        BAD_REFS+=("${dir}:${resolved}")
+      fi
+    done < <(grep -oE '@\$\{CLAUDE_SKILL_DIR\}[^ ]*' "$skill" | sed 's/^@//')
+  done
+  if [[ ${#BAD_REFS[@]} -eq 0 ]]; then
+    pass "I16 Skill execution_context refs resolve to existing files"
+  else
+    fail "I16 Broken skill refs" "${BAD_REFS[*]}"
+  fi
+
+  # I17: Skills with sibling files (subdirs) — installer must copy them
+  # Find skill dirs that have files beyond SKILL.md
+  SKILLS_WITH_SIBLINGS=()
+  for dir in gsp/skills/*/; do
+    sibling_count=$(find "$dir" -not -name 'SKILL.md' -not -type d | wc -l | tr -d ' ')
+    if [[ "$sibling_count" -gt 0 ]]; then
+      SKILLS_WITH_SIBLINGS+=("$(basename "$dir"):${sibling_count}files")
+    fi
+  done
+  if [[ ${#SKILLS_WITH_SIBLINGS[@]} -gt 0 ]]; then
+    # Verify copyClaudeSkills handles subdirectories (not just SKILL.md)
+    if grep -A30 'function copyClaudeSkills' bin/install.js | grep -q 'copyFileSync\|cpSync\|readdirSync.*entry\|recursive.*copy\|copyDir\|copySibling'; then
+      pass "I17 Skills with siblings installed correctly (${SKILLS_WITH_SIBLINGS[*]})"
+    else
+      fail "I17 Skills with sibling files not fully copied" "copyClaudeSkills only copies SKILL.md — missing siblings: ${SKILLS_WITH_SIBLINGS[*]}"
+    fi
+  else
+    pass "I17 No skills with sibling files"
+  fi
+
+  # I18: gsp- prefix guard in all copy functions
+  PREFIX_OK=true
+  for fn in copyClaudeSkills copyOpencodeSkills copyGeminiSkills copyCodexSkillsFromSource; do
+    if ! grep -A20 "function $fn" bin/install.js | grep -q "startsWith('gsp-')"; then
+      PREFIX_OK=false
+      fail "I18 Missing gsp- prefix guard" "$fn does not add gsp- prefix"
+    fi
+  done
+  $PREFIX_OK && pass "I18 All copy functions have gsp- prefix guard"
 fi
 
 # ── R: Runtime Compatibility ────────────────────────

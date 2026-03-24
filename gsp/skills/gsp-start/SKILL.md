@@ -25,7 +25,7 @@ Multiple brands and projects can coexist. Projects reference a brand.
 </context>
 
 <objective>
-Through 2-3 rounds of natural conversation, gather a complete brief and create the right project structure (brand, project, or both). Route the user to their first phase skill.
+Through a sequential one-question-at-a-time conversation, gather a complete brief and create the right project structure (brand, project, or both). Route the user to their first phase skill.
 </objective>
 
 <execution_context>
@@ -49,11 +49,12 @@ Through 2-3 rounds of natural conversation, gather a complete brief and create t
 <questioning_principles>
 Follow these principles throughout all conversations:
 
-1. **Inference over interrogation** — state assumptions, let them correct. "SaaS dashboard for enterprise" → you already know: professional, data-dense, web-first.
-2. **Progressive disclosure** — don't dump all questions at once. Flow in natural rounds.
-3. **Concrete options over open-ended** — "More like Stripe's clean approach or Duolingo's playful style?" beats "What style do you want?"
-4. **Know when you have enough** — fill gaps with smart defaults. Don't over-ask.
-5. **One message per round** — ask a cohesive set of related questions, not one at a time.
+1. **One decision per question** — every question must be its own `AskUserQuestion` call with exactly one decision. Never group multiple questions into a single message. Ask, wait for the answer, then ask the next thing.
+2. **Never re-ask** — if the user already answered something (in this phase or a prior one), don't ask again. If you need to validate, confirm: "I see X from earlier — still accurate?" The user should never feel like they're repeating themselves.
+3. **Inference over interrogation** — state assumptions, let them correct. "SaaS dashboard for enterprise" → you already know: professional, data-dense, web-first.
+4. **Adapt and skip** — use each answer to inform the next question. If an answer reveals enough to skip a later question, skip it. Don't follow a rigid checklist.
+5. **Concrete options over open-ended** — "More like Stripe's clean approach or Duolingo's playful style?" beats "What style do you want?"
+6. **Know when you have enough** — fill gaps with smart defaults. Don't over-ask.
 </questioning_principles>
 
 <process>
@@ -71,7 +72,7 @@ Scan `.design/` for existing brands and projects:
 
 ### Step 1b: Run design system scan (background)
 
-Spawn `/gsp:design-system` as a background agent (`run_in_background: true`, `subagent_type: "general-purpose"`). It writes to `.design/system/` — don't wait for it. Store the task reference for Step 3 Round 2 or Step 4.
+Spawn `/gsp:design-system` as a background agent (`run_in_background: true`, `subagent_type: "general-purpose"`). It writes to `.design/system/` — don't wait for it. Store the task reference for the brand essence questions or Step 4.
 
 ### Step 1c: Greet
 
@@ -121,8 +122,7 @@ Weave in what you found naturally: framework, styling, component count.
 
 From the greeting exchange, determine which flow to run:
 
-- **Brand identity (new)** → Brand flow (Step 3) with `brand_mode: "new"`
-- **Brand identity (evolve)** → Brand flow (Step 3) with `brand_mode: "evolve"`. Detect evolve signals: user mentions existing brand, assets, guidelines, rebrand, refresh, modernize, evolve, update, redesign.
+- **Brand identity** → Brand flow (Step 3)
 - **Design project** → Check for brands first. If none exist, explain they need a brand first. Offer to create one, then auto-transition to project flow.
 - **Full design (brand + project)** → Brand flow (Step 3), with E2E flag so brand completion auto-transitions to project flow (Step 4)
 - **Quick project** → Quick flow (Step 5)
@@ -130,49 +130,69 @@ From the greeting exchange, determine which flow to run:
 
 ## Step 3: Brand flow
 
+Each question is its own `AskUserQuestion` call. Ask one, wait, adapt, ask the next. Skip anything you can already infer.
+
+**Step 3a — Brand name and path selection:**
+
 1. Ask for brand name (kebab-case, e.g., "acme-corp")
-2. Create directory structure:
+2. "Do you already have brand materials to work with?" — use `AskUserQuestion`:
+   - **Yes, I have an existing brand** — "I have a logo, colors, guidelines, or other assets"
+   - **No, starting fresh** — "Building a brand from scratch"
+
+If **yes** → set `brand_mode: "evolve"`. Continue with evolve sequence (Step 3b-evolve).
+If **no** → set `brand_mode: "new"`. Continue with new sequence (Step 3b-new).
+
+3. Create directory structure:
 ```bash
 mkdir -p .design/branding/{name}/{audit,discover,strategy,identity,patterns}
 ```
 
-3. Gather brand brief in 3 rounds. The brief is the single source of truth for business and persona definition — invest here.
+**Step 3b-evolve — Gather existing brand context:**
 
-**Round 1 — Business & People:**
-- Company name, industry, stage
-- Problem / audience / differentiation
-- Business model, main competitors (2-3)
-- Primary persona — infer a concrete profile (name, role, frustration, aspiration) from context and present for correction. Personas should feel like real people — dig into the emotional layer.
-- Secondary persona (if relevant)
-- Mission and vision
+Ask these before business questions — the existing brand shapes everything:
 
-**Round 2 — Brand Essence & Landscape:**
+3. Share your current brand materials — logo, colors, guidelines, URLs, anything you have. (open-ended — gather thoroughly here. Brand-audit will NOT re-ask for assets.)
+4. How old is the current brand? (open-ended)
+5. What's working well with the current brand? (open-ended)
+6. What's not working — what are the pain points? (open-ended)
+7. Evolution scope — use `AskUserQuestion`: **Preserve most, tweak details** / **Evolve significantly, keep core** / **Replace — start fresh**
 
-Before presenting personality options, **internally synthesize** promise (what should someone feel?) and point of view (what does this brand disagree with?) from Round 1. Don't ask these directly — use them to ground personality options.
+Then continue to Step 3c (business & people), skipping anything the brand materials already reveal.
 
-- Brand personality — use `AskUserQuestion` with 2-3 concrete personality directions. **Each option must explain WHY it fits this brand's audience and problem** — not just a style label:
-  - Each option: **Label** (3 adjectives) / **Description** (why this personality fits their specific audience and competitive position — reference the persona by name, the problem, or the gap) / **Preview** (example sentence in that voice, using their product context)
-  - **Surprise me** — craft an unexpected direction inspired by the user's industry and personas
-- What the brand should NEVER feel like
-- Competitive landscape — use `WebSearch` to enrich the competitors named in Round 1. Present the map for confirmation.
-- Brands admired / styles to avoid
+**Step 3b-new — Skip to business questions:**
 
-**Round 3 — Constraints & confirmation:**
-- Existing brand assets? (logo, colors, guidelines)
-- Timeline and budget constraints
-- Non-negotiables
-- **Check background scan:** If the codebase scanner has returned results, weave tech findings naturally.
-- State your understanding back: "Here's what I'm hearing: [summary]." Use `AskUserQuestion`:
-  - **Looks good** — "That's accurate, let's go"
-  - **Adjust something** — "I want to change or add something"
+Continue directly to Step 3c.
 
-**Evolve mode additions (when `brand_mode` is `evolve`):**
-Add to Round 3:
-- Current brand age, existing guidelines
-- Brand equity (what's working) and pain points (what's not)
-- Evolution scope — preserve / evolve / replace
+**Step 3c — Business & People:**
 
-Skip or compress rounds if the user gives enough upfront. Don't over-ask.
+8. What's the company name, and what industry/stage? (open-ended `AskUserQuestion`)
+9. What problem does it solve, and for whom? (open-ended — use the answer to start inferring persona)
+10. What's the business model? (use `AskUserQuestion` with options if you can infer likely models from industry, otherwise open-ended)
+11. Who are the main competitors? (2-3 names — open-ended)
+12. Present an inferred primary persona — a concrete profile (name, role, frustration, aspiration) based on answers so far. Personas should feel like real people — dig into the emotional layer. Use `AskUserQuestion`: **Looks right** / **Adjust** / **Add a secondary persona**
+
+**Step 3d — Brand Essence:**
+
+Before presenting personality options, **internally synthesize** promise (what should someone feel?) and point of view (what does this brand disagree with?) from prior answers. Don't ask these directly — use them to ground personality options.
+
+13. Brand personality direction — use `AskUserQuestion` with 2-3 concrete personality directions. **Each option must explain WHY it fits this brand's audience and problem** — not just a style label:
+    - Each option: **Label** (3 adjectives) / **Description** (why this personality fits their specific audience and competitive position — reference the persona by name, the problem, or the gap) / **Preview** (example sentence in that voice, using their product context)
+    - **Surprise me** — craft an unexpected direction inspired by the user's industry and personas
+    - Note: this is a high-level direction only. Brand strategy phase will deepen this into archetype + voice — don't over-refine here.
+14. What should the brand NEVER feel like? (use `AskUserQuestion` with 2-3 anti-directions inferred from their personality pick, plus open-ended option)
+15. Brands admired or styles to avoid? (open-ended `AskUserQuestion`)
+
+Note: competitive landscape deep-dive happens in the research phase — don't re-confirm it here. The competitor names from Q11 are enough.
+
+**Step 3e — Constraints & confirmation:**
+
+16. Any non-negotiables or constraints? (timeline, budget, must-haves) — open-ended `AskUserQuestion`
+17. **Check background scan:** If the codebase scanner has returned results, weave tech findings naturally into your summary.
+18. State your understanding back: "Here's what I'm hearing: [summary]." Use `AskUserQuestion`:
+    - **Looks good** — "That's accurate, let's go"
+    - **Adjust something** — "I want to change or add something"
+
+Skip any question you can already answer from prior context. Don't over-ask.
 
 4. Write artifacts:
 - `.design/branding/{name}/BRIEF.md` from brand brief template
@@ -186,8 +206,8 @@ Skip or compress rounds if the user gives enough upfront. Don't over-ask.
 
 - **Brand-only, new →** continue to `/gsp:brand-research`
 - **Brand-only, evolve →** continue to `/gsp:brand-audit`
-- **E2E, new →** auto-continue to Step 4
-- **E2E, evolve →** continue to `/gsp:brand-audit` (then Step 4 after audit)
+- **E2E, new →** continue to `/gsp:brand-research` (complete the entire brand pipeline first — research → strategy → identity → patterns — then auto-transition to Step 4 for project setup). Set `"e2e": true` in config.json so brand-patterns knows to route to project flow after completion.
+- **E2E, evolve →** continue to `/gsp:brand-audit` (complete full brand pipeline, then auto-transition to Step 4). Set `"e2e": true` in config.json.
 
 ## Step 4: Project flow
 
@@ -212,33 +232,31 @@ Use the background `git branch --show-current` result. If detected, confirm bran
 
 6. Consume `.design/system/STACK.md` — note classification for config.json, auto-infer `implementation_target` from STACK.md + COMPONENTS.md.
 
-7. Gather project brief in 2 rounds:
+7. Gather project brief as a sequential conversation. Each question is its own `AskUserQuestion` call. Ask one, wait, adapt, ask the next. Skip anything you can already infer from the codebase scan.
 
-**Round 1 — What we're building:**
-- What are we building? (app, website, dashboard, etc.)
-- Present background scan findings: "I found a {classification} {framework} project with {details}. Want to build on that?"
-- Platforms (web, iOS, Android)?
-- Tech stack preferences? (confirm inferred or ask)
-- Implementation target — use `AskUserQuestion` with options based on codebase analysis (e.g., shadcn, rn-reusables, custom, css-only)
-- Design scope — use `AskUserQuestion`:
-  - **Full** — "Complete design: screens, components, tokens"
-  - **Partial** — "Specific screens or flows only"
-  - **Tokens only** — "Just design tokens, no screens"
-- Key screens/flows needed?
+**Sequence — What we're building:**
 
-Use inference from the codebase scan — don't re-ask what you can already see.
+1. What are we building? (app, website, dashboard, etc.) — open-ended `AskUserQuestion`
+2. Present background scan findings: "I found a {classification} {framework} project with {details}." Use `AskUserQuestion`: **Build on this** / **Different stack** / **Tell me more**
+3. Platforms? — use `AskUserQuestion`: **Web** / **iOS** / **Android** / **Cross-platform** (skip if obvious from codebase)
+4. Implementation target — use `AskUserQuestion` with options based on codebase analysis (e.g., shadcn, rn-reusables, custom, css-only)
+5. Design scope — use `AskUserQuestion`:
+   - **Full** — "Complete design: screens, components, tokens"
+   - **Partial** — "Specific screens or flows only"
+   - **Tokens only** — "Just design tokens, no screens"
+6. Key screens/flows needed? — open-ended `AskUserQuestion`
 
-**Round 2 — Success & gaps:**
-- Success criteria
-- Timeline, constraints
-- Any remaining gaps
-- State your understanding back: "Here's what I'm hearing: [summary]." Use `AskUserQuestion`:
-  - **Looks good** — "That's accurate, let's go"
-  - **Adjust something** — "I want to change or add something"
-  - **Explain this** — "Walk me through what you captured and why" → explain each section of the brief and how it'll be used in the next phases
-  - **Surprise me** — "Suggest something I haven't thought of" → propose an unexpected screen, flow, or feature angle that would elevate the project based on what you know about the brand, audience, and codebase. Present it as a suggestion the user can adopt, tweak, or skip.
+**Sequence — Success & confirmation:**
 
-Skip or compress rounds if the user gives enough upfront. Don't over-ask.
+7. What does success look like? — open-ended `AskUserQuestion`
+8. Any constraints? (timeline, budget, must-haves) — open-ended `AskUserQuestion`
+9. State your understanding back: "Here's what I'm hearing: [summary]." Use `AskUserQuestion`:
+   - **Looks good** — "That's accurate, let's go"
+   - **Adjust something** — "I want to change or add something"
+   - **Explain this** — "Walk me through what you captured and why" → explain each section of the brief and how it'll be used in the next phases
+   - **Surprise me** — "Suggest something I haven't thought of" → propose an unexpected screen, flow, or feature angle that would elevate the project based on what you know about the brand, audience, and codebase. Present it as a suggestion the user can adopt, tweak, or skip.
+
+Skip any question you can already answer from the codebase scan. Don't over-ask.
 
 8. Write artifacts:
 - `.design/projects/{name}/BRIEF.md` from project brief template
@@ -309,7 +327,7 @@ Continue directly to Step 4 (project flow) with these modifications:
 - Go straight to asking for project name
 - Set `style_preset: "{preset}"` in the project's `config.json`
 - Set `identity_hash: "style-only"` in `brand.ref`
-- Proceed with the normal 2-round project brief gathering
+- Proceed with the normal sequential project brief gathering
 
 ### Upgrade path
 

@@ -239,6 +239,22 @@ Glob for all SKILL.md files in the skills directory (`{runtime-dir}/skills/*/SKI
 - All present → PASS
 - Missing → WARN: "Skills missing `user-invocable: true`: {list}. They won't appear in the slash-command menu. Re-run the installer or add the field manually."
 
+**Check I2: Skill directories are complete (not just SKILL.md)**
+For each gsp-* skill directory, check if `SKILL.md` references sibling files via `${CLAUDE_SKILL_DIR}/` paths (e.g. `styles/INDEX.yml`). If it does, verify those files/dirs exist in the installed skill directory.
+- All referenced siblings present → PASS
+- Missing siblings → FAIL: "Skill {name} references {path} but it's missing. Re-run the installer: `npx get-shit-pretty`"
+
+**Check I3: Bundle directories accessible**
+Check that the runtime bundle directories exist (`{runtime-dir}/prompts/`, `{runtime-dir}/templates/`, `{runtime-dir}/references/`). Skills reference these via `${CLAUDE_SKILL_DIR}/../../`.
+- All present → PASS
+- Missing → FAIL: "Bundle directory {dir} missing. Re-run the installer: `npx get-shit-pretty`"
+
+**Check I4: VERSION file present**
+Check `{runtime-dir}/VERSION` exists and contains a valid semver string.
+- Present and valid → PASS (show version)
+- Missing → WARN: "VERSION file missing. Re-run the installer."
+- Mismatched with source → INFO: "Installed version {installed} differs from source {source}."
+
 ### Cross-Instance Checks
 
 **Check X1: Multiple projects, same brand**
@@ -287,6 +303,9 @@ Overall Health: {SCORE}/100 {emoji}
 
 ─── Installation Health ───────────────
   ✅ I1. Skills invocable ........ PASS
+  ✅ I2. Skill completeness ...... PASS
+  ✅ I3. Bundle directories ...... PASS
+  ✅ I4. VERSION file ............ PASS
 
 ─── Cross-Instance ────────────────────
   ✅ X1. Brand Consistency ...... PASS

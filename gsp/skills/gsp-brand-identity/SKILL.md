@@ -31,6 +31,8 @@ Build the brand's visual identity.
 
 <rules>
 - Always use `AskUserQuestion` for user-facing questions — never raw text prompts
+- One decision per question — never batch multiple questions in a single message
+- Never re-ask what the user already answered in a prior phase — read BRIEF.md and strategy chunks, build on them
 - Every visual decision must trace to strategy — archetype, positioning, or voice
 - Artifacts must balance human readability with agent consumption for downstream phases
 </rules>
@@ -75,9 +77,11 @@ Use `AskUserQuestion` with 2-3 visual directions:
 - **Description:** color palette direction, typography feel, overall aesthetic
 - **Preview:** "Palette: {key colors}. Type: {typeface style}. Feel: {1-line vibe}."
 
-After selection, ask for hard constraints or visual references via `AskUserQuestion`:
+## Step 2b: Constraints
+
+After visual direction is confirmed, ask as a separate `AskUserQuestion`:
 - **No constraints** — "Go ahead with this direction"
-- **Add constraints** — "I have specific requirements"
+- **Add constraints** — "I have specific requirements (colors to avoid, accessibility needs, existing assets to match)"
 
 ## Step 3: Spawn identity designer
 

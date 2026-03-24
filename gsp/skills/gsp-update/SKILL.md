@@ -2,36 +2,51 @@
 name: update
 description: Update GSP to the latest version
 user-invocable: true
+allowed-tools:
+  - Read
+  - Bash
+  - AskUserQuestion
+  - Glob
+  - WebFetch
 ---
 <objective>
 Check for GSP updates, show what's new, and run the update if the user confirms.
 </objective>
 
+<rules>
+- Always use `AskUserQuestion` for user-facing questions — never raw text prompts
+- One decision per question — never batch multiple questions in a single message
+</rules>
+
 <process>
 
 ## Step 1 — Detect installation
 
-Check for a `VERSION` file to determine install type. The runtime directory varies by tool:
-- Claude Code: `.claude/` (local) or `~/.claude/` (global)
-- OpenCode: `.opencode/` (local) or `~/.config/opencode/` (global)
-- Gemini: `.gemini/` (local) or `~/.gemini/` (global)
-- Codex: `.codex/` (local) or `~/.codex/` (global)
+Determine the runtime by checking which config directory exists. Check local first, then global:
 
-Look for the VERSION file in both local and global locations. Check two paths per location (current layout first, legacy fallback):
+| Runtime | Local dir | Global dir |
+|---------|-----------|------------|
+| Claude Code | `.claude/` | `~/.claude/` |
+| OpenCode | `.opencode/` | `~/.config/opencode/` |
+| Gemini | `.gemini/` | `~/.gemini/` |
+| Codex | `.codex/` | `~/.codex/` |
+
+For each runtime, look for the VERSION file in two paths (current layout first, legacy fallback):
 1. `{runtime-dir}/VERSION` (v0.5.0+)
 2. `{runtime-dir}/get-shit-pretty/VERSION` (legacy v0.4.x)
 
-If neither exists in either location, tell the user GSP doesn't appear to be installed and suggest running:
+Record which runtime(s) and install type (local/global) were found.
+
+If no VERSION file exists anywhere, tell the user GSP doesn't appear to be installed and suggest:
 ```
 npx get-shit-pretty
 ```
 Then stop.
 
-Read the VERSION file to get the installed version. Store which type was detected (local or global).
+Read the VERSION file to get the installed version.
 
 ## Step 2 — Check latest version
 
-Run:
 ```bash
 npm view get-shit-pretty version
 ```
@@ -40,7 +55,7 @@ If the command fails, tell the user the version check failed (they may be offlin
 
 ## Step 3 — Compare versions
 
-If installed version >= latest version, tell the user:
+If installed version >= latest version:
 ```
 GSP v{installed} is already up to date.
 ```
@@ -48,40 +63,55 @@ Then stop.
 
 ## Step 4 — Show what's new
 
-Tell the user:
 ```
 Update available: v{installed} → v{latest}
 ```
 
-Fetch the changelog to show what changed:
+Fetch the changelog:
 ```bash
 curl -sf https://raw.githubusercontent.com/jubscodes/get-shit-pretty/main/CHANGELOG.md
 ```
 
-If the fetch succeeds, extract and display the section for the latest version. If it fails, skip — changelog display is optional.
+If the fetch succeeds, extract and display the section(s) between the installed and latest versions. If it fails, skip — changelog display is optional.
 
 ## Step 5 — Warn about clean install
 
-Tell the user:
 ```
 The update replaces:
-  • skills/gsp-*       (all GSP skills)
-  • get-shit-pretty/*  (runtime files)
-  • gsp-* agents       (all GSP agents)
+  • skills/gsp-*          (all GSP skills + sibling files)
+  • prompts/              (agent system prompts)
+  • templates/            (config, state, brief templates)
+  • references/           (shared reference material)
+  • agents/gsp-*          (all GSP agents)
 
 Custom files outside these prefixes are preserved.
 ```
 
 ## Step 6 — Confirm with user
 
-Ask the user to confirm before proceeding. If they decline, stop.
+Use `AskUserQuestion`:
+- **Update now** — "Install v{latest}"
+- **Skip** — "I'll update later"
+
+If skip → stop.
 
 ## Step 7 — Execute update
 
-Based on the detected install type from Step 1:
+Build the installer command based on what was detected in Step 1:
 
-- **Local install**: run `npx get-shit-pretty@latest --claude --local`
-- **Global install**: run `npx get-shit-pretty@latest --claude`
+**Runtime flag:** use the detected runtime (`--claude`, `--opencode`, `--gemini`, `--codex`). If multiple runtimes were found, use `--all`.
+
+**Scope flag:** `--local` if local install was detected, `--global` if global.
+
+```bash
+npx get-shit-pretty@latest {runtime-flag} {scope-flag}
+```
+
+Examples:
+- Local Claude: `npx get-shit-pretty@latest --claude --local`
+- Global Claude: `npx get-shit-pretty@latest --claude --global`
+- Global OpenCode: `npx get-shit-pretty@latest --opencode --global`
+- Multiple runtimes: `npx get-shit-pretty@latest --all --global`
 
 Show the output to the user.
 
@@ -102,10 +132,9 @@ rm -f {runtime-dir}/get-shit-pretty/.update-cache.json
 
 ## Step 9 — Remind to restart
 
-Tell the user:
 ```
 GSP updated to v{latest}.
-Restart your Claude Code session to load the new commands and agents.
+Restart your session to load the new skills and agents.
 ```
 
 </process>

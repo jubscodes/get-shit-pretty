@@ -5,10 +5,18 @@ Guide brief-gathering conversations — used by `/gsp:start` for both brand brie
 
 ---
 
+## Core Rules
+
+**One decision per question.** Every question must be its own `AskUserQuestion` call. Never group multiple questions into a single message. Ask one thing, wait for the answer, use it to inform the next question.
+
+**Never re-ask what the user already answered.** If information was gathered in a prior phase and is available in BRIEF.md or other artifacts, use it — don't ask again. If you need to validate stale information, confirm it ("I see X from earlier — still accurate?") rather than asking from scratch. Each phase reads the prior phase's output; the user should never feel like they're repeating themselves.
+
+---
+
 ## Question Flow
 
 ### Phase 1: Context (Who & Why)
-Start broad, then narrow.
+Start broad, then narrow. Each is a separate `AskUserQuestion`.
 
 1. **What** is this project? (app, website, rebrand, campaign)
 2. **Who** is it for? (audience demographics, psychographics)
@@ -41,11 +49,11 @@ Start broad, then narrow.
 
 ## Questioning Techniques
 
-### Progressive Disclosure
-Don't ask all 18 questions at once. Group into 3-4 conversational rounds:
-- Round 1: Context + Brand (questions 1-8)
-- Round 2: Scope + Constraints (questions 9-16)
-- Round 3: Success + Gaps (questions 17-18 + follow-ups)
+### One at a Time
+Ask each question as its own `AskUserQuestion` call. Wait for the answer before asking the next. Use each answer to decide whether to skip, reframe, or drill into the next question.
+
+### Adapt and Skip
+Don't follow the list rigidly. If an early answer reveals enough context, skip later questions. If an answer is surprising, follow up before moving on. The sequence is a guide, not a script.
 
 ### Follow-Up Patterns
 - **"Tell me more about..."** — When an answer is surface-level
@@ -66,9 +74,9 @@ Don't ask what you can infer:
 - Reserve prose questions for open-ended exploration where you genuinely don't know the option space
 
 ### When to Use `AskUserQuestion` vs Prose
-- **Use `AskUserQuestion`** for: picking between defined directions (archetypes, styles, brands), yes/no/which decisions, selecting from existing items (brands, projects), mood/tone/size preferences
-- **Use prose** for: open-ended creative input ("tell me about your brand"), gathering context you can't predict ("what problem does this solve?"), follow-up clarifications where the answer space is unbounded
-- **Rule of thumb:** if you can write 2-4 meaningful options with descriptions, use `AskUserQuestion`. If you'd be guessing at what the options should be, use prose.
+- **Always use `AskUserQuestion`** — this is the default for every user-facing question
+- **Prose is only for** follow-up clarifications where the answer space is truly unbounded and you cannot write meaningful options
+- **Rule of thumb:** if you can write 2-4 meaningful options with descriptions, use `AskUserQuestion`. If you'd be guessing at what the options should be, still use `AskUserQuestion` with an open-ended framing.
 
 ### Knowing When You Have Enough
 A brief is complete when you can answer:
