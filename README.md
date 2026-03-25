@@ -183,6 +183,7 @@ Create marketing campaign assets — landing page copy, social media content, la
 | `/gsp:brand-strategy` | Define archetype, positioning, personality, voice, messaging |
 | `/gsp:brand-identity` | Create visual identity — logo, color, type |
 | `/gsp:brand-patterns` | Build design system — tokens, components |
+| `/gsp:brand-refine` | Surgical token and palette adjustments mid-project |
 
 ### Project
 
@@ -200,6 +201,7 @@ Create marketing campaign assets — landing page copy, social media content, la
 
 | Command | What it does |
 |---------|--------------|
+| `/gsp:accessibility-audit` | Full WCAG 2.2 AA accessibility audit |
 | `/gsp:add-reference` | Add reference material to a project |
 | `/gsp:doctor` | Check project health |
 | `/gsp:update` | Update GSP to latest version |
