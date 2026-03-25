@@ -13,6 +13,24 @@
     ],
     "SubagentStop": [
       {
+        "matcher": "gsp-designer",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "The gsp-designer agent just finished. Verify: (1) at least one design/screen-*.md chunk was written, (2) design/INDEX.md was written, (3) design/preview.html was written. Report any missing deliverables to the user."
+          }
+        ]
+      },
+      {
+        "matcher": "gsp-critic",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "The gsp-critic agent just finished. Verify: (1) critique/critique.md was written with a heuristics score, (2) critique/prioritized-fixes.md was written, (3) critique/strengths.md was written. Report any missing deliverables to the user."
+          }
+        ]
+      },
+      {
         "matcher": "gsp-builder",
         "hooks": [
           {
