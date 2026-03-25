@@ -85,6 +85,24 @@ Exceptions — agents that legitimately need to read from disk:
 - `gsp-brand-syncer` — scans brand files + codebase
 - `gsp-accessibility-auditor` (code mode) — Grep/Glob on source files
 
+### Context optimization rules
+
+These rules minimize token waste across the pipeline. Enforced by audit tests C11, C12, I19.
+
+**Model and effort routing:** Every skill must declare `model:` in frontmatter. Pipeline creative/technical phases use `opus` + `effort: high`. Research, composable, utility, and fun skills use `sonnet`. The installer strips `model:` and `effort:` for non-Claude runtimes.
+
+**Context fork for pure dispatchers:** Pipeline skills that have zero interactive steps (no `AskUserQuestion` before agent spawn) must use `context: fork` in frontmatter. This isolates execution_context references from the main conversation window. Currently forked: `project-design`, `project-critique`, `project-review`, `launch`. Never fork skills with interactive steps — test C12 enforces this.
+
+**Double-dispatch is intentional:** Forked skills use the Agent tool inside the fork to spawn executors. Do NOT collapse this with the `agent:` frontmatter field. The fork isolates the orchestrator; the Agent tool gives the executor a clean start. The orchestrator owns validation, routing, and state updates — the agent owns creative/technical execution.
+
+**Execution context is for orchestrator-consumed content only.** Reference files that the orchestrator only passes through to agents must NOT be in `<execution_context>`. Instead, add a "Load references" step before the spawn that reads them from disk. This keeps orchestrator Steps 0-2 (validation, prerequisites) lean. Only keep prompts and templates the orchestrator itself references in execution_context.
+
+**Templates loaded at write time.** Skills that write artifacts from templates (e.g., `gsp-start` writing BRIEF.md, STATE.md) must read templates at the point of writing, not in execution_context. Pattern: `Read templates from ${CLAUDE_SKILL_DIR}/../../templates/{path}/ and write artifacts`.
+
+**SubagentStop hooks for all project-phase agents.** Every agent that produces deliverable files must have a SubagentStop hook in `gsp/hooks/hooks.json` that verifies the expected outputs exist. Currently covered: `gsp-designer`, `gsp-critic`, `gsp-builder`, `gsp-reviewer`.
+
+**Filesystem is the integration layer.** Phases consume prior-phase output from disk (`.design/`), never from conversation context. Forked phases write STATE.md and artifact files to disk — these persist across fork boundaries. No phase should rely on conversation history for prior-phase artifacts.
+
 ## Key files
 
 - `.claude-plugin/plugin.json` — plugin manifest (name: gsp, version synced with package.json and VERSION)
@@ -120,7 +138,7 @@ Internal development tools live in `dev/` (versioned in repo, never installed to
 |------|---------|
 | `dev/skills/gsp-audit/` | Pipeline integrity checker — contracts, installer, runtime compat, versions, templates |
 | `dev/skills/gsp-runtime-compat/` | Fetch live runtime docs and flag drift against GSP installer |
-| `dev/scripts/audit-tests.sh` | Automated test suite (36 tests across 5 suites) |
+| `dev/scripts/audit-tests.sh` | Automated test suite (58 tests across 7 suites) |
 
 ### Running tests
 
