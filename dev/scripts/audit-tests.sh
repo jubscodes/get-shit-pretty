@@ -205,6 +205,45 @@ if should_run contracts; then
   else
     warn "C8 Claude-only field set changed" "Expected: $EXPECTED_CLAUDE_ONLY Got: $ACTUAL_CLAUDE_ONLY — verify converters handle new fields"
   fi
+
+  # C11: model/effort frontmatter values are from allowed sets
+  C11_BAD=()
+  for skill_dir in gsp/skills/*/; do
+    skill_file="$skill_dir/SKILL.md"
+    [[ -f "$skill_file" ]] || continue
+    skill_name=$(basename "$skill_dir")
+    model_val=$(grep -m1 '^model:' "$skill_file" 2>/dev/null | sed 's/model: *//')
+    effort_val=$(grep -m1 '^effort:' "$skill_file" 2>/dev/null | sed 's/effort: *//')
+    if [[ -n "$model_val" && "$model_val" != "opus" && "$model_val" != "sonnet" && "$model_val" != "haiku" ]]; then
+      C11_BAD+=("$skill_name:model=$model_val")
+    fi
+    if [[ -n "$effort_val" && "$effort_val" != "low" && "$effort_val" != "medium" && "$effort_val" != "high" && "$effort_val" != "max" ]]; then
+      C11_BAD+=("$skill_name:effort=$effort_val")
+    fi
+  done
+  if [[ ${#C11_BAD[@]} -eq 0 ]]; then
+    pass "C11 Model/effort values valid"
+  else
+    fail "C11 Invalid model/effort values" "${C11_BAD[*]}"
+  fi
+
+  # C12: Skills with context: fork must not have AskUserQuestion in allowed-tools
+  C12_BAD=()
+  for skill_dir in gsp/skills/*/; do
+    skill_file="$skill_dir/SKILL.md"
+    [[ -f "$skill_file" ]] || continue
+    skill_name=$(basename "$skill_dir")
+    if grep -q '^context: fork' "$skill_file" 2>/dev/null; then
+      if grep -q 'AskUserQuestion' "$skill_file" 2>/dev/null; then
+        C12_BAD+=("$skill_name")
+      fi
+    fi
+  done
+  if [[ ${#C12_BAD[@]} -eq 0 ]]; then
+    pass "C12 Forked skills have no AskUserQuestion"
+  else
+    fail "C12 Forked skills with AskUserQuestion" "${C12_BAD[*]}"
+  fi
 fi
 
 # ── I: Installer Checks ─────────────────────────────
@@ -443,6 +482,22 @@ if should_run installer; then
     fi
   done
   $PREFIX_OK && pass "I18 All copy functions have gsp- prefix guard"
+
+  # I19: Skill converters strip model: and effort: fields
+  I19_OK=true
+  for fn in convertClaudeSkillToOpencode convertClaudeSkillToGemini convertClaudeSkillToCodex; do
+    CONVERTER=$(grep -A80 "function $fn" bin/install.js)
+    for field in model: effort:; do
+      if ! echo "$CONVERTER" | grep -q "startsWith('$field')"; then
+        I19_OK=false
+      fi
+    done
+  done
+  if $I19_OK; then
+    pass "I19 Skill converters strip model: and effort: fields"
+  else
+    fail "I19 Missing model/effort stripping" "All 3 skill converters must strip model: and effort:"
+  fi
 fi
 
 # ── R: Runtime Compatibility ────────────────────────
