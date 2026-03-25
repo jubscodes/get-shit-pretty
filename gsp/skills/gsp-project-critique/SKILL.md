@@ -74,11 +74,26 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 
 ## Step 2: Spawn critics (parallel)
 
-**Agent 1: gsp-critic** — Design critique using Nielsen's 10 Heuristics reference + all design chunks.
-Output path: `{PROJECT_PATH}/critique/`
+**Inline all content** — agents should not need to read any input files.
 
-**Agent 2: gsp-accessibility-auditor** — Check if `{PROJECT_PATH}/critique/accessibility-audit.md` already exists from a prior `/gsp:accessibility` run. If yes, skip spawning the accessibility auditor — reuse the existing output. If no, spawn `gsp-accessibility-auditor` with WCAG 2.2 audit using WCAG checklist + all design chunks. Pass `accessibility_level` from config (defaults to "WCAG 2.2 AA") so the auditor adapts its criteria (AA vs AAA).
-Output path: `{PROJECT_PATH}/critique/`
+**Agent 1: gsp-critic** — Pass in the agent prompt:
+- **Content of** all design chunks (loaded in Step 1)
+- **Content of** all identity chunks (loaded in Step 1)
+- **Content of** all patterns chunks (loaded in Step 1)
+- **Content of** brief chunks (loaded in Step 1)
+- **Content of** research recommendations.md (loaded in Step 1)
+- **Content of** BRIEF.md
+- Nielsen's 10 Heuristics reference, visual taste reference, anti-patterns reference, color composition reference (from execution_context)
+- The Design Critique Partner prompt (06), critique output template
+- Output path: `{PROJECT_PATH}/critique/`
+
+**Agent 2: gsp-accessibility-auditor** — Check if `{PROJECT_PATH}/critique/accessibility-audit.md` already exists from a prior `/gsp:accessibility` run. If yes, skip spawning the accessibility auditor — reuse the existing output. If no, pass in the agent prompt:
+- **Content of** all design chunks (loaded in Step 1)
+- **Content of** identity color-system.md and typography.md (loaded in Step 1)
+- **Content of** patterns tokens chunks (loaded in Step 1)
+- WCAG checklist reference, Accessibility Auditor prompt (08)
+- `accessibility_level` from config (defaults to "WCAG 2.2 AA")
+- Output path: `{PROJECT_PATH}/critique/`
 
 ## Step 3: Write critique INDEX.md
 

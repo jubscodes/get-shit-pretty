@@ -63,9 +63,15 @@ Read `{PROJECT_PATH}/BRIEF.md` — audience, goals.
 
 ## Step 2: Spawn campaign director
 
-Spawn the `gsp-campaign-director` agent with identity chunks, strategy voice-and-tone + messaging chunks, screen chunks, and brief. The Marketing Asset Factory prompt (04). The launch output template.
+Spawn the `gsp-campaign-director` agent. **Inline all content** — the agent should not need to read any input files.
 
-**Output path:** `{PROJECT_PATH}/launch/`
+Pass in the agent prompt:
+- **Content of** all identity chunks (loaded in Step 1)
+- **Content of** strategy voice-and-tone.md + messaging.md (loaded in Step 1)
+- **Content of** all design screen chunks (loaded in Step 1)
+- **Content of** BRIEF.md (loaded in Step 1)
+- The Marketing Asset Factory prompt (04), launch output template (from execution_context)
+- **Output path:** `{PROJECT_PATH}/launch/`
 
 The agent writes chunks directly:
 - `launch/campaign-strategy.md`

@@ -73,6 +73,18 @@ To reinstall after adding/removing files: `node bin/install.js --claude --local`
 - Agent output paths must be dynamic: `"path provided by the skill that spawned you"` (no hardcoded `.design/` paths)
 - Skills resolve paths via `${CLAUDE_SKILL_DIR}/../../` for shared files (prompts, templates, references live directly in the runtime root, e.g. `.claude/prompts/`)
 
+### Agent input inlining rule
+
+**Skills must inline all content when spawning agents.** The skill reads input files during validation/context steps — pass that content directly in the agent prompt. Never pass file paths and expect the agent to re-read them. Each agent Read turn costs 18-35s depending on model.
+
+Pattern: `- **Content of** {file} (loaded in Step N)` in the spawn instruction.
+
+Exceptions — agents that legitimately need to read from disk:
+- `gsp-builder` (screen agents) — reads live codebase foundations
+- `gsp-reviewer` — Grep/Glob on actual source files
+- `gsp-brand-syncer` — scans brand files + codebase
+- `gsp-accessibility-auditor` (code mode) — Grep/Glob on source files
+
 ## Key files
 
 - `.claude-plugin/plugin.json` — plugin manifest (name: gsp, version synced with package.json and VERSION)
@@ -95,6 +107,10 @@ Published as `get-shit-pretty` on npm. Before publishing:
 4. `npm publish`
 
 The `files` field in package.json controls what's included: `.claude-plugin`, `.mcp.json`, `bin`, `scripts`, `gsp`.
+
+### Dependencies rule
+
+The npm package must have **zero production dependencies**. The installer (`bin/install.js`) and scripts use only Node.js builtins. All deps (Next.js, React, shadcn, MDX, etc.) are for the local website (`src/`) and must stay in `devDependencies`. Never add a package to `dependencies` — it would be pulled in by every `npx get-shit-pretty` user for no reason.
 
 ## Dev tools
 

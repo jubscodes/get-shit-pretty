@@ -113,9 +113,22 @@ When `implementation_target` is not `figma`:
 
 ## Step 3: Spawn designer
 
-Spawn the `gsp-designer` agent with all prior artifacts, the UI/UX Pattern Master prompt (03), design output template, Apple HIG patterns reference, brand style prompt ({brand-name}.md when available), implementation_target, design_scope, codebase_type, target screens (when partial), existing components inventory, custom references (when available), and critique fixes (when in revision mode).
+Spawn the `gsp-designer` agent. **Inline all content** — the agent should not need to read any input files.
 
-**Output path:** `{PROJECT_PATH}/design/`
+Pass in the agent prompt:
+- **Content of** all brand patterns foundation chunks + selective component chunks (loaded in Step 1)
+- **Content of** brand identity chunks: color-system.md, typography.md, imagery-style.md (loaded in Step 1)
+- **Content of** brand style prompt ({brand-name}.md) when available
+- **Content of** brief chunks: scope.md, target-adaptations.md (loaded in Step 1)
+- **Content of** research chunks: ux-patterns.md, recommendations.md, reference-specs.md (loaded in Step 1)
+- **Content of** BRIEF.md
+- **Content of** `.design/system/COMPONENTS.md`, `TOKENS.md` (when loaded in Step 2)
+- **Content of** custom references (when loaded in Step 1)
+- **Content of** critique fixes: prioritized-fixes.md, accessibility-fixes.md (when in revision mode)
+- The UI/UX Pattern Master prompt (03), design output template, Apple HIG patterns reference, visual effects reference, block patterns reference, anti-patterns reference (from execution_context)
+- `implementation_target`, `design_scope`, `codebase_type`
+- Target screens (when partial)
+- **Output path:** `{PROJECT_PATH}/design/`
 
 The agent writes chunks directly:
 - `design/screen-{NN}-{name}.md` (one per screen)

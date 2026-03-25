@@ -79,15 +79,15 @@ If the project scope feels large, suggest breaking it into multiple bounded issu
 
 ## Step 2: Spawn scoper
 
-Spawn the `gsp-scoper` agent with:
-- Brand system chunks (or fallback)
-- tokens.json
-- BRIEF.md
-- config.json preferences
-- `.design/system/STACK.md`, `COMPONENTS.md` (when exist)
-- CHANGELOG.md + relevant MANIFEST.md files — for overlap detection and provenance
-- The Project Scoper prompt (10)
-- The brief output template
+Spawn the `gsp-scoper` agent. **Inline all content** — the agent should not need to read any input files.
+
+Pass in the agent prompt:
+- **Content of** brand patterns foundation + component chunks (loaded in Step 1)
+- **Content of** tokens.json (loaded in Step 1)
+- **Content of** BRIEF.md (loaded in Step 1)
+- **Content of** `.design/system/STACK.md`, `COMPONENTS.md` (when loaded in Step 1)
+- **Content of** CHANGELOG.md + relevant MANIFEST.md files (loaded in Step 1)
+- The Project Scoper prompt (10), brief output template (from execution_context)
 - `implementation_target`, `design_scope`, `codebase_type`
 - **Output path:** `{PROJECT_PATH}/brief/`
 

@@ -85,26 +85,26 @@ After visual direction is confirmed, ask as a separate `AskUserQuestion`:
 
 ## Step 3: Spawn identity designer
 
-Spawn the `gsp-identity-designer` agent with:
-- BRIEF.md content
-- Strategy chunks: archetype.md, positioning.md, brand-platform.md, voice-and-tone.md
-- discover/mood-board-direction.md
-- Brand Identity Creator prompt (02)
-- Identity output template
+Spawn the `gsp-identity-designer` agent. **Inline all content** — the agent should not need to read any input files.
+
+Pass in the agent prompt:
+- **Content of** BRIEF.md (loaded in Step 1)
+- **Content of** strategy chunks: archetype.md, positioning.md, brand-platform.md, voice-and-tone.md (loaded in Step 1)
+- **Content of** discover/mood-board-direction.md (loaded in Step 1)
+- **Content of** style base preset files `.yml` + `.md` (when loaded in Step 1)
+- **Content of** audit/brand-inventory.md (when loaded in Step 2)
+- Brand Identity Creator prompt (02), identity output template, color composition reference (from execution_context)
 - User-confirmed visual direction + constraints
-- Style base preset files (`.yml` + `.md`) if loaded
-- Audit chunks if they exist
 - **Output path:** `{BRAND_PATH}/identity/`
 
-The agent writes 6 chunks + palettes.json + INDEX.md:
+The agent writes 5 chunks + palettes.json + INDEX.md:
 1. `logo-directions.md`
 2. `color-system.md`
 3. `typography.md`
 4. `imagery-style.md`
 5. `brand-applications.md`
-6. `brand-book.md`
-7. `palettes.json`
-8. `INDEX.md`
+6. `palettes.json`
+7. `INDEX.md`
 
 ## Step 4: Perspective check
 
