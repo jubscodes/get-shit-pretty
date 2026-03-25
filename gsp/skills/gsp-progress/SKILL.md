@@ -2,6 +2,7 @@
 name: progress
 description: How pretty are we?
 user-invocable: true
+model: sonnet
 allowed-tools:
   - Read
   - Glob

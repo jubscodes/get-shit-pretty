@@ -2,6 +2,7 @@
 name: brand-refine
 description: Targeted brand adjustments mid-project — tweak colors, typography, or spacing without re-running the full branding diamond
 user-invocable: true
+model: sonnet
 allowed-tools:
   - Read
   - Write

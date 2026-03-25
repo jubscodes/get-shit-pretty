@@ -2,6 +2,8 @@
 name: brand-patterns
 description: Build your design system — tokens, components, brand guidelines
 user-invocable: true
+model: opus
+effort: high
 allowed-tools:
   - Read
   - Write

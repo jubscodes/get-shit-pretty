@@ -2,6 +2,7 @@
 name: start
 description: Start here — picks up where you left off
 user-invocable: true
+model: sonnet
 allowed-tools:
   - Read
   - Write
@@ -30,15 +31,6 @@ Through a sequential one-question-at-a-time conversation, gather a complete brie
 
 <execution_context>
 @${CLAUDE_SKILL_DIR}/../../references/questioning.md
-@${CLAUDE_SKILL_DIR}/../../templates/branding/brief.md
-@${CLAUDE_SKILL_DIR}/../../templates/branding/state.md
-@${CLAUDE_SKILL_DIR}/../../templates/branding/config.json
-@${CLAUDE_SKILL_DIR}/../../templates/branding/roadmap.md
-@${CLAUDE_SKILL_DIR}/../../templates/projects/brief.md
-@${CLAUDE_SKILL_DIR}/../../templates/projects/state.md
-@${CLAUDE_SKILL_DIR}/../../templates/projects/config.json
-@${CLAUDE_SKILL_DIR}/../../templates/projects/roadmap.md
-@${CLAUDE_SKILL_DIR}/../../templates/exports-index.md
 </execution_context>
 
 <rules>
@@ -194,11 +186,11 @@ Note: competitive landscape deep-dive happens in the research phase — don't re
 
 Skip any question you can already answer from prior context. Don't over-ask.
 
-4. Write artifacts:
-- `.design/branding/{name}/BRIEF.md` from brand brief template
-- `.design/branding/{name}/STATE.md` from brand state template
-- `.design/branding/{name}/config.json` from brand config template
-- `.design/branding/{name}/ROADMAP.md` from brand roadmap template
+4. Read templates from `${CLAUDE_SKILL_DIR}/../../templates/branding/` and write artifacts:
+- `.design/branding/{name}/BRIEF.md` from `brief.md` template
+- `.design/branding/{name}/STATE.md` from `state.md` template
+- `.design/branding/{name}/config.json` from `config.json` template
+- `.design/branding/{name}/ROADMAP.md` from `roadmap.md` template
 
 5. Set `brand_mode` in config.json based on Step 2 routing decision.
 
@@ -258,12 +250,12 @@ Use the background `git branch --show-current` result. If detected, confirm bran
 
 Skip any question you can already answer from the codebase scan. Don't over-ask.
 
-8. Write artifacts:
-- `.design/projects/{name}/BRIEF.md` from project brief template
-- `.design/projects/{name}/STATE.md` from project state template — populate `## Git` table with detected/confirmed branch (or "—")
-- `.design/projects/{name}/config.json` from project config template — populate `git.branch` with detected/confirmed branch (or empty string)
-- `.design/projects/{name}/ROADMAP.md` from project roadmap template
-- `.design/projects/{name}/exports/INDEX.md` from exports-index template
+8. Read templates from `${CLAUDE_SKILL_DIR}/../../templates/projects/` and write artifacts:
+- `.design/projects/{name}/BRIEF.md` from `brief.md` template
+- `.design/projects/{name}/STATE.md` from `state.md` template — populate `## Git` table with detected/confirmed branch (or "—")
+- `.design/projects/{name}/config.json` from `config.json` template — populate `git.branch` with detected/confirmed branch (or empty string)
+- `.design/projects/{name}/ROADMAP.md` from `roadmap.md` template
+- `.design/projects/{name}/exports/INDEX.md` from `${CLAUDE_SKILL_DIR}/../../templates/exports-index.md`
 
 9. Route using `AskUserQuestion`: "Project set up! Ready to scope what you're building?"
   - **Continue to scoping** — "Scope the project now" → invoke `/gsp:project-brief` via Skill tool

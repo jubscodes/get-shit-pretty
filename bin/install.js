@@ -605,6 +605,8 @@ function convertClaudeSkillToOpencode(content, skillName) {
     if (trimmed.startsWith('color:')) { inList = false; continue; }
     if (trimmed.startsWith('context:')) { inList = false; continue; }
     if (trimmed.startsWith('agent:')) { inList = false; continue; }
+    if (trimmed.startsWith('model:')) { inList = false; continue; }
+    if (trimmed.startsWith('effort:')) { inList = false; continue; }
     // Skip list items under dropped fields
     if (inList) {
       if (trimmed.startsWith('- ')) continue;
@@ -783,6 +785,8 @@ function convertClaudeSkillToGemini(content, skillName) {
     if (trimmed.startsWith('color:')) { inList = false; continue; }
     if (trimmed.startsWith('context:')) { inList = false; continue; }
     if (trimmed.startsWith('agent:')) { inList = false; continue; }
+    if (trimmed.startsWith('model:')) { inList = false; continue; }
+    if (trimmed.startsWith('effort:')) { inList = false; continue; }
     if (inList) {
       if (trimmed.startsWith('- ')) continue;
       else if (trimmed && !trimmed.startsWith('-')) inList = false;
@@ -858,6 +862,8 @@ function convertClaudeSkillToCodex(content, skillName) {
     if (trimmed.startsWith('color:')) { inList = false; continue; }
     if (trimmed.startsWith('context:')) { inList = false; continue; }
     if (trimmed.startsWith('agent:')) { inList = false; continue; }
+    if (trimmed.startsWith('model:')) { inList = false; continue; }
+    if (trimmed.startsWith('effort:')) { inList = false; continue; }
     if (inList) {
       if (trimmed.startsWith('- ')) continue;
       else if (trimmed && !trimmed.startsWith('-')) inList = false;

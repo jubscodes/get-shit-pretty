@@ -2,6 +2,7 @@
 name: palette
 description: Generate OKLCH color palettes — standalone or as a building block for identity
 user-invocable: true
+model: sonnet
 allowed-tools:
   - Read
   - Write

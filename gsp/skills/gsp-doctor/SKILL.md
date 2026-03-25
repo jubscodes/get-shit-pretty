@@ -2,6 +2,7 @@
 name: doctor
 description: Check project health
 user-invocable: true
+model: sonnet
 allowed-tools:
   - Read
   - Glob

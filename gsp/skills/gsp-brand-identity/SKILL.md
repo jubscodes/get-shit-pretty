@@ -2,6 +2,8 @@
 name: brand-identity
 description: Create your visual identity — logo, color, typography
 user-invocable: true
+model: opus
+effort: high
 allowed-tools:
   - Read
   - Write

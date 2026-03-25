@@ -2,6 +2,9 @@
 name: project-critique
 description: Critique your designs + accessibility audit
 user-invocable: true
+model: opus
+effort: high
+context: fork
 allowed-tools:
   - Read
   - Write
@@ -26,11 +29,6 @@ Critique design quality and audit accessibility compliance.
 @${CLAUDE_SKILL_DIR}/../../prompts/06-design-critique-partner.md
 @${CLAUDE_SKILL_DIR}/../../prompts/08-accessibility-auditor.md
 @${CLAUDE_SKILL_DIR}/../../templates/phases/critique.md
-@${CLAUDE_SKILL_DIR}/../../references/nielsen-heuristics.md
-@${CLAUDE_SKILL_DIR}/../../references/visual-taste.md
-@${CLAUDE_SKILL_DIR}/../../references/anti-patterns.md
-@${CLAUDE_SKILL_DIR}/../../references/wcag-checklist.md
-@${CLAUDE_SKILL_DIR}/../../references/color-composition.md
 </execution_context>
 
 <process>
@@ -72,6 +70,17 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 
 **Otherwise:** If design chunks don't exist and scope is not `tokens`, tell the user to complete the design phase first.
 
+## Step 1.8: Load critique references
+
+Read these reference files (relative to skill dir `${CLAUDE_SKILL_DIR}/../../references/`):
+- `nielsen-heuristics.md`
+- `visual-taste.md`
+- `anti-patterns.md`
+- `wcag-checklist.md`
+- `color-composition.md`
+
+Hold their content for inlining into agent prompts in Step 2.
+
 ## Step 2: Spawn critics (parallel)
 
 **Inline all content** — agents should not need to read any input files.
@@ -83,15 +92,15 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 - **Content of** brief chunks (loaded in Step 1)
 - **Content of** research recommendations.md (loaded in Step 1)
 - **Content of** BRIEF.md
-- Nielsen's 10 Heuristics reference, visual taste reference, anti-patterns reference, color composition reference (from execution_context)
-- The Design Critique Partner prompt (06), critique output template
+- **Content of** Nielsen's 10 Heuristics, visual taste, anti-patterns, color composition references (loaded in Step 1.8)
+- The Design Critique Partner prompt (06), critique output template (from execution_context)
 - Output path: `{PROJECT_PATH}/critique/`
 
 **Agent 2: gsp-accessibility-auditor** — Check if `{PROJECT_PATH}/critique/accessibility-audit.md` already exists from a prior `/gsp:accessibility` run. If yes, skip spawning the accessibility auditor — reuse the existing output. If no, pass in the agent prompt:
 - **Content of** all design chunks (loaded in Step 1)
 - **Content of** identity color-system.md and typography.md (loaded in Step 1)
 - **Content of** patterns tokens chunks (loaded in Step 1)
-- WCAG checklist reference, Accessibility Auditor prompt (08)
+- **Content of** WCAG checklist reference (loaded in Step 1.8), Accessibility Auditor prompt (08, from execution_context)
 - `accessibility_level` from config (defaults to "WCAG 2.2 AA")
 - Output path: `{PROJECT_PATH}/critique/`
 

@@ -2,6 +2,8 @@
 name: project-build
 description: Translate designs to code
 user-invocable: true
+model: opus
+effort: high
 allowed-tools:
   - Read
   - Write
@@ -49,9 +51,6 @@ Implement designs as production-ready code in the codebase via phased pipeline w
 <execution_context>
 @${CLAUDE_SKILL_DIR}/../../prompts/09-design-to-code-translator.md
 @${CLAUDE_SKILL_DIR}/../../templates/phases/build.md
-@${CLAUDE_SKILL_DIR}/../../references/visual-effects.md
-@${CLAUDE_SKILL_DIR}/../../references/block-patterns.md
-@${CLAUDE_SKILL_DIR}/../../references/anti-patterns.md
 </execution_context>
 
 <process>
@@ -110,6 +109,15 @@ After scaffold completes, verify `{PROJECT_PATH}/build/SCAFFOLD-LOG.md` exists. 
 
 **Gate:** If scaffold reports build failure, stop and surface the error. Do not proceed to foundations with a broken build.
 
+## Step 2.5: Load build references
+
+Read these reference files (relative to skill dir `${CLAUDE_SKILL_DIR}/../../references/`):
+- `visual-effects.md`
+- `block-patterns.md`
+- `anti-patterns.md`
+
+Hold their content for inlining into agent prompts in Steps 3 and 5.
+
 ## Step 3: Phase 2 — FOUNDATIONS
 
 Spawn `gsp-builder` agent with **execution_mode: foundations**.
@@ -125,7 +133,8 @@ Spawn `gsp-builder` agent with **execution_mode: foundations**.
 | `.design/system/CONVENTIONS.md` | Codebase conventions (if exists) |
 | `.design/system/COMPONENTS.md` | Existing components (if exists) |
 | `{PROJECT_PATH}/config.json` | Tech stack, target |
-| Design-to-Code Translator prompt (09) | Translation methodology |
+| Design-to-Code Translator prompt (09, from execution_context) | Translation methodology |
+| Visual effects, block patterns, anti-patterns refs (loaded in Step 2.5) | Design patterns + constraints |
 
 ### Agent instructions:
 
@@ -222,7 +231,8 @@ Build screens sequentially. For each screen in `SCREENS`:
 | `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations |
 | `{PROJECT_PATH}/research/reference-specs.md` (if exists) | Technical specs |
 | `{PROJECT_PATH}/critique/prioritized-fixes.md` (if exists) | Critique fixes relevant to this screen |
-| Design-to-Code Translator prompt (09) | Translation methodology |
+| Design-to-Code Translator prompt (09, from execution_context) | Translation methodology |
+| Visual effects, block patterns, anti-patterns refs (loaded in Step 2.5) | Design patterns + constraints |
 
 **Does NOT receive:** other screen chunks, tokens.json (already in codebase), full brand system, research monoliths.
 

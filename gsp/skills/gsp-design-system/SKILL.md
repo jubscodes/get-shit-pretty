@@ -2,6 +2,7 @@
 name: design-system
 description: Scan and document the existing design system state
 user-invocable: true
+model: sonnet
 allowed-tools:
   - Read
   - Write

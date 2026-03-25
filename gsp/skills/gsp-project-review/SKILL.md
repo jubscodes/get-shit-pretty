@@ -2,6 +2,9 @@
 name: project-review
 description: QA review — validate implementation against designs
 user-invocable: true
+model: opus
+effort: high
+context: fork
 allowed-tools:
   - Read
   - Write

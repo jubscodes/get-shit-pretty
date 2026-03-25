@@ -2,6 +2,8 @@
 name: brand-audit
 description: Audit an existing brand before evolving it
 user-invocable: true
+model: opus
+effort: high
 allowed-tools:
   - Read
   - Write

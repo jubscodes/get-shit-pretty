@@ -2,6 +2,9 @@
 name: launch
 description: Create launch and marketing assets
 user-invocable: true
+model: sonnet
+effort: high
+context: fork
 allowed-tools:
   - Read
   - Write
