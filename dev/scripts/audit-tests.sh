@@ -51,9 +51,17 @@ if should_run versions; then
 
   # V3: VERSION file has no trailing content
   if [[ $(wc -l < VERSION | tr -d ' ') -le 1 ]]; then
-    pass "V3 VERSION file is clean"
+    pass "V3 VERSION file is single-line"
   else
-    warn "V3 VERSION file" "Has extra lines beyond version string"
+    warn "V3 VERSION file has extra lines" "Has extra lines beyond version string"
+  fi
+
+  # V4: Zero production dependencies
+  DEP_COUNT=$(node -e "const d=require('./package.json').dependencies;process.stdout.write(String(d?Object.keys(d).length:0))" 2>/dev/null)
+  if [[ "$DEP_COUNT" == "0" || -z "$DEP_COUNT" ]]; then
+    pass "V4 No production dependencies in package.json"
+  else
+    fail "V4 Found $DEP_COUNT production dependencies" "All deps must be in devDependencies — the npm package ships only the installer and skill files"
   fi
 fi
 
