@@ -51,9 +51,67 @@ if should_run versions; then
 
   # V3: VERSION file has no trailing content
   if [[ $(wc -l < VERSION | tr -d ' ') -le 1 ]]; then
-    pass "V3 VERSION file is clean"
+    pass "V3 VERSION file is single-line"
   else
-    warn "V3 VERSION file" "Has extra lines beyond version string"
+    warn "V3 VERSION file has extra lines" "Has extra lines beyond version string"
+  fi
+
+  # V5: Template config versions match VERSION
+  V5_OK=true
+  for cfg in gsp/templates/branding/config.json gsp/templates/projects/config.json; do
+    if [[ -f "$cfg" ]]; then
+      V_CFG=$(node -e "process.stdout.write(require('./$cfg').version)" 2>/dev/null)
+      if [[ "$V_CFG" != "$V_FILE" ]]; then
+        V5_OK=false
+        fail "V5 Template config version mismatch" "$cfg has $V_CFG, expected $V_FILE"
+      fi
+    fi
+  done
+  $V5_OK && pass "V5 Template config versions match ($V_FILE)"
+
+  # V6: CLAUDE.md counts match filesystem
+  ACTUAL_SKILLS=$(ls -d gsp/skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+  ACTUAL_AGENTS=$(ls gsp/agents/gsp-*.md 2>/dev/null | wc -l | tr -d ' ')
+  ACTUAL_PROMPTS=$(ls gsp/prompts/*.md 2>/dev/null | wc -l | tr -d ' ')
+  V6_OK=true
+  if [[ -f CLAUDE.md ]]; then
+    # Check source table counts
+    for pair in "skills:$ACTUAL_SKILLS" "agents:$ACTUAL_AGENTS" "prompts:$ACTUAL_PROMPTS"; do
+      kind="${pair%%:*}"
+      actual="${pair##*:}"
+      # Match patterns like "30 skills", "15 subagents", "12 agent system prompts"
+      if [[ "$kind" == "agents" ]]; then
+        pat="$actual subagents\|$actual agents"
+      elif [[ "$kind" == "prompts" ]]; then
+        pat="$actual agent system prompts\|$actual prompts"
+      else
+        pat="$actual $kind"
+      fi
+      if ! grep -q "$pat" CLAUDE.md 2>/dev/null; then
+        V6_OK=false
+        fail "V6 CLAUDE.md $kind count stale" "Filesystem has $actual, CLAUDE.md doesn't match"
+      fi
+    done
+    # Check installer table agent counts — "(N)" pattern
+    INSTALLER_AGENT_COUNTS=$(grep -oE '\(([0-9]+)\)' CLAUDE.md | grep -oE '[0-9]+' | sort -u)
+    for count in $INSTALLER_AGENT_COUNTS; do
+      if [[ "$count" != "$ACTUAL_AGENTS" && "$count" != "$ACTUAL_SKILLS" && "$count" != "$ACTUAL_PROMPTS" ]]; then
+        # Only flag if it looks like an agent count (appears in the installer table near "agents")
+        if grep -q "agents.*($count)" CLAUDE.md 2>/dev/null; then
+          V6_OK=false
+          fail "V6 CLAUDE.md installer table agent count stale" "Says ($count), filesystem has $ACTUAL_AGENTS"
+        fi
+      fi
+    done
+  fi
+  $V6_OK && pass "V6 CLAUDE.md counts match filesystem (skills=$ACTUAL_SKILLS agents=$ACTUAL_AGENTS prompts=$ACTUAL_PROMPTS)"
+
+  # V4: Zero production dependencies
+  DEP_COUNT=$(node -e "const d=require('./package.json').dependencies;process.stdout.write(String(d?Object.keys(d).length:0))" 2>/dev/null)
+  if [[ "$DEP_COUNT" == "0" || -z "$DEP_COUNT" ]]; then
+    pass "V4 No production dependencies in package.json"
+  else
+    fail "V4 Found $DEP_COUNT production dependencies" "All deps must be in devDependencies — the npm package ships only the installer and skill files"
   fi
 fi
 
@@ -196,6 +254,45 @@ if should_run contracts; then
     pass "C8 Claude-only field usage matches known set ($ACTUAL_CLAUDE_ONLY)"
   else
     warn "C8 Claude-only field set changed" "Expected: $EXPECTED_CLAUDE_ONLY Got: $ACTUAL_CLAUDE_ONLY — verify converters handle new fields"
+  fi
+
+  # C11: model/effort frontmatter values are from allowed sets
+  C11_BAD=()
+  for skill_dir in gsp/skills/*/; do
+    skill_file="$skill_dir/SKILL.md"
+    [[ -f "$skill_file" ]] || continue
+    skill_name=$(basename "$skill_dir")
+    model_val=$(grep -m1 '^model:' "$skill_file" 2>/dev/null | sed 's/model: *//')
+    effort_val=$(grep -m1 '^effort:' "$skill_file" 2>/dev/null | sed 's/effort: *//')
+    if [[ -n "$model_val" && "$model_val" != "opus" && "$model_val" != "sonnet" && "$model_val" != "haiku" ]]; then
+      C11_BAD+=("$skill_name:model=$model_val")
+    fi
+    if [[ -n "$effort_val" && "$effort_val" != "low" && "$effort_val" != "medium" && "$effort_val" != "high" && "$effort_val" != "max" ]]; then
+      C11_BAD+=("$skill_name:effort=$effort_val")
+    fi
+  done
+  if [[ ${#C11_BAD[@]} -eq 0 ]]; then
+    pass "C11 Model/effort values valid"
+  else
+    fail "C11 Invalid model/effort values" "${C11_BAD[*]}"
+  fi
+
+  # C12: Skills with context: fork must not have AskUserQuestion in allowed-tools
+  C12_BAD=()
+  for skill_dir in gsp/skills/*/; do
+    skill_file="$skill_dir/SKILL.md"
+    [[ -f "$skill_file" ]] || continue
+    skill_name=$(basename "$skill_dir")
+    if grep -q '^context: fork' "$skill_file" 2>/dev/null; then
+      if grep -q 'AskUserQuestion' "$skill_file" 2>/dev/null; then
+        C12_BAD+=("$skill_name")
+      fi
+    fi
+  done
+  if [[ ${#C12_BAD[@]} -eq 0 ]]; then
+    pass "C12 Forked skills have no AskUserQuestion"
+  else
+    fail "C12 Forked skills with AskUserQuestion" "${C12_BAD[*]}"
   fi
 fi
 
@@ -435,6 +532,22 @@ if should_run installer; then
     fi
   done
   $PREFIX_OK && pass "I18 All copy functions have gsp- prefix guard"
+
+  # I19: Skill converters strip model: and effort: fields
+  I19_OK=true
+  for fn in convertClaudeSkillToOpencode convertClaudeSkillToGemini convertClaudeSkillToCodex; do
+    CONVERTER=$(grep -A80 "function $fn" bin/install.js)
+    for field in model: effort:; do
+      if ! echo "$CONVERTER" | grep -q "startsWith('$field')"; then
+        I19_OK=false
+      fi
+    done
+  done
+  if $I19_OK; then
+    pass "I19 Skill converters strip model: and effort: fields"
+  else
+    fail "I19 Missing model/effort stripping" "All 3 skill converters must strip model: and effort:"
+  fi
 fi
 
 # ── R: Runtime Compatibility ────────────────────────

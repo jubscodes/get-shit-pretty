@@ -2,6 +2,9 @@
 name: project-design
 description: Design screens and interaction flows
 user-invocable: true
+model: opus
+effort: high
+context: fork
 allowed-tools:
   - Read
   - Write
@@ -27,10 +30,6 @@ Design core UI/UX screens and interaction flows.
 <execution_context>
 @${CLAUDE_SKILL_DIR}/../../prompts/03-ui-ux-pattern-master.md
 @${CLAUDE_SKILL_DIR}/../../templates/phases/design.md
-@${CLAUDE_SKILL_DIR}/../../references/apple-hig-patterns.md
-@${CLAUDE_SKILL_DIR}/../../references/visual-effects.md
-@${CLAUDE_SKILL_DIR}/../../references/block-patterns.md
-@${CLAUDE_SKILL_DIR}/../../references/anti-patterns.md
 </execution_context>
 
 <process>
@@ -111,11 +110,35 @@ When `implementation_target` is not `figma`:
 - **If `.design/system/COMPONENTS.md` and `.design/system/TOKENS.md` exist**, read them. Pass to the agent.
 - **If not**, fall back to scanning the codebase.
 
+## Step 2.5: Load design references
+
+Read these reference files (relative to skill dir `${CLAUDE_SKILL_DIR}/../../references/`):
+- `apple-hig-patterns.md`
+- `visual-effects.md`
+- `block-patterns.md`
+- `anti-patterns.md`
+
+Hold their content for inlining into the agent prompt in Step 3.
+
 ## Step 3: Spawn designer
 
-Spawn the `gsp-designer` agent with all prior artifacts, the UI/UX Pattern Master prompt (03), design output template, Apple HIG patterns reference, brand style prompt ({brand-name}.md when available), implementation_target, design_scope, codebase_type, target screens (when partial), existing components inventory, custom references (when available), and critique fixes (when in revision mode).
+Spawn the `gsp-designer` agent. **Inline all content** — the agent should not need to read any input files.
 
-**Output path:** `{PROJECT_PATH}/design/`
+Pass in the agent prompt:
+- **Content of** all brand patterns foundation chunks + selective component chunks (loaded in Step 1)
+- **Content of** brand identity chunks: color-system.md, typography.md, imagery-style.md (loaded in Step 1)
+- **Content of** brand style prompt ({brand-name}.md) when available
+- **Content of** brief chunks: scope.md, target-adaptations.md (loaded in Step 1)
+- **Content of** research chunks: ux-patterns.md, recommendations.md, reference-specs.md (loaded in Step 1)
+- **Content of** BRIEF.md
+- **Content of** `.design/system/COMPONENTS.md`, `TOKENS.md` (when loaded in Step 2)
+- **Content of** custom references (when loaded in Step 1)
+- **Content of** critique fixes: prioritized-fixes.md, accessibility-fixes.md (when in revision mode)
+- The UI/UX Pattern Master prompt (03), design output template (from execution_context)
+- **Content of** Apple HIG patterns, visual effects, block patterns, anti-patterns references (loaded in Step 2.5)
+- `implementation_target`, `design_scope`, `codebase_type`
+- Target screens (when partial)
+- **Output path:** `{PROJECT_PATH}/design/`
 
 The agent writes chunks directly:
 - `design/screen-{NN}-{name}.md` (one per screen)

@@ -2,6 +2,7 @@
 name: accessibility
 description: Quick contrast checks and token WCAG audits — inline, no agent
 user-invocable: true
+model: sonnet
 allowed-tools:
   - Read
   - Write

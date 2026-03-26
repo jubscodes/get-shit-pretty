@@ -2,6 +2,8 @@
 name: brand-strategy
 description: Define positioning, voice, and messaging
 user-invocable: true
+model: opus
+effort: high
 allowed-tools:
   - Read
   - Write

@@ -2,6 +2,7 @@
 name: typescale
 description: Generate a mathematical type scale — standalone or as a building block for identity
 user-invocable: true
+model: sonnet
 allowed-tools:
   - Read
   - Write

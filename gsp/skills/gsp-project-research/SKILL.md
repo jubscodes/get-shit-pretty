@@ -2,6 +2,8 @@
 name: project-research
 description: Research UX patterns and technical approaches
 user-invocable: true
+model: sonnet
+effort: high
 allowed-tools:
   - Read
   - Write
@@ -80,16 +82,16 @@ If competitor URLs or reference sites are mentioned in BRIEF.md or `{PROJECT_PAT
 
 ## Step 2: Spawn project researcher
 
-Include any pre-fetched reference content in the agent context.
+Spawn the `gsp-project-researcher` agent. **Inline all content** — the agent should not need to read any input files.
 
-Spawn the `gsp-project-researcher` agent with:
-- Brief scope chunks
-- Brand system foundation chunks
-- Brand discovery chunks (competitive audit, trends — to build on, not duplicate)
-- BRIEF.md
-- config.json preferences
-- The Project Researcher prompt (12)
-- The research output template
+Pass in the agent prompt:
+- **Content of** brief scope chunks: scope.md, target-adaptations.md (loaded in Step 1)
+- **Content of** brand patterns foundation chunks (loaded in Step 1)
+- **Content of** brand discovery chunks: competitive-audit.md, trend-analysis.md (loaded in Step 1)
+- **Content of** custom references (loaded in Step 1)
+- **Content of** BRIEF.md (loaded in Step 1)
+- Any pre-fetched reference content (from Step 1.75)
+- The Project Researcher prompt (12), research output template (from execution_context)
 - `implementation_target`, `platform`, `tech_stack`
 - **Output path:** `{PROJECT_PATH}/research/`
 
