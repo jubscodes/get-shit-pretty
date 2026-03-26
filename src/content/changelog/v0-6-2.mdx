@@ -1,0 +1,44 @@
+---
+title: "v0.6.2 -- Context optimization"
+date: "2026-03-26T15:00:00"
+excerpt: "Model routing across all 30 skills, SubagentStop hooks for all chunk-producing agents, context optimization rules, and 60 audit tests. The pipeline now routes opus where it matters and sonnet where it doesn't."
+tags: ["performance", "architecture", "audit", "agents", "hooks"]
+slug: "v0-6-2"
+---
+
+## Model and Effort Routing
+
+Every skill now declares `model: opus` or `model: sonnet` in frontmatter, plus optional `effort: high`. Creative and technical pipeline phases (design, critique, build, brand strategy/identity/patterns) route to opus. Research, utility, and composable skills route to sonnet. The installer strips these fields for non-Claude runtimes.
+
+Two audit tests enforce this: **C11** validates model/effort values are valid, **C12** ensures forked skills have no interactive steps (a fork with `AskUserQuestion` would deadlock).
+
+## SubagentStop Hooks for All Agents
+
+All 8 chunk-producing agents now have SubagentStop hooks that verify expected outputs exist before returning. Previously only the builder and reviewer were covered. Now the designer, critic, identity-designer, pattern-architect, scoper, and campaign-director are guarded too.
+
+When an agent finishes, the hook checks for required deliverables (INDEX.md, specific chunks, palettes.json) and surfaces any missing files to the user. No more silent failures.
+
+## Context Optimization
+
+Three rules now govern how skills manage context, reducing token waste across the pipeline:
+
+**Agent input inlining** -- skills read input files during validation, then pass the content directly in the agent prompt. Agents no longer re-read files themselves. Each `Read` turn costs 18-35s depending on model, so a 5-file identity phase saves 1.5-3 minutes.
+
+**Execution context pruning** -- reference files that the orchestrator only passes through to agents are loaded at spawn time, not in `<execution_context>`. Templates are loaded at write time, not at skill start.
+
+**Context fork** -- pure dispatcher skills (project-design, project-critique, project-review, launch) use `context: fork` to isolate their execution from the main conversation window. The double-dispatch pattern (fork isolates orchestrator, Agent tool gives executor clean context) is intentional.
+
+## Identity Phase Trim
+
+The identity designer agent got leaner: dropped the 20-page brand book outline (nobody acted on it), removed Pantone/CMYK from color output (only relevant for print), limited tints.dev palette generation to brand colors only (not semantics), and reduced maxTurns from 40 to 30.
+
+## Audit Suite: 60 Tests
+
+Seven new tests bring the suite to 60 total (58 integration + 80 unit):
+
+- **C11**: Model/effort values are valid across all skills
+- **C12**: Forked skills have no AskUserQuestion (deadlock guard)
+- **I19**: Skill converters strip model/effort for non-Claude runtimes
+- **V4**: Zero production dependencies in package.json
+- **V5**: Template config versions match VERSION
+- **V6**: CLAUDE.md skill/agent/prompt counts match filesystem
