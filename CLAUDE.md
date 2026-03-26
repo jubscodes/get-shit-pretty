@@ -2,6 +2,10 @@
 
 Design engineering system for Claude Code, OpenCode, Gemini, and Codex.
 
+## Git workflow
+
+`main` is protected — all changes require a PR (no direct push). Use feature/release branches and squash merge via `gh pr merge --squash`.
+
 ## This repository
 
 This repo is **both**:
