@@ -160,3 +160,7 @@ ln -s "$(pwd)/dev/skills/gsp-runtime-compat" ~/.claude/skills/gsp-runtime-compat
 ```
 
 Then invoke `/gsp-audit` or `/gsp-runtime-compat drift`.
+
+## Inspiration links
+
+When the user shares X/Twitter posts or other links as design inspiration, append them as a comment to **issue #70** (`inspo: collected X posts for design reference`).

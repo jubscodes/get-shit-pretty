@@ -4,6 +4,22 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+## [0.6.2] — 2026-03-26
+
+### Added
+- Model and effort routing to all 30 skills — opus for creative/technical pipeline phases, sonnet for research/utility/composable (#68)
+- SubagentStop hooks for designer and critic agents — verify expected outputs exist before returning
+- Audit tests C11 (model routing), C12 (context fork safety), I19 (fork + interactive guard)
+- V4 audit test: zero production dependencies check
+- ARCHITECTURE.md with mermaid diagrams and glossary
+
+### Changed
+- Context optimization rules added to CLAUDE.md — execution_context pruning, template-at-write-time, agent input inlining
+- All dependencies moved to devDependencies (zero prod deps)
+
+### Fixed
+- Inline agent inputs across identity phase — eliminates redundant file reads by agents (18-35s savings per read)
+
 ## [0.6.1] — 2026-03-24
 
 ### Fixed
