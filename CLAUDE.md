@@ -45,9 +45,9 @@ GSP is a Claude Code plugin. The manifest is at `.claude-plugin/plugin.json` wit
 
 | Runtime | Skills location | Agents | Bundle location |
 |---------|-----------------|--------|-----------------|
-| Claude Code | `.claude/skills/` | `.claude/agents/` (14) | `.claude/{prompts,templates,references}/` |
-| OpenCode | `.opencode/skills/` | `.opencode/agents/` (14) | `.opencode/{prompts,templates,references}/` |
-| Gemini CLI | `.gemini/skills/` | `.gemini/agents/` (14, experimental) | `.gemini/{prompts,templates,references}/` |
+| Claude Code | `.claude/skills/` | `.claude/agents/` (15) | `.claude/{prompts,templates,references}/` |
+| OpenCode | `.opencode/skills/` | `.opencode/agents/` (15) | `.opencode/{prompts,templates,references}/` |
+| Gemini CLI | `.gemini/skills/` | `.gemini/agents/` (15, experimental) | `.gemini/{prompts,templates,references}/` |
 | Codex CLI | **`.agents/skills/`** (not `.codex/`) | **None** (not supported) | `.codex/{prompts,templates,references}/` |
 
 Skills are the single source for all runtimes — commands have been removed.

@@ -56,6 +56,56 @@ if should_run versions; then
     warn "V3 VERSION file has extra lines" "Has extra lines beyond version string"
   fi
 
+  # V5: Template config versions match VERSION
+  V5_OK=true
+  for cfg in gsp/templates/branding/config.json gsp/templates/projects/config.json; do
+    if [[ -f "$cfg" ]]; then
+      V_CFG=$(node -e "process.stdout.write(require('./$cfg').version)" 2>/dev/null)
+      if [[ "$V_CFG" != "$V_FILE" ]]; then
+        V5_OK=false
+        fail "V5 Template config version mismatch" "$cfg has $V_CFG, expected $V_FILE"
+      fi
+    fi
+  done
+  $V5_OK && pass "V5 Template config versions match ($V_FILE)"
+
+  # V6: CLAUDE.md counts match filesystem
+  ACTUAL_SKILLS=$(ls -d gsp/skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+  ACTUAL_AGENTS=$(ls gsp/agents/gsp-*.md 2>/dev/null | wc -l | tr -d ' ')
+  ACTUAL_PROMPTS=$(ls gsp/prompts/*.md 2>/dev/null | wc -l | tr -d ' ')
+  V6_OK=true
+  if [[ -f CLAUDE.md ]]; then
+    # Check source table counts
+    for pair in "skills:$ACTUAL_SKILLS" "agents:$ACTUAL_AGENTS" "prompts:$ACTUAL_PROMPTS"; do
+      kind="${pair%%:*}"
+      actual="${pair##*:}"
+      # Match patterns like "30 skills", "15 subagents", "12 agent system prompts"
+      if [[ "$kind" == "agents" ]]; then
+        pat="$actual subagents\|$actual agents"
+      elif [[ "$kind" == "prompts" ]]; then
+        pat="$actual agent system prompts\|$actual prompts"
+      else
+        pat="$actual $kind"
+      fi
+      if ! grep -q "$pat" CLAUDE.md 2>/dev/null; then
+        V6_OK=false
+        fail "V6 CLAUDE.md $kind count stale" "Filesystem has $actual, CLAUDE.md doesn't match"
+      fi
+    done
+    # Check installer table agent counts — "(N)" pattern
+    INSTALLER_AGENT_COUNTS=$(grep -oE '\(([0-9]+)\)' CLAUDE.md | grep -oE '[0-9]+' | sort -u)
+    for count in $INSTALLER_AGENT_COUNTS; do
+      if [[ "$count" != "$ACTUAL_AGENTS" && "$count" != "$ACTUAL_SKILLS" && "$count" != "$ACTUAL_PROMPTS" ]]; then
+        # Only flag if it looks like an agent count (appears in the installer table near "agents")
+        if grep -q "agents.*($count)" CLAUDE.md 2>/dev/null; then
+          V6_OK=false
+          fail "V6 CLAUDE.md installer table agent count stale" "Says ($count), filesystem has $ACTUAL_AGENTS"
+        fi
+      fi
+    done
+  fi
+  $V6_OK && pass "V6 CLAUDE.md counts match filesystem (skills=$ACTUAL_SKILLS agents=$ACTUAL_AGENTS prompts=$ACTUAL_PROMPTS)"
+
   # V4: Zero production dependencies
   DEP_COUNT=$(node -e "const d=require('./package.json').dependencies;process.stdout.write(String(d?Object.keys(d).length:0))" 2>/dev/null)
   if [[ "$DEP_COUNT" == "0" || -z "$DEP_COUNT" ]]; then

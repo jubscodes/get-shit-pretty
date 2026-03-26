@@ -72,6 +72,10 @@ node -e "console.log(require('./.claude-plugin/plugin.json').version)"
 
 **V2: CHANGELOG coverage** — `CHANGELOG.md` has an entry for the current version → PASS, missing → WARN.
 
+**V5: Template config versions** — `gsp/templates/branding/config.json` and `gsp/templates/projects/config.json` version fields must match VERSION → PASS, any mismatch → FAIL.
+
+**V6: CLAUDE.md counts match filesystem** — skill, agent, and prompt counts referenced in CLAUDE.md (both the source layout table and the installer table) must match actual filesystem counts → PASS, any stale count → FAIL.
+
 ## Step 3: Contract Checks (C)
 
 Verify that skills and agents reference each other correctly.
