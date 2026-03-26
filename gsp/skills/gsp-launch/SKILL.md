@@ -2,7 +2,7 @@
 name: launch
 description: Create launch and marketing assets
 user-invocable: true
-model: sonnet
+model: opus
 effort: high
 context: fork
 allowed-tools:

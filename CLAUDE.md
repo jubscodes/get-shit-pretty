@@ -99,7 +99,7 @@ These rules minimize token waste across the pipeline. Enforced by audit tests C1
 
 **Templates loaded at write time.** Skills that write artifacts from templates (e.g., `gsp-start` writing BRIEF.md, STATE.md) must read templates at the point of writing, not in execution_context. Pattern: `Read templates from ${CLAUDE_SKILL_DIR}/../../templates/{path}/ and write artifacts`.
 
-**SubagentStop hooks for all project-phase agents.** Every agent that produces deliverable files must have a SubagentStop hook in `gsp/hooks/hooks.json` that verifies the expected outputs exist. Currently covered: `gsp-designer`, `gsp-critic`, `gsp-builder`, `gsp-reviewer`.
+**SubagentStop hooks for all chunk-producing agents.** Every agent that writes deliverable chunks must have a SubagentStop hook in `gsp/hooks/hooks.json` that verifies expected outputs exist. Covered: `gsp-designer`, `gsp-critic`, `gsp-identity-designer`, `gsp-pattern-architect`, `gsp-scoper`, `gsp-campaign-director`, `gsp-builder`, `gsp-reviewer`.
 
 **Filesystem is the integration layer.** Phases consume prior-phase output from disk (`.design/`), never from conversation context. Forked phases write STATE.md and artifact files to disk — these persist across fork boundaries. No phase should rely on conversation history for prior-phase artifacts.
 
