@@ -62,5 +62,85 @@ dark_mode:
     surface: "#251E19"
     on-background: "#E8DFD4"
 
+intensity:
+  variance: 3     # classical symmetry with occasional 60/40 splits, mostly balanced
+  motion: 3       # dignified and deliberate — sepia reveals, brass shimmer, no playfulness
+  density: 4      # ornamental but restrained — flourishes, dividers, textures fill space with purpose
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "none resting, {elevation.shadow-lg} on hover — warm depth"
+    radius: "{shape.border-radius-md}"
+    background: "one layer above page — aged oak surface"
+    decoration: "brass corner flourishes (24px L-brackets) at opposing corners, opacity 0.6→1.0 on hover"
+  button-primary:
+    background: "{brass.gradient}"
+    border: "none"
+    shadow: "inset highlights + depth shadow, brass glow on hover"
+    text: "uppercase, tracking-[0.15em], {typography.font-family-display}, engraved text-shadow"
+    radius: "{shape.border-radius-md}"
+  button-secondary:
+    background: "transparent"
+    border: "2px solid {color.accent}"
+    text: "uppercase, tracking-[0.15em], {color.accent}"
+    radius: "{shape.border-radius-md}"
+    hover: "fills crimson — border + bg shift to accentSecondary, text inverts"
+  input:
+    border: "{shape.border-width} solid {shape.border-color}"
+    radius: "{shape.border-radius-md}"
+    background: "aged oak surface"
+    focus: "border-{color.accent}, ring-2 ring-{color.accent}/30 ring-offset-2"
+    placeholder: "italic serif, faded ink color"
+  badge:
+    shape: "circular — crimson wax seal with radial gradient and inset shadows"
+    text: "centered icon (star), no text — visual accent"
+  nav:
+    style: "classical horizontal with brass accent links"
+    links: "serif, hover shifts to brass with tracking increase (0.2em→0.25em)"
+  layout:
+    archetype: "classical-symmetric"
+    max-width: "max-w-6xl"
+    section-spacing: "py-24 to py-32 — contemplative breathing room"
+    grid-gap: "gap-8 to gap-12"
+    surfaces: "paper texture (3% opacity noise, overlay blend) + vignette darkening edges"
+    decoration: "ornate dividers with centered glyphs, arch-topped images (40% 40% 0 0 / 20% 20% 0 0), Roman numeral volume labels"
+
+constraints:
+  never:
+    - "sans-serif fonts in headings — serif typography only (Cormorant, Crimson, Cinzel)"
+    - "bright saturated colors — everything aged and warm-toned"
+    - "pure black (#000000) or pure white (#FFFFFF) — warm mahogany and parchment"
+    - "bouncy or elastic animations — dignified motion only, like turning heavy pages"
+    - "sharp geometric decorations — favor architectural curves (arch-tops, flourishes)"
+    - "cold tones mixing with warm palette — exclusively warm throughout"
+    - "flat backgrounds without texture — paper grain and vignette are essential"
+    - "playful or whimsical elements — scholarly gravitas at all times"
+  always:
+    - "sepia filter (0.6) on all images by default, full color reveals on hover (700ms)"
+    - "brass (#C9A962) for ALL interactive elements — buttons, links, focus rings, hover states"
+    - "Roman numerals (Volume I, II, III) for section numbering"
+    - "arch-topped images (40% 40% 0 0 / 20% 20% 0 0 border-radius)"
+    - "paper texture overlay (3% opacity) + vignette radial gradient"
+    - "corner flourishes on major containers (brass L-brackets)"
+    - "ornate dividers with decorative glyphs between sections"
+    - "drop caps on introductory paragraphs (Cinzel, text-7xl, brass)"
+
+effects:
+  interaction-vocabulary: [brass-shimmer, sepia-reveal, dignified-lift, flourish-brighten]
+  hover:
+    card: "dignified-lift — shadow appears (0→lg), border shifts brass, flourish-brighten on corners"
+    button-primary: "brass-shimmer — brightness increases to 110%, glow shadow appears"
+    button-secondary: "crimson transform — border + bg shift to crimson, text inverts to parchment"
+    image: "sepia-reveal — sepia(0.6)→sepia(0), scale-105 over 700ms"
+    link: "brass-shimmer — color shifts to brass, tracking widens slightly"
+  active:
+    button: "deeper inset shadow — pressed-into-metal feel"
+  focus:
+    general: "ring-2 ring-{color.accent} ring-offset-2 ring-offset-background"
+  transition: "duration-300 to duration-700, ease-out"
+  ambient:
+    - "brass-breathe — subtle brightness oscillation on brass buttons (100%→110%, 2s cycle)"
+
 compatibility: [swiss-minimalist, monochrome]
 clashes: [cyberpunk, vaporwave, retro]

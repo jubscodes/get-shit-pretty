@@ -58,5 +58,86 @@ dark_mode:
     on-background: "#F1F5F9"
     border-color: "#334155"
 
+intensity:
+  variance: 3     # structured grids, predictable zig-zag layouts, controlled hierarchy
+  motion: 4       # polished hover lifts and shadow transitions, subtle pulse on decorative elements
+  density: 6      # dashboard-dense — tighter base size (14px), compact cards, metric grids
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "colored — {elevation.shadow-sm} resting, {elevation.shadow-md} on hover (indigo-tinted)"
+    radius: "{shape.border-radius-lg}"
+    background: "{color.surface}"
+    icon-container: "h-12 w-12 {shape.border-radius-lg} bg-{color.primary}/10 text-{color.primary}"
+  button-primary:
+    background: "{gradient.signature}"
+    border: "none"
+    shadow: "0 4px 14px rgba(79,70,229,0.3)"
+    text: "weight 600, sentence case, white"
+    radius: "rounded-full or {shape.border-radius-lg}"
+  button-secondary:
+    background: "{color.surface}"
+    border: "{shape.border-width} solid {shape.border-color}"
+    text: "weight 500, sentence case, slate-700"
+    radius: "rounded-full or {shape.border-radius-lg}"
+    hover: "bg-slate-50, border darkens"
+  input:
+    border: "{shape.border-width} solid {shape.border-color}"
+    radius: "{shape.border-radius-lg}"
+    background: "{color.surface}"
+    focus: "ring-2 ring-{color.primary} ring-offset-1, border-{color.primary}"
+    label: "text-sm font-semibold text-slate-700"
+  badge:
+    shape: "{shape.border-radius-lg} with {color.primary}/10 background"
+    text: "text-xs font-medium text-{color.primary}"
+    glow: "shadow-[0_0_20px_rgba(79,70,229,0.5)] on numbered badges"
+  nav:
+    style: "clean horizontal with blur background"
+    links: "font-medium text-slate-600, hover text-{color.primary}"
+    cta: "gradient pill button"
+  layout:
+    archetype: "enterprise-zig-zag"
+    max-width: "max-w-7xl"
+    section-spacing: "py-16 to py-24"
+    grid-gap: "gap-6 to gap-8"
+    surfaces: "subtle colored blur orbs (400-600px, 20-50% opacity) for atmospheric depth"
+    decoration: "isometric 3D transforms on hero cards, gradient text headlines"
+    emphasis: "center pricing card scaled 105% with ring highlight"
+
+constraints:
+  never:
+    - "harsh geometric patterns or textures — clean, polished surfaces only"
+    - "neutral gray shadows — all shadows must be indigo/violet tinted"
+    - "pure black text — use slate-900 ({color.on-background})"
+    - "small border radii on buttons — pills or rounded-lg minimum"
+    - "flat backgrounds on dark CTA sections — use gradient from-indigo-900 to-indigo-950"
+    - "single-layer shadows — combine ambient + colored for enterprise depth"
+    - "bouncy or playful animations — refined, professional motion only"
+  always:
+    - "colored shadows using indigo/violet tints on every elevated element"
+    - "gradient text (indigo→violet clip) on at least one headline per section"
+    - "isometric 3D transforms on hero visualization (rotate-x, rotate-y)"
+    - "blur orbs in background for atmospheric depth"
+    - "rounded-full on primary CTA buttons"
+    - "icon containers with soft primary-tinted backgrounds"
+
+effects:
+  interaction-vocabulary: [hover-lift, shadow-deepen, iso-tilt, arrow-nudge, glow-reveal]
+  hover:
+    card: "hover-lift — -translate-y-1, shadow-deepen with enhanced indigo tint"
+    button: "hover-lift — -translate-y-0.5, shadow intensifies"
+    link: "color shift to {color.primary} with underline"
+    image: "scale-105 with overflow-hidden clip"
+  active:
+    button: "scale-press — scale-[0.98], shadow reduces"
+  focus:
+    general: "ring-2 ring-{color.primary} ring-offset-2"
+  transition: "duration-200 to duration-300, ease-out"
+  ambient:
+    - "gentle-pulse — decorative floating cards pulse (4s duration)"
+    - "iso-tilt — hero card subtle 3D rotation on load"
+    - "arrow-nudge — directional icons translate-x-1 on group-hover"
+
 compatibility: [professional, saas]
 clashes: [vaporwave, retro, neubrutalism]

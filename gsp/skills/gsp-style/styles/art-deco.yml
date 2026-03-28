@@ -57,5 +57,86 @@ dark_mode:
     background: "#050505"
     surface: "#0A0A0A"
 
+intensity:
+  variance: 3     # bilateral symmetry, centered axes, mathematical precision
+  motion: 5       # theatrical reveals, glow intensification, mechanical satisfaction
+  density: 5      # ornamental richness — geometric decoration fills surfaces intentionally
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-sm} — gold glow, never dark drop shadows"
+    radius: "0px to 2px — sharp geometric precision"
+    background: "{color.surface}"
+    decoration: "L-shaped brass corner brackets at opposing corners (top-right + bottom-left)"
+  button-primary:
+    background: "transparent"
+    border: "2px solid {color.primary}"
+    shadow: "{elevation.shadow-sm} resting, {elevation.shadow-md} on hover — gold glow"
+    text: "uppercase, tracking-widest (0.2em), {color.primary}"
+    radius: "0px"
+    hover: "gold fill + black text + glow expansion"
+  button-secondary:
+    background: "transparent"
+    border: "1px solid {color.primary}"
+    text: "uppercase, tracking-widest, {color.primary}"
+    radius: "0px"
+    hover: "midnight blue fill ({color.secondary})"
+  input:
+    border: "border-b 2px solid {color.primary}"
+    radius: "0px"
+    background: "transparent"
+    focus: "border brightens to lighter gold, bottom shadow glow appears"
+    placeholder: "{color.on-background} at 50% opacity"
+  badge:
+    shape: "0px radius, gold border, optional rotated-diamond frame"
+    text: "uppercase tracking-widest, {typography.font-family-display}, {color.primary}"
+  nav:
+    style: "centered axis, gold border separators between links"
+    links: "uppercase tracking-widest, hover shifts to {color.primary} with glow"
+  layout:
+    archetype: "symmetric-ceremonial"
+    max-width: "max-w-6xl"
+    section-spacing: "py-32 — generous ceremonial spacing"
+    grid-gap: "gap-8"
+    symmetry: "central axis, bilateral mirroring, even column counts"
+    surfaces: "diagonal crosshatch pattern at 3-5% opacity — repeating gold lines at 45deg"
+    decoration: "sunburst radial gradients, stepped corners (ziggurat), double borders, vertical gold dividers"
+
+constraints:
+  never:
+    - "rounded corners above 2px — geometric sharpness is non-negotiable"
+    - "soft diffused drop shadows — use glow effects instead"
+    - "organic curves or blob shapes — geometry only, mathematical forms"
+    - "muted or desaturated gold — metallic gold must feel radiant against obsidian"
+    - "asymmetric layouts — bilateral symmetry and central axes required"
+    - "lowercase display text — all headings, labels, buttons must be uppercase"
+    - "subtle invisible borders — borders are celebrated, gold, and visible"
+    - "bouncy or elastic easing — mechanical, theatrical motion only"
+  always:
+    - "gold glow (box-shadow 0 0 Npx rgba gold) on elevated elements, never dark shadows"
+    - "stepped corner decorations or L-brackets on major containers"
+    - "uppercase with tracking-widest on all display text and buttons"
+    - "diagonal crosshatch or geometric pattern at low opacity on backgrounds"
+    - "Roman numerals (I, II, III) for numbering steps, tiers, lists"
+    - "double-frame treatment on featured images (outer gold border + inner dark border)"
+    - "gold border at 30% default, intensifying to 100% on hover"
+
+effects:
+  interaction-vocabulary: [glow-intensify, mechanical-lift, diamond-rotate, border-reveal]
+  hover:
+    card: "mechanical-lift — -translate-y-2, border opacity 30%→100%, corner brackets brighten"
+    button: "glow-intensify — background flips gold, text inverts black, glow radius expands"
+    link: "border-reveal — gold underline expands, color shifts to {color.primary}"
+    image: "glow-intensify — scale-105, gold overlay or grayscale removal"
+  active:
+    button: "glow-intensify — glow dims slightly, pressed mechanical feel"
+  focus:
+    general: "ring-2 ring-{color.primary} ring-offset-2 ring-offset-{color.background}"
+  transition: "duration-300 to duration-500, ease-out or ease-in-out"
+  ambient:
+    - "sunburst-pulse — radial gold gradient pulses subtly at hero focal point"
+    - "glow-breathe — gold elements pulse glow at rest (subtle, 2s cycle)"
+
 compatibility: [luxury, monochrome]
 clashes: [neubrutalism, retro, flat-design]

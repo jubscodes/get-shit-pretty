@@ -61,5 +61,90 @@ dark_mode:
     surface: "#000000"
     on-background: "#C0C0C0"
 
+intensity:
+  variance: 8     # chaotic layouts, clashing colors, deliberate visual excess
+  motion: 6       # marquee scrolling, rainbow cycling, pulse-glow badges, but instant button states
+  density: 8      # dense table-like grids, tight spacing, maximum visual information
+
+patterns:
+  card:
+    border: "{shape.border-width} solid with 4-value outset bevel ({bevel.outset})"
+    shadow: "{elevation.shadow-sm} — inset bevel highlights, never soft drop shadows"
+    radius: "0px"
+    background: "{color.background}"
+    header: "navy-to-blue gradient title bar (#000080 to #1084D0), white bold text"
+    content: "inset bevel, white or {system.titlebar}-tinted background"
+  button-primary:
+    background: "{color.primary}"
+    border: "{shape.border-width} with blue-tinted bevel (#5555ff top-left, #000080 bottom-right)"
+    shadow: "{elevation.shadow-sm}"
+    text: "uppercase, bold, tracking-wide, centered"
+    radius: "0px"
+  button-secondary:
+    background: "{color.background}"
+    border: "{shape.border-width} with outset bevel ({bevel.outset})"
+    shadow: "{elevation.shadow-sm}"
+    text: "uppercase, bold, black text"
+    radius: "0px"
+  input:
+    border: "{shape.border-width} with inset bevel ({bevel.inset})"
+    radius: "0px"
+    background: "{color.surface}"
+    focus: "dotted 2px black outline, 2px offset"
+    height: "h-10"
+  badge:
+    shape: "0px radius, outset bevel border"
+    text: "uppercase bold text-xs, bright solid color backgrounds"
+    decoration: "animate-pulse for NEW!/HOT! badges, pulse-glow animation"
+  nav:
+    logo: "beveled button-face with bold text"
+    links: "blue underlined always, red on hover, purple when visited"
+    mobile: "beveled hamburger button"
+  layout:
+    archetype: "table-grid"
+    max-width: "max-w-5xl"
+    section-spacing: "py-16"
+    grid-gap: "gap-4 to gap-6"
+    surfaces: "tiled diagonal crosshatch pattern on body background — never flat"
+    decoration: "construction warning stripes (yellow/black 45deg), groove HRs, hit counter displays"
+    windows: "cards styled as Windows 95 application windows with title bar gradient"
+
+constraints:
+  never:
+    - "border-radius of any kind — not even 1px, the 90s had none"
+    - "soft drop shadows — only inset bevel shadows for 3D depth"
+    - "gradients on surfaces — except title bar navy-to-blue and construction stripes"
+    - "semi-transparent overlays — colors are always opaque"
+    - "thin fonts — everything bold or black weight, no light weights exist"
+    - "smooth easing curves — linear or instant transitions only"
+    - "removing link underlines — always visible, always blue"
+    - "modern minimalist spacing — dense, not airy"
+    - "scaling on hover — no scale transforms except 1.05 for pulse badges"
+  always:
+    - "3D outset bevel (4-value border-color) on every interactive element and container"
+    - "active/pressed state reverses to inset bevel + translate(1px, 1px)"
+    - "tiled background pattern on page body"
+    - "at least one marquee scrolling text element"
+    - "at least one rainbow-animated text heading"
+    - "hit counter aesthetic on at least one stats section"
+    - "construction stripe (yellow/black 45deg) on at least one section"
+    - "alternating row backgrounds (white/#E8E8E8) in table-like layouts"
+
+effects:
+  interaction-vocabulary: [bevel-press, color-cycle, blink-badge, marquee-scroll]
+  hover:
+    card: "background lightens one shade, maintain outset bevel"
+    button: "background lightens 1-2 shades, outset bevel maintained"
+    link: "color shifts blue to red — instant, no transition"
+  active:
+    button: "bevel-press — border-color reverses to inset, translate(1px, 1px), instant"
+  focus:
+    general: "dotted 2px black outline, 2px offset — Windows 95 authentic"
+  transition: "duration-0 to duration-50, step-end — no smooth easing"
+  ambient:
+    - "color-cycle — rainbow text 4s linear infinite on hero headline"
+    - "blink-badge — pulse-glow 1.5s ease-in-out infinite on NEW!/HOT! badges"
+    - "marquee-scroll — continuous horizontal scroll at 40-60px/s, pauseOnHover"
+
 compatibility: [maximalism]
 clashes: [professional, luxury, modern-dark, swiss-minimalist]

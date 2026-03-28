@@ -57,5 +57,89 @@ dark_mode:
     background: "#0D0019"
     surface: "#1A0533"
 
+intensity:
+  variance: 7     # skewed buttons, rotated icon diamonds, perspective grids, alternating timelines
+  motion: 7       # glow amplification, un-skew transforms, CRT ambient, continuous orb drift
+  density: 5      # balanced — neon effects need breathing room to read against dark void
+
+patterns:
+  card:
+    border: "1px solid {color.primary}/30, border-t-2 {color.secondary} accent laser"
+    shadow: "{elevation.shadow-md}"
+    radius: "{shape.border-radius-sm}"
+    background: "{color.surface}/80 with backdrop-blur-md"
+    header: "cyan title with drop-shadow glow, monospace description"
+  button-primary:
+    background: "transparent"
+    border: "2px solid {color.secondary}"
+    shadow: "none resting, 0 0 20px {color.secondary} on hover"
+    text: "uppercase, tracking-wider, font-mono, {color.secondary}"
+    radius: "0px"
+    shape: "-skew-x-12 transform, inner content counter-skewed"
+  button-secondary:
+    background: "{color.primary}"
+    border: "2px solid {color.primary}"
+    shadow: "none"
+    text: "uppercase, tracking-wider, white"
+    radius: "0px"
+    shape: "-skew-x-12 transform"
+  input:
+    border: "border-b-2 {color.primary} — underline only"
+    radius: "0px"
+    background: "black"
+    focus: "border shifts to {color.secondary}, glow shadow appears"
+    font: "monospace, {color.secondary} text"
+  badge:
+    shape: "-skew-x-12, 0px radius, neon border"
+    text: "uppercase tracking-widest text-xs font-mono"
+    decoration: "neon glow shadow matching border color"
+  nav:
+    style: "terminal window chrome with colored dots (magenta, cyan, orange)"
+    background: "dark glass with backdrop-blur"
+    links: "monospace uppercase tracking-wider, glow on hover"
+  layout:
+    archetype: "neon-void"
+    max-width: "max-w-7xl"
+    section-spacing: "py-20 to py-32"
+    grid-gap: "gap-8 to gap-12"
+    surfaces: "CRT scanlines overlay (4px repeating), perspective grid floor, floating sun orb"
+    decoration: "RGB chromatic aberration, dot patterns (magenta 1px), gradient text fills"
+    depth: "z-layered — grid z-0, sun z-1, content z-10, scanlines z-50"
+
+constraints:
+  never:
+    - "light backgrounds — dark void ({color.background}) is mandatory"
+    - "subtle or muted colors — all accents at maximum saturation"
+    - "organic easing curves — linear or instant for digital feel"
+    - "minimalist or sparse layouts — dense with effects, borders, and overlays"
+    - "removing CRT scanline overlay — always present for atmosphere"
+    - "soft diffused shadows — all shadows are colored neon glows"
+    - "serif fonts — geometric sans (Orbitron) and monospace (Share Tech Mono) only"
+  always:
+    - "CRT scanline overlay fixed across entire viewport"
+    - "perspective grid background in at least one section"
+    - "gradient text fill (sunset: orange via magenta to cyan) on hero headline"
+    - "skewed buttons with -skew-x-12 transform"
+    - "neon glow shadows (colored, not black) on interactive elements"
+    - "terminal/window chrome with colored dots on at least one container"
+    - "IRC-style angle bracket formatting on testimonials"
+
+effects:
+  interaction-vocabulary: [un-skew, glow-explode, diamond-spin, neon-border-shift]
+  hover:
+    card: "neon-border-shift — border opacity increases, -translate-y-2, shadow deepens"
+    button: "un-skew — skew returns to 0, bg fills neon, text inverts to black, glow explodes 2-3x"
+    icon: "diamond-spin — rotate-45 container spins to rotate-90"
+    link: "neon-border-shift — underline appears, color shifts, glow added"
+  active:
+    button: "scale-95, glow dims slightly"
+  focus:
+    general: "ring-2 ring-{color.secondary} with ambient glow"
+  transition: "duration-200, ease-linear — fast, digital, unnatural"
+  ambient:
+    - "orb-drift — floating sun gradient (600px, blur-100px) slow drift"
+    - "scanline-flicker — CRT overlay at constant opacity"
+    - "icon-pulse — animate-pulse on placeholder icons"
+
 compatibility: [kinetic-typography, aurora-gradients]
 clashes: [swiss-minimalist, professional, terminal]

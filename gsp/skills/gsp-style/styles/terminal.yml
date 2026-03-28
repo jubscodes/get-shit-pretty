@@ -60,5 +60,88 @@ dark_mode:
     background: "#010409"
     surface: "#0D1117"
 
+intensity:
+  variance: 3     # rigid character grid, tmux-like splits, uniform pane structure
+  motion: 4       # cursor blink, typewriter effect, subtle glitch — no cinematic movement
+  density: 7      # dense pane layout, tight monospace text, information-heavy
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "none — flat panes, no elevation illusion"
+    radius: "{shape.border-radius-sm}"
+    background: "{color.surface}"
+    header: "title bar with ASCII decoration (+--- TITLE ---+) or solid inverted bar"
+  button-primary:
+    background: "{color.primary}"
+    border: "{shape.border-width} solid {color.primary}"
+    shadow: "none"
+    text: "uppercase, monospace, {color.on-primary}, bracketed ([ INITIATE ])"
+    radius: "{shape.border-radius-sm}"
+  button-secondary:
+    background: "transparent"
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "none"
+    text: "uppercase, monospace, {color.on-background}"
+    radius: "{shape.border-radius-sm}"
+  input:
+    border: "none — prompt-style (user@host:~$ prefix before input)"
+    radius: "0px"
+    background: "transparent"
+    focus: "blinking block cursor, no ring, no outline"
+    font: "monospace always"
+  badge:
+    shape: "0px radius, bordered"
+    text: "monospace uppercase, status codes ([OK], [ERR], [WARN])"
+    decoration: "color matches status — green success, red error, amber warning"
+  nav:
+    style: "terminal tab bar with active/inactive pane indicators"
+    background: "{color.background}"
+    border: "border-b {shape.border-width} {shape.border-color}"
+    links: "monospace, green text, > prefix on hover"
+  layout:
+    archetype: "terminal-panes"
+    max-width: "max-w-6xl"
+    section-spacing: "py-16 to py-24"
+    grid-gap: "gap-4 to gap-6"
+    surfaces: "CRT scanline overlay (faint, 3-4px repeating), text phosphor glow"
+    decoration: "ASCII art for logos, progress bars ([||||||.....]), shell prompt prefixes"
+    dividers: "ASCII rules (===============, ----------------) between sections"
+
+constraints:
+  never:
+    - "non-monospace fonts — every character must be monospaced, no exceptions"
+    - "border-radius above 8px — tight mechanical edges only"
+    - "soft or colored shadows — no drop shadows, no elevation illusion"
+    - "background images or photos — text and ASCII only"
+    - "gradient backgrounds — solid dark colors only"
+    - "smooth organic easing — instant or linear transitions"
+    - "rounded pill buttons — bracketed text or inverted blocks only"
+    - "light mode — dark terminal background is mandatory"
+  always:
+    - "monospace font on every element (JetBrains Mono, Fira Code, or VT323)"
+    - "terminal green ({color.primary}) as primary text and accent color"
+    - "phosphor text glow (text-shadow: 0 0 5px rgba(green, 0.5))"
+    - "ASCII decorations for dividers, logos, and structural elements"
+    - "shell prompt prefixes (>, $, ~) on interactive elements"
+    - "status code badges ([OK], [ERR]) for state indication"
+    - "CRT scanline overlay for atmosphere"
+
+effects:
+  interaction-vocabulary: [video-invert, cursor-blink, type-reveal, glitch-offset]
+  hover:
+    card: "border color brightens to {color.primary}"
+    button: "video-invert — background fills {color.primary}, text becomes {color.on-primary}"
+    link: "> prefix appears, color shifts to {color.primary}, no underline decoration"
+  active:
+    button: "translate-y-[1px], brief rapid blink"
+  focus:
+    general: "no ring — blinking cursor and inverted-video focus indication"
+  transition: "duration-0 to duration-100, linear — instant digital response"
+  ambient:
+    - "cursor-blink — block cursor blinks 1s step-end infinite"
+    - "type-reveal — hero text appears character-by-character"
+    - "scanline-hum — CRT overlay at constant low opacity"
+
 compatibility: [bento-grid, micro-interactions]
 clashes: [glassmorphism, liquid-glass, vaporwave]

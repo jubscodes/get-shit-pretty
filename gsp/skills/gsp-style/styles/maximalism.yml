@@ -54,5 +54,97 @@ tokens:
     duration-normal: "400ms"
     easing: "cubic-bezier(0.34, 1.56, 0.64, 1)"
 
+intensity:
+  variance: 10    # broken grids, asymmetric offsets, rotated cards, clashing borders — chaos is the system
+  motion: 8       # floating shapes, gradient shifts, bouncy hovers, wiggle animations on everything
+  density: 9      # pattern-on-pattern, floating decorations, stacked shadows, emoji accents — no empty pixels
+
+patterns:
+  card:
+    border: "border-4 solid, accent color rotated per card (clashes with background)"
+    shadow: "hard stacked — 8px 8px 0 {color-rotate.cyan}, 16px 16px 0 {color-rotate.magenta}"
+    radius: "rounded-3xl"
+    background: "bg-[#2D1B4E]/80 with backdrop-blur-sm"
+    header: "border-b-4 border-dashed in different accent, optional background tint"
+    asymmetry: "clip-path corner cut OR rotate-1 to rotate-2"
+  button-primary:
+    background: "gradient across 3 accents — from-{color-rotate.magenta} via-{color-rotate.purple} to-{color-rotate.cyan}"
+    border: "border-4 border-{color-rotate.yellow} — clashing"
+    shadow: "glow + hard shadow combined"
+    text: "font-black uppercase tracking-widest"
+    radius: "rounded-full"
+    size: "h-14 px-10 default, h-16 px-12 large"
+  button-secondary:
+    background: "transparent"
+    border: "border-4 border-dashed border-{color-rotate} — rotated accent"
+    shadow: "none resting, glow on hover"
+    text: "font-bold uppercase"
+    radius: "rounded-full"
+    fill: "hover fills solid accent, border becomes solid, scale 105%"
+  input:
+    border: "border-4 border-{color-rotate} — thick and colored"
+    radius: "rounded-full for single-line, rounded-2xl for textarea"
+    background: "bg-[#2D1B4E]/50 with backdrop-blur-sm"
+    focus: "double ring — ring-4 ring-{accent-1}/30 ring-offset-2 ring-offset-{accent-2}, glow shadow"
+    text: "text-lg font-bold text-white"
+  badge:
+    shape: "rounded-full, border-4, accent color per badge"
+    text: "font-black text-sm uppercase tracking-widest"
+    decoration: "rotate-2 to rotate-6, floating with bounce animation"
+    shadow: "glow shadow in badge accent color"
+  nav:
+    logo: "display font, gradient text or accent color, animated gradient shift"
+    links: "bold uppercase, hover scales 110% with color shift"
+    mobile: "full-screen overlay with floating shapes and gradient mesh"
+  layout:
+    archetype: "broken-grid-carnival"
+    max-width: "max-w-7xl, hero full-bleed"
+    section-spacing: "py-24 to py-32"
+    grid-gap: "gap-6 to gap-12, deliberately varied"
+    asymmetry: "translate-y offsets on alternating items, rotate-1/-1 on cards, negative margins for overlap"
+    surfaces: "mandatory 2-3 pattern layers — dots + stripes + gradient mesh, per section"
+    decoration: "5-10 floating SVG shapes per section, oversized background text at opacity-20"
+
+constraints:
+  never:
+    - "matching border and background colors — always clash (magenta bg = yellow border)"
+    - "single-layer shadows — minimum 2 layers, preferably 3"
+    - "neutral or muted borders — every border is a saturated accent color"
+    - "symmetrical grid alignment — offset, rotate, or skew at least every other element"
+    - "empty backgrounds — minimum 2 pattern overlays per section"
+    - "single accent color per section — rotate through all 5 systematically"
+    - "subtle or gentle hover states — every hover combines scale + color + shadow change"
+    - "thin borders (1px) — minimum border-2, standard is border-4"
+  always:
+    - "5-color accent rotation across sections and repeated elements (modulo cycling)"
+    - "hard stacked shadows (8px/16px/24px increments) in rotating accent colors"
+    - "pattern-on-pattern layering — dots, stripes, checkerboard, gradient mesh"
+    - "floating decorative shapes (stars, sparkles, emoji) with animation"
+    - "border-4 or border-8 on every card and container"
+    - "text-shadow stacking on headlines (2-3 layers in different accent colors)"
+    - "backdrop-blur on semi-transparent containers"
+    - "display font (Unbounded/Bungee) on hero headlines"
+
+effects:
+  interaction-vocabulary: [bounce-lift, shadow-stack-grow, color-clash-swap, wiggle-shake, glow-burst]
+  hover:
+    card: "bounce-lift — scale-[1.02], rotate increases, shadow adds third layer"
+    button-primary: "glow-burst — scale-110%, glow opacity +0.2, gradient position shifts"
+    button-secondary: "color-clash-swap — fills solid accent, border becomes solid, scale 105%"
+    link: "color-clash-swap — text shifts to next accent in rotation"
+    badge: "wiggle-shake — rotate oscillates +-3deg rapidly"
+  active:
+    button: "bounce-lift reverse — scale-95%, shadow reduces to single layer"
+  focus:
+    input: "glow-burst — double ring system, ring-4 + ring-offset-4 in contrasting accents"
+    general: "ring-4 ring-{color-rotate.magenta} ring-offset-4 ring-offset-{color-rotate.cyan}"
+  transition: "duration-200 to duration-300, cubic-bezier(0.34, 1.56, 0.64, 1) — bouncy overshoot"
+  ambient:
+    - "float-drift — decorative shapes bob up/down 10-20px (3-5s ease-in-out infinite)"
+    - "wiggle-spin — star/sparkle shapes rotate slowly (8-15s linear infinite)"
+    - "gradient-shift — animated gradient text cycles background-position (4s linear infinite)"
+    - "pulse-glow — glow shadows oscillate opacity on featured elements (2s ease-in-out)"
+    - "bounce-subtle — emoji and shape decorations bounce gently (2-3s ease-in-out infinite)"
+
 compatibility: [vaporwave, cyberpunk]
 clashes: [swiss-minimalist, professional, monochrome]

@@ -54,5 +54,72 @@ dark_mode:
     surface: "#303030"
     on-background: "#FAFAFA"
 
+intensity:
+  variance: 3     # rigid grid, predictable layout, geometric purity
+  motion: 3       # snappy scale transforms and color shifts, no spectacle
+  density: 5      # balanced — functional, not airy, not packed
+
+patterns:
+  card:
+    border: "none"
+    shadow: "none — zero shadows, ever"
+    radius: "{shape.border-radius-md}"
+    background: "{color.surface} or soft color tint (blue-50, green-50)"
+    padding: "p-6 to p-8"
+  button-primary:
+    background: "{color.primary}"
+    border: "none"
+    text: "weight 500, sentence case"
+    radius: "{shape.border-radius-sm}"
+  button-secondary:
+    background: "{color.surface}"
+    border: "none"
+    text: "weight 500, {color.on-background}"
+    radius: "{shape.border-radius-sm}"
+  input:
+    border: "none resting, border-2 solid {color.primary} on focus"
+    radius: "{shape.border-radius-sm}"
+    background: "{color.surface}"
+    focus: "border-2 {color.primary} — hard border, no glow ring"
+  badge:
+    shape: "rounded-full, solid accent background"
+    text: "text-xs, font-medium, sentence case"
+  nav:
+    style: "clean horizontal, solid background blocks"
+    links: "font-medium, hover darkens background"
+  layout:
+    archetype: "color-block-grid"
+    max-width: "max-w-7xl"
+    section-spacing: "py-16 to py-24"
+    grid-gap: "gap-6 to gap-8"
+    surfaces: "solid color blocks define sections — no texture, no grain"
+    decoration: "large geometric shapes (circles, squares) at low opacity, absolute positioned"
+
+constraints:
+  never:
+    - "box-shadow of any kind — zero shadows on any element"
+    - "gradients on buttons or cards — solid fills only"
+    - "backdrop-blur or glass effects — conflicts with flat 2D aesthetic"
+    - "textures, grain, or noise overlays — surfaces are clean and solid"
+    - "3D transforms or perspective — everything exists on one plane"
+    - "thin subtle borders for structure — use color blocks instead"
+  always:
+    - "solid flat color fills for backgrounds and interactive elements"
+    - "consistent border-radius across same-level components"
+    - "color contrast as the primary hierarchy tool"
+    - "geometric shapes for decorative elements (circles, squares, rectangles)"
+    - "sharp color transitions between sections — never blurred or gradual"
+
+effects:
+  interaction-vocabulary: [scale-pop, color-shift, color-fill, icon-scale]
+  hover:
+    card: "scale-pop — scale-[1.02], background color intensifies"
+    button: "color-shift — background darkens one shade"
+  active:
+    button: "scale-pop — scale-[0.97], instant press feedback"
+  focus:
+    general: "ring-2 ring-{color.primary} ring-offset-2 — solid outline, no glow"
+  transition: "duration-150 to duration-200, ease"
+
 compatibility: [bauhaus, swiss-minimalist]
 clashes: [glassmorphism, neumorphism, liquid-glass]

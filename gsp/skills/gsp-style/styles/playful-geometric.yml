@@ -60,5 +60,95 @@ dark_mode:
     surface: "#334155"
     on-background: "#F8FAFC"
 
+intensity:
+  variance: 7     # Memphis shapes, confetti decoration, blob radii, rotated elements
+  motion: 6       # bouncy overshoot easing, wiggle hovers, pop-in entrances, marquees
+  density: 5      # colorful but readable — shapes fill space around clean content areas
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-lg} — hard offset, no blur"
+    radius: "{shape.border-radius-md} (rounded-xl)"
+    background: "{color.surface}"
+    decoration: "floating circle icon half-in/half-out of top border, colored shadow for featured (pink or amber)"
+    hover: "rotate -1deg, scale 1.02 — wiggle sticker effect"
+  button-primary:
+    background: "{color.accent}"
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-sm}"
+    text: "font-bold text-white"
+    radius: "rounded-full — pill shape always"
+    icon: "ArrowRight in circular white background inside button"
+  button-secondary:
+    background: "transparent"
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "none"
+    text: "{color.on-background}"
+    radius: "rounded-full"
+    fill: "hover fills {color.warning} (amber/yellow) — surprise color pop"
+  input:
+    border: "2px solid {shape.border-color}"
+    radius: "{shape.border-radius-md}"
+    background: "{color.surface}"
+    shadow: "4px 4px 0px transparent resting, 4px 4px 0px {color.accent} on focus"
+    focus: "border {color.accent}, hard color shadow appears"
+    label: "bold uppercase text-sm tracking-wide above input"
+  badge:
+    shape: "rounded-full, {shape.border-width} border, accent background rotated per badge"
+    text: "font-bold text-sm, white on colored background"
+    decoration: "rotate-2 to rotate-6, sticker-style offset"
+  nav:
+    logo: "display font (Fredoka One), colored accent, bouncy hover"
+    links: "font-medium, hover adds squiggly underline SVG"
+    mobile: "candy-colored hamburger with hard shadow"
+  layout:
+    archetype: "candy-playground"
+    max-width: "max-w-6xl"
+    section-spacing: "py-24 — spacious, filled with pattern decoration"
+    grid-gap: "gap-8 to gap-12"
+    asymmetry: "blob-masked images, alternating card header colors (violet/pink/amber)"
+    surfaces: "dot grid background, squiggly SVG dividers, confetti shapes behind content"
+    decoration: "primitive shapes (circles, triangles, squares) as background elements, dashed SVG connectors between cards"
+
+constraints:
+  never:
+    - "dark mode as default — this is a warm, light, paper-cream aesthetic"
+    - "thin borders (1px) — minimum border-2 for chunky candy feel"
+    - "soft blur shadows — all shadows hard-offset, zero blur"
+    - "muted or desaturated colors — palette is punchy, high-saturation candy colors"
+    - "serious or corporate typography — display font must feel friendly and rounded"
+    - "empty background sections — fill with dot grids, confetti, or squiggles"
+    - "matching shadow color to element — shadows are always dark ({color.on-background}) or accent-colored"
+    - "static decorative shapes — shapes should bounce, wiggle, or float"
+  always:
+    - "hard-offset shadows (no blur) on every elevated element"
+    - "chunky border-2 in dark color on all interactive surfaces"
+    - "rounded-full (pill) on all buttons"
+    - "confetti color rotation — cycle {color-rotate} across repeated elements"
+    - "at least one squiggly SVG divider or underline per page"
+    - "primitive shape decorations (circles, triangles) behind content blocks"
+    - "icon containers — icons enclosed in colored circles, never floating alone"
+
+effects:
+  interaction-vocabulary: [pop-lift, sticker-press, wiggle-jiggle, candy-fill, bounce-in]
+  hover:
+    card: "wiggle-jiggle — rotate(-1deg) + scale(1.02), sticker pickup feel"
+    button-primary: "pop-lift — translate(-2px, -2px), shadow extends to 6px 6px"
+    button-secondary: "candy-fill — background floods with surprise color (amber/yellow)"
+    link: "squiggly underline SVG appears, color shifts to {color.accent}"
+    badge: "wiggle-jiggle — rotate oscillates +-3deg"
+  active:
+    button: "sticker-press — translate(2px, 2px), shadow shrinks to 2px 2px"
+  focus:
+    input: "candy-fill — hard color shadow appears (4px 4px 0px {color.accent}), border accent"
+    general: "ring-2 ring-{color.accent} ring-offset-2 — chunky visible focus"
+  transition: "duration-200 to duration-300, cubic-bezier(0.34, 1.56, 0.64, 1) — bouncy overshoot"
+  ambient:
+    - "confetti-float — background shapes drift slowly with gentle rotation (5-8s ease-in-out)"
+    - "wiggle-idle — decorative icons oscillate rotate(0->3->-3->0) (2s ease-in-out infinite)"
+    - "bounce-in — elements enter viewport with scale(0->1) + bounce overshoot"
+    - "marquee-scroll — client logos or keywords in infinite horizontal scroll"
+
 compatibility: [neubrutalism, flat-design]
 clashes: [monochrome, luxury, swiss-minimalist]

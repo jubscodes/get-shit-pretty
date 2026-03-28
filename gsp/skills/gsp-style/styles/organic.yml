@@ -61,5 +61,82 @@ dark_mode:
     surface: "#2C2C24"
     on-background: "#E6DCCD"
 
+intensity:
+  variance: 7
+  motion: 5
+  density: 3
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-sm} — color-tinted, never pure black"
+    radius: "rounded-[2rem] base, asymmetric on features (rounded-tl-[4rem])"
+    background: "#FEFEFA over page background"
+    texture: "noise overlay at 3% opacity, multiply blend"
+  button-primary:
+    background: "{color.primary}"
+    border: "none"
+    shadow: "color-tinted soft shadow (moss)"
+    text: "bold weight, sentence case"
+    shape: "rounded-full — pill always"
+  button-secondary:
+    background: "transparent"
+    border: "2px solid {color.secondary}"
+    text: "{color.secondary}, sentence case"
+    shape: "rounded-full"
+  input:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shape: "rounded-full"
+    background: "bg-white/50 — semi-transparent, shows grain beneath"
+    focus: "ring-2 ring-{color.primary}/30 ring-offset-2"
+  badge:
+    shape: "rounded-full"
+    text: "text-xs, muted earth tones"
+  nav:
+    style: "sticky floating pill"
+    background: "bg-white/70 with backdrop-blur-md"
+    shape: "rounded-full"
+  layout:
+    archetype: "staggered-organic"
+    max-width: "varies — max-w-7xl hero, max-w-5xl intimate, max-w-4xl text"
+    section-spacing: "py-32"
+    grid-gap: "gap-8 to gap-12"
+    surfaces: "grain overlay (3-4% opacity, multiply blend) — always present"
+    backgrounds: "alternating earth tones — off-white, stone, sand, moss, terracotta"
+    decoration: "large blurred blobs (blur-3xl), curved SVG connectors, rotated images"
+
+constraints:
+  never:
+    - "sharp 90-degree corners — everything must feel eroded or hand-shaped"
+    - "hard-offset shadows — all shadows soft, diffused, color-tinted"
+    - "pure black (#000000) in shadows or borders — use tinted alternatives"
+    - "straight geometric decorations — curves and blobs only"
+    - "mechanical or abrupt motion — everything gentle and eased"
+    - "uppercase text — soft, natural case throughout"
+    - "high-contrast neon or saturated colors — earth-drawn palette only"
+    - "flat backgrounds without grain — texture is essential"
+  always:
+    - "organic border radii (large, varied, sometimes asymmetric)"
+    - "grain/noise texture overlay (3-4% opacity, multiply blend)"
+    - "color-tinted shadows using palette colors (moss green, clay orange)"
+    - "generous whitespace — space is a design element"
+    - "blob shapes for decorative backgrounds (complex % border-radius)"
+
+effects:
+  interaction-vocabulary: [gentle-lift, soft-scale, tilt-pick, slow-reveal]
+  hover:
+    card: "gentle-lift — -translate-y-1, shadow deepens"
+    button: "soft-scale — scale-105, shadow increases"
+    testimonial: "tilt-pick — rotate-1, like picking up a card"
+    image: "slow-reveal — scale-105 over 700ms"
+  active:
+    button: "soft-scale — scale-95, tactile press"
+  focus:
+    general: "ring-2 ring-{color.primary}/30 ring-offset-2 — soft glow"
+  transition: "duration-300 to duration-500, ease-out"
+  ambient:
+    - "blob-drift — background color washes with blur-3xl, slow movement"
+    - "parallax-float — subtle depth shift on decorative elements"
+
 compatibility: [botanical, sketch]
 clashes: [cyberpunk, terminal, industrial]

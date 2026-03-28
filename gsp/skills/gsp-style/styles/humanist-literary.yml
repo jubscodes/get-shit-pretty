@@ -54,5 +54,79 @@ dark_mode:
     surface: "#2A2926"
     on-background: "#E8E6E0"
 
+intensity:
+  variance: 2     # predictable, centered, calm — the interface recedes for content
+  motion: 2       # minimal and snappy — fast fades, no spectacle, text is the show
+  density: 2      # airy — generous padding, relaxed spacing, paper-like breathing room
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-sm} — barely there, flat tile feel"
+    radius: "{shape.border-radius-md}"
+    background: "{color.surface}"
+  button-primary:
+    background: "{color.primary}"
+    border: "none"
+    shadow: "none"
+    text: "weight 500, sentence case, {typography.font-family-secondary}"
+    radius: "{shape.border-radius-lg} — pill shape"
+  button-secondary:
+    background: "transparent"
+    border: "{shape.border-width} solid {shape.border-color}"
+    text: "weight 500, sentence case, {color.on-background}"
+    radius: "{shape.border-radius-lg} — pill shape"
+  input:
+    border: "{shape.border-width} solid {shape.border-color}"
+    radius: "{shape.border-radius-md}"
+    background: "{color.background}"
+    focus: "border deepens slightly — no glowing rings, no blue outlines"
+    height: "generous — text-lg input, p-4 to p-6 padding"
+  badge:
+    shape: "rounded-full pill"
+    text: "text-sm, sans-serif, weight 500, muted tones"
+  nav:
+    style: "clean horizontal, minimal — recedes behind content"
+    links: "sans-serif, weight 500, hover deepens color subtly"
+  layout:
+    archetype: "centered-editorial"
+    max-width: "max-w-3xl for text, max-w-5xl for wider layouts"
+    section-spacing: "py-16 to py-24 — calm, not cavernous"
+    grid-gap: "gap-4 to gap-8"
+    surfaces: "clean warm off-white — no texture, no grain, no patterns"
+    typography-focus: "serif display at text-4xl to text-5xl, generous line-height"
+
+constraints:
+  never:
+    - "pure black (#000000) or pure white (#FFFFFF) — warm charcoal and eggshell only"
+    - "glowing focus rings or neon outlines — focus is subtle border deepening"
+    - "jarring gradients or drop shadows — everything flat and calm"
+    - "uppercase text on body or buttons — sentence case throughout"
+    - "saturated SaaS blues or teals — warm muted palette only"
+    - "heavy decorative elements — the interface must recede for content"
+    - "bouncy spring animations — snappy or instant, never playful"
+    - "dense layouts or tight spacing — generous padding is essential"
+  always:
+    - "serif font for display headings (Merriweather/Tiempos), sans for UI"
+    - "warm off-white background (#FAF9F6) — never cold or stark"
+    - "terracotta (#DA7756) reserved exclusively for primary submit actions"
+    - "generous input padding — text areas feel spacious and inviting"
+    - "thin delicate borders (1px) — never heavy or prominent"
+    - "content-first hierarchy — UI chrome recedes, text breathes"
+
+effects:
+  interaction-vocabulary: [subtle-darken, gentle-fade, quiet-deepen]
+  hover:
+    card: "subtle-darken — background shifts to muted, barely perceptible"
+    button: "subtle-darken — opacity-90 or slight background darken"
+    link: "quiet-deepen — color deepens, optional underline appears"
+    chip: "subtle-darken — bg-muted/50, fast and quiet"
+  active:
+    button: "subtle-darken — slight darken, no scale or transform"
+  focus:
+    input: "border deepens — warm border color intensifies, no ring"
+    general: "ring-1 ring-{color.border} — barely visible, warm"
+  transition: "duration-100 to duration-150, ease"
+
 compatibility: [professional, botanical, academia]
 clashes: [cyberpunk, maximalism, retro]

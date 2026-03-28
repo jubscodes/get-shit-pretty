@@ -1,5 +1,5 @@
 ---
-name: style
+name: gsp-style
 description: Apply a design style — get tokens and foundations without the branding diamond
 user-invocable: true
 model: sonnet
@@ -12,10 +12,10 @@ allowed-tools:
   - Grep
 ---
 <context>
-You are a GSP style applicator. You produce W3C Design Tokens (`tokens.json`) and foundation chunks from style presets — bypassing the full branding diamond (discover → strategy → identity → system). Downstream agents (designer, builder) consume `tokens.json` regardless of how it was produced.
+You are a GSP style applicator. You produce a brand `.yml` preset and foundation chunks from style presets — bypassing the full branding diamond (discover → strategy → identity → system). Downstream agents (designer, builder) consume the `.yml` preset regardless of how it was produced.
 
 This is a standalone composable skill. It works two ways:
-1. **Standalone** — user runs `/gsp:style cyberpunk` directly, gets visual preview + tokens
+1. **Standalone** — user runs `/gsp-style cyberpunk` directly, gets visual preview + tokens
 2. **As a building block** — agents invoke this skill during workflows, getting tokens only
 </context>
 
@@ -23,7 +23,7 @@ This is a standalone composable skill. It works two ways:
 Apply a named style preset to produce production-ready design tokens and foundation chunks.
 
 **Input:** Style name(s), optional flags (`--list`, `--preview`)
-**Output:** `tokens.json` + 5 foundation chunks + `INDEX.md` in the target system directory
+**Output:** `{preset-name}.yml` + `STYLE.md` + `INDEX.md` in the target system directory
 **Agent:** None — token expansion from YAML presets is handled inline
 </objective>
 
@@ -37,7 +37,7 @@ Apply a named style preset to produce production-ready design tokens and foundat
 <rules>
 - Always use `AskUserQuestion` for user interaction — never prompt via plain text
 - One decision per question — never batch multiple questions in a single message
-- `tokens.json` follows W3C Design Tokens format from `references/design-tokens.md`
+- Token values in `.yml` presets follow W3C Design Tokens format from `references/design-tokens.md`
 - When mixing styles, later style values override earlier ones (last-wins precedence)
 - Never mix clashing styles — check the compatibility matrix first
 </rules>
@@ -49,11 +49,11 @@ Read the user's input to determine the mode:
 
 | Input | Mode |
 |-------|------|
-| `/gsp:style --list` | List all available presets |
-| `/gsp:style --preview cyberpunk` | Show tokens without writing files |
-| `/gsp:style cyberpunk` | Apply single style |
-| `/gsp:style cyberpunk + neubrutalism` | Mix styles (check compatibility) |
-| `/gsp:style` (no args) | Interactive — browse and pick |
+| `/gsp-style --list` | List all available presets |
+| `/gsp-style --preview cyberpunk` | Show tokens without writing files |
+| `/gsp-style cyberpunk` | Apply single style |
+| `/gsp-style cyberpunk + neubrutalism` | Mix styles (check compatibility) |
+| `/gsp-style` (no args) | Interactive — browse and pick |
 
 ## Step 1: List mode (`--list`)
 
@@ -120,51 +120,49 @@ If invoked from a project context (`.design/projects/{project}/`):
 
 If `--preview`, display expanded tokens grouped by section (Color, Typography, Shape, Elevation, Motion) as key-value pairs. Footer: usage hint to apply. Stop here — do not write any files.
 
-## Step 6: Expand tokens to W3C format
+## Step 6: Copy preset as brand style
 
-Transform the YAML preset tokens into the full W3C Design Tokens JSON structure.
+Copy the preset `.yml` to the output path as the brand's style source:
+- If within a brand: `{OUTPUT_PATH}/{preset-name}.yml`
+- If standalone: `{OUTPUT_PATH}/_style-{preset-name}.yml`
 
-### Token expansion mapping
+If a `.yml` already exists at the output path, use `AskUserQuestion`: "A style preset already exists — overwrite?" with options **Overwrite** and **Cancel**. If cancelled, skip and proceed.
 
-Transform each YAML preset section into W3C Design Tokens JSON with `$value` and `$type` fields:
+The `.yml` IS the token source of truth — no separate `tokens.json` needed. The builder generates CSS variables from it at build time using `references/token-mapping.md`.
 
-| Preset section | Token path | $type | Notes |
-|---------------|------------|-------|-------|
-| `color.*` | `color.brand.{key}`, `color.semantic.{key}` | `color` | Split into brand (primary, secondary, accent) and semantic (background, surface, on-primary, on-background, error, success, warning, info) |
-| `typography.*` | `font.family.{primary,mono}` | `fontFamily` | — |
-| `typography.*` | `typography.{level}` | `typography` | Composite: fontFamily, fontSize, fontWeight, lineHeight, letterSpacing. 9 levels: display, heading-1 through heading-3, body-large, body, body-small, caption, overline |
-| `spacing.*` | `spacing.{xs,sm,md,lg,xl,2xl,3xl,4xl}` | `dimension` | — |
-| `elevation.*` | `shadow.{sm,md,lg,xl}` | `shadow` | Parse CSS shadow shorthand into structured format |
-| `shape.*` | `radius.{none,sm,md,lg,full}` | `dimension` | `full` = 9999px |
-| `motion.*` | `motion.duration.{fast,normal}`, `motion.easing.default` | `duration`, `cubicBezier` | — |
+## Step 7: Write STYLE.md
 
-**Style-specific tokens:** If preset has extra groups (e.g., `glass`, `glow`, `gradient`, `syntax`), include under `$extensions.gsp-style-specific`.
+Read the style template from `${CLAUDE_SKILL_DIR}/../../templates/phases/style.md`.
 
-**Dark mode:** If preset has `dark_mode` section, include under `$extensions.dark` with semantic color overrides.
+Read BOTH source files:
+- `styles/{name}.yml` — structured data (tokens, intensity, patterns, constraints, effects)
+- `styles/{name}.md` — prose companion (design philosophy, CSS code hints, component styling, textures). Skip the `<role>` block — start from `<design-system>`.
 
-**Extensions metadata:** Always include `$extensions.gsp-style` with the preset name.
+If the `.md` companion doesn't exist, render STYLE.md from `.yml` data only (thinner but functional).
 
-## Step 7: Write tokens.json
+Render into the template sections:
 
-If `{OUTPUT_PATH}/tokens.json` already exists, use `AskUserQuestion`: "tokens.json already exists — overwrite with style preset? Existing component-level tokens will be replaced." with options **Overwrite** and **Cancel**. If cancelled, skip writing tokens.json and proceed to the next step.
+- **Intensity** — from `.yml` `intensity:` block
+- **Philosophy** — extract from `.md` companion's Design Philosophy section. Condense to 2-4 sentences capturing the emotional DNA and cultural references.
+- **Patterns** — from `.yml` `patterns:` block, rendered as tables per component
+- **Constraints** — from `.yml` `constraints:` block, rendered as never/always bullet lists
+- **Effects** — from `.yml` `effects:` block, rendered as interaction vocabulary + state tables
+- **Bold Bets** — extract from `.md` companion's "Non-Genericness" or "Bold Factor" section. Pick 3-5 most distinctive techniques with implementation specifics.
+- **Implementation** — extract from `.md` companion's component stylings and CSS code:
+  - **Component Code Hints** — Tailwind/CSS patterns beyond the Patterns tables
+  - **Textures & Surfaces** — CSS for noise, halftone, grain (skip if style has none)
+  - **Typography Treatments** — text-stroke, tracking overrides (skip if standard)
+  - **Animation Recipes** — keyframes, transitions (skip if effects vocabulary is sufficient)
 
-Write the complete W3C Design Tokens JSON to `{OUTPUT_PATH}/tokens.json`.
+Write to `{OUTPUT_PATH}/STYLE.md`.
 
-## Step 8: Write foundation chunks
+## Step 8: Write INDEX.md
 
-Write 5 foundation chunks to `{OUTPUT_PATH}/foundations/`, each following `references/chunk-format.md`:
+Write `{OUTPUT_PATH}/INDEX.md` — header with phase/style/date, applied style name + description, file table ({preset-name}.yml, STYLE.md).
 
-- **color-system.md** — brand colors, semantic colors, dark mode mapping, WCAG contrast notes
-- **typography.md** — 9-level type scale, font family details + Google Fonts link, weight rationale
-- **spacing.md** — spacing scale with base unit and usage guidelines
-- **elevation.md** — shadow scale with use cases per level + style-specific notes
-- **border-radius.md** — radius token scale + style-specific shape notes
+Foundation chunks (color-system.md, typography.md, etc.) are NOT written in the quick path — the `.yml` has the token values, STYLE.md has the composition rules. Foundation chunks are only produced by the full branding diamond where the brand-engineer adds deeper analysis (WCAG ratios, font loading, semantic rationale).
 
-## Step 9: Write INDEX.md
-
-Write `{OUTPUT_PATH}/INDEX.md` — header with phase/style/date, applied style name + description, foundations table (chunk name, file link, ~lines), tokens table (tokens.json link).
-
-## Step 10: Update state
+## Step 9: Update state
 
 If a brand STATE.md exists at the brand path:
 - Set patterns phase status to `complete`
@@ -174,7 +172,7 @@ If a brand STATE.md exists at the brand path:
 If a project config.json exists:
 - Add `"style_preset": "{name}"` to preferences
 
-## Step 11: Completion output
+## Step 10: Completion output
 
-Show: header (`/gsp:style — {name} applied`), file tree (foundations/ + tokens.json + INDEX.md). Then `AskUserQuestion`: Start a project → `/gsp:project-brief`, Build components → `/gsp:brand-patterns`, Preview tokens, Try a different style → restart Step 2.
+Show: header (`/gsp-style — {name} applied`), file tree ({name}.yml + STYLE.md + INDEX.md). Then `AskUserQuestion`: Start a project → `/gsp-project-brief`, Build components → `/gsp-brand-guidelines`, Preview tokens, Try a different style → restart Step 2.
 </process>

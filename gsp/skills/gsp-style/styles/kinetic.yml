@@ -47,6 +47,100 @@ tokens:
     duration-normal: "300ms"
     easing: "cubic-bezier(0.4, 0, 0.2, 1)"
 
+intensity:
+  variance: 7     # asymmetric type layouts, sticky scroll stacking, uneven column widths
+  motion: 10      # marquees never stop, scroll-triggered parallax, scale transforms — motion IS the style
+  density: 4      # brutalist sparse — extreme type scale creates visual weight without density
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "none — completely flat, depth from color layering only"
+    radius: "0px — sharp corners, no exceptions"
+    background: "{color.background}"
+    hover: "color-flood — background fills {color.secondary}, all text inverts to black"
+    internal: "large title top (text-3xl), muted description, decorative number in bg"
+  button-primary:
+    background: "{color.secondary}"
+    border: "none"
+    shadow: "none"
+    text: "uppercase tracking-tighter font-bold {color.on-primary}"
+    radius: "0px"
+    size: "h-14 px-8 default, h-20 px-12 large"
+  button-secondary:
+    background: "transparent"
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "none"
+    text: "uppercase tracking-tighter font-bold {color.on-background}"
+    radius: "0px"
+    fill: "hover fills {color.on-background}, text inverts to {color.background} — hard color flip"
+  input:
+    border: "border-b-2 only — bottom border, no box"
+    radius: "0px"
+    background: "transparent"
+    text: "text-4xl bold uppercase tracking-tighter — oversized dramatic inputs"
+    focus: "border-bottom becomes {color.secondary}, no ring"
+    height: "h-24 — extra tall for drama"
+  badge:
+    shape: "sharp rectangle, border-2, no radius"
+    text: "text-xs uppercase tracking-widest font-bold"
+    decoration: "none — minimal, structural"
+  nav:
+    logo: "uppercase tracking-tighter font-bold, accent color highlight"
+    links: "uppercase text-sm, hover shifts to {color.secondary}"
+    mobile: "minimal, sharp-cornered menu"
+  layout:
+    archetype: "kinetic-poster"
+    max-width: "max-w-[95vw] — push to edges, never conservative"
+    section-spacing: "py-32 — dramatic breathing room"
+    grid-gap: "gap-8 standard, gap-px with colored bg for hairline dividers"
+    asymmetry: "sticky scroll card stacking, overlapping elements, uneven columns"
+    surfaces: "flat solid colors only — no gradients, no patterns, SVG noise at 0.03 opacity"
+    decoration: "massive background numbers (8-12rem) in muted tone as graphic shapes"
+    dividers: "full-width border-top/bottom in {shape.border-color}, accent bg flips for contrast"
+
+constraints:
+  never:
+    - "border-radius above 2px — sharp corners are non-negotiable"
+    - "drop shadows of any kind — completely flat, no depth effects"
+    - "gradients on backgrounds — solid colors only"
+    - "serif or script fonts — geometric sans (Space Grotesk/Inter) only"
+    - "small headlines below text-3xl — if it's a heading, it screams"
+    - "conservative max-widths (max-w-4xl, max-w-5xl) — content pushes wide"
+    - "standard section padding (py-16) — go bigger (py-32)"
+    - "pause-on-hover for marquees — motion is constant, never interrupted"
+    - "mixed case on display text — uppercase is mandatory for all headings/buttons/labels"
+    - "pure black (#000) or pure white (#FFF) — use rich black (#09090B) and off-white (#FAFAFA)"
+  always:
+    - "at least 2 infinite marquees per page — one fast (speed 60-80), one slower (speed 30-50)"
+    - "viewport-width typography on at least one headline — clamp(3rem, 12vw, 14rem)"
+    - "massive background numbers (8-12rem) in muted tone as decorative elements"
+    - "hard color inversions on card/section hover — full scheme flip, not gradual"
+    - "uppercase + tracking-tighter on all display text"
+    - "aggressive scale hierarchy — 8-10x difference between largest and smallest text"
+    - "sharp 0px border-radius on every element"
+    - "2px borders in subtle zinc/muted tones for structural definition"
+
+effects:
+  interaction-vocabulary: [color-flood, scale-snap, slide-reveal, parallax-zoom, marquee-scroll]
+  hover:
+    card: "color-flood — background fills {color.secondary}, all text inverts to black, duration-300"
+    button-primary: "scale-snap — scale-105%, instant feel"
+    button-secondary: "color-flood — bg fills {color.on-background}, text inverts"
+    link: "text color shifts to {color.secondary}, underline appears"
+    benefit: "slide-reveal — title translates-x-8, description fades in from opacity-0"
+  active:
+    button: "scale-snap — scale-95%, tactile press"
+  focus:
+    input: "border-bottom color shifts to {color.secondary} — border-only focus indicator"
+    general: "ring-2 ring-{color.secondary} ring-offset-2 ring-offset-{color.background}"
+  transition: "duration-200 to duration-300, ease-in-out for interactions; linear for marquees"
+  ambient:
+    - "marquee-perpetual — infinite horizontal scroll at constant speed, no gradient edges, never pauses"
+    - "parallax-hero — useScroll scale 1.0->1.2, opacity 1.0->0 on hero (0-20% scroll)"
+    - "sticky-stack — cards position:sticky, physically stack as user scrolls"
+    - "noise-grain — SVG feTurbulence overlay at 0.03 opacity, fixed position, full viewport"
+
 compatibility: [cyberpunk, bold-typography]
 clashes: [swiss-minimalist, professional, botanical]
 trend_ref: trends/kinetic-typography.md

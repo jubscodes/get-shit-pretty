@@ -61,5 +61,87 @@ dark_mode:
     surface: "#0F1115"
     on-background: "#FFFFFF"
 
+intensity:
+  variance: 5     # asymmetric pricing scale, corner border accents, but grid-disciplined overall
+  motion: 7       # spinning orbitals, floating cards, pulsing indicators, glow intensification
+  density: 5      # spacious — generous py-24 sections, but data-heavy stat displays
+
+patterns:
+  card:
+    border: "{shape.border-width} solid rgba(255,255,255,0.10)"
+    shadow: "none resting, {elevation.shadow-md} on hover"
+    radius: "{shape.border-radius-md}"
+    background: "{color.surface}"
+    hover: "border shifts to {color.primary}/50, orange glow shadow appears, -translate-y-1"
+  button-primary:
+    background: "gradient from {color.secondary} to {color.primary}"
+    border: "none"
+    shadow: "{glow.primary}"
+    text: "white, bold, uppercase, tracking-wider"
+    radius: "{shape.border-radius-lg}"
+  button-secondary:
+    background: "transparent"
+    border: "2px solid rgba(255,255,255,0.20)"
+    shadow: "none"
+    text: "white, medium weight"
+    radius: "{shape.border-radius-lg}"
+  input:
+    border: "border-b-2 rgba(255,255,255,0.20) — bottom border only"
+    radius: "0px"
+    background: "rgba(0,0,0,0.50)"
+    focus: "border shifts to {color.primary}, orange glow shadow below, no outline"
+    font: "monospace for data precision"
+  badge:
+    shape: "rounded-lg or rounded-full, orange-tinted glass"
+    text: "monospace uppercase tracking-widest text-xs"
+    decoration: "animate-ping dot for live status indicators"
+  nav:
+    style: "minimal dark bar with pill CTA"
+    background: "transparent or glass (backdrop-blur-lg + bg-black/40)"
+    links: "monospace, muted white, hover shifts to {color.primary}"
+  layout:
+    archetype: "blockchain-grid"
+    max-width: "max-w-7xl"
+    section-spacing: "py-24"
+    grid-gap: "gap-8 to gap-12"
+    surfaces: "grid pattern (50px cells, fading vignette mask) — void is never flat"
+    decoration: "spinning orbital rings, gradient text fills (orange to gold), corner border accents"
+    depth: "radial gradient blurs ({color.primary} at 5-10% opacity, blur-[120px]) for ambient glow"
+
+constraints:
+  never:
+    - "light backgrounds — true void ({color.background}) is mandatory"
+    - "pure black shadows — all shadows use orange/gold tints"
+    - "flat dark backgrounds without grid or radial texture — void must breathe"
+    - "serif fonts — geometric sans (Space Grotesk) and monospace (JetBrains Mono) only"
+    - "hard-line section dividers (<hr>) — spacing and background alternation separate sections"
+    - "muted or desaturated orange — Bitcoin orange at full intensity always"
+  always:
+    - "colored glow shadows (orange/gold tinted) on all interactive elements"
+    - "gradient text fill (orange to gold) on hero headline keywords"
+    - "grid pattern background on at least one section"
+    - "radial blur blobs for ambient background glow"
+    - "pill-shaped (rounded-full) primary buttons"
+    - "monospace font on stats, prices, badges, and technical labels"
+    - "corner border accents on at least one card type"
+
+effects:
+  interaction-vocabulary: [glow-intensify, scale-lift, pulse-ping, orbital-spin]
+  hover:
+    card: "glow-intensify — border shifts orange/50, orange glow shadow appears, -translate-y-1"
+    button: "scale-lift — scale-105, glow radius and opacity increase"
+    image: "scale-lift — scale-110 + contrast-125"
+    icon-container: "glow-intensify — glow shadow appears (0 0 20px rgba(234,88,12,0.4))"
+  active:
+    button: "scale-95, glow dims"
+  focus:
+    general: "ring-2 ring-{color.primary} focus-visible"
+  transition: "duration-200 to duration-300, cubic-bezier(0.4, 0, 0.2, 1)"
+  ambient:
+    - "orbital-spin — outer ring 10s linear infinite, inner ring 15s reverse"
+    - "pulse-ping — animate-ping on status dots for live network feel"
+    - "card-float — floating stat cards animate-bounce with staggered delays (3-4s)"
+    - "orb-drift — hero 3D orb floats translateY(-20px) over 8s ease-in-out infinite"
+
 compatibility: [cyberpunk, modern-dark]
 clashes: [botanical, retro, sketch]

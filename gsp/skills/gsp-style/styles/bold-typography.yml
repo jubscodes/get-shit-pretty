@@ -57,5 +57,78 @@ dark_mode:
     background: "#050505"
     surface: "#0F0F0F"
 
+intensity:
+  variance: 6
+  motion: 3
+  density: 2
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "none — depth from typographic layering only"
+    radius: "0px"
+    background: "{color.surface}"
+  button-primary:
+    style: "text-only with animated underline — no background fill"
+    text: "{color.primary}, uppercase, tracking-wider (0.1em), weight 600"
+    underline: "absolute h-0.5 bg-{color.primary}, scale-x-100 resting"
+  button-secondary:
+    background: "transparent → fills on hover"
+    border: "1px solid {color.on-background}"
+    text: "{color.on-background}, uppercase, tracking-wider"
+    radius: "0px"
+  input:
+    border: "1px solid {shape.border-color}"
+    radius: "0px"
+    background: "{color.surface}"
+    focus: "border-{color.primary} — border-only focus, no glow"
+  badge:
+    shape: "sharp corners, thin border"
+    text: "uppercase, tracking-widest, text-xs"
+  nav:
+    style: "minimal — logo + sparse links"
+    links: "uppercase tracking-wider, underline reveals on hover"
+  layout:
+    archetype: "editorial-whitespace"
+    max-width: "max-w-6xl"
+    section-spacing: "py-24 to py-40 — extreme negative space"
+    grid-gap: "gap-8 to gap-16"
+    surfaces: "noise grain at 1.5% opacity — subtle tactile depth"
+    typography-hero: "text-7xl to text-9xl desktop, tracking-tighter (-0.06em)"
+    decoration: "oversized muted numbers/text behind content at low opacity"
+    dividers: "full-width horizontal rules as section breaks"
+
+constraints:
+  never:
+    - "box-shadow of any kind — no shadows in this aesthetic"
+    - "border-radius above 0px — everything sharp-edged"
+    - "background fills on primary buttons — underline-only interaction"
+    - "small headlines — minimum text-5xl mobile, text-7xl desktop"
+    - "decorative imagery competing with type — type IS the visual"
+    - "more than one accent color — black, white, and one (vermillion)"
+    - "rounded or pill shapes — angular geometry only"
+    - "ease-in-out or bouncy easing — precise, deliberate motion only"
+  always:
+    - "extreme scale contrast between headline and body (6:1+ ratio)"
+    - "tight letter-spacing on display text (-0.04em to -0.06em)"
+    - "wide letter-spacing on labels/overlines (0.1em to 0.2em)"
+    - "generous negative space framing headlines"
+    - "noise grain texture (1-2% opacity)"
+    - "sharp 0px radius on all elements"
+    - "full-width horizontal rules between sections"
+
+effects:
+  interaction-vocabulary: [underline-reveal, color-invert, border-brighten, micro-press]
+  hover:
+    button-primary: "underline-reveal — scale-x expands to 110%"
+    button-secondary: "color-invert — bg fills foreground, text inverts"
+    link: "underline-reveal — scale-x-0 → scale-x-100 slide-in"
+    card: "border-brighten — border subtly lightens"
+  active:
+    button: "micro-press — translate-y-px"
+  focus:
+    general: "border-{color.primary} — border-based, no ring, no glow"
+  transition: "duration-150 to duration-200, cubic-bezier(0.25, 0, 0, 1)"
+
 compatibility: [monochrome, kinetic]
 clashes: [playful-geometric, botanical, claymorphism]

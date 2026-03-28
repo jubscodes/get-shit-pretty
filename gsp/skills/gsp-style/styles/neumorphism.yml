@@ -53,5 +53,82 @@ tokens:
     shadow-md: "inset 6px 6px 12px rgba(163,177,198,0.7), inset -6px -6px 12px rgba(255,255,255,0.6)"
     shadow-lg: "inset 10px 10px 20px rgba(163,177,198,0.7), inset -10px -10px 20px rgba(255,255,255,0.6)"
 
+intensity:
+  variance: 3     # symmetric, grid-aligned, continuous-surface uniformity
+  motion: 4       # smooth shadow transitions, subtle float, restrained hover lifts
+  density: 4      # airy — shadows need breathing room to render properly
+
+patterns:
+  card:
+    border: "none — no visible borders, edges defined by dual shadows only"
+    shadow: "{elevation.shadow-lg}"
+    radius: "{shape.border-radius-lg}"
+    background: "{color.background}"
+    depth: "nested depth — extruded card > inset icon well > extruded icon"
+  button-primary:
+    background: "{color.primary}"
+    border: "none"
+    shadow: "{elevation.shadow-md}"
+    text: "weight 600, sentence case, white"
+    radius: "{shape.border-radius-sm}"
+  button-secondary:
+    background: "{color.background}"
+    border: "none"
+    shadow: "{elevation.shadow-md}"
+    text: "weight 500, {color.on-background}"
+    radius: "{shape.border-radius-sm}"
+  input:
+    border: "none — depth from inset shadow only"
+    radius: "{shape.border-radius-sm}"
+    background: "{color.background}"
+    focus: "shadow deepens to {inset.shadow-lg}, ring-2 ring-{color.primary} ring-offset-2"
+    shadow: "{inset.shadow-md}"
+  badge:
+    shape: "rounded-full, extruded shadow"
+    text: "text-xs font-medium"
+  nav:
+    style: "sticky extruded bar"
+    background: "{color.background}"
+    shadow: "{elevation.shadow-md}"
+    shape: "{shape.border-radius-lg}"
+  layout:
+    archetype: "continuous-surface"
+    max-width: "max-w-7xl"
+    section-spacing: "py-24 to py-32"
+    grid-gap: "gap-8 to gap-12"
+    surfaces: "monochromatic {color.background} everywhere — no color variety, shadow does all work"
+    decoration: "concentric circles of alternating extruded/inset shadows for abstract art"
+
+constraints:
+  never:
+    - "visible borders — neumorphism never uses borders, shadows define all edges"
+    - "white card backgrounds — cards must match page background {color.background}"
+    - "flat shadowless elements — everything has dual opposing shadows"
+    - "hard hex shadows — always use rgba for transparency and blending"
+    - "sharp corners below rounded-2xl (16px) — too sharp for pillow aesthetic"
+    - "colored or gradient backgrounds — monochromatic {color.background} only"
+    - "light gray text (#A0AEC0) for body — minimum {color.muted} for WCAG AA"
+  always:
+    - "dual opposing shadows (light top-left + dark bottom-right) on every extruded element"
+    - "inset shadows (reversed direction) on every pressed/recessed element"
+    - "same background color on cards and page — continuous surface illusion"
+    - "nested depth demonstrations (extruded > inset > extruded) on feature elements"
+    - "visible focus rings (ring-2 ring-{color.primary}) with offset on background color"
+    - "Plus Jakarta Sans for display, DM Sans for body"
+
+effects:
+  interaction-vocabulary: [soft-lift, shadow-deepen, surface-press, float-drift]
+  hover:
+    card: "soft-lift — -translate-y-1, shadow transitions from {elevation.shadow-lg} to {elevation.shadow-xl}"
+    button: "soft-lift — -translate-y-1, shadow deepens"
+    nested-circle: "shadow-deepen — scale-105 + rotate-180 on inner element"
+  active:
+    button: "surface-press — translate-y-[0.5px], shadow switches to {inset.shadow-sm}"
+  focus:
+    general: "ring-2 ring-{color.primary} ring-offset-2 ring-offset-{color.background}"
+  transition: "duration-300, ease-out"
+  ambient:
+    - "float-drift — decorative elements translateY(-10px) over 3s ease-in-out infinite"
+
 compatibility: [industrial, claymorphism]
 clashes: [neubrutalism, flat-design, monochrome]
