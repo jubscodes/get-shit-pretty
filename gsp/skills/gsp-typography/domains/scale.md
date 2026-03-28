@@ -224,4 +224,4 @@ Write to `.design/branding/_typescale/`. Create minimal directory structure.
 
 ## Completion
 
-Show: header (`/gsp-typography — {font} @ {ratio}`), file tree (typography.md + CSS file), scale summary (ratio, range, levels, fluid, grid). Then offer next steps via `AskUserQuestion`: Generate palette -> `/gsp-palette`, Apply a full style -> `/gsp-style`, Continue to identity -> `/gsp-brand-identity`, Done.
+Show: header (`/gsp-typography — {font} @ {ratio}`), file tree (typography.md + CSS file), scale summary (ratio, range, levels, fluid, grid). Then offer next steps via `AskUserQuestion`: Generate palette -> `/gsp-color`, Apply a full style -> `/gsp-style`, Continue to identity -> `/gsp-brand-identity`, Done.

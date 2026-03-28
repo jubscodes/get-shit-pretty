@@ -102,7 +102,7 @@ Also write a CSS file alongside `typography.md` — delegate format to `domains/
 ## Completion
 
 Display scale preview table. Offer next steps via `AskUserQuestion`:
-- Generate palette -> `/gsp-palette`
+- Generate palette -> `/gsp-color`
 - Apply a full style -> `/gsp-style`
 - Continue to identity -> `/gsp-brand-identity`
 - Done

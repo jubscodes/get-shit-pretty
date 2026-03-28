@@ -117,7 +117,7 @@ Full OKLCH scales in structured JSON (same format as palette domain).
 ## Completion
 
 Display palette summary with contrast status. Offer next steps via `AskUserQuestion`:
-- **Generate type scale** — route to `/gsp-typescale`
+- **Generate type scale** — route to `/gsp-typography`
 - **Apply a full style** — route to `/gsp-style`
 - **Continue to identity** — route to `/gsp-brand-identity`
 - **Done** — "that's all for now"
