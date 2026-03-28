@@ -1,5 +1,5 @@
 ---
-name: brand-refine
+name: gsp-brand-refine
 description: Targeted brand adjustments mid-project — tweak colors, typography, or spacing without re-running the full branding diamond
 user-invocable: true
 model: sonnet
@@ -13,16 +13,16 @@ allowed-tools:
   - WebFetch
 ---
 <context>
-You are a GSP brand refinement skill. You take targeted feedback about brand visual issues and surgically update token values — no need to re-run strategy or identity.
+You are a GSP brand refinement skill. You take targeted feedback about brand visual issues and surgically update the brand's `.yml` preset — no need to re-run strategy or identity.
 
-This skill modifies **tokens.json** and **palettes.json** only. If the user's feedback is strategic ("make the tone more playful") or narrative ("the brand story feels off"), redirect to `/gsp:brand-strategy` or `/gsp:brand-identity`.
+This skill modifies **`{brand-name}.yml`** — the single source of truth for brand tokens, patterns, constraints, effects, and intensity. If the user's feedback is strategic ("make the tone more playful") or narrative ("the brand story feels off"), redirect to `/gsp-brand-strategy` or `/gsp-brand-identity`.
 </context>
 
 <objective>
-Accept natural language feedback about brand visuals, identify which tokens are affected, apply targeted value changes, and log what changed.
+Accept natural language feedback about brand visuals, identify which `.yml` values are affected, apply targeted changes, and regenerate `STYLE.md` if it exists.
 
-**Input:** Natural language feedback (e.g., "accent is too muted", "heading weight too heavy")
-**Output:** Updated `tokens.json` and/or `palettes.json` + `REFINE-LOG.md`
+**Input:** Natural language feedback (e.g., "accent is too muted", "make buttons rounder", "more motion")
+**Output:** Updated `{brand-name}.yml` + regenerated `STYLE.md` (if exists) + `REFINE-LOG.md`
 **Agent:** None — inline skill, surgical edits
 </objective>
 
@@ -43,33 +43,40 @@ Accept natural language feedback about brand visuals, identify which tokens are 
 <process>
 ## Step 0: Locate brand and parse feedback
 
-Extract feedback from the user's input (everything after `/gsp:brand-refine`).
+Extract feedback from the user's input (everything after `/gsp-brand-refine`).
 
 If no feedback provided, use `AskUserQuestion`: "What would you like to adjust? (e.g., 'accent is too muted', 'heading font feels too heavy', 'spacing too tight')"
 
 Resolve brand from `.design/branding/` (one → use it, multiple → ask). Set `BRAND_PATH`.
-Check that `{BRAND_PATH}/patterns/tokens.json` exists. If not: "No tokens found. Run `/gsp:brand-patterns` first."
+Find the brand's `.yml` file: scan `{BRAND_PATH}/patterns/` for a `.yml` file that is NOT in `foundations/` or `components/`. If not found: "No brand style found. Run `/gsp-brand-guidelines` first."
+
+Also check if `{BRAND_PATH}/patterns/STYLE.md` exists (will need regeneration after changes).
 
 ## Step 1: Read current state
 
-Read `{BRAND_PATH}/patterns/tokens.json` once. Extract all sections relevant to the feedback:
+Read the brand `.yml` once. Map feedback to the relevant section:
 
-| Feedback signals | Token section |
+| Feedback signals | `.yml` section |
 |-----------------|---------------|
-| color, accent, muted, vibrant, contrast, tint, shade, hue | `color` |
-| font, heading, body, weight, size, line-height | `typography` |
-| spacing, padding, gap, tight, loose, dense | `spacing` |
-| shadow, elevation, depth, flat | `shadow` |
-| radius, rounded, sharp, corners | `borderRadius` |
-
-Also read `{BRAND_PATH}/identity/palettes.json` if it exists and feedback involves colors.
+| color, accent, muted, vibrant, contrast, tint, shade, hue | `tokens.color` + `dark_mode.color` |
+| font, heading, body, weight, size, line-height | `tokens.typography` |
+| spacing, padding, gap, tight, loose, dense | `tokens.spacing` |
+| shadow, elevation, depth, flat | `tokens.elevation` |
+| radius, rounded, sharp, corners | `tokens.shape` |
+| motion, speed, slow, fast, bounce, snap | `tokens.motion` + `intensity.motion` |
+| creative, playful, restrained, chaos, calm | `intensity.variance` |
+| dense, airy, packed, spacious | `intensity.density` |
+| button, card, input, badge, nav | `patterns.{component}` |
+| never, always, forbidden, required | `constraints` |
+| hover, click, press, animation, effect | `effects` |
+| dark mode, dark background, dark theme, night | `dark_mode.color` (+ any section above if the feedback applies to dark mode specifically) |
 
 ## Step 2: Propose changes
 
 Show a clear before/after for each affected token:
 
 ```
-  /gsp:brand-refine
+  /gsp-brand-refine
   ═══════════════════════════════════════
 
   Feedback: "the accent is too muted"
@@ -101,7 +108,7 @@ If regenerating, call the tints.dev API:
 ```
 WebFetch: https://www.tints.dev/api/{colorName}/{hexWithoutHash}
 ```
-Parse the response for the 11-stop OKLCH scale (50–950) and update `palettes.json`.
+Parse the response for the 11-stop OKLCH scale (50–950) and update `identity/palettes.json` as a reference artifact, then update the `.yml` color tokens from the new ramp.
 
 ### Typography changes involving scale ratio
 
@@ -115,8 +122,8 @@ Use `AskUserQuestion`:
 - **Cancel** — "keep current values"
 
 Apply confirmed changes:
-1. **tokens.json** — edit values in place with `Edit`. Preserve structure.
-2. **palettes.json** — update if palette was regenerated.
+1. **`{brand-name}.yml`** — edit values in place with `Edit`. Preserve structure.
+2. **`STYLE.md`** — if it exists, regenerate the affected sections (Patterns tables, Constraints lists, Effects tables, or Intensity dials) to reflect the `.yml` changes. Read the template from `${CLAUDE_SKILL_DIR}/../../templates/phases/style.md` for format reference.
 
 ## Step 4: Log and finish
 
@@ -134,7 +141,7 @@ Append to `{BRAND_PATH}/REFINE-LOG.md`:
 Display summary:
 
 ```
-  /gsp:brand-refine — {n} tokens updated
+  /gsp-brand-refine — {n} tokens updated
   ═══════════════════════════════════════
 
   Updated: {list of tokens}

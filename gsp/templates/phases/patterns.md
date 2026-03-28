@@ -1,98 +1,91 @@
-# Design System
+# Brand Guidelines
 
 ## Brand: {BRAND_NAME}
 **Date:** {DATE}
 
-> Created once per brand. Reused across all projects.
+> Operational artifacts that transform brand identity into project-ready outputs. Created once per brand. Consumed by designer and builder agents.
 
 ---
 
-> This phase produces foundation chunks in `patterns/foundations/`, component chunks in `patterns/components/`, plus `principles.md`, `tokens.json`, and `INDEX.md`.
+> This phase produces `{brand-name}.yml`, `STYLE.md`, `guidelines.html`, component mapping, and `INDEX.md` in the `patterns/` directory.
 
 ## Inputs
-- identity/color-system.md → foundations/color-system.md
-- identity/palettes.json → token generation
-- identity/typography.md → foundations/typography.md
-- identity/logo-directions.md → clear space tokens
-- strategy/archetype.md + strategy/brand-platform.md → principles.md
-- strategy/voice-and-tone.md → content component guidelines
-- config.json system_config — tech_stack, system_strategy
+- identity/color-system.md → token color values
+- identity/palettes.json → OKLCH scales for token generation
+- identity/typography.md → font families, scale direction
+- identity/logo-directions.md → logo context for brand guide
+- identity/imagery-style.md → imagery direction for brand guide
+- strategy/archetype.md + strategy/positioning.md → intensity derivation, philosophy
+- strategy/voice-and-tone.md → voice context for brand guide
+- config.json system_config — tech_stack, system_strategy, style_base
+- style_base preset `.yml` + `.md` — structural scaffold + philosophy/implementation content
 
-## Chunk Mapping
+## Output Mapping
 
-### Foundations (`patterns/foundations/`)
+### Core Files
 
-| Chunk File | Content |
-|-----------|---------|
-| `foundations/color-system.md` | Primary, secondary, semantic, neutral scale, dark mode, contrast ratios |
-| `foundations/typography.md` | 9-level type scale (Display → Overline) with all properties |
-| `foundations/spacing.md` | 8px base unit spacing scale |
-| `foundations/grid.md` | 12-column grid with gutters, margins, breakpoints |
-| `foundations/elevation.md` | 5 shadow levels with use cases and values |
-| `foundations/border-radius.md` | Token scale (none, sm, md, lg, xl, full) |
+| File | Content |
+|------|---------|
+| `{brand-name}.yml` | **Single source of truth.** The brand's aesthetic in GSP preset format: tokens + intensity + patterns + constraints + effects + dark_mode. Inherits from `style_base` preset, overrides brand-specific values. The builder generates CSS variables from this at build time using `references/token-mapping.md`. |
+| `STYLE.md` | **Agent contract.** The single document designer and builder agents consume. Rendered from the `.yml` + brand philosophy (from strategy) + bold bets (from identity's most distinctive choices) + implementation patterns (from preset `.md` companion). Follows `templates/phases/style.md` format. |
+| `guidelines.html` | **User-visible brand guide.** Self-contained HTML with embedded CSS. Shows the brand using its own tokens: color swatches, type scale in actual fonts, component previews, spacing/elevation vis, constraints. Open in browser. |
 
 ### Components (`patterns/components/`)
 
 Component output is library-aware:
 
-1. **`token-mapping.md`** (always) — brand tokens → component library theming API. Complete, copy-paste-ready config.
+1. **`token-mapping.md`** (always) — brand tokens → component library theming API. Complete, copy-paste-ready config. See `references/token-mapping.md` for the CSS generation spec.
 2. **Override specs** (selective) — one file per library component needing treatment beyond tokens. Singular kebab-case naming.
 3. **Custom component specs** (selective) — one file per brand-distinctive component with no library equivalent. Includes: states, anatomy, usage rules, accessibility spec, code hints.
 
 If no UI library is detected, write up to 15 core component specs.
 
-### Other Files
-
-| File | Content |
-|-----------|---------|
-| `principles.md` | 3-5 design principles + do's and don'ts |
-| `tokens.json` | Complete W3C Design Tokens format (color, typography, spacing, shadow, border-radius, breakpoints) |
-| `{brand-name}.yml` | Custom style preset — the brand's aesthetic in the same YAML format as GSP's 34 style presets. Portable and reusable. |
-| `{brand-name}.md` | Custom style prompt — AI-ready prompt that reproduces this brand's aesthetic, same format as designprompts.dev. |
-
 ## Content Reference
 
-Each chunk follows the format in `references/chunk-format.md`. Below is the structural reference for what each chunk should contain:
+Each chunk follows the format in `references/chunk-format.md`.
 
-### foundations/color-system.md
-- Full color palette with semantic mapping
-- Primary, secondary, accent, background, text colors
-- Semantic colors: error, success, warning, info
-- Neutral scale
-- Dark mode mapping
-- Contrast ratios (WCAG AA)
+### {brand-name}.yml
 
-### foundations/typography.md
-- Type scale table: Level, Size, Weight, Line Height, Letter Spacing, Use
-- Levels: Display, H1, H2, H3, Body Large, Body, Body Small, Caption, Overline
+Full preset schema:
+- `tokens:` — color (primary, secondary, accent, semantic), typography (families, weights, sizes), shape (radius, border), elevation (shadows), spacing (base + scale), motion (durations, easing)
+- `dark_mode:` — color overrides for dark theme
+- `intensity:` — variance (1-10), motion (1-10), density (1-10)
+- `patterns:` — 7 component composition rules (card, button-primary, button-secondary, input, badge, nav, layout)
+- `constraints:` — never[] and always[] lists
+- `effects:` — interaction-vocabulary[], hover/active/focus/transition tables, ambient (optional)
 
-### foundations/spacing.md
-- Base unit: 8px
-- Scale: 4, 8, 12, 16, 24, 32, 48, 64, 96
-- Usage guidelines per scale value
+### STYLE.md
 
-### foundations/grid.md
-- Columns: 12
-- Gutter, margin values
-- Breakpoint definitions and behavior
+Sections (from `templates/phases/style.md`):
+- **Intensity** — dial values with meaning
+- **Philosophy** — emotional DNA from strategy + preset `.md` companion
+- **Patterns** — component composition tables
+- **Constraints** — never/always bullet lists
+- **Effects** — interaction vocabulary + state tables
+- **Bold Bets** — 3-5 distinctive techniques from identity's boldest choices
+- **Implementation** — component code hints, textures & surfaces, typography treatments, animation recipes (from preset `.md` companion)
 
-### foundations/elevation.md
-- 5 levels (0–4): Flat, Cards, Dropdowns, Modals, Popovers
-- CSS shadow values per level
+### guidelines.html
 
-### foundations/border-radius.md
-- Token scale: none (0), sm, md, lg, xl, full (9999px)
-- Use cases per token
+Self-contained HTML with:
+- Embedded Google Fonts for chosen typefaces
+- Page styled with brand colors
+- Color palette swatches (full 50→900 ramps)
+- Typography samples at defined type scale
+- Component previews (card, button, input, badge) styled with brand tokens
+- Spacing/elevation visualizations
+- Constraint summary
+- Voice attributes and archetype (from strategy)
 
 ### components/token-mapping.md
 - Library-specific token config (CSS vars, theme object, etc.)
-- Maps every foundation token to the library's theming API
+- Maps every token from `.yml` to the library's theming API
 - Copy-paste-ready — no interpretation needed
 
 ### Override component chunks
 - What to override and why (traces to brand identity)
 - Code hints for the specific library
-- Cross-references to foundation chunks
+- Cross-references to `.yml` tokens
 
 ### Custom component chunks
 - States: default, hover, active, disabled, focus, loading
@@ -100,8 +93,4 @@ Each chunk follows the format in `references/chunk-format.md`. Below is the stru
 - Usage rules
 - Accessibility spec
 - Code hints
-- Cross-references to foundation chunks
-
-### principles.md
-- 3-5 design principles with rationale
-- Do's and Don'ts table
+- Cross-references to `.yml` tokens
