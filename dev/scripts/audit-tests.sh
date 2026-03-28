@@ -766,7 +766,7 @@ if should_run templates; then
   fi
 
   # T5: Chunk format reference exists and is non-empty
-  CHUNK_REF="gsp/references/chunk-format.md"
+  CHUNK_REF="gsp/skills/chunk-format.md"
   if [[ -f "$CHUNK_REF" && -s "$CHUNK_REF" ]]; then
     pass "T5 Chunk format reference exists"
   else
@@ -873,7 +873,7 @@ if should_run templates; then
   fi
 
   # T13: Token mapping reference exists
-  TM_REF="gsp/references/token-mapping.md"
+  TM_REF="gsp/skills/gsp-brand-guidelines/token-mapping.md"
   if [[ -f "$TM_REF" && -s "$TM_REF" ]]; then
     pass "T13 Token mapping reference exists"
   else
