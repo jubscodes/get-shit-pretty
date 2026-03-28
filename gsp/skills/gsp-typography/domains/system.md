@@ -41,7 +41,7 @@ Default 16px unless user specifies otherwise.
 
 ## Output Structure
 
-Write `typography.md` as a foundation chunk per `references/chunk-format.md`. Target: 80-120 lines.
+Write `typography.md` as a foundation chunk per `chunk-format.md`. Target: 80-120 lines.
 
 ### Required sections
 

@@ -146,5 +146,5 @@ If adjust → loop back. If confirmed → proceed.
 
 Update `{BRAND_PATH}/STATE.md`: set Phase 2 (Strategy) to `complete`.
 
-Render phase transition (see `references/phase-transitions.md`).
+Render phase transition (see `phase-transitions.md` in the skills root).
 </process>

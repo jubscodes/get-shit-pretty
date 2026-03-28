@@ -72,7 +72,7 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 
 Read these reference files:
 - `${CLAUDE_SKILL_DIR}/../gsp-accessibility-audit/wcag-checklist.md`
-- `${CLAUDE_SKILL_DIR}/../gsp-color/color-composition.md`
+- `${CLAUDE_SKILL_DIR}/../gsp-color/references/color-composition.md`
 
 Hold their content for inlining into agent prompts in Step 2.
 
@@ -166,7 +166,7 @@ If verdict is **Fail**:
 
 ## Step 6: Phase transition output
 
-Render phase transition (see `references/phase-transitions.md`). This phase has pass/fail variants — the reference covers both.
+Render phase transition (see `phase-transitions.md` in the skills root). This phase has pass/fail variants — the reference covers both.
 
 If critique identified brand-level issues (palette contrast, typography weight, spacing scale), note: "Some issues are brand-level — run `/gsp-brand-refine` to adjust tokens without re-running identity."
 </process>

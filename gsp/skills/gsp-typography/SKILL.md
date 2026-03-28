@@ -39,7 +39,7 @@ Build a production-ready typography system — scale, pairing, fluid type, verti
 - One decision per question — never batch multiple questions in a single message
 - All sizes include px, rem, AND fluid clamp() values for headings
 - CSS output defaults to Tailwind v4 / shadcn format unless `--vanilla` is passed
-- Foundation chunks follow `references/chunk-format.md` format exactly
+- Foundation chunks follow `chunk-format.md` format exactly
 </rules>
 
 <process>

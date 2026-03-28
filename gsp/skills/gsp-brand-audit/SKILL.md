@@ -88,5 +88,5 @@ Update `evolution_scope` in `{BRAND_PATH}/config.json` with confirmed decisions.
 
 Update `{BRAND_PATH}/STATE.md`: set Phase 0 (Audit) to `complete`.
 
-Render phase transition (see `references/phase-transitions.md`).
+Render phase transition (see `phase-transitions.md` in the skills root).
 </process>

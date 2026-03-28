@@ -126,7 +126,7 @@ Spawn `gsp-builder` agent with **execution_mode: foundations**.
 
 | File | Purpose |
 |------|---------|
-| `{BRAND_PATH}/patterns/{brand-name}.yml` | Token values only — used with `references/token-mapping.md` to generate CSS variables. Do NOT re-read patterns/constraints/effects from here — those are in STYLE.md. |
+| `{BRAND_PATH}/patterns/{brand-name}.yml` | Token values only — used with `gsp-brand-guidelines/token-mapping.md` to generate CSS variables. Do NOT re-read patterns/constraints/effects from here — those are in STYLE.md. |
 | `{BRAND_PATH}/patterns/STYLE.md` | Design law — philosophy, patterns, constraints, effects, bold bets, implementation hints (if exists; fall back to `{brand-name}.md`) |
 | `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations for target |
 | `.design/system/STACK.md` | Stack state |
@@ -348,7 +348,7 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ### Phase transition output
 
-Render phase transition (see `references/phase-transitions.md`). Include screen count and build status in the output.
+Render phase transition (see `phase-transitions.md` in the skills root). Include screen count and build status in the output.
 
 ---
 

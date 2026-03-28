@@ -76,7 +76,7 @@ Resolve output path from domain file's **Output filename**:
 - Within a project: `{PROJECT_PATH}/references/{filename}`
 - Standalone: display output, offer to save
 
-Write chunk following `references/chunk-format.md` format. Update STATE.md if it exists.
+Write chunk following `chunk-format.md` format. Update STATE.md if it exists.
 
 Display the domain's completion summary, then show its completion options via `AskUserQuestion`.
 </process>

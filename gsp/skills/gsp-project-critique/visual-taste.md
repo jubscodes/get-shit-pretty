@@ -110,7 +110,7 @@ Does it feel like a $150k agency build? Score 1 if it looks AI-generated or temp
 
 ## How to Use
 
-This reference is loaded by the critique agent alongside `references/nielsen-heuristics.md`. During critique:
+This reference is loaded by the critique agent alongside `nielsen-heuristics.md`. During critique:
 
 1. Score each of the 15 taste items 1-5 with specific examples from the design
 2. Calculate total and map to sophistication level

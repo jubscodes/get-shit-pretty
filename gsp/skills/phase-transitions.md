@@ -7,7 +7,7 @@ Rendered at the end of every phase skill. Confirms what was accomplished, shows 
 Every skill that completes a phase must render a transition. The skill itself just says:
 
 ```
-Render phase transition (see `references/phase-transitions.md`).
+Render phase transition (see `phase-transitions.md` in the skills root).
 ```
 
 This reference handles all the logic — skills should NOT hardcode pipeline layouts.

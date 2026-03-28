@@ -93,7 +93,7 @@ Use the Update Map from the sync report. For each confirmed change:
 
 **Personality** — update `{BRAND_PATH}/strategy/archetype.md` and `positioning.md`. Update `brand-platform.md` if values/promise shifted.
 
-Preserve chunk format per `references/chunk-format.md`. Update INDEX.md files if chunks were added.
+Preserve chunk format per `chunk-format.md`. Update INDEX.md files if chunks were added.
 
 ## Step 4: Summary
 

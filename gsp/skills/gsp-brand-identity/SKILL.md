@@ -137,5 +137,5 @@ Use `AskUserQuestion`:
 
 Update `{BRAND_PATH}/STATE.md`: set Phase 3 (Identity) to `complete`, Prettiness Level to 80%.
 
-Render phase transition (see `references/phase-transitions.md`).
+Render phase transition (see `phase-transitions.md` in the skills root).
 </process>

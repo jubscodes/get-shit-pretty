@@ -35,7 +35,7 @@ Run lightweight accessibility checks inline — contrast ratio lookups and token
 - Quick check mode (`--check`) produces display output only — no files written
 - Token audit mode runs inline — no agent spawned
 - Default conformance level is AA unless overridden by `--level AAA` or config
-- Foundation chunks follow `references/chunk-format.md` format
+- Foundation chunks follow `chunk-format.md` format
 </rules>
 
 <process>

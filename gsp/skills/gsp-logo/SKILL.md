@@ -117,7 +117,7 @@ Resolve output path:
 - Within a project: `{PROJECT_PATH}/references/logo-directions.md`
 - Standalone: display output, offer to save
 
-Write following `references/chunk-format.md` format. Target: 100-140 lines.
+Write following `chunk-format.md` format. Target: 100-140 lines.
 
 Structure:
 ```markdown

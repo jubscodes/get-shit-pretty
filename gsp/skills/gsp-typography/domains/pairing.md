@@ -8,7 +8,7 @@ Font pairing exploration and enrichment of existing typography files with techni
 
 Read existing `{BRAND_PATH}/identity/typography.md`. Extract chosen typefaces and scale direction.
 
-Load `references/typography-scales.md` for domain expertise (section 7: Font Pairing Principles).
+Load `${CLAUDE_SKILL_DIR}/references/typography-scales.md` for domain expertise (section 7: Font Pairing Principles).
 
 ### What to add
 

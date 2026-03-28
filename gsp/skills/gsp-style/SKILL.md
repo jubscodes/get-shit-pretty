@@ -37,7 +37,7 @@ Apply a named style preset to produce production-ready design tokens and foundat
 <rules>
 - Always use `AskUserQuestion` for user interaction — never prompt via plain text
 - One decision per question — never batch multiple questions in a single message
-- Token values in `.yml` presets follow W3C Design Tokens format from `references/design-tokens.md`
+- Token values in `.yml` presets follow W3C Design Tokens format from `gsp-brand-guidelines/design-tokens.md`
 - When mixing styles, later style values override earlier ones (last-wins precedence)
 - Never mix clashing styles — check the compatibility matrix first
 </rules>
@@ -128,7 +128,7 @@ Copy the preset `.yml` to the output path as the brand's style source:
 
 If a `.yml` already exists at the output path, use `AskUserQuestion`: "A style preset already exists — overwrite?" with options **Overwrite** and **Cancel**. If cancelled, skip and proceed.
 
-The `.yml` IS the token source of truth — no separate `tokens.json` needed. The builder generates CSS variables from it at build time using `references/token-mapping.md`.
+The `.yml` IS the token source of truth — no separate `tokens.json` needed. The builder generates CSS variables from it at build time using `gsp-brand-guidelines/token-mapping.md`.
 
 ## Step 7: Write STYLE.md
 

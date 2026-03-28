@@ -132,6 +132,6 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ## Step 4: Phase transition output
 
-Render phase transition (see `references/phase-transitions.md`).
+Render phase transition (see `phase-transitions.md` in the skills root).
 </process>
 </output>
