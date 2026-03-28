@@ -353,7 +353,7 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ### Phase transition output
 
-Render phase transition (see `phase-transitions.md` in the skills root). Include screen count and build status in the output.
+Render phase transition (see `phase-transitions.md`). Include screen count and build status in the output.
 
 ---
 

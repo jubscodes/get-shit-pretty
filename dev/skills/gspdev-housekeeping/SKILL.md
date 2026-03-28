@@ -18,7 +18,6 @@ Source layout reference:
 - `gsp/skills/` — skills (SKILL.md files)
 - `gsp/agents/` — agents (gsp-*.md files)
 - `gsp/templates/` — config, state, brief, roadmap templates
-- `gsp/references/` — shared reference material
 - `bin/install.js` — multi-runtime installer
 - `VERSION`, `package.json` — version sources
 - `CLAUDE.md` — project instructions (references counts)

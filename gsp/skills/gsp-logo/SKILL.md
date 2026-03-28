@@ -30,7 +30,7 @@ Design 3 distinct logo directions for a brand.
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../chunk-format.md
+@${CLAUDE_SKILL_DIR}/chunk-format.md
 </execution_context>
 
 <rules>

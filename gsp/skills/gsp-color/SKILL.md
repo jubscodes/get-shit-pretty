@@ -28,7 +28,7 @@ Build production-ready color palettes or full color systems from brand colors or
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../chunk-format.md
+@${CLAUDE_SKILL_DIR}/chunk-format.md
 </execution_context>
 
 <rules>

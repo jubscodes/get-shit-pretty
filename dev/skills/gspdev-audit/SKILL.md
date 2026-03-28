@@ -17,10 +17,9 @@ disable-model-invocation: true
 GSP internal integrity checker for maintainers. Verifies that the framework's moving parts stay consistent as the codebase evolves. This is NOT the user-facing `/gsp-doctor` (which checks `.design/` project health) — this checks the GSP *source code* itself.
 
 Source layout:
-- `gsp/skills/` — 38 skills (SKILL.md files, gsp-* prefixed dirs)
+- `gsp/skills/` — 33 skills (SKILL.md files, gsp-* prefixed dirs, with `domains/` and `references/` siblings)
 - `gsp/agents/` — 15 agents (gsp-*.md files)
 - `gsp/templates/` — config, state, brief, roadmap templates
-- `gsp/references/` — shared reference material
 - `bin/install.js` — multi-runtime installer
 - `VERSION`, `package.json` — version sources
 
@@ -107,7 +106,7 @@ Every skill in `gsp/skills/` (except `get-shit-pretty`, which is the entry point
 - Missing → FAIL with list of skills
 
 ### C10: Update skill aligned with installer
-Verify `gsp-update/SKILL.md` references all installer runtime flags (`--claude`, `--opencode`, `--gemini`, `--codex`, `--local`, `--global`, `--all`), current bundle layout (`templates/`, `references/`), and doesn't reference legacy bundle paths in "what gets replaced" sections. Catches drift when installer evolves but update skill doesn't.
+Verify `gsp-update/SKILL.md` references all installer runtime flags (`--claude`, `--opencode`, `--gemini`, `--codex`, `--local`, `--global`, `--all`), current bundle layout (`templates/`), and doesn't reference legacy bundle paths in "what gets replaced" sections. Catches drift when installer evolves but update skill doesn't.
 
 ### C8: Claude-only field usage matches known set
 Canary test — grep agents for `memory:`, `background:`, `hooks:`, `isolation:`, `skills:`, `mcpServers:`. Compare against expected list (gsp-builder.md, gsp-reviewer.md). WARN if set changes so developer verifies converters handle new fields.
@@ -127,7 +126,7 @@ Verify ≥20 skills exist in `gsp/skills/`.
 Verify ≥14 agents exist in `gsp/agents/`.
 
 ### I5: Bundle directories present
-Verify `gsp/templates`, `gsp/references` exist.
+Verify `gsp/templates` exists.
 
 ### I6: package.json `files` field
 Everything in the `files` list should exist on disk.

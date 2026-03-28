@@ -251,8 +251,8 @@ if should_run contracts; then
         C10_OK=false
       fi
     fi
-    # Must reference current bundle dirs (templates/, references/)
-    for dir in templates references; do
+    # Must reference current bundle dirs (templates/)
+    for dir in templates; do
       if ! grep -q "$dir/" "$UPDATE_SKILL"; then
         C10_OK=false
       fi
@@ -343,7 +343,7 @@ if should_run installer; then
 
   # I5: Bundle directories exist
   BUNDLE_OK=true
-  for dir in gsp/templates gsp/references; do
+  for dir in gsp/templates; do
     if [[ ! -d "$dir" ]]; then
       BUNDLE_OK=false
       fail "I5 Missing bundle dir" "$dir"
@@ -765,12 +765,15 @@ if should_run templates; then
     warn "T4 Exports index missing" "$EXPORTS not found"
   fi
 
-  # T5: Chunk format reference exists and is non-empty
-  CHUNK_REF="gsp/skills/chunk-format.md"
-  if [[ -f "$CHUNK_REF" && -s "$CHUNK_REF" ]]; then
-    pass "T5 Chunk format reference exists"
+  # T5: Chunk format reference exists in consuming skills (ubiquitous, duplicated)
+  T5_FOUND=0
+  for skill_dir in gsp/skills/gsp-color gsp/skills/gsp-typography gsp/skills/gsp-style; do
+    [[ -f "$skill_dir/chunk-format.md" && -s "$skill_dir/chunk-format.md" ]] && ((T5_FOUND++))
+  done
+  if [[ $T5_FOUND -ge 3 ]]; then
+    pass "T5 Chunk format reference exists (ubiquitous, in consuming skills)"
   else
-    fail "T5 Chunk format reference" "Missing or empty: $CHUNK_REF"
+    fail "T5 Chunk format reference" "Missing from consuming skills ($T5_FOUND/3 found)"
   fi
 
   # T6: State templates exist

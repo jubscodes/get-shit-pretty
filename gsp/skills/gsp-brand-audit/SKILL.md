@@ -26,7 +26,7 @@ Audit an existing brand. Produce evolution map that guides research, strategy, a
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../chunk-format.md
+@${CLAUDE_SKILL_DIR}/chunk-format.md
 </execution_context>
 
 <rules>
@@ -88,5 +88,5 @@ Update `evolution_scope` in `{BRAND_PATH}/config.json` with confirmed decisions.
 
 Update `{BRAND_PATH}/STATE.md`: set Phase 0 (Audit) to `complete`.
 
-Render phase transition (see `phase-transitions.md` in the skills root).
+Render phase transition (see `phase-transitions.md`).
 </process>

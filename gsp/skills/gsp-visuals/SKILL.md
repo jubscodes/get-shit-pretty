@@ -24,7 +24,7 @@ Define visual direction for a specific domain. Reads the domain framework from `
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../chunk-format.md
+@${CLAUDE_SKILL_DIR}/chunk-format.md
 </execution_context>
 
 <rules>

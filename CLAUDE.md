@@ -160,7 +160,7 @@ Reference files live inside the skill directory that is their primary consumer, 
 
 **Shared references** (consumed by 2-4 skills) go into the primary consumer's directory. Other skills read them via `${CLAUDE_SKILL_DIR}/../gsp-primary-skill/ref.md`.
 
-**Ubiquitous references** (consumed by 5+ skills, e.g. `chunk-format.md`) are an exception — these stay shared but live at the skills root (`gsp/skills/chunk-format.md`, installed to `.claude/skills/chunk-format.md`) rather than in `references/`.
+**Ubiquitous references** (consumed by 5+ skills, e.g. `chunk-format.md`, `phase-transitions.md`) are duplicated into each consuming skill's directory as sibling files. This costs disk space but ensures every skill is self-contained and works on all runtimes (no loose files at the skills root).
 
 ### Context optimization rules
 
@@ -189,7 +189,7 @@ These rules minimize token waste across the pipeline. Enforced by audit tests C1
 - `gsp/templates/projects/config.json` — project config template
 - `gsp/templates/branding/config.json` — brand config template
 - `gsp/templates/exports-index.md` — chunked exports index with BEGIN/END markers per phase
-- `gsp/skills/chunk-format.md` — standard chunk format spec (ubiquitous reference, lives at skills root)
+- `chunk-format.md` — standard chunk format spec (ubiquitous reference, duplicated into each consuming skill)
 
 ## npm publication
 

@@ -1208,12 +1208,16 @@ function installLocalSymlinks(targetDir, src) {
   // ── Dev skill symlinks (local only — not shipped in npm package) ──
   const devSkillsSrc = path.join(cwd, 'dev', 'skills');
   let devSkillCount = 0;
-  if (fs.existsSync(devSkillsSrc)) {
-    for (const dir of fs.readdirSync(devSkillsSrc, { withFileTypes: true })) {
-      if (!dir.isDirectory()) continue;
-      forceSymlink(path.join('..', '..', 'dev', 'skills', dir.name), path.join(skillsDest, dir.name));
-      devSkillCount++;
+  try {
+    if (fs.existsSync(devSkillsSrc)) {
+      for (const dir of fs.readdirSync(devSkillsSrc, { withFileTypes: true })) {
+        if (!dir.isDirectory()) continue;
+        forceSymlink(path.join('..', '..', 'dev', 'skills', dir.name), path.join(skillsDest, dir.name));
+        devSkillCount++;
+      }
     }
+  } catch {
+    console.log(`  ${c.secondary}! Could not read dev/skills/ — skipping dev skills${c.reset}`);
   }
 
   if (skillCount > 0) {
@@ -1231,24 +1235,25 @@ function installLocalSymlinks(targetDir, src) {
     console.log(`  ${c.success}✓${c.reset} Removed legacy commands/gsp`);
   } catch {}
 
-  // ── Bundle symlinks (templates, references → runtime root) ──
+  // ── Bundle symlinks (templates → runtime root) ──
   // Clean up legacy dirs
   const legacyBundleDest = path.join(targetDir, 'get-shit-pretty');
   if (fs.existsSync(legacyBundleDest)) {
     fs.rmSync(legacyBundleDest, { recursive: true });
     console.log(`  ${c.success}✓${c.reset} Removed legacy get-shit-pretty/ bundle`);
   }
-  const legacyPrompts = path.join(targetDir, 'prompts');
-  if (fs.existsSync(legacyPrompts)) {
-    fs.rmSync(legacyPrompts, { recursive: true });
-    console.log(`  ${c.success}✓${c.reset} Removed legacy prompts/`);
+  for (const legacyDir of ['prompts', 'references']) {
+    const legacyPath = path.join(targetDir, legacyDir);
+    try {
+      fs.lstatSync(legacyPath);
+      fs.rmSync(legacyPath, { recursive: true });
+      console.log(`  ${c.success}✓${c.reset} Removed legacy ${legacyDir}/`);
+    } catch {}
   }
 
-  for (const dir of ['templates', 'references']) {
-    if (fs.existsSync(path.join(gspRoot, dir))) {
-      forceSymlink(path.join('..', 'gsp', dir), path.join(targetDir, dir));
-      console.log(`  ${c.success}✓${c.reset} Symlinked ${dir}/`);
-    }
+  if (fs.existsSync(path.join(gspRoot, 'templates'))) {
+    forceSymlink(path.join('..', 'gsp', 'templates'), path.join(targetDir, 'templates'));
+    console.log(`  ${c.success}✓${c.reset} Symlinked templates/`);
   }
 
   // Write VERSION from package.json (local dev uses repo root VERSION via symlinks)
@@ -1449,15 +1454,12 @@ function install(isGlobal, runtime = 'claude') {
     console.log(`  ${c.success}✓${c.reset} Removed legacy prompts/`);
   }
 
-  const bundleDirs = ['templates', 'references'];
-  for (const dir of bundleDirs) {
-    const dirSrc = path.join(gspRoot, dir);
-    if (fs.existsSync(dirSrc)) {
-      copyWithPathReplacement(dirSrc, path.join(targetDir, dir), pathPrefix, runtime);
-      if (verifyInstalled(path.join(targetDir, dir), dir)) {
-        console.log(`  ${c.success}✓${c.reset} Installed ${dir}/`);
-      } else { failures.push(dir); }
-    }
+  const templatesSrc = path.join(gspRoot, 'templates');
+  if (fs.existsSync(templatesSrc)) {
+    copyWithPathReplacement(templatesSrc, path.join(targetDir, 'templates'), pathPrefix, runtime);
+    if (verifyInstalled(path.join(targetDir, 'templates'), 'templates')) {
+      console.log(`  ${c.success}✓${c.reset} Installed templates/`);
+    } else { failures.push('templates'); }
   }
 
   // Write VERSION file

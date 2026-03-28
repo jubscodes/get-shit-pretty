@@ -85,5 +85,5 @@ Update `{BRAND_PATH}/STATE.md`: set Phase 1 (Discover) to `complete`.
 
 ## Step 5: Phase transition
 
-Render phase transition (see `phase-transitions.md` in the skills root).
+Render phase transition (see `phase-transitions.md`).
 </process>
