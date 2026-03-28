@@ -52,6 +52,11 @@ Implement designs as production-ready code in the codebase via phased pipeline w
 @${CLAUDE_SKILL_DIR}/../../templates/phases/build.md
 </execution_context>
 
+<rules>
+- Always use `AskUserQuestion` for user interaction — never prompt via plain text
+- One decision per question — never batch multiple questions in a single message
+</rules>
+
 <process>
 ## Step 0: Resolve project and brand
 

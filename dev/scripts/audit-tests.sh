@@ -939,18 +939,30 @@ if should_run prompts; then
     warn "P3 Large <rules> sections" "${P3_OVER[*]}"
   fi
 
-  # P4: Cross-file duplicate lines — lines appearing in 3+ files
-  # Extract non-blank, non-header, non-trivial lines (>30 chars) from all files
-  P4_DUPES=0
-  ALL_PROMPT_FILES=$(find gsp/skills -name 'SKILL.md' && find gsp/agents -name 'gsp-*.md')
-  P4_RESULT=$(echo "$ALL_PROMPT_FILES" | xargs grep -hx '.\{30,\}' 2>/dev/null \
-    | grep -v '^#\|^---\|^$\|^\s*$\|^```\|^|' \
-    | sort | uniq -c | sort -rn | awk '$1 >= 3 { print }' | head -10)
-  if [[ -z "$P4_RESULT" ]]; then
-    pass "P4 No cross-file duplicate lines (≥3 files)"
+  # P4: Interactive skills must have UX contract rules
+  # Every skill with AskUserQuestion in allowed-tools must include both:
+  #   1. "One decision per question" (or "one question at a time")
+  #   2. "Always use AskUserQuestion" (or "AskUserQuestion for user")
+  P4_MISSING=()
+  for skill in gsp/skills/*/SKILL.md; do
+    dir=$(basename "$(dirname "$skill")")
+    [[ "$dir" == "get-shit-pretty" ]] && continue
+    # Only check skills that have AskUserQuestion in allowed-tools
+    if grep -q 'AskUserQuestion' "$skill" 2>/dev/null; then
+      HAS_ONE_Q=$(grep -ci 'one decision per question\|one.*question.*at a time' "$skill")
+      HAS_ASK=$(grep -ci 'always use.*AskUserQuestion\|AskUserQuestion.*for user' "$skill")
+      if [[ "$HAS_ONE_Q" -eq 0 || "$HAS_ASK" -eq 0 ]]; then
+        MISSING=""
+        [[ "$HAS_ONE_Q" -eq 0 ]] && MISSING="one-decision"
+        [[ "$HAS_ASK" -eq 0 ]] && MISSING="${MISSING:+$MISSING+}ask-rule"
+        P4_MISSING+=("$dir:$MISSING")
+      fi
+    fi
+  done
+  if [[ ${#P4_MISSING[@]} -eq 0 ]]; then
+    pass "P4 All interactive skills have UX contract rules"
   else
-    P4_DUPES=$(echo "$P4_RESULT" | wc -l | tr -d ' ')
-    warn "P4 Cross-file duplicates ($P4_DUPES patterns)" "Run with verbose for details"
+    fail "P4 Interactive skills missing UX rules" "${P4_MISSING[*]}"
   fi
 
   # P5: Skill↔agent instruction overlap — shared non-trivial lines between paired files

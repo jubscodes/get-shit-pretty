@@ -11,6 +11,10 @@ node_modules/
 # Local dev notes
 .planning/
 
+# Build/test artifacts
+test-results/
+tsconfig.tsbuildinfo
+
 # Next.js
 .next/
 out/
