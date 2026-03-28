@@ -1,0 +1,37 @@
+---
+title: "v0.6.3 -- Style system + critique restructure"
+date: "2026-03-28T00:00:00"
+excerpt: "Style presets gain structured schemas. Identity splits into creative director + 8 domain skills. Critique restructured from design research. 12 prompt stubs consolidated into agent definitions."
+tags: ["style-system", "identity", "critique", "architecture", "performance"]
+slug: "v0-6-3"
+---
+
+## Structured Style Presets
+
+Style `.yml` presets now carry 4 new blocks beyond tokens: **intensity** (variance/motion/density dials 1-10), **patterns** (component composition rules for card, button, input, badge, nav, layout), **constraints** (never/always guardrails), and **effects** (interaction vocabulary). All 34 presets updated.
+
+A new `STYLE.md` template renders these into a single agent-readable contract. A `token-mapping.md` reference maps `.yml` tokens to shadcn, Tailwind, vanilla CSS, and NativeWind theming APIs. Six new audit tests (T8-T13) validate the schema.
+
+## Domain Skills + Creative Director
+
+The identity phase splits creative decisions from technical execution. `gsp-identity-designer` becomes `gsp-creative-director` -- it picks colors, typefaces, and imagery direction. Eight new composable domain skills add technical precision after: `/gsp-color` (OKLCH palettes, WCAG contrast), `/gsp-typography` (mathematical scales, font loading), `/gsp-logo`, `/gsp-images`, `/gsp-icons`, `/gsp-textures`, `/gsp-video`, `/gsp-3d`.
+
+Each skill works standalone or as a pipeline building block. They load references on-demand via Read, not in execution_context.
+
+## Guidelines Pipeline Rewrite
+
+`gsp-brand-patterns` becomes `gsp-brand-guidelines` with a two-pass architecture. Pass 1 produces `.yml` + `STYLE.md` + `guidelines.html`. The user reviews in the browser. Pass 2 (after approval) produces `token-mapping.md` + component overrides. `gsp-pattern-architect` becomes `gsp-brand-engineer`.
+
+## Critique Restructure
+
+Research across NN/g, Google, Figma, and Designlab frameworks revealed the evaluation order matters. The critic now flows: **strategy** (is this solving the right problem?) -> **brand contract** (STYLE.md compliance) -> **usability** (Nielsen-scored X/50 with inline 1-5 anchors) -> **accessibility** -> **content quality** -> **implementation quality** (anti-patterns) -> **taste signals** -> synthesis.
+
+HIG, Nielsen heuristics, and anti-patterns are distilled into agent prompts (~30-40 lines each) instead of inlining full reference files (~1,400 lines saved per pipeline run). Anti-patterns yield to STYLE.md precedence -- if a preset explicitly defines a technique, it's an intentional brand choice, not a violation.
+
+## Prompt Consolidation
+
+All 12 numbered prompt stubs (`gsp/prompts/01-12`) deleted. They were vestigial -- methodology had migrated into agent definitions. Removed from 10 skills' execution_context, installer bundle dirs, audit tests, and documentation. The installer now cleans up legacy `prompts/` directories during install.
+
+## Naming Cleanup
+
+`/gsp:` (colon) -> `/gsp-` (hyphen) across all 29 source files. Source now matches Claude Code's registration syntax natively. Installer simplified -- removed prefix-adding logic. Integration tests rewritten (34 tests covering namespace contract across all 4 runtimes).
