@@ -4,6 +4,35 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+## [0.6.3] — 2026-03-28
+
+### Added
+- Structured style preset schema — `intensity`, `patterns`, `constraints`, `effects` blocks in all 34 `.yml` presets (#69)
+- `STYLE.md` template rendering all 4 schema blocks into a single agent-readable contract
+- `token-mapping.md` reference mapping `.yml` tokens to shadcn/MUI/Tailwind/NativeWind
+- 8 domain enrichment skills: `/gsp-color`, `/gsp-typography`, `/gsp-logo`, `/gsp-images`, `/gsp-icons`, `/gsp-textures`, `/gsp-video`, `/gsp-3d` (#75)
+- `gsp-creative-director` agent — creative decisions split from technical execution
+- `gsp-brand-engineer` agent — engineers operational artifacts from confirmed creative decisions
+- Visual quality checklist in builder agent (background treatment, state polish, icon/image/responsive craft)
+- Critique framework research (`dev/research/critique-framework-research.md`)
+
+### Changed
+- **Critique restructured** — evaluation order now strategy → brand contract → usability (Nielsen-scored) → accessibility → content → implementation → taste → synthesis, backed by NN/g/Google/Figma research (#72)
+- **Guidelines pipeline rewritten** — two-pass architecture: core artifacts → visual review → component specs
+- **`/gsp-brand-patterns` → `/gsp-brand-guidelines`** — skill renamed to match new scope
+- **`gsp-pattern-architect` → `gsp-brand-engineer`** — agent renamed
+- **`gsp-identity-designer` → `gsp-creative-director`** — agent renamed
+- **`/gsp:` → `/gsp-`** across all source files — matches Claude Code registration syntax
+- Distilled HIG, Nielsen, anti-patterns into agent prompts (~1,400 lines saved per pipeline run) — full refs on disk for edge-case Read (#72)
+- Anti-patterns now yield to STYLE.md precedence across designer, critic, and builder agents
+
+### Removed
+- 12 vestigial prompt stubs (`gsp/prompts/01-12`) — methodology consolidated into agent definitions (#77)
+- `gsp/prompts/` removed from installer bundle, audit tests, and docs
+- `.claude-plugin/` directory — plugin concept dropped
+- `gsp-identity-designer` and `gsp-pattern-architect` agents (replaced by above)
+- `gsp-brand-patterns` skill (replaced by `gsp-brand-guidelines`)
+
 ## [0.6.2] — 2026-03-26
 
 ### Added
