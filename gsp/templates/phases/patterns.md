@@ -42,7 +42,7 @@ If no UI library is detected, write up to 15 core component specs.
 
 ## Content Reference
 
-Each chunk follows the format in `references/chunk-format.md`.
+Each chunk follows the standard chunk format.
 
 ### {brand-name}.yml
 

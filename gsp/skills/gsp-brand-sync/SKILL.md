@@ -33,8 +33,8 @@ Compare a project's shipped state against its source brand across all dimensions
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../../references/design-tokens.md
-@${CLAUDE_SKILL_DIR}/../../references/chunk-format.md
+@${CLAUDE_SKILL_DIR}/../gsp-brand-guidelines/design-tokens.md
+@${CLAUDE_SKILL_DIR}/chunk-format.md
 </execution_context>
 
 <rules>
@@ -93,7 +93,7 @@ Use the Update Map from the sync report. For each confirmed change:
 
 **Personality** — update `{BRAND_PATH}/strategy/archetype.md` and `positioning.md`. Update `brand-platform.md` if values/promise shifted.
 
-Preserve chunk format per `references/chunk-format.md`. Update INDEX.md files if chunks were added.
+Preserve chunk format per `chunk-format.md`. Update INDEX.md files if chunks were added.
 
 ## Step 4: Summary
 

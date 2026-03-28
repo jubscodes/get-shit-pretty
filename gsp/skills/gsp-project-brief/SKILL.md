@@ -130,6 +130,6 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ## Step 5: Phase transition output
 
-Render phase transition (see `references/phase-transitions.md`).
+Invoke `/gsp-phase-transition` with phase `brief` and output directory `{PROJECT_PATH}/brief/`.
 </process>
 </output>

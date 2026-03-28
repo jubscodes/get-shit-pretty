@@ -104,11 +104,11 @@ The gap between "correct" and "good." Evaluate:
 - **Craft in details** — tinted shadows, considered spacing rhythm, typographic hierarchy through weight+color+spacing not just size
 - **Would someone ask "who designed this?"** — or does it look like any other product?
 
-Full scoring via `references/visual-taste.md` (15 items, X/75) — Read when you want to produce a formal taste score.
+Full scoring via `skills/gsp-project-critique/visual-taste.md` (15 items, X/75) — Read when you want to produce a formal taste score.
 
 ### Supplementary (Read from disk when needed)
 
-8. **Full anti-pattern scan** — Read `references/anti-patterns.md` for typography, color, and code quality patterns beyond the core checks above.
+8. **Full anti-pattern scan** — Read `skills/gsp-project-critique/anti-patterns.md` for typography, color, and code quality patterns beyond the core checks above.
 9. **Color composition** — Evaluate palette strategy using the inlined color-composition reference (60-30-10 rule, monochrome vs accent, warm/cool consistency).
 
 ### Synthesis
@@ -129,7 +129,7 @@ Write your critique as chunks to the project's critique directory (path provided
 
 ### Chunk files
 
-Write each chunk following the format in `references/chunk-format.md`:
+Write each chunk following the standard chunk format:
 
 1. **`critique.md`** (~120-180 lines) — Strategy evaluation, brand compliance (X/25 when STYLE.md), usability evaluation (10 heuristics scored 1-5, total X/50), accessibility findings, content quality, implementation quality, taste assessment. Taste scoring (X/75) included when `visual-taste.md` was read.
 2. **`prioritized-fixes.md`** (~50-100 lines) — Critical / Important / Polish fix lists with specific remediation per screen/component. **Tag style-level issues** with `[STYLE]` prefix — these need `/gsp-brand-refine` to update the `.yml` source, not just a design revision. Style-level: constraint violations, pattern mismatches, intensity miscalibration, missing bold bets. Screen-level: layout choices, content placement, component selection.

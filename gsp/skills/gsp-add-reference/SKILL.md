@@ -23,6 +23,11 @@ Add reference material to a project for downstream agents to consume.
 **Output:** `{project}/references/` with organized reference files + `references/INDEX.md`
 </objective>
 
+<rules>
+- Always use `AskUserQuestion` for user interaction — never prompt via plain text
+- One decision per question — never batch multiple questions in a single message
+</rules>
+
 <process>
 ## Step 0: Resolve project
 

@@ -27,7 +27,7 @@ Build the brand's visual identity.
 
 <execution_context>
 @${CLAUDE_SKILL_DIR}/../../templates/phases/identity.md
-@${CLAUDE_SKILL_DIR}/../../references/color-composition.md
+@${CLAUDE_SKILL_DIR}/../gsp-color/references/color-composition.md
 </execution_context>
 
 <rules>
@@ -113,7 +113,7 @@ After the creative-director finishes, invoke domain skills to add technical prec
 1. **Invoke `/gsp-logo --enrich`** — reads `logo-directions.md`, enriches each direction with detailed construction geometry, complete variation specs, clear space rules, and minimum size calculations.
 2. **Invoke `/gsp-color --enrich`** — reads `color-system.md`, generates OKLCH palettes via tints.dev, calculates WCAG contrast, writes `palettes.json`, enriches with contrast ratios and semantic mapping.
 3. **Invoke `/gsp-typography --enrich`** — reads `typography.md`, generates mathematical type scale, adds fluid type formulas, enriches with font loading instructions.
-4. **Invoke `/gsp-images --enrich`** — reads `imagery-style.md`, adds icon library specifics, CSS texture/treatment recipes, enriches with technical implementation details.
+4. **Invoke `/gsp-visuals --imagery --enrich`** — reads `imagery-style.md`, adds icon library specifics, CSS texture/treatment recipes, enriches with technical implementation details.
 
 Each skill loads its own domain references on-demand — no upfront context cost.
 
@@ -137,5 +137,5 @@ Use `AskUserQuestion`:
 
 Update `{BRAND_PATH}/STATE.md`: set Phase 3 (Identity) to `complete`, Prettiness Level to 80%.
 
-Render phase transition (see `references/phase-transitions.md`).
+Invoke `/gsp-phase-transition` with phase `identity` and output directory `{BRAND_PATH}/identity/`.
 </process>

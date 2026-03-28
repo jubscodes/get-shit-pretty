@@ -24,7 +24,7 @@
 
 ## Content Reference
 
-Each chunk follows the format in `references/chunk-format.md`. Below is the structural reference for what each chunk should contain:
+Each chunk follows the standard chunk format. Below is the structural reference for what each chunk should contain:
 
 ### ux-patterns.md
 - **Product type patterns:** established UX patterns for this category (e.g., dashboard, e-commerce, social, SaaS)

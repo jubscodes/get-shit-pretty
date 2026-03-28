@@ -27,7 +27,7 @@ Accept natural language feedback about brand visuals, identify which `.yml` valu
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../../references/design-tokens.md
+@${CLAUDE_SKILL_DIR}/../gsp-brand-guidelines/design-tokens.md
 </execution_context>
 
 <rules>

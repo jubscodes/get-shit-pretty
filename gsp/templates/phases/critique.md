@@ -28,7 +28,7 @@
 
 ## Content Reference
 
-Each chunk follows the format in `references/chunk-format.md`. Below is the structural reference for what each chunk should contain:
+Each chunk follows the standard chunk format. Below is the structural reference for what each chunk should contain:
 
 ### critique.md
 - **Heuristics evaluation:** 10 heuristics table (Heuristic, Score 1-5, Notes)

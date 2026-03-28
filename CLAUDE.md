@@ -19,24 +19,46 @@ Edit source under `gsp/`; the installer keeps runtimes in sync. Never edit insid
 
 Dual-diamond: **Branding** (discover → strategy → identity → patterns) + **Project** (brief → research → design → critique → build → review). Optional: launch. Verbal identity is merged into brand-strategy (4 phases, not 5).
 
-### Composable skills
+### Two skill layers
 
-Skills produce artifacts to `.design/`; agents consume them. The filesystem is the integration layer — no skill-to-skill invocation.
+**Expertise skills** (knowledge owners): `gsp-color`, `gsp-typography`, `gsp-visuals`, `gsp-accessibility`, `gsp-style`
 
-Composable skills work two ways: (1) standalone — user runs directly for quick output, (2) as building blocks — pipeline phases consume their output files. Each composable skill runs inline (no agent), is deterministic, writes to a predictable path, and produces foundation chunks per `references/chunk-format.md`.
+Own domain knowledge as sibling files (`domains/`, `references/`). Serve the full pipeline, not just one phase. Two consumption patterns:
+- **Read** (passive) — pipeline skill or agent reads expertise skill's sibling files for domain context
+- **Invoke** (active) — pipeline skill calls the expertise skill to run its logic (e.g. `--enrich`, `--validate`)
 
-Examples: `/gsp-accessibility` (WCAG audits), `/gsp-style` (tokens + foundations), `/gsp-palette` (OKLCH palettes), `/gsp-typescale` (type scale), `/gsp-design-system` (codebase design system scan).
+Rule: **never duplicate domain knowledge in pipeline skills.** If an expertise skill owns it, pipeline skills read or invoke.
+
+**Pipeline skills** (orchestrators): `brand-research`, `brand-strategy`, `brand-identity`, `brand-guidelines`, `project-brief`, `project-research`, `project-design`, `project-critique`, `project-build`, `project-review`, `launch`
+
+Own workflow: state management, phase gates, agent spawning, user interaction. Consume domain knowledge from expertise skills. Produce artifacts to `.design/`.
+
+### Skill architecture
+
+Skills are lean routers. SKILL.md handles mode/flag parsing, context resolution, and delegation. Domain knowledge, questioning frameworks, output templates, and technical specs live in sibling files that the skill reads on demand.
+
+Expertise skills use a `domains/` + `references/` structure:
+```
+gsp-color/
+├── SKILL.md              ← thin router (~60-80 lines)
+├── domains/
+│   ├── palette.md        ← OKLCH generation spec
+│   └── system.md         ← full color system direction
+└── references/
+    └── color-composition.md
+```
+
+The filesystem is the integration layer — skills produce artifacts to `.design/`; agents consume them. No skill-to-skill invocation except explicit `--enrich`/`--validate` calls.
 
 ## Pack structure
 
 | Directory | Contents |
 |-----------|----------|
-| `gsp/skills/` | 38 skills — each is a `gsp-<name>/SKILL.md` directory (single source for all runtimes) |
+| `gsp/skills/` | 34 skills — each is a `gsp-<name>/SKILL.md` directory with optional `domains/` and `references/` siblings |
 | `gsp/agents/` | 15 subagents (`gsp-{name}.md`) |
 | `gsp/hooks/` | Hooks (`hooks.json`) |
 | `gsp/prompts/` | Reserved (agent methodology lives in agent definitions) |
 | `gsp/templates/` | Project/brand config, state, brief, roadmap templates |
-| `gsp/references/` | Shared reference material (trends, HIG, chunk format) |
 | `.mcp.json` | Bundled MCP servers (GitHub, Figma) |
 | `scripts/` | Hook scripts and utilities (at repo root) |
 
@@ -63,10 +85,10 @@ Cross-references between skills use `gsp-` prefixed paths: `${CLAUDE_SKILL_DIR}/
 
 | Runtime | Skills location | Agents | Bundle location |
 |---------|-----------------|--------|-----------------|
-| Claude Code | `.claude/skills/` | `.claude/agents/` (15) | `.claude/{prompts,templates,references}/` |
-| OpenCode | `.opencode/skills/` | `.opencode/agents/` (15) | `.opencode/{prompts,templates,references}/` |
-| Gemini CLI | `.gemini/skills/` | `.gemini/agents/` (15, experimental) | `.gemini/{prompts,templates,references}/` |
-| Codex CLI | **`.agents/skills/`** (not `.codex/`) | **None** (not supported) | `.codex/{prompts,templates,references}/` |
+| Claude Code | `.claude/skills/` | `.claude/agents/` (15) | `.claude/{prompts,templates}/` |
+| OpenCode | `.opencode/skills/` | `.opencode/agents/` (15) | `.opencode/{prompts,templates}/` |
+| Gemini CLI | `.gemini/skills/` | `.gemini/agents/` (15, experimental) | `.gemini/{prompts,templates}/` |
+| Codex CLI | **`.agents/skills/`** (not `.codex/`) | **None** (not supported) | `.codex/{prompts,templates}/` |
 
 Skills are the single source for all runtimes — commands have been removed.
 
@@ -78,7 +100,7 @@ Key points:
 
 ## Local development
 
-`.claude/agents/`, `.claude/skills/*` (GSP skills), `.claude/{prompts,templates,references}` are **symlinks** to `gsp/` source dirs. Edit source under `gsp/` directly — changes reflect immediately without reinstalling. These paths are gitignored.
+`.claude/agents/`, `.claude/skills/*` (GSP skills), `.claude/{prompts,templates}` are **symlinks** to `gsp/` source dirs. Edit source under `gsp/` directly — changes reflect immediately without reinstalling. These paths are gitignored. Domain knowledge lives as sibling files inside skill directories — no separate `references/` runtime directory.
 
 To reinstall after adding/removing files: `node bin/install.js --claude --local`
 
@@ -88,7 +110,7 @@ To reinstall after adding/removing files: `node bin/install.js --claude --local`
 - Skill source of truth: `gsp/skills/gsp-{name}/SKILL.md`
 - Never edit inside `.claude/` directly — it's symlinked to source
 - Agent output paths must be dynamic: `"path provided by the skill that spawned you"` (no hardcoded `.design/` paths)
-- Skills resolve paths via `${CLAUDE_SKILL_DIR}/../../` for shared files (prompts, templates, references live directly in the runtime root, e.g. `.claude/prompts/`)
+- Skills resolve shared files via `${CLAUDE_SKILL_DIR}/../../` for templates, and `${CLAUDE_SKILL_DIR}/../gsp-{skill}/` for colocated references (see reference colocation rule)
 
 ### Agent input inlining rule
 
@@ -101,6 +123,44 @@ Exceptions — agents that legitimately need to read from disk:
 - `gsp-reviewer` — Grep/Glob on actual source files
 - `gsp-brand-syncer` — scans brand files + codebase
 - `gsp-accessibility-auditor` (code mode) — Grep/Glob on source files
+
+### Claude Code context cost model
+
+Understanding what loads when is critical for keeping sessions lean. These costs apply to every conversation, not just GSP workflows.
+
+**Session start (always loaded, every conversation):**
+- `.claude/agents/*.md` — full file content of every agent definition
+- `.claude/references/*.md` — full file content of every reference file
+- Skill descriptions — the `description:` line from each SKILL.md (negligible)
+- `CLAUDE.md` files — project and user-level
+
+**Skill invocation (loaded on demand):**
+- Full SKILL.md body — only when the skill is triggered
+- `@` references in `<execution_context>` — resolved and inlined when the skill runs
+- Sibling files in skill directories — **inert** until explicitly Read by the skill
+
+**Agent spawn (loaded on demand):**
+- Agent `.md` definition is already in context from session start
+- Agent gets its own context window with the spawning skill's prompt
+
+**Implications for GSP:**
+- **`gsp/references/` is empty — all references live in skill directories.** Domain knowledge is colocated with the expertise skill that owns it. Pipeline skills read from expertise skills via cross-skill paths. Nothing installs to `.claude/references/`.
+- **Keep agent definitions lean.** Agent `.md` files load at session start. Methodology and reference knowledge should be inlined by the spawning skill, not baked into the agent definition.
+- **Skill sibling files are free until used.** A skill directory with 74 `.yml` presets costs zero at session start. Use this for reference material, examples, and templates that the skill reads on demand.
+- **Cross-skill references use relative paths:** `${CLAUDE_SKILL_DIR}/../gsp-other-skill/ref.md` — this reads the file on demand with zero session-start cost.
+
+### Reference colocation rule
+
+Reference files live inside the skill directory that is their primary consumer, not in a shared `references/` directory. This ensures:
+1. Zero session-start context cost (sibling files are inert)
+2. Skills are self-contained and portable (standalone capability)
+3. References load only when the consuming skill runs
+
+**Single-owner references** go directly into the primary skill's directory.
+
+**Shared references** (consumed by 2-4 skills) go into the primary consumer's directory. Other skills read them via `${CLAUDE_SKILL_DIR}/../gsp-primary-skill/ref.md`.
+
+**Ubiquitous references** (consumed by 5+ skills, e.g. `chunk-format.md`, `phase-transitions.md`) are duplicated into each consuming skill's directory as sibling files. This costs disk space but ensures every skill is self-contained and works on all runtimes (no loose files at the skills root).
 
 ### Context optimization rules
 
@@ -129,7 +189,7 @@ These rules minimize token waste across the pipeline. Enforced by audit tests C1
 - `gsp/templates/projects/config.json` — project config template
 - `gsp/templates/branding/config.json` — brand config template
 - `gsp/templates/exports-index.md` — chunked exports index with BEGIN/END markers per phase
-- `gsp/references/chunk-format.md` — standard chunk format spec
+- `chunk-format.md` — standard chunk format spec (ubiquitous reference, duplicated into each consuming skill)
 
 ## npm publication
 
@@ -152,8 +212,8 @@ Internal development tools live in `dev/` (versioned in repo, never installed to
 
 | Path | Purpose |
 |------|---------|
-| `dev/skills/gsp-audit/` | Pipeline integrity checker — contracts, installer, runtime compat, versions, templates |
-| `dev/skills/gsp-runtime-compat/` | Fetch live runtime docs and flag drift against GSP installer |
+| `dev/skills/gspdev-audit/` | Pipeline integrity checker — contracts, installer, runtime compat, versions, templates |
+| `dev/skills/gspdev-runtime-compat/` | Fetch live runtime docs and flag drift against GSP installer |
 | `dev/scripts/audit-tests.sh` | Automated test suite (65 tests across 7 suites) |
 
 ### Running tests
@@ -169,13 +229,9 @@ bash dev/scripts/audit-tests.sh templates # template coherence
 
 ### Using dev skills
 
-To make dev skills available in your session, symlink into your personal skills:
-```bash
-ln -s "$(pwd)/dev/skills/gsp-audit" ~/.claude/skills/gsp-audit
-ln -s "$(pwd)/dev/skills/gsp-runtime-compat" ~/.claude/skills/gsp-runtime-compat
-```
+Dev skills use the `gspdev-` prefix so the installer's cleanup doesn't remove them. Run `node bin/install.js --claude --local` — it symlinks dev skills alongside GSP skills automatically.
 
-Then invoke `/gsp-audit` or `/gsp-runtime-compat drift`.
+Then invoke `/gspdev-audit` or `/gspdev-runtime-compat drift`.
 
 ## Inspiration links
 

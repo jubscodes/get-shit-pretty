@@ -44,7 +44,7 @@ Write your research as chunks to the project's research directory (path provided
 
 ### Research chunks
 
-Write each chunk following the format in `references/chunk-format.md`:
+Write each chunk following the standard chunk format:
 
 1. **`ux-patterns.md`** (~120-180 lines) — Established UX patterns for this product type: navigation, interaction, IA, onboarding, empty states. With sources and examples.
 2. **`competitor-ux.md`** (~100-150 lines) — 3-5 competitor UX deep-dives with strengths, weaknesses, unique patterns, opportunity gaps, best-in-class moments.

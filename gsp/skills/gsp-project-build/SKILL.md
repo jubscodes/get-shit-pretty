@@ -52,6 +52,11 @@ Implement designs as production-ready code in the codebase via phased pipeline w
 @${CLAUDE_SKILL_DIR}/../../templates/phases/build.md
 </execution_context>
 
+<rules>
+- Always use `AskUserQuestion` for user interaction — never prompt via plain text
+- One decision per question — never batch multiple questions in a single message
+</rules>
+
 <process>
 ## Step 0: Resolve project and brand
 
@@ -110,9 +115,9 @@ After scaffold completes, verify `{PROJECT_PATH}/build/SCAFFOLD-LOG.md` exists. 
 
 ## Step 2.5: Load build references
 
-Read these reference files (relative to skill dir `${CLAUDE_SKILL_DIR}/../../references/`):
-- `visual-effects.md`
-- `block-patterns.md`
+Read these reference files:
+- `${CLAUDE_SKILL_DIR}/visual-effects.md`
+- `${CLAUDE_SKILL_DIR}/../gsp-project-design/block-patterns.md`
 
 Hold their content for inlining into agent prompts in Steps 3 and 5.
 
@@ -126,7 +131,7 @@ Spawn `gsp-builder` agent with **execution_mode: foundations**.
 
 | File | Purpose |
 |------|---------|
-| `{BRAND_PATH}/patterns/{brand-name}.yml` | Token values only — used with `references/token-mapping.md` to generate CSS variables. Do NOT re-read patterns/constraints/effects from here — those are in STYLE.md. |
+| `{BRAND_PATH}/patterns/{brand-name}.yml` | Token values only — used with `gsp-brand-guidelines/token-mapping.md` to generate CSS variables. Do NOT re-read patterns/constraints/effects from here — those are in STYLE.md. |
 | `{BRAND_PATH}/patterns/STYLE.md` | Design law — philosophy, patterns, constraints, effects, bold bets, implementation hints (if exists; fall back to `{brand-name}.md`) |
 | `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations for target |
 | `.design/system/STACK.md` | Stack state |
@@ -348,7 +353,7 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ### Phase transition output
 
-Render phase transition (see `references/phase-transitions.md`). Include screen count and build status in the output.
+Invoke `/gsp-phase-transition` with phase `build` and output directory `{PROJECT_PATH}/build/`.
 
 ---
 

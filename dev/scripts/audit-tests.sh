@@ -222,8 +222,9 @@ if should_run contracts; then
   MISSING_INVOCABLE=()
   for skill in gsp/skills/*/SKILL.md; do
     dir=$(basename "$(dirname "$skill")")
-    # Skip the plugin entry point (get-shit-pretty) — it uses user-invocable: false
+    # Skip non-user-invocable utility skills
     [[ "$dir" == "get-shit-pretty" ]] && continue
+    [[ "$dir" == "gsp-phase-transition" ]] && continue
     if ! grep -q '^user-invocable: true' "$skill"; then
       MISSING_INVOCABLE+=("$dir")
     fi
@@ -251,8 +252,8 @@ if should_run contracts; then
         C10_OK=false
       fi
     fi
-    # Must reference current bundle dirs (templates/, references/)
-    for dir in templates references; do
+    # Must reference current bundle dirs (templates/)
+    for dir in templates; do
       if ! grep -q "$dir/" "$UPDATE_SKILL"; then
         C10_OK=false
       fi
@@ -343,7 +344,7 @@ if should_run installer; then
 
   # I5: Bundle directories exist
   BUNDLE_OK=true
-  for dir in gsp/templates gsp/references; do
+  for dir in gsp/templates; do
     if [[ ! -d "$dir" ]]; then
       BUNDLE_OK=false
       fail "I5 Missing bundle dir" "$dir"
@@ -579,10 +580,10 @@ fi
 if should_run runtime; then
   header "Runtime Compatibility"
 
-  BASELINE="dev/skills/gsp-runtime-compat/references/baseline.md"
+  BASELINE="dev/skills/gspdev-runtime-compat/references/baseline.md"
 
   if [[ ! -f "$BASELINE" ]]; then
-    fail "R0 Baseline missing" "$BASELINE not found — run /gsp-runtime-compat to generate"
+    fail "R0 Baseline missing" "$BASELINE not found — run /gspdev-runtime-compat to generate"
   else
     pass "R0 Baseline reference exists"
 
@@ -765,12 +766,15 @@ if should_run templates; then
     warn "T4 Exports index missing" "$EXPORTS not found"
   fi
 
-  # T5: Chunk format reference exists and is non-empty
-  CHUNK_REF="gsp/references/chunk-format.md"
-  if [[ -f "$CHUNK_REF" && -s "$CHUNK_REF" ]]; then
-    pass "T5 Chunk format reference exists"
+  # T5: Chunk format reference exists in consuming skills (ubiquitous, duplicated)
+  T5_FOUND=0
+  for skill_dir in gsp/skills/gsp-color gsp/skills/gsp-typography gsp/skills/gsp-style; do
+    [[ -f "$skill_dir/chunk-format.md" && -s "$skill_dir/chunk-format.md" ]] && ((T5_FOUND++))
+  done
+  if [[ $T5_FOUND -ge 3 ]]; then
+    pass "T5 Chunk format reference exists (ubiquitous, in consuming skills)"
   else
-    fail "T5 Chunk format reference" "Missing or empty: $CHUNK_REF"
+    fail "T5 Chunk format reference" "Missing from consuming skills ($T5_FOUND/3 found)"
   fi
 
   # T6: State templates exist
@@ -873,7 +877,7 @@ if should_run templates; then
   fi
 
   # T13: Token mapping reference exists
-  TM_REF="gsp/references/token-mapping.md"
+  TM_REF="gsp/skills/gsp-brand-guidelines/token-mapping.md"
   if [[ -f "$TM_REF" && -s "$TM_REF" ]]; then
     pass "T13 Token mapping reference exists"
   else
@@ -939,18 +943,30 @@ if should_run prompts; then
     warn "P3 Large <rules> sections" "${P3_OVER[*]}"
   fi
 
-  # P4: Cross-file duplicate lines — lines appearing in 3+ files
-  # Extract non-blank, non-header, non-trivial lines (>30 chars) from all files
-  P4_DUPES=0
-  ALL_PROMPT_FILES=$(find gsp/skills -name 'SKILL.md' && find gsp/agents -name 'gsp-*.md')
-  P4_RESULT=$(echo "$ALL_PROMPT_FILES" | xargs grep -hx '.\{30,\}' 2>/dev/null \
-    | grep -v '^#\|^---\|^$\|^\s*$\|^```\|^|' \
-    | sort | uniq -c | sort -rn | awk '$1 >= 3 { print }' | head -10)
-  if [[ -z "$P4_RESULT" ]]; then
-    pass "P4 No cross-file duplicate lines (≥3 files)"
+  # P4: Interactive skills must have UX contract rules
+  # Every skill with AskUserQuestion in allowed-tools must include both:
+  #   1. "One decision per question" (or "one question at a time")
+  #   2. "Always use AskUserQuestion" (or "AskUserQuestion for user")
+  P4_MISSING=()
+  for skill in gsp/skills/*/SKILL.md; do
+    dir=$(basename "$(dirname "$skill")")
+    [[ "$dir" == "get-shit-pretty" ]] && continue
+    # Only check skills that have AskUserQuestion in allowed-tools (frontmatter section)
+    if sed -n '/^allowed-tools:/,/^---/p' "$skill" | grep -q 'AskUserQuestion' 2>/dev/null; then
+      HAS_ONE_Q=$(grep -ci 'one decision per question\|one.*question.*at a time' "$skill")
+      HAS_ASK=$(grep -ci 'always use.*AskUserQuestion\|AskUserQuestion.*for user' "$skill")
+      if [[ "$HAS_ONE_Q" -eq 0 || "$HAS_ASK" -eq 0 ]]; then
+        MISSING=""
+        [[ "$HAS_ONE_Q" -eq 0 ]] && MISSING="one-decision"
+        [[ "$HAS_ASK" -eq 0 ]] && MISSING="${MISSING:+$MISSING+}ask-rule"
+        P4_MISSING+=("$dir:$MISSING")
+      fi
+    fi
+  done
+  if [[ ${#P4_MISSING[@]} -eq 0 ]]; then
+    pass "P4 All interactive skills have UX contract rules"
   else
-    P4_DUPES=$(echo "$P4_RESULT" | wc -l | tr -d ' ')
-    warn "P4 Cross-file duplicates ($P4_DUPES patterns)" "Run with verbose for details"
+    fail "P4 Interactive skills missing UX rules" "${P4_MISSING[*]}"
   fi
 
   # P5: Skill↔agent instruction overlap — shared non-trivial lines between paired files

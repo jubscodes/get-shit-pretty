@@ -28,7 +28,7 @@ Operationalize brand identity into project-ready artifacts and complete the bran
 
 <execution_context>
 @${CLAUDE_SKILL_DIR}/../../templates/phases/patterns.md
-@${CLAUDE_SKILL_DIR}/../../references/design-tokens.md
+@${CLAUDE_SKILL_DIR}/design-tokens.md
 </execution_context>
 
 <rules>
@@ -212,7 +212,7 @@ Update `{BRAND_PATH}/STATE.md`:
 
 ## Step 5: Phase transition output
 
-Render phase transition (see `references/phase-transitions.md`).
+Invoke `/gsp-phase-transition` with phase `guidelines` and output directory `{BRAND_PATH}/patterns/`.
 
 **E2E mode:** Read `{BRAND_PATH}/config.json`. If `e2e` is `true`, auto-invoke `/gsp-start` via Skill tool — it will detect the completed brand and route directly to project setup (Step 4). No need to ask the user.
 

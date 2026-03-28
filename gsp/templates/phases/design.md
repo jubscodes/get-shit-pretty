@@ -38,7 +38,7 @@ Self-contained HTML wireframe preview:
 
 ## Content Reference
 
-Each chunk follows the format in `references/chunk-format.md`. Below is the structural reference for what each chunk should contain:
+Each chunk follows the standard chunk format. Below is the structural reference for what each chunk should contain:
 
 ### screen-{NN}-{name}.md
 - **Purpose:** what this screen does

@@ -165,7 +165,7 @@ When in **revision mode** (addressing QA issues), append a revision section:
 
 ### `build/INDEX.md`
 
-After writing BUILD-LOG.md, write `build/INDEX.md` following the standard chunk INDEX format (see `references/chunk-format.md`). Reference BUILD-LOG.md (and CODE.md + components/ in figma mode).
+After writing BUILD-LOG.md, write `build/INDEX.md` following the standard chunk INDEX format (standard chunk format). Reference BUILD-LOG.md (and CODE.md + components/ in figma mode).
 
 > **Note:** `codebase/MANIFEST.md` is written by the skill (`project-build`), not by this agent.
 

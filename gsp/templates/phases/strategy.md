@@ -27,7 +27,7 @@
 
 ## Content Reference
 
-Each chunk follows the format in `references/chunk-format.md`.
+Each chunk follows the standard chunk format.
 
 ### positioning.md
 - Positioning statement: For {audience} who {need}, {brand} is the {category} that {benefit} because {reason}

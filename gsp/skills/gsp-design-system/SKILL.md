@@ -35,6 +35,11 @@ Scan the codebase and produce five focused design system documents.
 @${CLAUDE_SKILL_DIR}/../../templates/system/CONCERNS.md
 </execution_context>
 
+<rules>
+- Always use `AskUserQuestion` for user interaction — never prompt via plain text
+- One decision per question — never batch multiple questions in a single message
+</rules>
+
 <process>
 ## Step 0: Prepare output directory
 

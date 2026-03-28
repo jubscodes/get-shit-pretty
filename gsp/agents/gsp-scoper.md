@@ -44,7 +44,7 @@ Write your brief as chunks to the project's brief directory (path provided by th
 
 ### Brief chunks
 
-Write each chunk following the format in `references/chunk-format.md`:
+Write each chunk following the standard chunk format:
 
 1. **`scope.md`** (~80-120 lines) — Prioritized screen list, component scope, project boundaries, success criteria, dependencies, issue framing
 2. **`target-adaptations.md`** (~60-100 lines) — Token overrides, component adaptations, platform considerations, implementation target mapping

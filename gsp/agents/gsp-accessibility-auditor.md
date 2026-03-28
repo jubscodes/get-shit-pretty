@@ -58,7 +58,7 @@ Write your audit as chunks to the output directory (path provided by the skill t
 
 ### Chunk files
 
-Write each chunk following the format in `references/chunk-format.md`:
+Write each chunk following the standard chunk format:
 
 1. **`accessibility-audit.md`** (~100-150 lines) — Perceivable, Operable, Understandable, Robust checklists (pass/fail per criterion with notes), Mobile accessibility, Cognitive accessibility, summary (total pass/fail/not-applicable counts, overall conformance level), accessibility statement draft
 2. **`accessibility-fixes.md`** (~50-100 lines) — Violations table (issue, severity Critical/Major/Minor, WCAG criterion, remediation steps). Only Critical and Major severity items.

@@ -30,7 +30,7 @@ Design 3 distinct logo directions for a brand.
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../../references/chunk-format.md
+@${CLAUDE_SKILL_DIR}/chunk-format.md
 </execution_context>
 
 <rules>
@@ -117,7 +117,7 @@ Resolve output path:
 - Within a project: `{PROJECT_PATH}/references/logo-directions.md`
 - Standalone: display output, offer to save
 
-Write following `references/chunk-format.md` format. Target: 100-140 lines.
+Write following `chunk-format.md` format. Target: 100-140 lines.
 
 Structure:
 ```markdown

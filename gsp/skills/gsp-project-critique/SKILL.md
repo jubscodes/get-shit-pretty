@@ -70,9 +70,9 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 
 ## Step 1.8: Load critique references
 
-Read these reference files (relative to skill dir `${CLAUDE_SKILL_DIR}/../../references/`):
-- `wcag-checklist.md`
-- `color-composition.md`
+Read these reference files:
+- `${CLAUDE_SKILL_DIR}/../gsp-accessibility-audit/wcag-checklist.md`
+- `${CLAUDE_SKILL_DIR}/../gsp-color/references/color-composition.md`
 
 Hold their content for inlining into agent prompts in Step 2.
 
@@ -92,7 +92,7 @@ Hold their content for inlining into agent prompts in Step 2.
 - **Content of** BRIEF.md
 - **Content of** color composition reference (loaded in Step 1.8)
 - Critique output template (from execution_context)
-- `references_path`: `${CLAUDE_SKILL_DIR}/../../references/` — for supplementary Read access to visual-taste.md, anti-patterns.md
+- `references_path`: `${CLAUDE_SKILL_DIR}/` — for supplementary Read access to visual-taste.md, anti-patterns.md
 - Output path: `{PROJECT_PATH}/critique/`
 
 **Agent 2: gsp-accessibility-auditor** — Check if `{PROJECT_PATH}/critique/accessibility-audit.md` already exists from a prior `/gsp-accessibility` run. If yes, skip spawning the accessibility auditor — reuse the existing output. If no, pass in the agent prompt:
@@ -166,7 +166,7 @@ If verdict is **Fail**:
 
 ## Step 6: Phase transition output
 
-Render phase transition (see `references/phase-transitions.md`). This phase has pass/fail variants — the reference covers both.
+Invoke `/gsp-phase-transition` with phase `critique` and output directory `{PROJECT_PATH}/critique/`.
 
 If critique identified brand-level issues (palette contrast, typography weight, spacing scale), note: "Some issues are brand-level — run `/gsp-brand-refine` to adjust tokens without re-running identity."
 </process>

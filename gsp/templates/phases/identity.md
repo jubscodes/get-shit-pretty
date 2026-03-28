@@ -31,7 +31,7 @@ Also produces `palettes.json` — machine-readable OKLCH color scales.
 
 ## Content Reference
 
-Each chunk follows the format in `references/chunk-format.md`.
+Each chunk follows the standard chunk format.
 
 ### logo-directions.md
 - 3 directions each with:

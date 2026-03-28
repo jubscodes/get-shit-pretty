@@ -23,6 +23,11 @@ Create terminal art with the user in the loop — gather intent, create, iterate
 **Agent:** `gsp-ascii-artist`
 </objective>
 
+<rules>
+- Always use `AskUserQuestion` for user interaction — never prompt via plain text
+- One decision per question — never batch multiple questions in a single message
+</rules>
+
 <process>
 ## Step 1: Gather intent
 

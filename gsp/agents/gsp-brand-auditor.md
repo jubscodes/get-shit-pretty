@@ -38,7 +38,7 @@ Assess existing brand identities — coherence, market fit, equity, evolution op
 <output>
 Write 5 chunks + INDEX.md to the audit directory (path provided by the skill that spawned you).
 
-Each chunk follows `references/chunk-format.md`.
+Each chunk follows the standard chunk format.
 
 1. **`brand-inventory.md`** — structured inventory of all current assets (logo, colors with hex, typefaces, voice samples, messaging, positioning)
 2. **`coherence-assessment.md`** — strategy coherence (1-5), strategy↔visual alignment (1-5), key disconnects

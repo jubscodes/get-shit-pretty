@@ -33,7 +33,7 @@ Run full accessibility audits — design screen reviews, codebase ARIA/keyboard/
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../../references/wcag-checklist.md
+@${CLAUDE_SKILL_DIR}/wcag-checklist.md
 </execution_context>
 
 <rules>
@@ -41,7 +41,7 @@ Run full accessibility audits — design screen reviews, codebase ARIA/keyboard/
 - One decision per question — never batch multiple questions in a single message
 - Statement mode reads prior audit results — fails gracefully if none exist
 - Default conformance level is AA unless overridden by `--level AAA` or config
-- Foundation chunks follow `references/chunk-format.md` format
+- Foundation chunks follow `chunk-format.md` format
 </rules>
 
 <process>

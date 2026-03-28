@@ -64,7 +64,7 @@ Baseline design principles — **STYLE.md overrides these** when present. A brut
 - Accessibility: VoiceOver labels on every element, respect `prefers-reduced-motion`, support all 12 text sizes
 - Gestures: never override system back, tap for primary action, long press for context menu
 
-Full reference: `references/apple-hig-patterns.md` (available via Read for specific HIG pattern details).
+Full reference: `skills/gsp-project-design/apple-hig-patterns.md` (available via Read for specific HIG pattern details).
 
 ## Anti-Pattern Awareness (distilled)
 
@@ -93,7 +93,7 @@ Write your screens as chunks to the project's design directory (path provided by
 
 ### Screen chunks
 
-Write one chunk per screen (~150-200 lines each), following `references/chunk-format.md`:
+Write one chunk per screen (~150-200 lines each), following the standard chunk format:
 
 **Naming:** `screen-{NN}-{kebab-case-name}.md` (e.g., `screen-01-home.md`, `screen-03-user-profile.md`)
 
