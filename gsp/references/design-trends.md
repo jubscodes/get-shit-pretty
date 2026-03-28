@@ -1,6 +1,6 @@
 # Design Trends Reference — Index
 
-Production-ready style presets and deep engineering references for current design trends. Consolidated in the `/gsp:style` skill.
+Production-ready style presets and deep engineering references for current design trends. Consolidated in the `/gsp-style` skill.
 
 Last updated: 2026-03-14
 
@@ -8,13 +8,13 @@ Last updated: 2026-03-14
 
 ## Style Presets (34)
 
-Style presets with structured tokens live in the `/gsp:style` skill at `skills/gsp-style/styles/`. Each preset is a YAML file with color, typography, shape, elevation, spacing, and motion tokens ready for W3C Design Token expansion.
+Style presets with structured tokens live in the `/gsp-style` skill at `skills/gsp-style/styles/`. Each preset is a YAML file with color, typography, shape, elevation, spacing, and motion tokens ready for W3C Design Token expansion.
 
-Run `/gsp:style --list` to see all available styles, or read `skills/gsp-style/styles/INDEX.yml` for the full catalog with tags and vibes.
+Run `/gsp-style --list` to see all available styles, or read `skills/gsp-style/styles/INDEX.yml` for the full catalog with tags and vibes.
 
 ## Deep Engineering References (9)
 
-Detailed CSS implementation guides, framework notes, and accessibility analysis live in the `/gsp:style` skill at `skills/gsp-style/trends/`:
+Detailed CSS implementation guides, framework notes, and accessibility analysis live in the `/gsp-style` skill at `skills/gsp-style/trends/`:
 
 | # | Trend | Description | Compat |
 |---|-------|-------------|--------|

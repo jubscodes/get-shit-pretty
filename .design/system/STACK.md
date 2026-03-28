@@ -35,7 +35,7 @@
 | Layouts | N/A |
 | Pages / Screens | N/A |
 | Tokens / Theme | `gsp/references/design-tokens.md`, `.design/branding/get-shit-pretty/system/tokens.json` |
-| Config | `package.json`, `.claude-plugin/plugin.json`, `.mcp.json`, `gsp/hooks/hooks.json` |
+| Config | `package.json`, `.mcp.json`, `gsp/hooks/hooks.json` |
 | Public / Assets | N/A — distributed via npm; no static assets |
 | Installer | `bin/install.js` (1,847 lines — multi-runtime installer) |
 | Scripts | `scripts/gsp-statusline.js`, `scripts/statusline-dispatcher.js`, `scripts/lint-check.sh` |

@@ -23,7 +23,7 @@ This file is the entry point for coding agents consuming GSP design output.
 <!-- BEGIN:system -->
 | Section | Chunk | Lines |
 |---------|-------|-------|
-| _(populated by /gsp:brand-system — lives in brand directory)_ | | |
+| _(populated by /gsp-brand-system — lives in brand directory)_ | | |
 
 ### Foundations
 
@@ -43,7 +43,7 @@ This file is the entry point for coding agents consuming GSP design output.
 <!-- BEGIN:brief -->
 | Section | File |
 |---------|------|
-| _(populated by /gsp:project-brief)_ | |
+| _(populated by /gsp-project-brief)_ | |
 <!-- END:brief -->
 
 ## Project Research
@@ -51,7 +51,7 @@ This file is the entry point for coding agents consuming GSP design output.
 <!-- BEGIN:research -->
 | Section | File |
 |---------|------|
-| _(populated by /gsp:project-research)_ | |
+| _(populated by /gsp-project-research)_ | |
 <!-- END:research -->
 
 ## Design
@@ -59,7 +59,7 @@ This file is the entry point for coding agents consuming GSP design output.
 <!-- BEGIN:design -->
 | # | Screen | File | Components Used |
 |---|--------|------|-----------------|
-| _(populated by /gsp:project-design)_ | | | |
+| _(populated by /gsp-project-design)_ | | | |
 
 ### Shared
 
@@ -73,7 +73,7 @@ This file is the entry point for coding agents consuming GSP design output.
 <!-- BEGIN:critique -->
 | Section | File |
 |---------|------|
-| _(populated by /gsp:project-critique)_ | |
+| _(populated by /gsp-project-critique)_ | |
 <!-- END:critique -->
 
 ## Build
@@ -81,7 +81,7 @@ This file is the entry point for coding agents consuming GSP design output.
 <!-- BEGIN:build -->
 | Section | File |
 |---------|------|
-| _(populated by /gsp:project-build)_ | |
+| _(populated by /gsp-project-build)_ | |
 <!-- END:build -->
 
 ## QA Review
@@ -89,7 +89,7 @@ This file is the entry point for coding agents consuming GSP design output.
 <!-- BEGIN:review -->
 | Section | File |
 |---------|------|
-| _(populated by /gsp:project-review)_ | |
+| _(populated by /gsp-project-review)_ | |
 <!-- END:review -->
 
 ## Launch Campaign (Optional)
@@ -97,5 +97,5 @@ This file is the entry point for coding agents consuming GSP design output.
 <!-- BEGIN:launch -->
 | Section | File |
 |---------|------|
-| _(populated by /gsp:launch — optional)_ | |
+| _(populated by /gsp-launch — optional)_ | |
 <!-- END:launch -->

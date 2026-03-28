@@ -1,5 +1,5 @@
 ---
-name: progress
+name: gsp-progress
 description: How pretty are we?
 user-invocable: true
 model: sonnet
@@ -57,7 +57,7 @@ Determine the Brand Mark diamond states:
 
 For each phase marked as complete in STATE.md, verify the phase directory contains at least 1 chunk file. If `status === 'complete'` and chunk count is 0, display that phase as `◆!` with note "(empty — may need re-run)".
 
-If `config.json` is missing or unparseable for any instance, show the instance name with "(config error — run /gsp:doctor)" instead of crashing.
+If `config.json` is missing or unparseable for any instance, show the instance name with "(config error — run /gsp-doctor)" instead of crashing.
 
 ## Step 5: Display progress
 
@@ -66,15 +66,15 @@ Output as plain text using the visual elements from the styling section above.
 ### Empty State
 
 ```
-  /gsp: ◇◇
+  /gsp- ◇◇
 
   no brands or projects found.
-  run /gsp:start to begin.
+  run /gsp-start to begin.
 ```
 
 ### Standard State — render these elements:
 
-**Brand Mark:** `/gsp:` (accent+bold) followed by state diamonds
+**Brand Mark:** `/gsp-` (accent+bold) followed by state diamonds
 
 **Labeled Divider:** `  ─── {Label} ──────────────────` (tertiary `───`, secondary+bold label)
 
@@ -93,12 +93,12 @@ Column positions: phase at col 4, status at col 19, chunks at col 29, time at co
 **Collapsed complete items:**
 When 100% complete, single-line: `  acme-corp ◆ complete (4/4, 11 chunks)`
 
-**Next Skill:** `  → next: /gsp:brand-identity` (secondary `→ next:`, accent skill name)
+**Next Skill:** `  → next: /gsp-brand-identity` (secondary `→ next:`, accent skill name)
 
 ### Example: Early State (2/4 branding)
 
 ```
-  /gsp: ◈◇
+  /gsp- ◈◇
 
 
   ─── Brands ───────────────────────────
@@ -113,7 +113,7 @@ When 100% complete, single-line: `  acme-corp ◆ complete (4/4, 11 chunks)`
     identity       ◇         —         —
     patterns       ◇         —         —
 
-  → next: /gsp:brand-identity
+  → next: /gsp-brand-identity
 
 
   ─── Overall ──────────────────────────
@@ -127,7 +127,7 @@ When 100% complete, single-line: `  acme-corp ◆ complete (4/4, 11 chunks)`
 ### Example: Late State (brand complete, 4/6 project)
 
 ```
-  /gsp: ◆◈
+  /gsp- ◆◈
 
 
   ─── Brands ───────────────────────────
@@ -149,7 +149,7 @@ When 100% complete, single-line: `  acme-corp ◆ complete (4/4, 11 chunks)`
     build          ◈         —         —
     review         ◇         —         —
 
-  → next: /gsp:project-build
+  → next: /gsp-project-build
 
 
   ─── Overall ──────────────────────────
@@ -169,18 +169,18 @@ After the summary, if everything is 100% complete, add: `  fully pretty.` in pri
 For each in-progress instance, identify the next pending phase and suggest the skill.
 
 **Brand routing:**
-- Phase 1 (Research) pending -> `/gsp:brand-research`
-- Phase 2 (Strategy) pending -> `/gsp:brand-strategy`
-- Phase 3 (Identity) pending -> `/gsp:brand-identity`
-- Phase 4 (Patterns) pending -> `/gsp:brand-patterns`
+- Phase 1 (Research) pending -> `/gsp-brand-research`
+- Phase 2 (Strategy) pending -> `/gsp-brand-strategy`
+- Phase 3 (Identity) pending -> `/gsp-brand-identity`
+- Phase 4 (Patterns) pending -> `/gsp-brand-guidelines`
 
 **Project routing:**
-- Brief pending -> `/gsp:project-brief`
-- Research pending -> `/gsp:project-research`
-- Design pending -> `/gsp:project-design`
-- Critique pending -> `/gsp:project-critique`
-- Build pending -> `/gsp:project-build`
-- Review pending -> `/gsp:project-review`
+- Brief pending -> `/gsp-project-brief`
+- Research pending -> `/gsp-project-research`
+- Design pending -> `/gsp-project-design`
+- Critique pending -> `/gsp-project-critique`
+- Build pending -> `/gsp-project-build`
+- Review pending -> `/gsp-project-review`
 
 Output this as a single block. Do NOT add commentary or suggestions beyond the dashboard content.
 </process>

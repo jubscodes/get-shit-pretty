@@ -1,5 +1,5 @@
 ---
-name: start
+name: gsp-start
 description: Start here — picks up where you left off
 user-invocable: true
 model: sonnet
@@ -64,7 +64,7 @@ Scan `.design/` for existing brands and projects:
 
 ### Step 1b: Run design system scan (background)
 
-Spawn `/gsp:design-system` as a background agent (`run_in_background: true`, `subagent_type: "general-purpose"`). It writes to `.design/system/` — don't wait for it. Store the task reference for the brand essence questions or Step 4.
+Spawn `/gsp-design-system` as a background agent (`run_in_background: true`, `subagent_type: "general-purpose"`). It writes to `.design/system/` — don't wait for it. Store the task reference for the brand essence questions or Step 4.
 
 ### Step 1c: Greet
 
@@ -80,7 +80,7 @@ Adapt the greeting based on what the scan revealed. Use plain text with Unicode 
 - **Summary box:** `┌──┐│└──┘` border with key-value pairs inside
 
 **Fresh start (no `.design/`):**
-Show `  /gsp: ◇◇\n  looks like a fresh start.` (append codebase scanning note if `package.json` exists). Use `AskUserQuestion` with: Brand identity, Design project, Both (brand + project), Quick project.
+Show `  /gsp- ◇◇\n  looks like a fresh start.` (append codebase scanning note if `package.json` exists). Use `AskUserQuestion` with: Brand identity, Design project, Both (brand + project), Quick project.
 
 **Legacy `.design/` detected (flat structure, pre-0.4.0):**
 Acknowledge the legacy project. Use `AskUserQuestion`: Start fresh brand, Start design project, Keep working.
@@ -98,7 +98,7 @@ Show compact brand (single-line if complete) + full project pipeline flow. Then 
 When codebase has been scanned (`.design/system/STACK.md` exists), show a Summary Box using data from STACK.md and COMPONENTS.md:
 ```
   ┌──────────────────────────────────────────┐
-  │  /gsp: ◆◈                               │
+  │  /gsp- ◆◈                               │
   │                                          │
   │  framework     Next.js 14               │
   │  styling       Tailwind + shadcn/ui     │
@@ -118,7 +118,7 @@ From the greeting exchange, determine which flow to run:
 - **Design project** → Check for brands first. If none exist, explain they need a brand first. Offer to create one, then auto-transition to project flow.
 - **Full design (brand + project)** → Brand flow (Step 3), with E2E flag so brand completion auto-transitions to project flow (Step 4)
 - **Quick project** → Quick flow (Step 5)
-- **Continue existing work** → route to `/gsp:progress`
+- **Continue existing work** → route to `/gsp-progress`
 
 ## Step 3: Brand flow
 
@@ -196,10 +196,10 @@ Skip any question you can already answer from prior context. Don't over-ask.
 
 6. Route using `AskUserQuestion` — always offer Continue / Stop here / What happens next:
 
-- **Brand-only, new →** continue to `/gsp:brand-research`
-- **Brand-only, evolve →** continue to `/gsp:brand-audit`
-- **E2E, new →** continue to `/gsp:brand-research` (complete the entire brand pipeline first — research → strategy → identity → patterns — then auto-transition to Step 4 for project setup). Set `"e2e": true` in config.json so brand-patterns knows to route to project flow after completion.
-- **E2E, evolve →** continue to `/gsp:brand-audit` (complete full brand pipeline, then auto-transition to Step 4). Set `"e2e": true` in config.json.
+- **Brand-only, new →** continue to `/gsp-brand-research`
+- **Brand-only, evolve →** continue to `/gsp-brand-audit`
+- **E2E, new →** continue to `/gsp-brand-research` (complete the entire brand pipeline first — research → strategy → identity → patterns — then auto-transition to Step 4 for project setup). Set `"e2e": true` in config.json so brand-patterns knows to route to project flow after completion.
+- **E2E, evolve →** continue to `/gsp-brand-audit` (complete full brand pipeline, then auto-transition to Step 4). Set `"e2e": true` in config.json.
 
 ## Step 4: Project flow
 
@@ -258,8 +258,8 @@ Skip any question you can already answer from the codebase scan. Don't over-ask.
 - `.design/projects/{name}/exports/INDEX.md` from `${CLAUDE_SKILL_DIR}/../../templates/exports-index.md`
 
 9. Route using `AskUserQuestion`: "Project set up! Ready to scope what you're building?"
-  - **Continue to scoping** — "Scope the project now" → invoke `/gsp:project-brief` via Skill tool
-  - **Stop here** — "I'll come back later" → confirm files are saved, show how to resume with `/gsp:start`
+  - **Continue to scoping** — "Scope the project now" → invoke `/gsp-project-brief` via Skill tool
+  - **Stop here** — "I'll come back later" → confirm files are saved, show how to resume with `/gsp-start`
   - **What happens next?** — "Explain the scoping phase" → explain what project-brief does (screen list, component adaptations, gap analysis) and how it uses the brief
 
 ## Step 5: Quick project flow
@@ -279,8 +279,8 @@ Read `${CLAUDE_SKILL_DIR}/../../skills/gsp-style/styles/INDEX.yml` and present s
 mkdir -p .design/branding/_style-{preset}/patterns/
 ```
 
-2. Invoke `/gsp:style {preset}` via Skill tool — this writes:
-   - `tokens.json` (W3C design tokens)
+2. Invoke `/gsp-style {preset}` via Skill tool — this writes:
+   - `{preset}.yml` (brand style preset)
    - Foundation chunks (color, typography, spacing, elevation, radius)
    - `INDEX.md`
 
@@ -324,7 +324,7 @@ Continue directly to Step 4 (project flow) with these modifications:
 ### Upgrade path
 
 If a user later wants full branding, they can:
-1. Run `/gsp:start` → "Brand identity" to create a real brand
+1. Run `/gsp-start` → "Brand identity" to create a real brand
 2. Full diamond produces identity + patterns with real tokens
 3. Update the project's `brand.ref` to point to the new brand
 4. Re-run build phases — they pick up the new tokens automatically

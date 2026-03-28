@@ -16,10 +16,9 @@ Dev tool for publishing a new GSP release. Orchestrates the full publish pipelin
 
 Repository: jubscodes/get-shit-pretty
 
-Version is tracked in three files that must agree:
+Version is tracked in two files that must agree:
 - `VERSION` — single version string (no `v` prefix)
 - `package.json` → `"version"`
-- `.claude-plugin/plugin.json` → `"version"`
 
 GitHub releases use `v`-prefixed tags (e.g., `v0.5.2`).
 </context>
@@ -86,7 +85,6 @@ Update all three files:
 
 1. **`VERSION`** — write the new version string
 2. **`package.json`** — update `"version"` field
-3. **`.claude-plugin/plugin.json`** — update `"version"` field
 
 ## Step 4: Changelog
 
@@ -150,7 +148,7 @@ Present to the user for review before writing.
 Stage and commit all version-bumped files:
 
 ```bash
-git add VERSION package.json .claude-plugin/plugin.json CHANGELOG.md src/content/changelog/v{version}.mdx
+git add VERSION package.json CHANGELOG.md src/content/changelog/v{version}.mdx
 git commit -m "release: v{version}"
 ```
 

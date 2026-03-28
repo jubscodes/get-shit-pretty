@@ -1,5 +1,5 @@
 ---
-name: scaffold
+name: gsp-scaffold
 description: Deterministic stack setup — install deps, create configs, verify build compiles
 user-invocable: true
 model: sonnet
@@ -16,8 +16,8 @@ Composable stack setup skill. No agent — all inline Bash commands. Determinist
 Reads project config and stack state, installs dependencies, creates config files, installs component library primitives, and verifies the build compiles. Produces `SCAFFOLD-LOG.md`.
 
 Works two ways:
-1. **Standalone** — user runs `/gsp:scaffold` directly to set up a project's stack
-2. **As a building block** — `/gsp:project-build` invokes this as Phase 1 before spawning builder agents
+1. **Standalone** — user runs `/gsp-scaffold` directly to set up a project's stack
+2. **As a building block** — `/gsp-project-build` invokes this as Phase 1 before spawning builder agents
 </context>
 
 <objective>

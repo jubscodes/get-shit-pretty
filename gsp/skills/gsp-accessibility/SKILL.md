@@ -1,5 +1,5 @@
 ---
-name: accessibility
+name: gsp-accessibility
 description: Quick contrast checks and token WCAG audits — inline, no agent
 user-invocable: true
 model: sonnet
@@ -13,12 +13,12 @@ allowed-tools:
 ---
 <context>
 Standalone composable accessibility skill. Works two ways:
-1. **Standalone** — user runs `/gsp:accessibility` directly for quick contrast checks or token audits
+1. **Standalone** — user runs `/gsp-accessibility` directly for quick contrast checks or token audits
 2. **As a building block** — critique and review phases detect prior accessibility output and reuse it
 
 Follows the composable pattern: deterministic modes, predictable output paths, filesystem as integration layer.
 
-For full design audits, code audits, or statement generation, use `/gsp:accessibility-audit`.
+For full design audits, code audits, or statement generation, use `/gsp-accessibility-audit`.
 </context>
 
 <objective>
@@ -59,10 +59,10 @@ If no arguments provided, use `AskUserQuestion`:
 
 **"What would you like to do?"**
 - **Quick contrast check** — "check specific color pairs for WCAG contrast compliance"
-- **Token audit** — "audit tokens.json for WCAG compliance"
-- **Full design/code audit** — "run `/gsp:accessibility-audit` for full WCAG audits, code audits, or statement generation"
+- **Token audit** — "audit brand `.yml` tokens for WCAG compliance"
+- **Full design/code audit** — "run `/gsp-accessibility-audit` for full WCAG audits, code audits, or statement generation"
 
-If user picks "Full design/code audit", tell them to run `/gsp:accessibility-audit` and stop.
+If user picks "Full design/code audit", tell them to run `/gsp-accessibility-audit` and stop.
 
 ### Quick check mode (`--check`)
 
@@ -84,7 +84,7 @@ Convert hex to relative luminance (sRGB linearization), then:
 ### Display results
 
 ```
-  /gsp:accessibility — contrast check
+  /gsp-accessibility — contrast check
   ═══════════════════════════════════════
 
   Foreground: {FG_HEX}   Background: {BG_HEX}
@@ -126,7 +126,7 @@ Determine final conformance level:
 Read from the brand/project:
 - `{BRAND_PATH}/identity/palettes.json`
 - `{BRAND_PATH}/identity/color-system.md`
-- `{BRAND_PATH}/patterns/tokens.json`
+- `{BRAND_PATH}/patterns/*.yml` (brand style preset)
 - `{BRAND_PATH}/identity/typography.md`
 
 If files don't exist, report which are missing and stop.
@@ -134,7 +134,7 @@ If files don't exist, report which are missing and stop.
 ### Token checks
 
 **4.1 Contrast Pairs:**
-- Extract every semantic foreground/background pair from tokens.json
+- Extract every semantic foreground/background pair from the brand `.yml` preset
 - Calculate WCAG 2.x contrast ratio for each pair
 - Flag failures: normal text < 4.5:1, large text < 3:1, non-text < 3:1
 
@@ -202,8 +202,8 @@ Conformance target: {level}
 ### Completion
 
 Display result and use `AskUserQuestion`:
-- **Run full design audit** — "run `/gsp:accessibility-audit` for full WCAG design audit"
-- **Run code audit** — "run `/gsp:accessibility-audit --code` to check the codebase"
+- **Run full design audit** — "run `/gsp-accessibility-audit` for full WCAG design audit"
+- **Run code audit** — "run `/gsp-accessibility-audit --code` to check the codebase"
 - **Done** — "that's all for now"
 
 ## Step 5: Update STATE.md

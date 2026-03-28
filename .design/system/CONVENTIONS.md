@@ -63,7 +63,6 @@ dev/                          # Dev-only tools (never installed)
   scripts/                    # Test suite
   skills/                     # Dev skills
   tests/                      # Unit + integration tests
-.claude-plugin/               # Plugin manifest
 .design/                      # Design artifacts (gitignored except branding)
   branding/                   # Brand system output
   system/                     # This scan output
@@ -79,5 +78,5 @@ dev/                          # Dev-only tools (never installed)
 | Template | `gsp/templates/{category}/` | Descriptive filename | `gsp/templates/system/CONTRAST.md` |
 | Reference | `gsp/references/` | `{kebab-case}.md` | `gsp/references/contrast-ratios.md` |
 | Script | `scripts/` | `kebab-case.js` or `.sh` | `scripts/contrast-check.js` |
-| Dev tool | `dev/skills/gsp-{name}/` or `dev/scripts/` | Same conventions as source | `dev/skills/gsp-contrast-test/SKILL.md` |
+| Dev tool | `dev/skills/gsp-{name}/` or `dev/scripts/` | Same conventions as source | `dev/skills/gsp-audit/SKILL.md` |
 | Test | `dev/tests/` | `{name}.test.js` | `dev/tests/contrast.test.js` |

@@ -1,5 +1,5 @@
 ---
-name: brand-audit
+name: gsp-brand-audit
 description: Audit an existing brand before evolving it
 user-invocable: true
 model: opus
@@ -44,11 +44,11 @@ Resolve brand from `.design/branding/` (one → use it, multiple → ask). Set `
 Read `{BRAND_PATH}/BRIEF.md` for aspirational direction.
 Read `{BRAND_PATH}/config.json` to confirm `brand_mode` is `evolve`.
 
-If missing, tell user to run `/gsp:start` first.
+If missing, tell user to run `/gsp-start` first.
 
 ## Step 2: Load brand assets from brief
 
-Read `{BRAND_PATH}/BRIEF.md` — brand assets were already gathered during `/gsp:start`. Extract any logos, colors, guidelines, URLs, or descriptions the user provided.
+Read `{BRAND_PATH}/BRIEF.md` — brand assets were already gathered during `/gsp-start`. Extract any logos, colors, guidelines, URLs, or descriptions the user provided.
 
 If the brief has no asset information (legacy or incomplete brief), use `AskUserQuestion`:
 - **Share assets now** — "I have guidelines, colors, fonts, voice samples, or URLs to share"

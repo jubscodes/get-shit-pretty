@@ -1,5 +1,5 @@
 ---
-name: help
+name: gsp-help
 description: Show all skills
 user-invocable: true
 model: sonnet
@@ -26,53 +26,53 @@ Output the following as plain text. Use Unicode characters (`───`, `◇`, 
 Skill names are left-padded with 4 spaces. Descriptions start at column 27 (4 indent + 23 max skill name width).
 
 ```
-  /gsp: ◇◇  v{VERSION}
+  /gsp- ◇◇  v{VERSION}
   skill reference
 
 
   ─── Getting Started ──────────────────
 
-    /gsp:start             start here — picks up where you left off
-    /gsp:help              this skill reference
-    /gsp:progress          how pretty are we?
+    /gsp-start             start here — picks up where you left off
+    /gsp-help              this skill reference
+    /gsp-progress          how pretty are we?
 
   ─── Branding ─────────────────────────
 
-    /gsp:brand-research    research your market and audience
-    /gsp:brand-strategy    define positioning, personality, voice and messaging
-    /gsp:brand-identity    create visual identity
-    /gsp:brand-patterns    build design system tokens and components
-    /gsp:brand-sync        sync brand to match a project's shipped state
-    /gsp:brand-refine      tweak brand tokens mid-project without re-running identity
-    /gsp:brand-audit       audit existing brand before evolving (optional)
+    /gsp-brand-research    research your market and audience
+    /gsp-brand-strategy    define positioning, personality, voice and messaging
+    /gsp-brand-identity    create visual identity
+    /gsp-brand-guidelines    build design system tokens and components
+    /gsp-brand-sync        sync brand to match a project's shipped state
+    /gsp-brand-refine      tweak brand tokens mid-project without re-running identity
+    /gsp-brand-audit       audit existing brand before evolving (optional)
 
   ─── Project ──────────────────────────
 
-    /gsp:project-brief     scope what you're building
-    /gsp:project-research  research UX patterns and approaches
-    /gsp:project-design    design screens and flows
-    /gsp:project-critique  critique designs + accessibility audit
-    /gsp:project-build     implement designs in the codebase
-    /gsp:project-review    QA validate implementation against designs
-    /gsp:add-reference     add reference material to a project
+    /gsp-project-brief     scope what you're building
+    /gsp-project-research  research UX patterns and approaches
+    /gsp-project-design    design screens and flows
+    /gsp-project-critique  critique designs + accessibility audit
+    /gsp-project-build     implement designs in the codebase
+    /gsp-project-review    QA validate implementation against designs
+    /gsp-add-reference     add reference material to a project
 
   ─── Composable ──────────────────────
 
-    /gsp:accessibility     accessibility audit — contrast, WCAG, code checks
-    /gsp:palette           generate OKLCH color palettes
-    /gsp:typescale         generate mathematical type scales
-    /gsp:style             apply a design style preset
+    /gsp-accessibility     accessibility audit — contrast, WCAG, code checks
+    /gsp-palette           generate OKLCH color palettes
+    /gsp-typescale         generate mathematical type scales
+    /gsp-style             apply a design style preset
 
   ─── Utilities ────────────────────────
 
-    /gsp:doctor            check project health
-    /gsp:update            update GSP to latest version
-    /gsp:launch            create launch and marketing assets (optional)
+    /gsp-doctor            check project health
+    /gsp-update            update GSP to latest version
+    /gsp-launch            create launch and marketing assets (optional)
 
   ─── Easter Eggs ────────────────────
 
-    /gsp:art               ASCII art studio
-    /gsp:pretty            surprise terminal art
+    /gsp-art               ASCII art studio
+    /gsp-pretty            surprise terminal art
 
   ─── Flow ─────────────────────────────
 

@@ -7,7 +7,7 @@
 The build phase runs as a 4-phase pipeline:
 
 ### Phase 1: Scaffold
-Stack setup via `/gsp:scaffold` — install deps, create configs, verify build compiles. Produces `build/SCAFFOLD-LOG.md`.
+Stack setup via `/gsp-scaffold` — install deps, create configs, verify build compiles. Produces `build/SCAFFOLD-LOG.md`.
 
 ### Phase 2: Foundations
 Token integration, global styles, layout primitives. Agent mode: `foundations`. Checkpoint: build must compile after foundations.

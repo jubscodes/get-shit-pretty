@@ -1,5 +1,5 @@
 ---
-name: pretty
+name: gsp-pretty
 description: "Surprise ASCII art in the terminal"
 user-invocable: true
 model: sonnet
@@ -59,5 +59,5 @@ Spawn the `gsp-ascii-artist` agent with this prompt, filling in the context you 
 
 ## Step 3: Done
 
-No iteration needed. If the user wants more control, point them to `/gsp:art`.
+No iteration needed. If the user wants more control, point them to `/gsp-art`.
 </process>
