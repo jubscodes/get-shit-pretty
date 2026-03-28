@@ -10,8 +10,8 @@ Design engineering system for Claude Code, OpenCode, Gemini, and Codex.
 
 This repo is **both**:
 
-- **Source and npm package** — where the GSP agentic framework is built, versioned, and published via `npm publish`. The `package.json` `files` field controls what ships: `.claude-plugin`, `.mcp.json`, `bin`, `scripts`, `gsp`.
-- **GSP consumer** — GSP is installed here too (e.g. `.claude/` symlinks, plugin dir). You can run GSP workflows in this workspace while developing the framework.
+- **Source and npm package** — where the GSP agentic framework is built, versioned, and published via `npm publish`. The `package.json` `files` field controls what ships: `.mcp.json`, `bin`, `scripts`, `gsp`.
+- **GSP consumer** — GSP is installed here too (e.g. `.claude/` symlinks). You can run GSP workflows in this workspace while developing the framework.
 
 Edit source under `gsp/`; the installer keeps runtimes in sync. Never edit inside `.claude/` (or other runtime dirs) directly — they point at or are populated from source.
 
@@ -25,23 +25,37 @@ Skills produce artifacts to `.design/`; agents consume them. The filesystem is t
 
 Composable skills work two ways: (1) standalone — user runs directly for quick output, (2) as building blocks — pipeline phases consume their output files. Each composable skill runs inline (no agent), is deterministic, writes to a predictable path, and produces foundation chunks per `references/chunk-format.md`.
 
-Examples: `/gsp:accessibility` (WCAG audits), `/gsp:style` (tokens + foundations), `/gsp:palette` (OKLCH palettes), `/gsp:typescale` (type scale), `/gsp:design-system` (codebase design system scan).
+Examples: `/gsp-accessibility` (WCAG audits), `/gsp-style` (tokens + foundations), `/gsp-palette` (OKLCH palettes), `/gsp-typescale` (type scale), `/gsp-design-system` (codebase design system scan).
 
-## Plugin and pack structure
-
-GSP is a Claude Code plugin. The manifest is at `.claude-plugin/plugin.json` with name `gsp`.
+## Pack structure
 
 | Directory | Contents |
 |-----------|----------|
-| `.claude-plugin/` | Plugin manifest (`plugin.json`) |
-| `gsp/skills/` | 30 skills — each is a `<name>/SKILL.md` directory (single source for all runtimes) |
+| `gsp/skills/` | 38 skills — each is a `gsp-<name>/SKILL.md` directory (single source for all runtimes) |
 | `gsp/agents/` | 15 subagents (`gsp-{name}.md`) |
-| `gsp/hooks/` | Plugin-level hooks (`hooks.json`) |
-| `gsp/prompts/` | 12 agent system prompts |
+| `gsp/hooks/` | Hooks (`hooks.json`) |
+| `gsp/prompts/` | Reserved (agent methodology lives in agent definitions) |
 | `gsp/templates/` | Project/brand config, state, brief, roadmap templates |
 | `gsp/references/` | Shared reference material (trends, HIG, chunk format) |
 | `.mcp.json` | Bundled MCP servers (GitHub, Figma) |
 | `scripts/` | Hook scripts and utilities (at repo root) |
+
+### Skill naming
+
+Source skill directories under `gsp/skills/` use the `gsp-` prefix: `gsp-pretty/`, `gsp-brand-strategy/`, `gsp-style/`, etc. The one exception is `get-shit-pretty/` (entry point skill, `user-invocable: false`).
+
+The `gsp-` prefix is part of the source directory name. The installer copies as-is — no renaming needed.
+
+| Layer | Example |
+|-------|---------|
+| Source (`gsp/skills/`) | `gsp-style/SKILL.md` |
+| Claude Code (`.claude/skills/`) | `gsp-style/` → `/gsp-style` |
+| OpenCode (`.opencode/skills/`) | `gsp-style/` → `/gsp-style` |
+| Gemini (`.gemini/skills/`) | `gsp-style/` → `/gsp-style` |
+| Codex (`.agents/skills/`) | `gsp-style/` → `$gsp-style` |
+| Vercel skills.sh | `gsp-style/` → `/gsp-style` |
+
+Cross-references between skills use `gsp-` prefixed paths: `${CLAUDE_SKILL_DIR}/../gsp-style/styles/INDEX.yml`.
 
 ## Multi-runtime installer
 
@@ -60,19 +74,18 @@ Key points:
 - Codex has a **split layout**: config/bundles at `~/.codex/`, skills at `~/.agents/skills/`
 - Codex does **not** install agents — agent `.md` files are skipped
 - Tool names are mapped per runtime (e.g. `Bash` → `shell` for Codex, `run_shell_command` for Gemini)
-- Body-level replacements convert paths, invocation syntax (`/gsp:` → `/gsp-` or `$gsp-`), and variables
+- Body-level replacements convert paths, invocation syntax (`/gsp-` → `$gsp-` for Codex), and variables
 
 ## Local development
 
-`.claude/agents/`, `.claude/skills/gsp-*`, `.claude/{prompts,templates,references}` are **symlinks** to `gsp/` source dirs. Edit source under `gsp/` directly — changes reflect immediately without reinstalling. These paths are gitignored.
+`.claude/agents/`, `.claude/skills/*` (GSP skills), `.claude/{prompts,templates,references}` are **symlinks** to `gsp/` source dirs. Edit source under `gsp/` directly — changes reflect immediately without reinstalling. These paths are gitignored.
 
-To test as a plugin: `claude --plugin-dir .`
 To reinstall after adding/removing files: `node bin/install.js --claude --local`
 
 ## Editing rules
 
 - Agent source of truth: `gsp/agents/gsp-{name}.md`
-- Skill source of truth: `gsp/skills/{name}/SKILL.md`
+- Skill source of truth: `gsp/skills/gsp-{name}/SKILL.md`
 - Never edit inside `.claude/` directly — it's symlinked to source
 - Agent output paths must be dynamic: `"path provided by the skill that spawned you"` (no hardcoded `.design/` paths)
 - Skills resolve paths via `${CLAUDE_SKILL_DIR}/../../` for shared files (prompts, templates, references live directly in the runtime root, e.g. `.claude/prompts/`)
@@ -99,20 +112,19 @@ These rules minimize token waste across the pipeline. Enforced by audit tests C1
 
 **Double-dispatch is intentional:** Forked skills use the Agent tool inside the fork to spawn executors. Do NOT collapse this with the `agent:` frontmatter field. The fork isolates the orchestrator; the Agent tool gives the executor a clean start. The orchestrator owns validation, routing, and state updates — the agent owns creative/technical execution.
 
-**Execution context is for orchestrator-consumed content only.** Reference files that the orchestrator only passes through to agents must NOT be in `<execution_context>`. Instead, add a "Load references" step before the spawn that reads them from disk. This keeps orchestrator Steps 0-2 (validation, prerequisites) lean. Only keep prompts and templates the orchestrator itself references in execution_context.
+**Execution context is for orchestrator-consumed content only.** Reference files that the orchestrator only passes through to agents must NOT be in `<execution_context>`. Instead, add a "Load references" step before the spawn that reads them from disk. This keeps orchestrator Steps 0-2 (validation, prerequisites) lean. Only keep templates and references the orchestrator itself consumes in execution_context.
 
 **Templates loaded at write time.** Skills that write artifacts from templates (e.g., `gsp-start` writing BRIEF.md, STATE.md) must read templates at the point of writing, not in execution_context. Pattern: `Read templates from ${CLAUDE_SKILL_DIR}/../../templates/{path}/ and write artifacts`.
 
-**SubagentStop hooks for all chunk-producing agents.** Every agent that writes deliverable chunks must have a SubagentStop hook in `gsp/hooks/hooks.json` that verifies expected outputs exist. Covered: `gsp-designer`, `gsp-critic`, `gsp-identity-designer`, `gsp-pattern-architect`, `gsp-scoper`, `gsp-campaign-director`, `gsp-builder`, `gsp-reviewer`.
+**SubagentStop hooks for all chunk-producing agents.** Every agent that writes deliverable chunks must have a SubagentStop hook in `gsp/hooks/hooks.json` that verifies expected outputs exist. Covered: `gsp-designer`, `gsp-critic`, `gsp-creative-director`, `gsp-brand-engineer`, `gsp-scoper`, `gsp-campaign-director`, `gsp-builder`, `gsp-reviewer`.
 
 **Filesystem is the integration layer.** Phases consume prior-phase output from disk (`.design/`), never from conversation context. Forked phases write STATE.md and artifact files to disk — these persist across fork boundaries. No phase should rely on conversation history for prior-phase artifacts.
 
 ## Key files
 
-- `.claude-plugin/plugin.json` — plugin manifest (name: gsp, version synced with package.json and VERSION)
 - `bin/install.js` — multi-runtime installer (symlinks for local Claude, copies for global/other runtimes)
 - `package.json` — npm package config; `files` field controls what ships
-- `VERSION` — single version string, must match package.json and plugin.json
+- `VERSION` — single version string, must match package.json
 - `CHANGELOG.md` — release notes, must have entry for current version
 - `gsp/templates/projects/config.json` — project config template
 - `gsp/templates/branding/config.json` — brand config template
@@ -123,12 +135,12 @@ These rules minimize token waste across the pipeline. Enforced by audit tests C1
 
 Published as `get-shit-pretty` on npm. Before publishing:
 
-1. Ensure VERSION, package.json, and plugin.json versions agree
+1. Ensure VERSION and package.json versions agree
 2. Run `bash dev/scripts/audit-tests.sh` — all tests must pass
 3. Update CHANGELOG.md with the new version section
 4. `npm publish`
 
-The `files` field in package.json controls what's included: `.claude-plugin`, `.mcp.json`, `bin`, `scripts`, `gsp`.
+The `files` field in package.json controls what's included: `.mcp.json`, `bin`, `scripts`, `gsp`.
 
 ### Dependencies rule
 
@@ -142,7 +154,7 @@ Internal development tools live in `dev/` (versioned in repo, never installed to
 |------|---------|
 | `dev/skills/gsp-audit/` | Pipeline integrity checker — contracts, installer, runtime compat, versions, templates |
 | `dev/skills/gsp-runtime-compat/` | Fetch live runtime docs and flag drift against GSP installer |
-| `dev/scripts/audit-tests.sh` | Automated test suite (58 tests across 7 suites) |
+| `dev/scripts/audit-tests.sh` | Automated test suite (65 tests across 7 suites) |
 
 ### Running tests
 

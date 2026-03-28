@@ -1,5 +1,5 @@
 ---
-name: brand-sync
+name: gsp-brand-sync
 description: Sync brand to match a project's shipped state — tokens, voice, visual patterns, personality
 user-invocable: true
 model: opus
@@ -17,7 +17,7 @@ allowed-tools:
 <context>
 Standalone brand feedback skill. After a project ships (or mid-development), the codebase and content may have diverged from the brand system — adjusted colors, shifted tone of voice, evolved visual patterns. This skill detects those divergences across all brand dimensions and updates the brand to match.
 
-This is the standalone version of the feedback loop built into `/gsp:project-build` (build-time). Use this when:
+This is the standalone version of the feedback loop built into `/gsp-project-build` (build-time). Use this when:
 - A project evolved beyond its original brand during development
 - Manual tweaks were made post-build
 - The voice/tone landed differently than the strategy specified
@@ -49,7 +49,7 @@ Compare a project's shipped state against its source brand across all dimensions
 ## Step 0: Resolve brand and project
 
 Resolve brand from `.design/branding/` (one → use it, multiple → ask). Set `BRAND_PATH`.
-Check that the brand has at least one of: `patterns/tokens.json`, `strategy/`, `identity/`. If none exist, tell the user: "No brand system found. Run `/gsp:brand-patterns` first."
+Check that the brand has at least one of: `patterns/{brand-name}.yml`, `strategy/`, `identity/`. If none exist, tell the user: "No brand system found. Run `/gsp-brand-guidelines` first."
 
 Verify the project codebase has shipped output — source files with components, copy, or styles.
 
@@ -60,7 +60,7 @@ mkdir -p {BRAND_PATH}/sync
 ```
 
 Spawn the `gsp-brand-syncer` agent with:
-- `BRAND_PATH` and all available brand files (tokens.json, strategy chunks, identity chunks, foundation chunks)
+- `BRAND_PATH` and all available brand files ({brand-name}.yml, strategy chunks, identity chunks, foundation chunks)
 - Project codebase location (working directory)
 - **Output path:** `{BRAND_PATH}/sync/`
 
@@ -74,7 +74,7 @@ Read `{BRAND_PATH}/sync/SYNC-REPORT.md`. Present a compact summary per dimension
 - **Tokens only** — just sync the quantitative token changes
 - **Pick by dimension** — choose which dimensions to sync
 - **Review each** — walk through every divergence individually
-- **Refine manually** — run `/gsp:brand-refine` to make targeted token adjustments instead
+- **Refine manually** — run `/gsp-brand-refine` to make targeted token adjustments instead
 - **Skip** — don't update the brand
 
 If "Pick by dimension", ask per dimension. If "Review each", walk through the Update Map from the report.
@@ -85,11 +85,11 @@ For "Removed" tokens: ask whether to remove from brand or keep (may be used by o
 
 Use the Update Map from the sync report. For each confirmed change:
 
-**Tokens** — edit `tokens.json` in place (preserve W3C structure). Update corresponding foundation chunks in `{BRAND_PATH}/patterns/foundations/` and style preset `.yml` if it exists.
+**Tokens** — edit the brand `.yml` preset in place. Regenerate affected STYLE.md sections if they exist.
 
 **Voice & tone** — update `{BRAND_PATH}/strategy/voice-and-tone.md` (adjust attributes, tone positions, style rules). Update `messaging.md` if messaging shifted.
 
-**Visual patterns** — update foundation chunks in `{BRAND_PATH}/patterns/foundations/`. Update component specs and identity chunks if visual identity evolved.
+**Visual patterns** — update the brand `.yml` patterns/constraints/effects blocks. Update component specs in `{BRAND_PATH}/patterns/components/` and identity chunks if visual identity evolved.
 
 **Personality** — update `{BRAND_PATH}/strategy/archetype.md` and `positioning.md`. Update `brand-platform.md` if values/promise shifted.
 

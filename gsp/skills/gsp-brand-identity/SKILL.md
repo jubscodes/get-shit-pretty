@@ -1,5 +1,5 @@
 ---
-name: brand-identity
+name: gsp-brand-identity
 description: Create your visual identity — logo, color, typography
 user-invocable: true
 model: opus
@@ -22,11 +22,10 @@ Build the brand's visual identity.
 
 **Input:** Strategy chunks + BRIEF.md + discover/mood-board-direction.md
 **Output:** `.design/branding/{brand}/identity/` (6 chunks + palettes.json + INDEX.md)
-**Agent:** `gsp-identity-designer`
+**Agent:** `gsp-creative-director`
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../../prompts/02-brand-identity-creator.md
 @${CLAUDE_SKILL_DIR}/../../templates/phases/identity.md
 @${CLAUDE_SKILL_DIR}/../../references/color-composition.md
 </execution_context>
@@ -43,12 +42,12 @@ Build the brand's visual identity.
 ## Step 0: Resolve brand
 
 Resolve brand from `.design/branding/` (one → use it, multiple → ask). Set `BRAND_PATH`.
-If missing, tell user to run `/gsp:start` first.
+If missing, tell user to run `/gsp-start` first.
 
 ## Step 1: Validate prerequisites
 
 Read `{BRAND_PATH}/STATE.md`. Strategy (Phase 2) must be complete.
-If not: "Strategy isn't done yet. Run `/gsp:brand-strategy` first."
+If not: "Strategy isn't done yet. Run `/gsp-brand-strategy` first."
 
 Load:
 - `{BRAND_PATH}/BRIEF.md`
@@ -59,10 +58,10 @@ Load:
 ### Style base presets
 
 If `style_base` is a non-empty array, load each preset's files from `${CLAUDE_SKILL_DIR}/../gsp-style/styles/`:
-- `{preset-name}.yml` — structured tokens (palette, typography, spacing)
-- `{preset-name}.md` — design philosophy and AI prompt
+- `{preset-name}.yml` — tokens + intensity + patterns + constraints + effects (structural scaffold)
+- `{preset-name}.md` — design philosophy, signature techniques, implementation patterns (creative context)
 
-These will be passed to the identity-designer agent as the aesthetic seed.
+Both files matter: the `.yml` gives the creative-director the aesthetic rules to respect, the `.md` gives the emotional DNA and visual signatures to channel. The creative-director adapts the brand within the preset's structure — respecting intensity dials, patterns, and constraints while bringing the brand's unique personality.
 
 ## Step 2: Visual direction
 
@@ -85,28 +84,38 @@ After visual direction is confirmed, ask as a separate `AskUserQuestion`:
 - **No constraints** — "Go ahead with this direction"
 - **Add constraints** — "I have specific requirements (colors to avoid, accessibility needs, existing assets to match)"
 
-## Step 3: Spawn identity designer
+## Step 3: Spawn creative director
 
-Spawn the `gsp-identity-designer` agent. **Inline all content** — the agent should not need to read any input files.
+Spawn the `gsp-creative-director` agent. **Inline all content** — the agent should not need to read any input files.
 
 Pass in the agent prompt:
 - **Content of** BRIEF.md (loaded in Step 1)
 - **Content of** strategy chunks: archetype.md, positioning.md, brand-platform.md, voice-and-tone.md (loaded in Step 1)
 - **Content of** discover/mood-board-direction.md (loaded in Step 1)
-- **Content of** style base preset files `.yml` + `.md` (when loaded in Step 1)
+- **Content of** style base preset `.yml` + `.md` (when loaded in Step 1) — `.yml` as structural scaffold, `.md` as design philosophy and signature techniques
 - **Content of** audit/brand-inventory.md (when loaded in Step 2)
-- Brand Identity Creator prompt (02), identity output template, color composition reference (from execution_context)
+- Identity output template, color composition reference (from execution_context)
 - User-confirmed visual direction + constraints
 - **Output path:** `{BRAND_PATH}/identity/`
 
-The agent writes 5 chunks + palettes.json + INDEX.md:
+The agent writes 5 chunks + INDEX.md (creative decisions only — no technical execution):
 1. `logo-directions.md`
-2. `color-system.md`
-3. `typography.md`
-4. `imagery-style.md`
+2. `color-system.md` (chosen colors + rationale, no OKLCH/contrast math)
+3. `typography.md` (chosen typefaces + rationale, no scale math)
+4. `imagery-style.md` (creative direction, no icon library specifics)
 5. `brand-applications.md`
-6. `palettes.json`
-7. `INDEX.md`
+6. `INDEX.md`
+
+## Step 3.5: Enrich with domain skills
+
+After the creative-director finishes, invoke domain skills to add technical precision to the creative decisions. Each skill reads the chunk the agent wrote, enriches it, and overwrites.
+
+1. **Invoke `/gsp-logo --enrich`** — reads `logo-directions.md`, enriches each direction with detailed construction geometry, complete variation specs, clear space rules, and minimum size calculations.
+2. **Invoke `/gsp-color --enrich`** — reads `color-system.md`, generates OKLCH palettes via tints.dev, calculates WCAG contrast, writes `palettes.json`, enriches with contrast ratios and semantic mapping.
+3. **Invoke `/gsp-typography --enrich`** — reads `typography.md`, generates mathematical type scale, adds fluid type formulas, enriches with font loading instructions.
+4. **Invoke `/gsp-images --enrich`** — reads `imagery-style.md`, adds icon library specifics, CSS texture/treatment recipes, enriches with technical implementation details.
+
+Each skill loads its own domain references on-demand — no upfront context cost.
 
 ## Step 4: Perspective check
 

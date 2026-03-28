@@ -1,5 +1,5 @@
 ---
-name: accessibility-audit
+name: gsp-accessibility-audit
 description: Full WCAG accessibility audit — design screens, codebase, or generate compliance statement
 user-invocable: true
 model: opus
@@ -16,10 +16,10 @@ allowed-tools:
 ---
 <context>
 Full accessibility audit skill that spawns the `gsp-accessibility-auditor` agent for deep WCAG analysis. Works two ways:
-1. **Standalone** — user runs `/gsp:accessibility-audit` directly for design, code, or statement generation
+1. **Standalone** — user runs `/gsp-accessibility-audit` directly for design, code, or statement generation
 2. **As a building block** — critique and review phases detect prior accessibility output and reuse it
 
-For quick contrast checks or token audits, use `/gsp:accessibility` instead.
+For quick contrast checks or token audits, use `/gsp-accessibility` instead.
 
 Follows the composable pattern: deterministic modes, predictable output paths, filesystem as integration layer.
 </context>
@@ -33,7 +33,6 @@ Run full accessibility audits — design screen reviews, codebase ARIA/keyboard/
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../../prompts/08-accessibility-auditor.md
 @${CLAUDE_SKILL_DIR}/../../references/wcag-checklist.md
 </execution_context>
 
@@ -96,7 +95,7 @@ Spawn `gsp-accessibility-auditor` with:
 Display result:
 
 ```
-  /gsp:accessibility-audit — design audit complete
+  /gsp-accessibility-audit — design audit complete
   ═══════════════════════════════════════
 
   {PROJECT_PATH}/critique/
@@ -107,7 +106,7 @@ Display result:
 ```
 
 Use `AskUserQuestion`:
-- **Run token audit** — "run `/gsp:accessibility --tokens` to check design token contrast pairs"
+- **Run token audit** — "run `/gsp-accessibility --tokens` to check design token contrast pairs"
 - **Continue to build** — "implement designs in the codebase"
 - **View audit** — "read the accessibility report"
 - **Done** — "that's all for now"
@@ -134,7 +133,7 @@ Spawn `gsp-accessibility-auditor` with:
 Display result:
 
 ```
-  /gsp:accessibility-audit --code — code audit complete
+  /gsp-accessibility-audit --code — code audit complete
   ═══════════════════════════════════════
 
   {PROJECT_PATH}/review/

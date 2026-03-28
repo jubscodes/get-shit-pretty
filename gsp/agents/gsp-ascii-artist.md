@@ -1,6 +1,6 @@
 ---
 name: gsp-ascii-artist
-description: Easter egg agent that creates ASCII art for the terminal. Spawned by /gsp:art.
+description: Easter egg agent that creates ASCII art for the terminal. Spawned by /gsp-art.
 tools: Read, Bash
 disallowedTools: Edit, Write, Grep, Glob
 model: haiku

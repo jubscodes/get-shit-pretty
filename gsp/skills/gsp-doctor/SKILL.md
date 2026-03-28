@@ -1,5 +1,5 @@
 ---
-name: doctor
+name: gsp-doctor
 description: Check project health
 user-invocable: true
 model: sonnet
@@ -27,7 +27,7 @@ Check for `.design/` in the current directory.
 If not found:
 ```
 🩺 GSP Doctor — No project found
-   No .design/ directory detected. Run /gsp:start to start.
+   No .design/ directory detected. Run /gsp-start to start.
 ```
 Stop here.
 
@@ -68,12 +68,12 @@ If all 4 phases complete, check:
 - `identity/INDEX.md` exists (chunk format)
 - `identity/palettes.json` exists (WARN if missing)
 - `patterns/INDEX.md` exists (chunk format)
-- `patterns/tokens.json` exists (WARN if missing)
+- `patterns/*.yml` preset exists (WARN if missing)
 - If monolith exists without INDEX.md → WARN: "Legacy monolith format"
 
 **Check B4: Legacy Monolith Detection**
 For each brand phase directory (discover, strategy, identity, patterns):
-- If monolith exists but no INDEX.md → WARN: "Monolith files are no longer supported in GSP v0.6.0+. Re-run `/gsp:brand-{phase}` to generate chunk output."
+- If monolith exists but no INDEX.md → WARN: "Monolith files are no longer supported in GSP v0.6.0+. Re-run `/gsp-brand-{phase}` to generate chunk output."
 
 ### Per-Project Checks (6-phase)
 
@@ -86,12 +86,12 @@ Required dirs: brief/, research/, design/, critique/, build/, review/
 
 Check each exists:
 - All present → PASS
-- Core files missing → FAIL: list which are missing, suggest `/gsp:start`
+- Core files missing → FAIL: list which are missing, suggest `/gsp-start`
 
 **Design system check:**
 - If `.design/system/` directory exists, verify at least `STACK.md` is present → PASS
-- If `.design/system/` is missing and codebase is not greenfield → WARN: "Design system scan missing. Run `/gsp:design-system` to scan."
-- If old project-scoped `codebase/INVENTORY.md` exists → WARN: "Legacy INVENTORY.md found. Run `/gsp:design-system` to migrate to workspace-level design system docs."
+- If `.design/system/` is missing and codebase is not greenfield → WARN: "Design system scan missing. Run `/gsp-design-system` to scan."
+- If old project-scoped `codebase/INVENTORY.md` exists → WARN: "Legacy INVENTORY.md found. Run `/gsp-design-system` to migrate to workspace-level design system docs."
 
 Legacy detection: if system/, screens/, specs/, plan/ dirs exist → WARN: "Legacy structure detected — project uses old phase layout"
 
@@ -103,7 +103,7 @@ WARN if brand referenced but system not complete
 **Check P3: Brand Drift**
 Read `identity_hash` from brand.ref
 If brand identity/IDENTITY.md exists, compute current hash (first 8 chars of md5)
-If hashes differ → WARN: "Brand identity has changed since project consumed it. Consider re-running `/gsp:project-brief`."
+If hashes differ → WARN: "Brand identity has changed since project consumed it. Consider re-running `/gsp-project-brief`."
 If identity_hash is "pending" → INFO: "Brand identity wasn't complete when project was created."
 
 **Check P4: Phase Ordering**
@@ -117,7 +117,7 @@ brief < research < design < critique < build < review
 2. Valid skip scenarios (not violations):
    - design skipped when `design_scope` is `tokens`
    - research can proceed without brief
-3. build complete but critique pending → WARN: "Build completed without critique. Run `/gsp:project-critique` to audit."
+3. build complete but critique pending → WARN: "Build completed without critique. Run `/gsp-project-critique` to audit."
 4. Any other out-of-order completion → FAIL with specifics
 
 All phases in order (or validly skipped) → PASS
@@ -130,7 +130,7 @@ Only check phases that are `complete`. All paths relative to the project instanc
 
 **When `system_strategy` is `extend`:**
 - Check if brand's `patterns/` output contains "Component Audit" or "KEEP" or "RESTYLE" or "REFACTOR" or "REPLACE"
-- If none found → WARN: "Strategy is `extend` but system output lacks component audit table. Re-run `/gsp:brand-patterns`."
+- If none found → WARN: "Strategy is `extend` but system output lacks component audit table. Re-run `/gsp-brand-guidelines`."
 
 **When `implementation_target` is `shadcn`:**
 - If brief phase is complete, check brief/ output for "shadcn" or "npx shadcn"
@@ -169,7 +169,7 @@ No drift detected → PASS
 **What it catches:** Chunk directories missing, INDEX.md references broken.
 
 For each completed project phase (brief, research, design, critique, build, review):
-- Check for `{phase}/INDEX.md` — if missing → WARN: "Phase {phase} is complete but has no INDEX.md. Re-run `/gsp:{command}` to generate chunks."
+- Check for `{phase}/INDEX.md` — if missing → WARN: "Phase {phase} is complete but has no INDEX.md. Re-run `/gsp-{command}` to generate chunks."
 
 **If exports/INDEX.md exists, check for broken references:**
 - Read INDEX.md, extract all file paths from markdown links
@@ -190,7 +190,7 @@ Legacy path detection: if `screens/` exists instead of `design/` → WARN
 **design/ → brand system:**
 If both exist, extract component names referenced in design chunks (look for patterns like "Uses: {ComponentName}" or component references). Check each exists in the brand's system output.
 
-Components referenced in designs but not in system → WARN: "Design references components not defined in brand system: {list}. Re-run `/gsp:brand-patterns` to add them, or update designs."
+Components referenced in designs but not in system → WARN: "Design references components not defined in brand system: {list}. Re-run `/gsp-brand-guidelines` to add them, or update designs."
 
 **critique/ → design/:**
 If both exist, extract screen references from critique chunks. Check each referenced screen exists in design/.
@@ -229,14 +229,14 @@ No review issues → PASS
 
 **palettes.json check:**
 - If brand's identity phase is complete, check for `identity/palettes.json`
-- If missing → INFO: "No tints.dev palettes found. Re-run `/gsp:brand-identity` to generate OKLCH color palettes."
+- If missing → INFO: "No tints.dev palettes found. Re-run `/gsp-brand-identity` to generate OKLCH color palettes."
 
 No upgrade concerns → PASS
 
 ### Installation Health Checks
 
 **Check I1: Skills have `user-invocable: true`**
-Glob for all SKILL.md files in the skills directory (`{runtime-dir}/skills/*/SKILL.md` — e.g. `.claude/skills/` for Claude Code, `.opencode/skills/` for OpenCode, `.gemini/skills/` for Gemini). For each skill (except the plugin entry point `get-shit-pretty`), check frontmatter for `user-invocable: true`.
+Glob for all SKILL.md files in the skills directory (`{runtime-dir}/skills/*/SKILL.md` — e.g. `.claude/skills/` for Claude Code, `.opencode/skills/` for OpenCode, `.gemini/skills/` for Gemini). For each skill (except the entry point `get-shit-pretty`), check frontmatter for `user-invocable: true`.
 - All present → PASS
 - Missing → WARN: "Skills missing `user-invocable: true`: {list}. They won't appear in the slash-command menu. Re-run the installer or add the field manually."
 
@@ -246,7 +246,7 @@ For each gsp-* skill directory, check if `SKILL.md` references sibling files via
 - Missing siblings → FAIL: "Skill {name} references {path} but it's missing. Re-run the installer: `npx get-shit-pretty`"
 
 **Check I3: Bundle directories accessible**
-Check that the runtime bundle directories exist (`{runtime-dir}/prompts/`, `{runtime-dir}/templates/`, `{runtime-dir}/references/`). Skills reference these via `${CLAUDE_SKILL_DIR}/../../`.
+Check that the runtime bundle directories exist (`{runtime-dir}/templates/`, `{runtime-dir}/references/`). Skills reference these via `${CLAUDE_SKILL_DIR}/../../`.
 - All present → PASS
 - Missing → FAIL: "Bundle directory {dir} missing. Re-run the installer: `npx get-shit-pretty`"
 
@@ -255,6 +255,12 @@ Check `{runtime-dir}/VERSION` exists and contains a valid semver string.
 - Present and valid → PASS (show version)
 - Missing → WARN: "VERSION file missing. Re-run the installer."
 - Mismatched with source → INFO: "Installed version {installed} differs from source {source}."
+
+**Check I5: No duplicate skills (stale global install)**
+Check if `~/.claude/skills/` contains `gsp-*` directories when running from a local install. These cause duplicates between global and local.
+- Run: `ls ~/.claude/skills/ | grep '^gsp-'`
+- No matches → PASS
+- Matches found → FAIL: "Found {N} stale GSP skills in ~/.claude/skills/. Fix: run `npx get-shit-pretty --claude --local` to reinstall (the installer cleans stale globals automatically), or manually remove: `rm -rf ~/.claude/skills/gsp-*`"
 
 ### Cross-Instance Checks
 
@@ -307,6 +313,7 @@ Overall Health: {SCORE}/100 {emoji}
   ✅ I2. Skill completeness ...... PASS
   ✅ I3. Bundle directories ...... PASS
   ✅ I4. VERSION file ............ PASS
+  ✅ I5. No duplicate skills ..... PASS
 
 ─── Cross-Instance ────────────────────
   ✅ X1. Brand Consistency ...... PASS
@@ -315,15 +322,15 @@ Overall Health: {SCORE}/100 {emoji}
 
 FAIL:
   • [acme-website/P1] Missing brand.ref
-    → Fix: Re-run /gsp:start to set up project with brand reference
+    → Fix: Re-run /gsp-start to set up project with brand reference
 
 WARN:
   • [acme-corp/B3] No palettes.json found
-    → Fix: Re-run /gsp:brand-identity to generate OKLCH palettes
+    → Fix: Re-run /gsp-brand-identity to generate OKLCH palettes
 
 INFO:
   • [acme-corp/P10] Config version is 0.3.0, current GSP is 0.5.0
-    → Fix: Re-run /gsp:start to upgrade config
+    → Fix: Re-run /gsp-start to upgrade config
 
 ─── Summary ───────────────────────────
 

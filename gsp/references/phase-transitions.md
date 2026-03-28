@@ -70,7 +70,7 @@ Use `AskUserQuestion` with options adapted to context:
 **When in a pipeline flow** (previous phase was completed in this or a recent session):
 1. **Continue to {next}** — "{description of next phase}"
 2. **View progress** — "see the full dashboard"
-3. **Done for now** — "pick up later with /gsp:start"
+3. **Done for now** — "pick up later with /gsp-start"
 
 **When standalone** (user invoked the skill directly, no clear pipeline context):
 1. **View output** — "review what was generated"
@@ -84,22 +84,22 @@ Use judgment — if the user explicitly asked for one skill, don't push them int
 
 | Phase | Completion Message | Next Phase |
 |-------|-------------------|------------|
-| audit | brand assessed | discover — `/gsp:brand-research` |
-| discover | market landscape mapped | strategy — `/gsp:brand-strategy` |
-| strategy | brand platform defined | identity — `/gsp:brand-identity` |
-| identity | visual system designed | patterns — `/gsp:brand-patterns` |
-| patterns | design system built | project setup — `/gsp:start` (scans codebase, gathers brief, creates project) |
+| audit | brand assessed | discover — `/gsp-brand-research` |
+| discover | market landscape mapped | strategy — `/gsp-brand-strategy` |
+| strategy | brand platform defined | identity — `/gsp-brand-identity` |
+| identity | visual system designed | patterns — `/gsp-brand-guidelines` |
+| patterns | design system built | project setup — `/gsp-start` (scans codebase, gathers brief, creates project) |
 
 ### Project Phases
 
 | Phase | Completion Message | Next Phase |
 |-------|-------------------|------------|
-| brief | project scoped | research — `/gsp:project-research` |
-| research | patterns and approaches researched | design — `/gsp:project-design` |
-| design | screens designed | critique — `/gsp:project-critique` |
-| critique | designs critiqued | build — `/gsp:project-build` |
-| build | code implemented | review — `/gsp:project-review` |
-| review | implementation validated | launch — `/gsp:launch` (or done) |
+| brief | project scoped | research — `/gsp-project-research` |
+| research | patterns and approaches researched | design — `/gsp-project-design` |
+| design | screens designed | critique — `/gsp-project-critique` |
+| critique | designs critiqued | build — `/gsp-project-build` |
+| build | code implemented | review — `/gsp-project-review` |
+| review | implementation validated | launch — `/gsp-launch` (or done) |
 | launch | campaign assets created | done |
 
 ### Special cases

@@ -1,5 +1,5 @@
 ---
-name: brand-strategy
+name: gsp-brand-strategy
 description: Define positioning, voice, and messaging
 user-invocable: true
 model: opus
@@ -45,7 +45,7 @@ Define brand strategy and voice through interactive creative direction, then pro
 ## Step 0: Resolve brand
 
 Resolve brand from `.design/branding/` (one → use it, multiple → ask). Set `BRAND_PATH`.
-If missing, tell user to run `/gsp:start` first.
+If missing, tell user to run `/gsp-start` first.
 
 ## Step 1: Load context
 
@@ -65,7 +65,7 @@ Frame as: "Here's where this brand can win." Keep it to 4-6 lines.
 
 ## Step 3: Archetype selection
 
-Read the personality direction from BRIEF.md (gathered during `/gsp:start`). Use it as the starting point — don't re-ask for personality. Deepen it into a structural archetype.
+Read the personality direction from BRIEF.md (gathered during `/gsp-start`). Use it as the starting point — don't re-ask for personality. Deepen it into a structural archetype.
 
 Use `AskUserQuestion` with 2-3 archetype candidates that align with the chosen personality direction. Each option:
 - **Label:** archetype name

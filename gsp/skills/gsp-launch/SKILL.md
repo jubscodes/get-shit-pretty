@@ -1,5 +1,5 @@
 ---
-name: launch
+name: gsp-launch
 description: Create launch and marketing assets
 user-invocable: true
 model: opus
@@ -27,7 +27,6 @@ Create marketing campaign assets for product launch.
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../../prompts/04-marketing-asset-factory.md
 @${CLAUDE_SKILL_DIR}/../../templates/phases/launch.md
 </execution_context>
 
@@ -73,7 +72,7 @@ Pass in the agent prompt:
 - **Content of** strategy voice-and-tone.md + messaging.md (loaded in Step 1)
 - **Content of** all design screen chunks (loaded in Step 1)
 - **Content of** BRIEF.md (loaded in Step 1)
-- The Marketing Asset Factory prompt (04), launch output template (from execution_context)
+- Launch output template (from execution_context)
 - **Output path:** `{PROJECT_PATH}/launch/`
 
 The agent writes chunks directly:

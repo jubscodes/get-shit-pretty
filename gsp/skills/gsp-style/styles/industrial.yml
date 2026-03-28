@@ -59,5 +59,87 @@ dark_mode:
     surface: "#3D4446"
     on-background: "#DFE6E9"
 
+intensity:
+  variance: 5     # asymmetric hero splits, slight testimonial rotation, but grid-mounted precision
+  motion: 5       # mechanical spring bounce, button press physics, LED pulse, grayscale-to-color
+  density: 6      # utilitarian density — functional, organized, not wasteful with space
+
+patterns:
+  card:
+    border: "none — depth from neumorphic dual shadows"
+    shadow: "{elevation.shadow-md}"
+    radius: "{shape.border-radius-lg}"
+    background: "{color.background}"
+    detail: "corner screw radial gradients (12px from edges), vent slots (3x pill divs) top-right"
+  button-primary:
+    background: "{color.primary}"
+    border: "1px solid rgba(255,255,255,0.2) rim highlight"
+    shadow: "4px 4px 8px rgba(166,50,60,0.4), -4px -4px 8px rgba(255,100,110,0.4)"
+    text: "uppercase, tracking-wide, weight 700, white"
+    radius: "{shape.border-radius-md}"
+  button-secondary:
+    background: "{color.background}"
+    border: "none"
+    shadow: "{elevation.shadow-sm}"
+    text: "{color.on-background}, uppercase, tracking-wide"
+    radius: "{shape.border-radius-md}"
+  input:
+    border: "none — depth from recessed inset shadow only"
+    radius: "{shape.border-radius-md}"
+    background: "{color.background}"
+    focus: "accent glow ring appears — 0 0 0 2px {color.primary}"
+    shadow: "inset 4px 4px 8px #babecc, inset -4px -4px 8px #ffffff"
+    font: "monospace for technical data entry feel"
+  badge:
+    shape: "rounded-full, small (8-12px)"
+    text: "monospace uppercase tracking-wide text-xs"
+    decoration: "LED glow shadow — 0 0 10px rgba(color, 0.6), animate-pulse"
+  nav:
+    style: "sticky neumorphic bar with ghost button links"
+    background: "{color.background}"
+    shadow: "{elevation.shadow-sm}"
+    detail: "LED status indicator (green pulse) with monospace label"
+  layout:
+    archetype: "bolted-chassis"
+    max-width: "max-w-[72rem]"
+    section-spacing: "py-24"
+    grid-gap: "gap-6 to gap-8"
+    surfaces: "noise texture overlay (SVG fractal, 20-30% opacity, mix-blend-overlay) — never flat"
+    decoration: "carbon fiber texture on dark panels, CRT scanlines on screens, connector pipes between steps"
+    detail: "corner screws, vent slots, LED indicators, push-pins on testimonials"
+
+constraints:
+  never:
+    - "flat surfaces without noise texture — matte plastic micro-texture is mandatory"
+    - "pure black (#000) in shadows — use cool blue-grey (#babecc) for neumorphic pairs"
+    - "sharp 90-degree corners on large elements — soft injection-molded radii (4px-24px)"
+    - "colored gradients on backgrounds — monochromatic chassis only (except dark panels)"
+    - "missing manufacturing details — screws, vents, and LEDs are DNA, not decoration"
+    - "smooth organic easing — mechanical spring bounce (cubic-bezier 0.175, 0.885, 0.32, 1.275)"
+  always:
+    - "neumorphic dual shadows (dark bottom-right + light top-left) on every panel"
+    - "active states reverse shadow to inset + translate-y-[2px] — button press physics"
+    - "noise texture overlay on page background"
+    - "carbon fiber texture on dark technical panels"
+    - "LED status indicators with pulse animation and glow shadow"
+    - "corner screw details on cards (radial gradient at 12px from edges)"
+    - "monospace font on all numeric displays, labels, badges, and metadata"
+
+effects:
+  interaction-vocabulary: [mechanical-press, spring-lift, led-glow, grayscale-reveal]
+  hover:
+    card: "spring-lift — -translate-y-1, shadow upgrades to floating, spring easing"
+    button: "brightness-110, shadow maintained"
+    icon: "spring-lift — scale-110 + rotate-12 via group-hover"
+    image: "grayscale-reveal — grayscale-0 transition over 500ms"
+  active:
+    button: "mechanical-press — translate-y-[2px], shadow inverts to inset, 150ms fast"
+  focus:
+    general: "ring-2 ring-{color.primary} ring-offset-2"
+  transition: "duration-150 to duration-300, cubic-bezier(0.175, 0.885, 0.32, 1.275)"
+  ambient:
+    - "led-glow — animate-pulse on status indicators with colored glow shadow"
+    - "radar-sweep — animate-spin with conic-gradient on benefits section (4s)"
+
 compatibility: [terminal, monochrome]
 clashes: [botanical, glassmorphism, liquid-glass]

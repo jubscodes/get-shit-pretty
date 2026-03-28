@@ -59,5 +59,83 @@ dark_mode:
     surface: "#243524"
     on-background: "#E2EDE2"
 
+intensity:
+  variance: 4     # staggered card offsets, arch imagery, but structured overall
+  motion: 4       # slow and graceful — plant-sway feel, 500-700ms transitions
+  density: 3      # airy — generous whitespace, breathing room, nature needs space
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-sm} — green-tinted, diffused, never harsh"
+    radius: "{shape.border-radius-lg}"
+    background: "#FFFFFF or {color.surface}"
+    texture: "page-level paper grain at 1.5% opacity"
+  button-primary:
+    background: "{color.on-background}"
+    border: "none"
+    shadow: "none"
+    text: "uppercase, tracking-widest, text-sm, white"
+    shape: "rounded-full — pill always"
+    hover: "lightens slightly or shifts to terracotta ({color.accent})"
+  button-secondary:
+    background: "transparent"
+    border: "{shape.border-width} solid {color.muted}"
+    text: "uppercase, tracking-widest, text-sm, {color.muted}"
+    shape: "rounded-full"
+  input:
+    border: "border-b only or pill-shaped with light bg ({color.surface})"
+    radius: "{shape.border-radius-lg} if pill, 0px if underline"
+    background: "{color.surface} or transparent"
+    focus: "border shifts to {color.muted} — soft sage green, no harsh rings"
+  badge:
+    shape: "rounded-full pill"
+    text: "text-xs, {color.muted}, soft earth tones"
+  nav:
+    style: "clean horizontal with generous spacing"
+    links: "sans-serif weight 500, hover deepens to {color.primary}"
+  layout:
+    archetype: "staggered-botanical"
+    max-width: "max-w-7xl"
+    section-spacing: "py-24 to py-32 — sacred whitespace"
+    grid-gap: "gap-12 to gap-16"
+    asymmetry: "translate-y-12 on alternating cards for natural stagger (md+ only)"
+    surfaces: "paper grain texture at 1.5% opacity — mandatory, gives soul"
+    decoration: "arch-topped images (clip-path or border-radius), curved SVG vine connectors, italic serif word emphasis"
+
+constraints:
+  never:
+    - "harsh geometric shapes — everything soft, rounded, organic"
+    - "pure black (#000000) shadows or borders — green-tinted alternatives only"
+    - "neon or saturated artificial colors — earth-drawn palette exclusively"
+    - "flat textureless backgrounds — paper grain is non-negotiable"
+    - "snappy or mechanical motion — everything slow, graceful, eased"
+    - "heavy prominent borders — thin, delicate, 1px only"
+    - "tight cramped spacing — nature needs room to breathe"
+    - "drop shadows with dark tones — all shadows color-tinted (forest green)"
+  always:
+    - "paper grain noise texture (1.5% opacity, fixed overlay)"
+    - "arch-topped featured images (border-radius or clip-path)"
+    - "Playfair Display serif for headlines with italic emphasis on key words"
+    - "staggered card layouts (translate-y-12 on alternating items, md+)"
+    - "green-tinted soft shadows using palette colors"
+    - "generous whitespace — gap-12+, py-24+ between sections"
+    - "pill-shaped buttons (rounded-full) and badges"
+
+effects:
+  interaction-vocabulary: [gentle-lift, slow-bloom, soft-scale, vine-drift]
+  hover:
+    card: "gentle-lift — -translate-y-1 to -translate-y-2, shadow blooms"
+    button: "soft-scale — subtle darken (opacity-90) with duration-300"
+    image: "slow-bloom — scale-105 over 700ms, luxurious unfurl"
+    link: "vine-drift — arrow translates right (translate-x-1), color deepens"
+  active:
+    button: "soft-scale — slight darken, tactile but gentle"
+  focus:
+    general: "ring-2 ring-{color.muted} ring-offset-2 — sage green soft glow"
+  transition: "duration-300 to duration-700, ease-out"
+  ambient:
+    - "parallax-float — subtle vertical shift on decorative elements during scroll"
+
 compatibility: [organic, swiss-minimalist]
 clashes: [cyberpunk, terminal, industrial]

@@ -54,5 +54,91 @@ dark_mode:
     surface: "#2D2D48"
     on-background: "#FDFBF7"
 
+intensity:
+  variance: 8     # wobbly borders, random rotations, asymmetric radii, tape/tack decorations
+  motion: 4       # subtle jiggle hovers and bounce on decorations — motion is casual, not cinematic
+  density: 5      # layered but breathable — paper texture + dashed accents + scattered decorations
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-md} — hard offset, zero blur"
+    radius: "wobbly — border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px"
+    background: "{color.surface}"
+    decoration: "tape (translucent gray bar, rotated) OR tack (red circle at top center) OR none"
+    variants: "post-it yellow (#fff9c4) for features, speech-bubble tail for testimonials"
+  button-primary:
+    background: "{color.surface}"
+    border: "border-[3px] solid {shape.border-color}"
+    shadow: "{elevation.shadow-md}"
+    text: "{color.on-background}, {typography.font-family-secondary}"
+    radius: "wobbly oval — custom irregular border-radius"
+    fill: "hover fills {color.accent}, text turns white"
+  button-secondary:
+    background: "muted (#e5e0d8)"
+    border: "border-[3px] solid {shape.border-color}"
+    shadow: "{elevation.shadow-sm}"
+    text: "{color.on-background}"
+    radius: "wobbly oval"
+    fill: "hover fills {color.secondary} (blue ballpoint)"
+  input:
+    border: "{shape.border-width} solid {shape.border-color}"
+    radius: "wobbly — irregular border-radius matching button aesthetic"
+    background: "{color.surface}"
+    focus: "border-{color.secondary}, ring-2 ring-{color.secondary}/20"
+    font: "{typography.font-family-secondary} — handwritten feel in inputs"
+  badge:
+    shape: "wobbly pill, {shape.border-width} dashed border"
+    text: "handwritten font, text-sm, accent or secondary color"
+    decoration: "rotate-2 to rotate-4, looks like a torn tag"
+  nav:
+    logo: "heading font (Kalam), bold, slight rotation"
+    links: "handwritten font, hover adds wavy underline SVG"
+    mobile: "doodled hamburger icon with wobbly circle background"
+  layout:
+    archetype: "sketchbook-collage"
+    max-width: "max-w-5xl — contained like a sketchbook"
+    section-spacing: "py-20 — consistent rhythm"
+    grid-gap: "gap-8"
+    asymmetry: "small rotations on cards (rotate-1, -rotate-2), overlapping avatar circles"
+    surfaces: "dot-grid paper texture (radial-gradient 24px spacing), dashed line dividers"
+    decoration: "hand-drawn SVG arrows, squiggly connectors, corner frame marks, tape strips"
+
+constraints:
+  never:
+    - "standard border-radius classes alone — always use irregular wobbly values"
+    - "soft blur shadows — only hard-offset shadows (zero blur)"
+    - "clean geometric shapes — everything organic, hand-drawn, imperfect"
+    - "sans-serif body fonts — handwritten fonts (Patrick Hand, Kalam) are mandatory"
+    - "pure black (#000000) — use soft pencil black (#2D2D2D or #2D3748)"
+    - "corporate or sterile feel — every element should look sketched"
+    - "neon or saturated technology colors — pencil blacks, paper whites, correction red, ballpoint blue"
+    - "smooth transitions above 200ms — interactions should feel snappy and casual"
+  always:
+    - "wobbly irregular border-radius on every container, button, and card"
+    - "hard-offset shadows (2-8px offset, zero blur) on elevated elements"
+    - "paper dot-grid texture (radial-gradient) on page background"
+    - "handwritten fonts for all visible text (Kalam headings, Patrick Hand body)"
+    - "at least one tape strip, thumbtack, or hand-drawn arrow decoration per page"
+    - "dashed borders on secondary elements and dividers"
+    - "thick borders (border-2 minimum, border-3 or border-4 for emphasis)"
+
+effects:
+  interaction-vocabulary: [jiggle-nudge, press-flat, scribble-reveal, doodle-fill]
+  hover:
+    card: "jiggle-nudge — rotate(1deg) or rotate(-1deg), slight lift"
+    button: "doodle-fill — background fills {color.accent}, shadow reduces to 2px 2px"
+    link: "scribble-reveal — wavy underline SVG appears beneath text"
+    badge: "jiggle-nudge — rotation increases, slight bounce"
+  active:
+    button: "press-flat — shadow disappears, translate(4px, 4px) — pressed into paper"
+  focus:
+    input: "border-{color.secondary}, ring-2 ring-{color.secondary}/20 — subtle blue glow"
+    general: "border-{color.accent} — border-based focus, maintains wobbly shape"
+  transition: "duration-100 to duration-200, ease — fast and casual"
+  ambient:
+    - "gentle-bounce — decorative elements (tacks, arrows) bob subtly (3s ease-in-out)"
+    - "pencil-wobble — wobbly borders shimmer slightly on idle (optional, reduced motion aware)"
+
 compatibility: [organic, playful-geometric]
 clashes: [professional, enterprise, modern-dark]

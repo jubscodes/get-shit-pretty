@@ -55,5 +55,74 @@ dark_mode:
     border-color: "#333333"
     muted: "#9CA3AF"
 
+intensity:
+  variance: 2     # strict grid law, asymmetric but mathematically precise
+  motion: 2       # instant mechanical snaps, no fluidity
+  density: 3      # generous negative space as active structural element
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "none — depth from texture overlay only"
+    radius: "0px"
+    background: "{color.surface} or {color.background}"
+    padding: "p-8 to p-12 — generous and uniform"
+  button-primary:
+    background: "{color.primary}"
+    border: "none"
+    text: "uppercase, weight {typography.font-weight-heading}, tracking-wide"
+    radius: "0px"
+  button-secondary:
+    background: "transparent"
+    border: "2px solid {color.primary}"
+    text: "uppercase, weight {typography.font-weight-heading}, tracking-wide"
+    radius: "0px"
+  input:
+    border: "border-b 2px solid {shape.border-color}"
+    radius: "0px"
+    background: "{color.background}"
+    focus: "border-color shifts to {color.secondary} — no glow, no ring"
+  badge:
+    shape: "0px radius, {shape.border-width} border"
+    text: "uppercase, tracking-widest, text-xs, font-medium"
+  nav:
+    style: "clean horizontal with visible border-bottom separator"
+    links: "uppercase tracking-wider, hover shifts to {color.secondary}"
+  layout:
+    archetype: "asymmetric-grid"
+    max-width: "max-w-7xl"
+    section-spacing: "py-16 to py-32"
+    grid-gap: "gap-6 to gap-8"
+    surfaces: "grid pattern (24px) and dot matrix at 3-4% opacity — structure visible"
+    decoration: "numbered section labels in {color.secondary}, geometric Bauhaus shapes"
+
+constraints:
+  never:
+    - "rounded corners of any size — 0px radius everywhere"
+    - "gradient backgrounds — solid color blocks only"
+    - "drop shadows — depth from pattern and typography only"
+    - "center-aligned body text — flush-left ragged-right always"
+    - "decorative imagery competing with type — typography is the interface"
+    - "ease-in-out or spring easing — mechanical linear or ease-out only"
+    - "more than one accent color — monochrome plus {color.secondary} signal only"
+  always:
+    - "visible grid structure through borders and texture patterns"
+    - "uppercase on headings, labels, and buttons"
+    - "extreme type scale contrast between headline and body"
+    - "flush-left text alignment to grid"
+    - "active negative space framing content"
+    - "texture overlays (grid, dots, noise) on backgrounds for tactile depth"
+
+effects:
+  interaction-vocabulary: [color-invert, snap-fill, scale-lift, icon-rotate]
+  hover:
+    card: "color-invert — background snaps to {color.primary} or {color.secondary}, text inverts"
+    button: "color-invert — black/white swap or shift to {color.secondary}"
+  active:
+    button: "scale-lift — translate-y-[-1px], instant mechanical press"
+  focus:
+    general: "ring-2 ring-{color.secondary} ring-offset-2 — high contrast"
+  transition: "duration-100 to duration-200, ease-out or linear"
+
 compatibility: [bento-grid]
 clashes: [neubrutalism, cyberpunk, vaporwave]

@@ -60,5 +60,88 @@ dark_mode:
     surface: "rgba(255, 255, 255, 0.08)"
     on-background: "#E2E8F0"
 
+intensity:
+  variance: 5
+  motion: 6
+  density: 4
+
+patterns:
+  card:
+    background: "rgba(255,255,255,0.12)"
+    blur: "backdrop-blur-[12px] backdrop-saturate-[180%]"
+    border: "1px solid rgba(255,255,255,0.20)"
+    shadow: "{elevation.shadow-md} with inset highlight"
+    radius: "{shape.border-radius-md}"
+    highlight: "inset 0 1px 0 rgba(255,255,255,0.40) — top-edge refraction"
+  button-primary:
+    background: "{color.primary}"
+    border: "none"
+    shadow: "glow — 0 0 20px {color.primary}/40, 0 0 60px {color.primary}/15"
+    text: "weight 600, sentence case"
+    radius: "{shape.border-radius-sm}"
+  button-secondary:
+    background: "rgba(255,255,255,0.08)"
+    blur: "backdrop-blur-[8px]"
+    border: "1px solid rgba(255,255,255,0.20)"
+    text: "weight 500"
+    radius: "{shape.border-radius-sm}"
+  input:
+    background: "rgba(255,255,255,0.08)"
+    blur: "backdrop-blur-[8px]"
+    border: "1px solid rgba(255,255,255,0.15)"
+    radius: "{shape.border-radius-sm}"
+    focus: "border-white/40, glow ring"
+  badge:
+    background: "glass or primary-tinted glass"
+    shape: "rounded-full"
+    text: "text-xs font-medium"
+  nav:
+    background: "glass panel at 0.15 alpha"
+    blur: "backdrop-blur-[16px]"
+    border: "1px solid rgba(255,255,255,0.15)"
+    position: "sticky frosted"
+  layout:
+    archetype: "layered-glass"
+    max-width: "max-w-7xl"
+    section-spacing: "py-20 to py-32"
+    grid-gap: "gap-6 to gap-8"
+    surfaces: "dark canvas required — glass does not read on light"
+    decoration: "gradient orbs, ambient blobs behind glass panels"
+    depth: "surface alpha scale: 0.04→0.08→0.12→0.15→0.18→0.22 by z-level"
+
+constraints:
+  never:
+    - "hard-offset shadows — all shadows diffused and ambient"
+    - "opaque card backgrounds — surfaces must be translucent"
+    - "light page background — glass requires dark canvas to read"
+    - "thick borders (>1px) — hairline only for glass edge definition"
+    - "flat shadowless elements — everything needs depth cues"
+    - "surface alpha above 0.22 — becomes opaque, kills glass"
+    - "surface alpha below 0.04 — disappears into background"
+    - "backdrop-blur on scrolling containers — fixed/sticky elements only"
+  always:
+    - "backdrop-filter: blur + saturate on every glass surface"
+    - "hairline border (1px rgba(255,255,255,0.15-0.30)) on glass panels"
+    - "inset highlight on primary glass surfaces (top-edge refraction)"
+    - "-webkit-backdrop-filter prefix for Safari"
+    - "dark background canvas — deep slate or darker"
+    - "surface alpha hierarchy matching z-depth"
+
+effects:
+  interaction-vocabulary: [glow-intensify, alpha-step, soft-scale, spotlight-border]
+  hover:
+    card: "alpha-step — border opacity 0.20→0.30, surface brightens"
+    button-primary: "glow-intensify — glow radius and opacity increase"
+    glass-surface: "alpha-step — surface opacity increases one level"
+  active:
+    button: "soft-scale — scale-[0.97], glow dims"
+  focus:
+    general: "glow ring — ring-2 ring-{color.primary}/50 with ambient glow"
+  transition: "duration-200 to duration-300, cubic-bezier(0.4, 0, 0.2, 1)"
+  ambient:
+    - "orb-drift — gradient blobs drift slowly behind glass panels"
+    - "color-shift — background blob hues rotate subtly"
+    - "glow-pulse — primary elements pulse glow at rest"
+
 compatibility: [aurora-gradients, liquid-glass]
 clashes: [neubrutalism, claymorphism]

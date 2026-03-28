@@ -53,5 +53,83 @@ dark_mode:
     surface: "#2A2A2A"
     on-background: "#F0F0F0"
 
+intensity:
+  variance: 7     # asymmetric color-blocked sections, overlapping geometric shapes, broken grids
+  motion: 3       # snappy mechanical transitions, no ambient — static compositions with interaction only
+  density: 6      # poster-dense — thick borders, color blocks, geometric shapes fill the visual field
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-md}"
+    radius: "0px"
+    background: "{color.background}"
+    decoration: "small geometric shape (8px) in top-right corner — circle, square, or triangle in primary color"
+  button-primary:
+    background: "{color.primary}"
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-sm}"
+    text: "uppercase, font-bold, tracking-wider, white"
+    radius: "0px or rounded-full — binary extremes only"
+  button-secondary:
+    background: "{color.secondary}"
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-sm}"
+    text: "uppercase, font-bold, tracking-wider, white"
+    radius: "0px or rounded-full"
+  input:
+    border: "{shape.border-width} solid {shape.border-color}"
+    radius: "0px"
+    background: "{color.background}"
+    focus: "ring-2 ring-offset-2 ring-{color.primary}"
+    height: "h-12"
+  badge:
+    shape: "0px radius or rounded-full — binary extremes"
+    text: "uppercase font-bold tracking-widest text-xs"
+    decoration: "solid primary color background (red, blue, or yellow)"
+  nav:
+    logo: "three geometric shapes (circle, square, triangle) in primary colors"
+    links: "uppercase font-bold tracking-wider, hover color shifts to primary"
+    border: "border-b-4 {shape.border-color}"
+  layout:
+    archetype: "constructivist-poster"
+    max-width: "max-w-7xl"
+    section-spacing: "py-16 to py-24"
+    grid-gap: "gap-6 to gap-8"
+    surfaces: "solid color-blocked sections — alternating red, blue, yellow, white, black backgrounds"
+    decoration: "overlapping circles, rotated-45 squares, triangles (clip-path polygon), dot grid patterns"
+    dividers: "border-b-4 border-black between every section — strong horizontal rhythm"
+
+constraints:
+  never:
+    - "in-between border-radius (1px-9998px) — binary: 0px or 9999px only"
+    - "gradients of any kind — solid color blocks only, no blending"
+    - "soft blurred shadows — hard-offset (Npx Npx 0px 0px black) only"
+    - "thin borders — minimum 2px mobile, 4px desktop"
+    - "muted or desaturated colors — primary red, blue, yellow at full intensity"
+    - "organic curves or blob shapes — circles, squares, triangles only"
+    - "subtle effects or transparency — everything is direct and declarative"
+  always:
+    - "hard-offset shadows (4-8px, 0px blur, pure black) on every elevated element"
+    - "thick black borders (border-2 mobile, border-4 desktop) on every container"
+    - "at least 3 color-blocked sections using solid primary backgrounds"
+    - "geometric shape decorations (circle/square/triangle) on cards and corners"
+    - "45-degree rotation on every 3rd decorative shape"
+    - "grayscale images by default with hover:grayscale-0 reveal"
+    - "extreme type scale contrast (text-8xl headlines vs text-base body)"
+
+effects:
+  interaction-vocabulary: [press-down, geometric-lift, shape-scale, color-block-shift]
+  hover:
+    card: "geometric-lift — -translate-y-1, shadow maintained"
+    button: "color-block-shift — opacity-90 on background color"
+    icon-shape: "shape-scale — scale-110 via group-hover"
+    image: "grayscale-reveal — grayscale-0 over 300ms"
+  active:
+    button: "press-down — translate-x-[2px] translate-y-[2px], shadow-none"
+  focus:
+    general: "ring-2 ring-{color.primary} ring-offset-2"
+  transition: "duration-200 to duration-300, ease-out — mechanical, decisive"
+
 compatibility: [neubrutalism, flat-design]
 clashes: [glassmorphism, liquid-glass, neumorphism]

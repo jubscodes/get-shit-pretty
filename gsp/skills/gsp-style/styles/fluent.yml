@@ -59,5 +59,87 @@ dark_mode:
     on-background: "#FFFFFF"
     border-color: "#404040"
 
+intensity:
+  variance: 2     # strict grid alignment, consistent density, OS-level predictability
+  motion: 3       # fast hover states (100ms), medium flyouts (250-350ms), no ambient animation
+  density: 7      # compact by design — 14px base, tight spacing, dashboard-oriented
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-sm} resting, {elevation.shadow-md} on hover"
+    radius: "{shape.border-radius-md}"
+    background: "{color.surface}"
+    padding: "p-4 to p-6"
+  button-primary:
+    background: "{color.primary}"
+    border: "none"
+    shadow: "none"
+    text: "weight 500, sentence case, white"
+    radius: "{shape.border-radius-sm}"
+    hover: "bg darkens to {color.secondary}"
+    pressed: "bg darkens further to {color.accent}, scale-[0.98]"
+  button-secondary:
+    background: "{color.surface}"
+    border: "{shape.border-width} solid {shape.border-color}"
+    text: "weight 500, sentence case, {color.on-background}"
+    radius: "{shape.border-radius-sm}"
+    hover: "background shifts to neutral-light grey tint"
+    focus: "double ring — 2px whitespace + 2px brand ring"
+  input:
+    border: "{shape.border-width} solid {shape.border-color}"
+    radius: "{shape.border-radius-sm}"
+    background: "{color.background} or light grey fill"
+    focus: "bottom border becomes 2px thick {color.primary} bar"
+    label: "text-sm font-medium above input"
+  badge:
+    shape: "{shape.border-radius-sm}"
+    text: "text-xs font-medium"
+    background: "neutral subtle tint"
+  nav:
+    style: "left-rail vertical or horizontal tabs"
+    selection: "3px vertical brand-colored pill on active item"
+    hover: "bg-neutral-subtle behind item content"
+    item-radius: "rounded-md (6px)"
+  layout:
+    archetype: "density-driven-grid"
+    max-width: "container responsive"
+    section-spacing: "py-12 to py-16"
+    grid-gap: "gap-4 to gap-6"
+    surfaces: "solid opaque — acrylic reserved for temporary surfaces only"
+    depth: "elevation via shadow levels (2/4/8/16), not transparency"
+
+constraints:
+  never:
+    - "rounded-full on cards or containers — reserved for avatars only"
+    - "colored shadows — all shadows neutral black at low opacity"
+    - "gradient backgrounds on buttons — solid brand color only"
+    - "decorative blur shapes or ambient orbs — Fluent uses materials, not decoration"
+    - "heavy drop shadows on cards — subtle diffused elevation only"
+    - "bouncy or spring animations — deceleration curves only"
+    - "large border-radius (>12px) on standard cards — 8px is surface radius"
+    - "uppercase text on buttons or body — sentence case throughout"
+  always:
+    - "double focus ring (whitespace + brand) on interactive elements"
+    - "Rest/Hover/Pressed/Disabled state model on every control"
+    - "acrylic (backdrop-blur-[20px]) only on temporary surfaces (menus, flyouts)"
+    - "semantic token naming (Brand, Neutral, Surface) not visual descriptions"
+    - "thin 1px borders on all card surfaces"
+    - "4px control radius on buttons/inputs, 8px on cards/panels"
+
+effects:
+  interaction-vocabulary: [state-darken, underline-focus, subtle-lift, slide-in]
+  hover:
+    card: "subtle-lift — shadow steps from shadow-2 to shadow-4"
+    button: "state-darken — background darkens one step"
+    nav-item: "bg-neutral-subtle appears behind content"
+    link: "underline-focus — underline appears"
+  active:
+    button: "state-darken — background darkens further, optional scale-[0.98]"
+  focus:
+    general: "double ring — 2px white gap + 2px ring-{color.primary}"
+    input: "underline-focus — bottom border thickens to 2px {color.primary}"
+  transition: "duration-100 hover, duration-250 to duration-350 flyouts, decelerate curve"
+
 compatibility: [professional, enterprise]
 clashes: [neubrutalism, vaporwave, retro]

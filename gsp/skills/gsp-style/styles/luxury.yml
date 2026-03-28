@@ -58,5 +58,88 @@ dark_mode:
     surface: "#1A1A1A"
     on-background: "#F5F5F0"
 
+intensity:
+  variance: 4     # asymmetric grids but architecturally balanced, offset columns
+  motion: 3       # cinematic slow reveals, never flashy — restraint is the point
+  density: 2      # extreme negative space — luxury breathes, less is more
+
+patterns:
+  card:
+    border: "border-t {shape.border-width} solid {color.on-background}"
+    shadow: "{elevation.shadow-sm} resting, {elevation.shadow-md} on hover — always subtle"
+    radius: "0px — strictly rectangular, architectural precision"
+    background: "transparent — defined by top-border, not fill"
+    texture: "paper noise overlay at 2% opacity across page"
+  button-primary:
+    background: "{color.accent}"
+    border: "none"
+    shadow: "{elevation.shadow-md} resting, {elevation.shadow-lg} on hover"
+    text: "uppercase, text-xs, tracking-[0.2em], weight 500, white"
+    radius: "0px"
+    decoration: "gold overlay slides from left on hover via translate-x"
+  button-secondary:
+    background: "transparent"
+    border: "{shape.border-width} solid {color.on-background}"
+    text: "uppercase, text-xs, tracking-[0.2em], {color.on-background}"
+    radius: "0px"
+  input:
+    border: "border-b only — {shape.border-width} solid {color.on-background}"
+    radius: "0px"
+    background: "transparent"
+    focus: "border-b-{color.primary} — gold underline, no ring, no glow"
+    placeholder: "italic serif ({typography.font-family-primary}), {color.muted}"
+  badge:
+    shape: "0px radius, thin border"
+    text: "text-xs uppercase tracking-[0.25em], {color.muted}"
+  nav:
+    style: "minimal horizontal with border-bottom separator"
+    links: "uppercase text-xs tracking-[0.2em], hover shifts to {color.primary}"
+  layout:
+    archetype: "asymmetric-editorial"
+    max-width: "max-w-[1600px]"
+    section-spacing: "py-24 to py-32 — massive vertical breathing room"
+    grid-gap: "gap-12 to gap-16"
+    asymmetry: "7/5 or 4-offset-by-2 column splits, bottom-left alignment"
+    surfaces: "paper noise at 2% opacity — fixed overlay, tactile quality"
+    decoration: "vertical text labels (writing-mode: vertical-rl), visible 4-line grid, decorative h-px dividers"
+
+constraints:
+  never:
+    - "border-radius above 0px — everything perfectly rectangular, no exceptions"
+    - "harsh or prominent shadows — only soft rgba with low opacity"
+    - "pure black (#000000) or pure white (#FFFFFF) — charcoal and alabaster only"
+    - "fast animations under 500ms — luxury is deliberate and slow"
+    - "vibrant or saturated colors — monochromatic with gold accent only"
+    - "centered symmetric layouts — use asymmetry, offset columns, intentional imbalance"
+    - "decorative display fonts — only Playfair Display and Inter"
+    - "prominent icons — if needed, lucide thin strokes only, functional not decorative"
+    - "gold as dominant area color — accent for hover/focus only, never primary fill"
+    - "ease-in-out or ease-in easing — mechanical feel breaks luxury"
+  always:
+    - "grayscale filter on all images by default, color reveals on hover (1500-2000ms)"
+    - "gold (#D4AF37) appears on hover states — underlines, borders, text color shifts"
+    - "extreme type scale contrast — massive serif headlines vs tiny uppercase labels"
+    - "generous negative space — more than feels comfortable"
+    - "paper noise texture overlay (2% opacity, fixed position)"
+    - "inner borders (inset shadows) on images for subtle framing"
+    - "visible architectural grid lines at low opacity"
+
+effects:
+  interaction-vocabulary: [gold-slide, cinematic-reveal, shadow-deepen, slow-invert]
+  hover:
+    card: "shadow-deepen — shadow evolves sm→md, barely visible bg shift"
+    button-primary: "gold-slide — gold overlay translates from left, shadow deepens"
+    button-secondary: "slow-invert — background fills dark, text inverts white"
+    image: "cinematic-reveal — grayscale→color over 1500-2000ms, scale-105, shadow deepens"
+    link: "gold accent — text shifts to {color.primary} over 500ms"
+  active:
+    button: "shadow-deepen — shadow increases, no scale"
+  focus:
+    input: "border-b color shifts to {color.primary} — gold underline only"
+    general: "ring-1 ring-{color.on-background} — minimal, elegant"
+  transition: "duration-500 to duration-700, ease-out or cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+  ambient:
+    - "grayscale-hold — all images rest in grayscale, color is earned on interaction"
+
 compatibility: [art-deco, academia]
 clashes: [neubrutalism, retro, maximalism]

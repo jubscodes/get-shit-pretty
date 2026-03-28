@@ -17,10 +17,8 @@ Run this often — after adding/removing skills or agents, after architecture ch
 Source layout reference:
 - `gsp/skills/` — skills (SKILL.md files)
 - `gsp/agents/` — agents (gsp-*.md files)
-- `gsp/prompts/` — system prompts
 - `gsp/templates/` — config, state, brief, roadmap templates
 - `gsp/references/` — shared reference material
-- `.claude-plugin/plugin.json` — plugin manifest
 - `bin/install.js` — multi-runtime installer
 - `VERSION`, `package.json` — version sources
 - `CLAUDE.md` — project instructions (references counts)
@@ -44,18 +42,15 @@ Run in parallel:
 
 ```bash
 # Actual counts from filesystem
-SKILL_COUNT=$(ls -d gsp/skills/gsp-*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+SKILL_COUNT=$(ls -d gsp/skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
 AGENT_COUNT=$(ls gsp/agents/gsp-*.md 2>/dev/null | wc -l | tr -d ' ')
-PROMPT_COUNT=$(ls gsp/prompts/*.md 2>/dev/null | wc -l | tr -d ' ')
-echo "skills=$SKILL_COUNT agents=$AGENT_COUNT prompts=$PROMPT_COUNT"
+echo "skills=$SKILL_COUNT agents=$AGENT_COUNT"
 ```
 
 ```bash
 # Versions from all sources
 cat VERSION
 node -e "process.stdout.write(require('./package.json').version)"
-echo
-node -e "process.stdout.write(require('./.claude-plugin/plugin.json').version)"
 echo
 node -e "process.stdout.write(require('./gsp/templates/projects/config.json').version)"
 echo
@@ -64,7 +59,7 @@ node -e "process.stdout.write(require('./gsp/templates/branding/config.json').ve
 
 ## Step 2: Version sync
 
-Check that all 5 version sources agree: VERSION, package.json, plugin.json, projects/config.json, branding/config.json.
+Check that all 4 version sources agree: VERSION, package.json, projects/config.json, branding/config.json.
 
 Any mismatch → drift issue. The VERSION file is the source of truth.
 
@@ -84,7 +79,7 @@ This check is informational — don't auto-fix. Suggest `/gsp-changelog update` 
 
 ## Step 3: Count drift in CLAUDE.md
 
-Grep CLAUDE.md for counts like "21 skills", "15 agents", "12 prompts". Compare against actual filesystem counts from Step 1.
+Grep CLAUDE.md for counts like "38 skills", "15 agents". Compare against actual filesystem counts from Step 1.
 
 Any mismatch → drift issue.
 
@@ -92,7 +87,7 @@ Any mismatch → drift issue.
 
 ## Step 4: Stale terminology
 
-Grep across `gsp/skills/`, `gsp/agents/`, `gsp/prompts/`, `gsp/templates/`, and `bin/install.js` comments for:
+Grep across `gsp/skills/`, `gsp/agents/`, `gsp/templates/`, and `bin/install.js` comments for:
 
 ```
 # Stale "commands" references (should be "skills")
@@ -104,8 +99,8 @@ pattern: "5 phases" or "five phases" near "brand" context
 files: gsp/**/*.md
 
 # Old invocation syntax in source
-pattern: /gsp- (hyphen, not colon) in gsp/ source files
-files: gsp/**/*.md (should be /gsp: in source, runtimes convert)
+pattern: /gsp: (colon) is the OLD syntax — should be converted to /gsp- (hyphen)
+files: gsp/**/*.md (source now uses /gsp- directly, matching Claude Code registration)
 ```
 
 Be careful with false positives:
@@ -157,18 +152,17 @@ Output a compact report:
   ═══════════════════════════════════════
 
   Versions
-    ✓ VERSION, package.json, plugin.json    0.5.0
+    ✓ VERSION, package.json                 0.5.0
     ✗ projects/config.json                  0.4.2 → 0.5.0
     ✗ branding/config.json                  0.4.3 → 0.5.0
 
   Counts
-    ✓ skills                                21 (CLAUDE.md says 21)
+    ✓ skills                                38 (CLAUDE.md says 38)
     ✗ agents                                16 (CLAUDE.md says 15)
-    ✓ prompts                               12 (CLAUDE.md says 12)
 
   Stale references
     ✗ gsp-start/SKILL.md:18                "5 phases" → "4 phases"
-    ✗ gsp-update/SKILL.md:63               "commands/gsp/*" → "skills/gsp-*"
+    ✗ update/SKILL.md:63                    "commands/gsp/*" → "skills/*"
     ✗ bin/install.js:1017                   comment references "commands/"
 
   Working tree

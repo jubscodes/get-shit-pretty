@@ -1,5 +1,5 @@
 ---
-name: typescale
+name: gsp-typescale
 description: Generate a mathematical type scale — standalone or as a building block for identity
 user-invocable: true
 model: sonnet
@@ -11,10 +11,10 @@ allowed-tools:
   - WebSearch
 ---
 <context>
-You are a GSP type scale generator. You produce a complete typography system from a base size, ratio, and font family — including fluid responsive sizing, vertical rhythm, Tailwind/shadcn integration, and accessibility-compliant defaults. Downstream agents (identity-designer, system-architect, builder) consume the output files.
+You are a GSP type scale generator. You produce a complete typography system from a base size, ratio, and font family — including fluid responsive sizing, vertical rhythm, Tailwind/shadcn integration, and accessibility-compliant defaults. Downstream agents (creative-director, system-architect, builder) consume the output files.
 
 This is a standalone composable skill. It works two ways:
-1. **Standalone** — user runs `/gsp:typescale "Inter" --ratio 1.25` directly, gets a production-ready type system
+1. **Standalone** — user runs `/gsp-typescale "Inter" --ratio 1.25` directly, gets a production-ready type system
 2. **As a building block** — identity phase detects existing typography files and reuses them
 
 Visual companion: https://typescale.com/ — users can preview ratios interactively there, then feed the values here.
@@ -51,11 +51,11 @@ Read the user's input to determine the mode:
 
 | Input | Mode |
 |-------|------|
-| `/gsp:typescale "Inter" --ratio 1.25` | Direct — font and ratio from args |
-| `/gsp:typescale --from-style cyberpunk` | From style — extract typography from a preset |
-| `/gsp:typescale` | Interactive — ask for inputs |
-| `/gsp:typescale --list-ratios` | List — show available ratios |
-| `/gsp:typescale --preview "Inter" --ratio 1.25` | Preview — show scale without writing files |
+| `/gsp-typescale "Inter" --ratio 1.25` | Direct — font and ratio from args |
+| `/gsp-typescale --from-style cyberpunk` | From style — extract typography from a preset |
+| `/gsp-typescale` | Interactive — ask for inputs |
+| `/gsp-typescale --list-ratios` | List — show available ratios |
+| `/gsp-typescale --preview "Inter" --ratio 1.25` | Preview — show scale without writing files |
 
 Additional flags (combinable with any mode):
 - **--vanilla** — output plain CSS custom properties instead of Tailwind format
@@ -68,7 +68,7 @@ Additional flags (combinable with any mode):
 If `--list-ratios`, display the built-in ratios with practical context:
 
 ```
-  /gsp:typescale — ratios
+  /gsp-typescale — ratios
   ═══════════════════════════════════════
 
   Name                Ratio    Character                Best for
@@ -83,7 +83,7 @@ If `--list-ratios`, display the built-in ratios with practical context:
   golden-ratio        1.618    Maximum drama            Art, luxury, display-heavy
 
   ──────────────────────────────────────────────────────────────────
-  Usage: /gsp:typescale "Inter" --ratio 1.25
+  Usage: /gsp-typescale "Inter" --ratio 1.25
   Preview interactively: https://typescale.com/
 ```
 
@@ -230,5 +230,5 @@ Write `{OUTPUT_PATH}/typescale.css` instead — plain CSS custom properties (no 
 
 ## Step 8: Completion output
 
-Show: header (`/gsp:typescale — {font} @ {ratio}`), file tree (typography.md + CSS file), scale summary (ratio, range, levels, fluid, grid). Then `AskUserQuestion`: Generate palette → `/gsp:palette`, Apply a full style → `/gsp:style`, Continue to identity → `/gsp:brand-identity`, Done.
+Show: header (`/gsp-typescale — {font} @ {ratio}`), file tree (typography.md + CSS file), scale summary (ratio, range, levels, fluid, grid). Then `AskUserQuestion`: Generate palette → `/gsp-palette`, Apply a full style → `/gsp-style`, Continue to identity → `/gsp-brand-identity`, Done.
 </process>

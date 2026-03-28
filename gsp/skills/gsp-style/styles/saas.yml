@@ -57,5 +57,88 @@ dark_mode:
     surface: "#1E293B"
     on-background: "#F1F5F9"
 
+intensity:
+  variance: 4     # structured layouts with strategic asymmetry (hero 1.1fr/0.9fr), not chaotic
+  motion: 6       # floating hero elements, pulsing indicators, entrance stagger, scroll parallax
+  density: 5      # balanced — generous section whitespace, denser within components
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-md} resting, {elevation.shadow-xl} on hover"
+    radius: "{shape.border-radius-md}"
+    background: "{color.background}"
+    hover-overlay: "bg-gradient-to-br from-{color.primary}/[0.03] to-transparent"
+  button-primary:
+    background: "{gradient.signature}"
+    border: "none"
+    shadow: "{elevation.shadow-sm} resting, shadow-accent on hover"
+    text: "weight 500, sentence case, white"
+    radius: "{shape.border-radius-md}"
+    icon: "arrow-right translates +1 on hover"
+  button-secondary:
+    background: "transparent"
+    border: "{shape.border-width} solid {shape.border-color}"
+    text: "weight 500, sentence case, {color.on-background}"
+    radius: "{shape.border-radius-md}"
+    hover: "border shifts to {color.primary}/30, shadow appears"
+  input:
+    border: "{shape.border-width} solid {shape.border-color}"
+    radius: "{shape.border-radius-md}"
+    background: "transparent or {color.accent}/10"
+    focus: "ring-2 ring-{color.primary} ring-offset-2"
+    height: "h-12 to h-14"
+  badge:
+    shape: "rounded-full with accent border and tinted background"
+    text: "font-mono text-xs uppercase tracking-[0.15em] text-{color.primary}"
+    decoration: "animated pulsing dot indicator"
+  nav:
+    style: "clean horizontal, border-bottom subtle"
+    links: "font-medium, hover shifts to {color.primary}"
+    cta: "gradient primary button in nav"
+  layout:
+    archetype: "asymmetric-hero-grid"
+    max-width: "max-w-6xl"
+    section-spacing: "py-28 to py-44"
+    grid-gap: "gap-5 to gap-8"
+    surfaces: "clean white with radial accent glows at 3-6% opacity on corners"
+    decoration: "dot-pattern on inverted sections, radial gradient overlays in hero"
+    contrast-sections: "inverted bg-foreground text-background for stats/CTA"
+
+constraints:
+  never:
+    - "flat dark sections without dot-pattern texture — inverted sections need texture"
+    - "more than one gradient direction per element — 135deg diagonal or horizontal only"
+    - "pure black text — use deep slate {color.on-background}"
+    - "decorative rotations or skew — this is polished, not playful"
+    - "hard-offset shadows — all shadows soft and diffused"
+    - "more than two accent colors — single gradient pair only"
+    - "small hero headlines — minimum text-5xl mobile, text-8xl desktop"
+  always:
+    - "signature gradient on primary buttons, featured badges, and icon backgrounds"
+    - "dual-font system — display serif for h1/h2, sans-serif for everything else"
+    - "monospace section labels in pill badges with accent dot"
+    - "at least one inverted contrast section per page"
+    - "gradient text treatment on key headline words"
+    - "accent-tinted shadows on featured elements"
+
+effects:
+  interaction-vocabulary: [gradient-lift, gentle-lift, icon-nudge, pulse-dot, fade-up-stagger]
+  hover:
+    card: "gentle-lift — -translate-y-0.5, shadow deepens md→xl, gradient overlay fades in"
+    button: "gradient-lift — -translate-y-0.5, shadow shifts to accent-tinted, brightness-110"
+    link: "color shift to {color.primary}"
+    icon: "icon-nudge — scale-110 on icon container"
+  active:
+    button: "scale-press — scale-[0.98]"
+  focus:
+    general: "ring-2 ring-{color.primary} ring-offset-2 ring-offset-{color.background}"
+  transition: "duration-200 to duration-300, ease-out"
+  ambient:
+    - "pulse-dot — scale/opacity pulse on badge indicators (2s infinite)"
+    - "float-bob — hero cards bob on sine wave (4-5s, ±10px)"
+    - "slow-spin — decorative ring rotates (60s linear infinite)"
+    - "fade-up-stagger — entrance animations with 0.1s child delay"
+
 compatibility: [professional, enterprise]
 clashes: [retro, vaporwave, sketch]

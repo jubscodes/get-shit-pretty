@@ -55,5 +55,72 @@ dark_mode:
     border-color: "#334155"
     muted: "#64748B"
 
+intensity:
+  variance: 2
+  motion: 3
+  density: 5
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-sm} resting, {elevation.shadow-md} on hover"
+    radius: "{shape.border-radius-md}"
+    background: "{color.surface}"
+  button-primary:
+    background: "{color.primary}"
+    border: "none"
+    shadow: "{elevation.shadow-sm}"
+    text: "weight 500, sentence case"
+    radius: "{shape.border-radius-sm}"
+  button-secondary:
+    background: "transparent"
+    border: "{shape.border-width} solid {shape.border-color}"
+    text: "weight 500, sentence case"
+    radius: "{shape.border-radius-sm}"
+  input:
+    border: "{shape.border-width} solid {shape.border-color}"
+    radius: "{shape.border-radius-sm}"
+    background: "{color.background}"
+    focus: "ring-2 ring-{color.primary}/50 with ring-offset-1"
+  badge:
+    shape: "rounded-full, text-xs"
+    text: "font-medium, sentence case"
+  nav:
+    style: "clean horizontal with subtle border-bottom"
+    links: "font-medium, hover shifts to {color.primary}"
+  layout:
+    archetype: "symmetric-grid"
+    max-width: "max-w-7xl"
+    section-spacing: "py-16 to py-24"
+    grid-gap: "gap-6 to gap-8"
+    surfaces: "clean — no texture, no grain, no patterns"
+
+constraints:
+  never:
+    - "decorative rotations or skew — precision over personality"
+    - "saturated background sections — white/surface/subtle tints only"
+    - "text stroke effects — clean, readable type only"
+    - "noise or halftone textures — clean surfaces"
+    - "uppercase body text — sentence case throughout"
+    - "shadows with colored tints — neutral black/gray shadows only"
+    - "hard-offset shadows — all shadows soft and diffused"
+  always:
+    - "consistent border-radius across all components at the same elevation"
+    - "subtle hover transitions (150-250ms)"
+    - "muted color palette — no neon, no high-saturation accents"
+    - "clean visual hierarchy through spacing and weight, not decoration"
+
+effects:
+  interaction-vocabulary: [gentle-lift, subtle-darken, scale-press]
+  hover:
+    card: "gentle-lift — shadow deepens sm→md, subtle border darken"
+    button: "subtle-darken — background darkens 10%"
+    link: "color shift to {color.primary}"
+  active:
+    button: "scale-press — scale-[0.98]"
+  focus:
+    general: "ring-2 ring-{color.primary}/50 ring-offset-1"
+  transition: "duration-150 to duration-250, cubic-bezier(0.4, 0, 0.2, 1)"
+
 compatibility: [bento-grid, micro-interactions]
 clashes: [cyberpunk, vaporwave, neubrutalism]

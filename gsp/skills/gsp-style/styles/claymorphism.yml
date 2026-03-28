@@ -65,5 +65,89 @@ dark_mode:
     surface: "rgba(50,45,70,0.60)"
     on-background: "#E8E6F0"
 
+intensity:
+  variance: 6     # bento grids with col-span mixing, overlapping badges, varied radii per nesting level
+  motion: 6       # blob drift, breathe animations, squish physics, hover lifts — playful and continuous
+  density: 4      # airy — clay needs space to show shadow depth and floating effect
+
+patterns:
+  card:
+    border: "none — depth from 4-layer shadow stack only"
+    shadow: "{elevation.shadow-lg}"
+    radius: "{shape.border-radius-md}"
+    background: "{color.surface} with backdrop-blur-xl"
+    texture: "glass-clay hybrid — semi-transparent white reveals background blobs"
+  button-primary:
+    background: "{gradient.button}"
+    border: "none"
+    shadow: "{elevation.shadow-md}"
+    text: "bold, tracking-wide, white"
+    radius: "{shape.border-radius-sm}"
+  button-secondary:
+    background: "white"
+    border: "none"
+    shadow: "{elevation.shadow-md}"
+    text: "{color.on-background}, bold"
+    radius: "{shape.border-radius-sm}"
+  input:
+    border: "none — depth from inset shadow only"
+    radius: "{shape.border-radius-sm}"
+    background: "#EFEBF5"
+    focus: "background becomes white, ring-4 ring-{color.primary}/20"
+    shadow: "{inset.pressed}"
+    height: "h-16"
+  badge:
+    shape: "rounded-full or rounded-lg, gradient background"
+    text: "text-xs font-bold uppercase tracking-wide"
+    decoration: "colored gradient fill matching icon orb palette"
+  nav:
+    style: "floating pill bar"
+    background: "white/80 with backdrop-blur-xl"
+    shape: "rounded-[40px]"
+    shadow: "{elevation.shadow-sm}"
+  layout:
+    archetype: "bento-clay"
+    max-width: "max-w-7xl"
+    section-spacing: "py-20 to py-32"
+    grid-gap: "gap-8 to gap-12"
+    surfaces: "animated gradient blobs (accent colors at /10 opacity, blur-3xl) — never flat"
+    decoration: "overlapping clay shapes, nested radii (outer 48px, card 32px, image 24px)"
+    depth: "glass-clay hybrid — bg-white/60 to /80 + backdrop-blur-xl"
+
+constraints:
+  never:
+    - "sharp corners — minimum radius {shape.border-radius-sm} (20px), never rounded-md or rounded-sm"
+    - "flat backgrounds without animated blobs — texture is mandatory"
+    - "single-layer shadows — minimum 4-layer shadow stack for clay depth"
+    - "gray text lighter than {color.muted} (#635F69) — accessibility minimum"
+    - "gradient text below text-5xl — readability risk at small sizes"
+    - "hard-offset shadows — all shadows soft, multi-layered, color-tinted"
+    - "visible borders — depth communicated through shadow stacks only"
+  always:
+    - "4-layer box-shadow on every elevated element (drop + highlight + inner bounce + inner rim)"
+    - "super-rounded corners ({shape.border-radius-sm} minimum on smallest elements)"
+    - "animated background blobs (3-4 large, staggered drift animations)"
+    - "glass-clay cards (semi-transparent white + backdrop-blur-xl)"
+    - "Nunito font-family on all headings and stat numbers"
+    - "inset shadow on inputs and pressed states ({inset.pressed})"
+    - "nested radius hierarchy (outer > card > image, each 8px smaller)"
+
+effects:
+  interaction-vocabulary: [squish-press, clay-lift, breathe-scale, blob-drift]
+  hover:
+    card: "clay-lift — -translate-y-2, shadow stack intensifies"
+    button: "clay-lift — -translate-y-1, shadow enhancement"
+    stat-orb: "breathe-scale — scale-110 with 300ms ease"
+    blog-card: "clay-lift — -translate-y-3 for dramatic float"
+  active:
+    button: "squish-press — scale-[0.92] + shadow switches to {inset.pressed}"
+  focus:
+    general: "ring-4 ring-{color.primary}/30 ring-offset-2"
+  transition: "duration-200 to duration-500, cubic-bezier(0.4, 0, 0.2, 1)"
+  ambient:
+    - "blob-drift — background blobs translateY(-20px) rotate(2deg) over 8-12s infinite"
+    - "breathe-scale — stat orbs scale(1.02) over 6s infinite"
+    - "clay-float — decorative shapes orbit hero with 12s pronounced drift"
+
 compatibility: [neumorphism, playful-geometric]
 clashes: [neubrutalism, monochrome, terminal]

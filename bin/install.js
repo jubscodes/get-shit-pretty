@@ -167,7 +167,7 @@ function center(text, width) {
 }
 
 const columns = process.stdout.columns || 80;
-const rampText = `${c.accent}░▒▓█${c.reset} ${c.bold} GET SHIT PRETTY ${c.reset} ${c.accent}█▓▒░${c.reset}`;
+const rampText = `${c.accent}░▒▓█${c.reset} ${c.bold} GET SHIT PRETTY ${c.reset} ${c.dim}v${pkg.version}${c.reset} ${c.accent}█▓▒░${c.reset}`;
 const boxWidth = 48;
 const innerWidth = boxWidth - 2; // inside the border chars
 const showSparkles = columns >= 44;
@@ -197,7 +197,7 @@ const banner = '\n' +
   (showSparkles ? sparkle('dense') + '\n' : '') +
   bottomBorder + '\n' +
   '\n' +
-  `  ${c.bold}${c.accent}/gsp:${c.reset} ${c.tertiary}◇◇${c.reset}  ${c.dim}v${pkg.version}${c.reset}\n` +
+  `  ${c.bold}${c.accent}/gsp${c.reset} ${c.tertiary}◇◇${c.reset}\n` +
   `  ${c.dim}${tagline}${c.reset}\n`;
 
 console.log(banner);
@@ -395,7 +395,7 @@ function applyOpencodeBodyReplacements(content) {
   converted = converted.replace(/\bSlashCommand\b/g, 'skill');
   converted = converted.replace(/\bSkill\b(?=\s+tool\b)/g, 'skill');
   converted = converted.replace(/\bTodoWrite\b/g, 'todowrite');
-  converted = converted.replace(/\/gsp:/g, '/gsp-');
+  converted = converted.replace(/\/gsp:/g, '/gsp-');  // legacy: source may still have /gsp: in older versions
   converted = converted.replace(/~\/\.claude\b/g, '~/.config/opencode');
   converted = converted.replace(/subagent_type="general-purpose"/g, 'subagent_type="general"');
   // Convert Claude agent spawning to OpenCode subagent delegation
@@ -806,7 +806,8 @@ function convertClaudeSkillToGemini(content, skillName) {
  */
 function applyCodexBodyReplacements(content) {
   let converted = content;
-  converted = converted.replace(/\/gsp:/g, '$gsp-');
+  converted = converted.replace(/\/gsp:/g, '$gsp-');  // legacy: source may still have /gsp: in older versions
+  converted = converted.replace(/\/gsp-/g, '$gsp-');
   converted = converted.replace(/~\/\.claude\b/g, '~/.codex');
   converted = converted.replace(/\bAskUserQuestion\b/g, 'ask the user');
   converted = converted.replace(/\bSlashCommand\b/g, 'skill');
@@ -892,15 +893,7 @@ function convertClaudeSkillToCodex(content, skillName) {
 function copyOpencodeSkills(srcDir, destDir, pathPrefix) {
   if (!fs.existsSync(srcDir)) return 0;
   fs.mkdirSync(destDir, { recursive: true });
-
-  // Clean old gsp- skill dirs
-  if (fs.existsSync(destDir)) {
-    for (const entry of fs.readdirSync(destDir, { withFileTypes: true })) {
-      if (entry.isDirectory() && entry.name.startsWith('gsp-')) {
-        fs.rmSync(path.join(destDir, entry.name), { recursive: true });
-      }
-    }
-  }
+  cleanStaleGspDirs(destDir);
 
   let count = 0;
   const skillDirs = fs.readdirSync(srcDir, { withFileTypes: true });
@@ -910,18 +903,15 @@ function copyOpencodeSkills(srcDir, destDir, pathPrefix) {
     const skillMd = path.join(srcDir, dir.name, 'SKILL.md');
     if (!fs.existsSync(skillMd)) continue;
 
-    // OpenCode skill names: lowercase, hyphens, no consecutive hyphens, 1-64 chars
-    // Prefix with gsp- so they don't collide, unless already prefixed
-    const skillName = dir.name.startsWith('gsp-') ? dir.name : `gsp-${dir.name}`;
-    const skillDest = path.join(destDir, skillName);
+    const skillDest = path.join(destDir, dir.name);
     fs.mkdirSync(skillDest, { recursive: true });
 
     let content = fs.readFileSync(skillMd, 'utf8');
     content = content.replace(/~\/\.claude\//g, pathPrefix);
     content = content.replace(/\.\/\.claude\//g, './.opencode/');
-    content = convertClaudeSkillToOpencode(content, skillName);
+    content = convertClaudeSkillToOpencode(content, dir.name);
     fs.writeFileSync(path.join(skillDest, 'SKILL.md'), content);
-    copySiblingFiles(path.join(srcDir, dir.name), skillDest, pathPrefix);
+    copySiblingFiles(path.join(srcDir, dir.name), skillDest);
     count++;
   }
 
@@ -930,13 +920,14 @@ function copyOpencodeSkills(srcDir, destDir, pathPrefix) {
 
 /**
  * Copy skills/ source to Codex skill structure.
- * skills/<name>/SKILL.md → .agents/skills/gsp-<name>/SKILL.md
+ * skills/gsp-<name>/SKILL.md → .agents/skills/gsp-<name>/SKILL.md
  *
  * Codex expects: .agents/skills/<name>/SKILL.md with YAML frontmatter (name + description).
  */
 function copyCodexSkillsFromSource(srcDir, destDir, pathPrefix) {
   if (!fs.existsSync(srcDir)) return 0;
   fs.mkdirSync(destDir, { recursive: true });
+  cleanStaleGspDirs(destDir);
 
   let count = 0;
   const skillDirs = fs.readdirSync(srcDir, { withFileTypes: true });
@@ -945,15 +936,14 @@ function copyCodexSkillsFromSource(srcDir, destDir, pathPrefix) {
     const skillMd = path.join(srcDir, dir.name, 'SKILL.md');
     if (!fs.existsSync(skillMd)) continue;
 
-    const skillName = dir.name.startsWith('gsp-') ? dir.name : `gsp-${dir.name}`;
-    const skillDest = path.join(destDir, skillName);
+    const skillDest = path.join(destDir, dir.name);
     fs.mkdirSync(skillDest, { recursive: true });
 
     let content = fs.readFileSync(skillMd, 'utf8');
     content = content.replace(/~\/\.claude\//g, pathPrefix);
-    content = convertClaudeSkillToCodex(content, skillName);
+    content = convertClaudeSkillToCodex(content, dir.name);
     fs.writeFileSync(path.join(skillDest, 'SKILL.md'), content);
-    copySiblingFiles(path.join(srcDir, dir.name), skillDest, pathPrefix);
+    copySiblingFiles(path.join(srcDir, dir.name), skillDest);
     count++;
   }
   return count;
@@ -961,22 +951,14 @@ function copyCodexSkillsFromSource(srcDir, destDir, pathPrefix) {
 
 /**
  * Copy skills/ source to Gemini skill structure.
- * skills/<name>/SKILL.md → .gemini/skills/gsp-<name>/SKILL.md
+ * skills/gsp-<name>/SKILL.md → .gemini/skills/gsp-<name>/SKILL.md
  *
  * Gemini expects: .gemini/skills/<name>/SKILL.md with YAML frontmatter (name + description).
  */
 function copyGeminiSkills(srcDir, destDir, pathPrefix) {
   if (!fs.existsSync(srcDir)) return 0;
   fs.mkdirSync(destDir, { recursive: true });
-
-  // Clean old gsp- skill dirs
-  if (fs.existsSync(destDir)) {
-    for (const entry of fs.readdirSync(destDir, { withFileTypes: true })) {
-      if (entry.isDirectory() && entry.name.startsWith('gsp-')) {
-        fs.rmSync(path.join(destDir, entry.name), { recursive: true });
-      }
-    }
-  }
+  cleanStaleGspDirs(destDir);
 
   let count = 0;
   const skillDirs = fs.readdirSync(srcDir, { withFileTypes: true });
@@ -985,16 +967,15 @@ function copyGeminiSkills(srcDir, destDir, pathPrefix) {
     const skillMd = path.join(srcDir, dir.name, 'SKILL.md');
     if (!fs.existsSync(skillMd)) continue;
 
-    const skillName = dir.name.startsWith('gsp-') ? dir.name : `gsp-${dir.name}`;
-    const skillDest = path.join(destDir, skillName);
+    const skillDest = path.join(destDir, dir.name);
     fs.mkdirSync(skillDest, { recursive: true });
 
     let content = fs.readFileSync(skillMd, 'utf8');
     content = content.replace(/~\/\.claude\//g, pathPrefix);
     content = content.replace(/\.\/\.claude\//g, './.gemini/');
-    content = convertClaudeSkillToGemini(content, skillName);
+    content = convertClaudeSkillToGemini(content, dir.name);
     fs.writeFileSync(path.join(skillDest, 'SKILL.md'), content);
-    copySiblingFiles(path.join(srcDir, dir.name), skillDest, pathPrefix);
+    copySiblingFiles(path.join(srcDir, dir.name), skillDest);
     count++;
   }
   return count;
@@ -1036,49 +1017,64 @@ function copyAgents(srcDir, destDir, pathPrefix, runtime, { clean = false } = {}
 }
 
 /**
- * Copy Claude Code skills (global install path — no body conversion, only path replacement).
- * Returns skill count.
+ * Remove stale GSP skill dirs/symlinks (gsp-* and get-shit-pretty) from a target directory.
+ * Handles broken symlinks via lstat fallback.
  */
+function cleanStaleGspDirs(dir) {
+  let count = 0;
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const name = entry.name;
+    if (!name.startsWith('gsp-') && name !== 'get-shit-pretty') continue;
+    const entryPath = path.join(dir, name);
+    try {
+      // withFileTypes doesn't resolve broken symlinks — use lstat for those
+      if (entry.isSymbolicLink()) { fs.unlinkSync(entryPath); count++; }
+      else if (entry.isDirectory()) { fs.rmSync(entryPath, { recursive: true }); count++; }
+      else {
+        // broken symlink: withFileTypes returns isFile=false, isDir=false, isSymlink=false
+        const s = fs.lstatSync(entryPath);
+        if (s.isSymbolicLink()) { fs.unlinkSync(entryPath); count++; }
+      }
+    } catch {}
+  }
+  return count;
+}
+
 /**
  * Recursively copy sibling files in a skill directory (everything except SKILL.md).
- * All sibling files are copied verbatim — no path replacement applied.
  */
-function copySiblingFiles(srcDir, destDir, pathPrefix) {
+function copySiblingFiles(srcDir, destDir) {
   for (const entry of fs.readdirSync(srcDir, { withFileTypes: true })) {
-    if (entry.name === 'SKILL.md') continue; // already handled by caller
+    if (entry.name === 'SKILL.md') continue;
     const srcPath = path.join(srcDir, entry.name);
     const destPath = path.join(destDir, entry.name);
     if (entry.isDirectory()) {
       fs.mkdirSync(destPath, { recursive: true });
-      copySiblingFiles(srcPath, destPath, pathPrefix);
+      copySiblingFiles(srcPath, destPath);
     } else {
       fs.copyFileSync(srcPath, destPath);
     }
   }
 }
 
+/**
+ * Copy Claude Code skills (global install — no body conversion, only path replacement).
+ */
 function copyClaudeSkills(srcDir, destDir, pathPrefix) {
   fs.mkdirSync(destDir, { recursive: true });
-
-  // Clean old gsp- skill dirs
-  for (const entry of fs.readdirSync(destDir, { withFileTypes: true })) {
-    if (entry.isDirectory() && (entry.name.startsWith('gsp-') || entry.name === 'get-shit-pretty')) {
-      fs.rmSync(path.join(destDir, entry.name), { recursive: true });
-    }
-  }
+  cleanStaleGspDirs(destDir);
 
   let skillCount = 0;
   for (const dir of fs.readdirSync(srcDir, { withFileTypes: true })) {
     if (!dir.isDirectory()) continue;
     const skillMd = path.join(srcDir, dir.name, 'SKILL.md');
     if (!fs.existsSync(skillMd)) continue;
-    const skillName = dir.name.startsWith('gsp-') ? dir.name : `gsp-${dir.name}`;
-    const destSkillDir = path.join(destDir, skillName);
+    const destSkillDir = path.join(destDir, dir.name);
     fs.mkdirSync(destSkillDir, { recursive: true });
     let content = fs.readFileSync(skillMd, 'utf8');
     content = content.replace(/~\/\.claude\//g, pathPrefix);
     fs.writeFileSync(path.join(destSkillDir, 'SKILL.md'), content);
-    copySiblingFiles(path.join(srcDir, dir.name), destSkillDir, pathPrefix);
+    copySiblingFiles(path.join(srcDir, dir.name), destSkillDir);
     skillCount++;
   }
   return skillCount;
@@ -1201,14 +1197,8 @@ function installLocalSymlinks(targetDir, src) {
   const skillsDest = path.join(targetDir, 'skills');
   fs.mkdirSync(skillsDest, { recursive: true });
 
-  // Clean old GSP skill dirs
-  for (const entry of fs.readdirSync(skillsDest, { withFileTypes: true })) {
-    if (entry.isDirectory() && (entry.name.startsWith('gsp-') || entry.name === 'get-shit-pretty')) {
-      fs.rmSync(path.join(skillsDest, entry.name), { recursive: true });
-    }
-  }
-
   const skillsSrc = path.join(gspRoot, 'skills');
+  cleanStaleGspDirs(skillsDest);
   let skillCount = 0;
   for (const dir of fs.readdirSync(skillsSrc, { withFileTypes: true })) {
     if (!dir.isDirectory()) continue;
@@ -1227,15 +1217,20 @@ function installLocalSymlinks(targetDir, src) {
     console.log(`  ${c.success}✓${c.reset} Removed legacy commands/gsp`);
   } catch {}
 
-  // ── Bundle symlinks (prompts, templates, references → runtime root) ──
-  // Clean up legacy get-shit-pretty/ bundle dir
+  // ── Bundle symlinks (templates, references → runtime root) ──
+  // Clean up legacy dirs
   const legacyBundleDest = path.join(targetDir, 'get-shit-pretty');
   if (fs.existsSync(legacyBundleDest)) {
     fs.rmSync(legacyBundleDest, { recursive: true });
     console.log(`  ${c.success}✓${c.reset} Removed legacy get-shit-pretty/ bundle`);
   }
+  const legacyPrompts = path.join(targetDir, 'prompts');
+  if (fs.existsSync(legacyPrompts)) {
+    fs.rmSync(legacyPrompts, { recursive: true });
+    console.log(`  ${c.success}✓${c.reset} Removed legacy prompts/`);
+  }
 
-  for (const dir of ['prompts', 'templates', 'references']) {
+  for (const dir of ['templates', 'references']) {
     if (fs.existsSync(path.join(gspRoot, dir))) {
       forceSymlink(path.join('..', 'gsp', dir), path.join(targetDir, dir));
       console.log(`  ${c.success}✓${c.reset} Symlinked ${dir}/`);
@@ -1265,6 +1260,16 @@ function installLocalSymlinks(targetDir, src) {
   if (failures.length > 0) {
     console.error(`\n  ${yellow}Installation incomplete!${reset} Failed: ${failures.join(', ')}`);
     process.exit(1);
+  }
+
+  // Warn if GSP skills also exist globally (may cause duplicates)
+  const globalSkillsDir = path.join(getGlobalDir('claude', null), 'skills');
+  if (fs.existsSync(globalSkillsDir)) {
+    const dupes = fs.readdirSync(globalSkillsDir).filter(e => e.startsWith('gsp-'));
+    if (dupes.length > 0) {
+      console.log(`  ${yellow}!${reset} Found ${dupes.length} GSP skills in ${globalSkillsDir.replace(os.homedir(), '~')} — may cause duplicates`);
+      console.log(`    ${c.dim}To remove: node bin/install.js --claude --global --uninstall${c.reset}`);
+    }
   }
 
   return true;
@@ -1417,15 +1422,20 @@ function install(isGlobal, runtime = 'claude') {
     }
   }
 
-  // ── Bundle: prompts, templates, references → runtime root ──
-  // Clean up legacy get-shit-pretty/ bundle dir from previous installs
+  // ── Bundle: templates, references → runtime root ──
+  // Clean up legacy dirs from previous installs
   const legacyBundle = path.join(targetDir, 'get-shit-pretty');
   if (fs.existsSync(legacyBundle)) {
     fs.rmSync(legacyBundle, { recursive: true });
     console.log(`  ${c.success}✓${c.reset} Removed legacy get-shit-pretty/ bundle`);
   }
+  const legacyPromptsDir = path.join(targetDir, 'prompts');
+  if (fs.existsSync(legacyPromptsDir)) {
+    fs.rmSync(legacyPromptsDir, { recursive: true });
+    console.log(`  ${c.success}✓${c.reset} Removed legacy prompts/`);
+  }
 
-  const bundleDirs = ['prompts', 'templates', 'references'];
+  const bundleDirs = ['templates', 'references'];
   for (const dir of bundleDirs) {
     const dirSrc = path.join(gspRoot, dir);
     if (fs.existsSync(dirSrc)) {
@@ -1465,6 +1475,21 @@ function install(isGlobal, runtime = 'claude') {
   if (failures.length > 0) {
     console.error(`\n  ${yellow}Installation incomplete!${reset} Failed: ${failures.join(', ')}`);
     process.exit(1);
+  }
+
+  // Warn if GSP skills exist in the other location (may cause duplicates)
+  if (runtime === 'claude') {
+    const otherDir = isGlobal
+      ? path.join(process.cwd(), '.claude', 'skills')
+      : path.join(getGlobalDir('claude', null), 'skills');
+    if (fs.existsSync(otherDir)) {
+      const dupes = fs.readdirSync(otherDir).filter(e => e.startsWith('gsp-'));
+      if (dupes.length > 0) {
+        const label = otherDir.replace(os.homedir(), '~');
+        console.log(`  ${yellow}!${reset} Found ${dupes.length} GSP skills in ${label} — may cause duplicates`);
+        console.log(`    ${c.dim}To remove: node bin/install.js --claude ${isGlobal ? '--local' : '--global'} --uninstall${c.reset}`);
+      }
+    }
   }
 
   // ── Settings (Claude Code & Gemini only) ──
@@ -1545,7 +1570,7 @@ function uninstall(isGlobal, runtime = 'claude') {
       }
     }
   } else {
-    // All other runtimes: remove gsp- skill dirs
+    // All other runtimes (including Claude): remove gsp- skill dirs
     const skillsDir = path.join(targetDir, 'skills');
     if (fs.existsSync(skillsDir)) {
       let skillCount = 0;
@@ -1593,7 +1618,7 @@ function uninstall(isGlobal, runtime = 'claude') {
   }
 
   // Remove flattened bundle dirs
-  for (const dir of ['prompts', 'templates', 'references']) {
+  for (const dir of ['prompts', 'templates', 'references']) {  // prompts included for legacy cleanup
     const bundlePath = path.join(targetDir, dir);
     if (fs.existsSync(bundlePath)) {
       fs.rmSync(bundlePath, { recursive: true });
@@ -1726,8 +1751,8 @@ function finishInstall(settingsPath, settings, statuslineCommand, shouldInstallS
   }
 
   const runtimeLabel = getRuntimeLabel(runtime);
-  const helpCmd = isOpencode ? '/gsp-help' : isCodex ? '$gsp-help' : '/gsp:help';
-  const newCmd = isOpencode ? '/gsp-start' : isCodex ? '$gsp-start' : '/gsp:start';
+  const helpCmd = isCodex ? '$gsp-help' : '/gsp-help';
+  const newCmd = isCodex ? '$gsp-start' : '/gsp-start';
 
   // Show onboarding once (not per-runtime)
   if (!onboardingShown && !hasQuiet) {

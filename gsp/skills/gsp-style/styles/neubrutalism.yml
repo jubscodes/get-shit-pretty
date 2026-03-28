@@ -54,5 +54,88 @@ dark_mode:
     on-background: "#F0F0F0"
     border-color: "#F0F0F0"
 
+intensity:
+  variance: 8
+  motion: 5
+  density: 6
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-md} to {elevation.shadow-lg}"
+    radius: "rounded-none"
+    background: "{color.background}"
+    header: "colored background with border-b-4 separator"
+  button-primary:
+    background: "{color.accent}"
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-sm}"
+    text: "uppercase, weight {typography.font-weight-heading}, tracking-wide"
+    radius: "rounded-none"
+  button-secondary:
+    background: "{color.secondary}"
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-sm}"
+    text: "uppercase, weight {typography.font-weight-heading}, tracking-wide"
+    radius: "rounded-none"
+  input:
+    border: "{shape.border-width} solid {shape.border-color}"
+    radius: "rounded-none"
+    background: "{color.background}"
+    focus: "background fills {color.secondary}, shadow appears, no ring"
+    height: "h-14 to h-20"
+  badge:
+    shape: "rounded-full OR rounded-none with {shape.border-width} border"
+    text: "font-black text-sm uppercase tracking-widest"
+    decoration: "rotate-1 to rotate-3, absolute positioned"
+  nav:
+    logo: "bordered box with accent background, uppercase"
+    links: "bold uppercase, hover adds border + background + shadow"
+    mobile: "hamburger as bordered square with shadow"
+  layout:
+    archetype: "sticker-collage"
+    max-width: "max-w-7xl"
+    section-spacing: "py-16 to py-32"
+    grid-gap: "gap-8 to gap-12"
+    asymmetry: "60/40 splits, offset columns, staggered grids"
+    surfaces: "halftone dots, grid lines, or noise overlay — never flat"
+    decoration: "rotated sticker elements, overlapping shapes, large background text"
+
+constraints:
+  never:
+    - "backdrop-filter or blur — conflicts with flat, structural aesthetic"
+    - "gradient backgrounds — solid color blocks only"
+    - "box-shadow with blur > 0 — all shadows must be hard-offset"
+    - "border-radius between 1px and 9998px — binary: rounded-none or rounded-full"
+    - "subtle grays (#333, #666, #999) — pure black or a saturated color"
+    - "ease-in-out easing — mechanical feel requires linear or ease-out"
+    - "large empty whitespace — fill with texture, patterns, or decorative elements"
+    - "opacity/transparency on surfaces — except texture overlays at low opacity"
+  always:
+    - "hard-offset shadows (x y 0px 0px) on every elevated element"
+    - "visible border-4 border-black on every interactive surface"
+    - "uppercase on headings, labels, and buttons"
+    - "high contrast — WCAG AA minimum, no subtle gray text"
+    - "slight rotation (rotate-1 to rotate-3) on at least some containers"
+    - "texture overlay (halftone, grid, or noise) on section backgrounds"
+
+effects:
+  interaction-vocabulary: [press-down, lift-shadow, snap-rotate, snap-fill]
+  hover:
+    card: "lift-shadow"
+    button: "snap-fill — background darken, fast snap"
+    link: "snap-fill — border + background + shadow appear instantly"
+    badge: "snap-rotate — rotates further on hover"
+  active:
+    button: "press-down — translate covers shadow, mechanical click"
+  focus:
+    input: "snap-fill — background becomes {color.secondary}"
+    general: "ring-2 ring-black ring-offset-2"
+  transition: "duration-100 to duration-200, ease-linear or ease-out"
+  ambient:
+    - "slow-spin on decorative stars (10s linear infinite)"
+    - "pulse on CTA elements"
+    - "bounce on attention badges"
+
 compatibility: [bento-grid, kinetic-typography]
 clashes: [glassmorphism, claymorphism, liquid-glass]

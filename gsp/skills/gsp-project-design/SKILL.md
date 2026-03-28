@@ -1,5 +1,5 @@
 ---
-name: project-design
+name: gsp-project-design
 description: Design screens and interaction flows
 user-invocable: true
 model: opus
@@ -28,7 +28,6 @@ Design core UI/UX screens and interaction flows.
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../../prompts/03-ui-ux-pattern-master.md
 @${CLAUDE_SKILL_DIR}/../../templates/phases/design.md
 </execution_context>
 
@@ -42,7 +41,7 @@ Read `{PROJECT_PATH}/brand.ref` → set `BRAND_PATH`.
 ## Step 0.5: Validate prerequisites
 
 Read `{PROJECT_PATH}/STATE.md`. Check that Brief (Phase 1) is `complete`.
-If not: "Brief hasn't been completed yet. Run `/gsp:project-brief` first." Then stop.
+If not: "Brief hasn't been completed yet. Run `/gsp-project-brief` first." Then stop.
 
 Research (Phase 2) is recommended but not required — if skipped, log: "No research artifacts found — designing from brief only."
 
@@ -67,19 +66,21 @@ If `{PROJECT_PATH}/references/` exists, scan for files (images, PDFs, markdown, 
 
 Read `{BRAND_PATH}/patterns/INDEX.md`. If it exists, load all foundation chunks + selective component chunks.
 
-If it doesn't exist, tell the user to run `/gsp:brand-patterns` first.
+If it doesn't exist, tell the user to run `/gsp-brand-guidelines` first.
 
 ### Brand context (selective)
 
 Read `{BRAND_PATH}/identity/INDEX.md`. If it exists, load `color-system.md`, `typography.md`, and `imagery-style.md`.
 
-### Brand style prompt (visual DNA)
+### STYLE.md (visual DNA)
 
-Scan `{BRAND_PATH}/patterns/` for a `.md` file that is NOT `INDEX.md`, `principles.md`, or inside `foundations/` or `components/`. This is the brand's custom style prompt (`{brand-name}.md`).
+Check for `{BRAND_PATH}/patterns/STYLE.md`. This is the single document that governs all visual decisions.
 
-If found, read it. Pass to the designer agent in Step 3 as the **primary visual direction** — it contains design philosophy, bold visual bets, effects vocabulary, and component stylings with CSS/Tailwind hints.
+If found, read it. Pass to the designer agent in Step 3 as the **primary visual direction** — it contains intensity dials, component patterns, constraints (never/always), effects vocabulary, and bold bets.
 
-If not found, proceed without it (older brands may not have this file).
+If not found, fall back to scanning `{BRAND_PATH}/patterns/` for a `.md` file that is NOT `INDEX.md` or inside `components/` (legacy `{brand-name}.md` format).
+
+If neither found, proceed without it (older brands may not have this file).
 
 ### Brief (chunk-first)
 
@@ -98,7 +99,7 @@ If research doesn't exist, proceed without it (research is informative, not bloc
 **If `design_scope` is `tokens`:**
 1. Update `{PROJECT_PATH}/STATE.md` — set Phase 3 (Design) status to `skipped`
 2. Display: "Design phase skipped — design scope is `tokens`."
-3. Route: "Run `/gsp:project-build`."
+3. Route: "Run `/gsp-project-build`."
 4. Stop here.
 
 **If `design_scope` is `partial`:**
@@ -113,29 +114,28 @@ When `implementation_target` is not `figma`:
 ## Step 2.5: Load design references
 
 Read these reference files (relative to skill dir `${CLAUDE_SKILL_DIR}/../../references/`):
-- `apple-hig-patterns.md`
-- `visual-effects.md`
 - `block-patterns.md`
-- `anti-patterns.md`
 
 Hold their content for inlining into the agent prompt in Step 3.
+
+> **Note:** Apple HIG patterns and anti-patterns are distilled into the `gsp-designer` agent prompt. Visual effects are covered by STYLE.md's patterns/constraints/effects blocks (from #69). Full refs remain on disk for edge-case agent lookup.
 
 ## Step 3: Spawn designer
 
 Spawn the `gsp-designer` agent. **Inline all content** — the agent should not need to read any input files.
 
 Pass in the agent prompt:
-- **Content of** all brand patterns foundation chunks + selective component chunks (loaded in Step 1)
-- **Content of** brand identity chunks: color-system.md, typography.md, imagery-style.md (loaded in Step 1)
-- **Content of** brand style prompt ({brand-name}.md) when available
+- **Content of** STYLE.md when available — this is the primary visual direction. When STYLE.md exists, skip foundation chunks (color-system, typography, spacing, elevation, border-radius) — STYLE.md already contains this data. Only load selective component chunks.
+- **Content of** all brand patterns foundation chunks (only when STYLE.md does NOT exist — fallback for older brands)
+- **Content of** brand identity chunks: imagery-style.md (always — not covered by STYLE.md). Skip identity color-system.md and typography.md when STYLE.md exists (redundant).
 - **Content of** brief chunks: scope.md, target-adaptations.md (loaded in Step 1)
 - **Content of** research chunks: ux-patterns.md, recommendations.md, reference-specs.md (loaded in Step 1)
 - **Content of** BRIEF.md
 - **Content of** `.design/system/COMPONENTS.md`, `TOKENS.md` (when loaded in Step 2)
 - **Content of** custom references (when loaded in Step 1)
 - **Content of** critique fixes: prioritized-fixes.md, accessibility-fixes.md (when in revision mode)
-- The UI/UX Pattern Master prompt (03), design output template (from execution_context)
-- **Content of** Apple HIG patterns, visual effects, block patterns, anti-patterns references (loaded in Step 2.5)
+- Design output template (from execution_context)
+- **Content of** block patterns reference (loaded in Step 2.5)
 - `implementation_target`, `design_scope`, `codebase_type`
 - Target screens (when partial)
 - **Output path:** `{PROJECT_PATH}/design/`

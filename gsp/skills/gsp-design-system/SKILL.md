@@ -1,5 +1,5 @@
 ---
-name: design-system
+name: gsp-design-system
 description: Scan and document the existing design system state
 user-invocable: true
 model: sonnet
@@ -15,8 +15,8 @@ allowed-tools:
 Composable skill that scans the workspace codebase and documents the existing design system state. Produces focused documents that downstream skills and agents consume selectively.
 
 Works two ways:
-1. **Standalone** — user runs `/gsp:design-system` for a quick workspace audit
-2. **Building block** — `/gsp:start` invokes this in the background during project setup
+1. **Standalone** — user runs `/gsp-design-system` for a quick workspace audit
+2. **Building block** — `/gsp-start` invokes this in the background during project setup
 
 Output is workspace-level (not project-scoped), so it's shared across all projects and only needs to run once per codebase state change. Re-runnable — overwrites previous output.
 </context>
@@ -136,7 +136,7 @@ Each concern includes: file paths, severity (high/medium/low), and fix approach.
 Display a summary box:
 
 ```
-  /gsp: design-system scan complete
+  /gsp- design-system scan complete
 
   ┌──────────────────────────────────────────┐
   │  type           {classification}         │

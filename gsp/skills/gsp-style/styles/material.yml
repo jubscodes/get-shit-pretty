@@ -54,5 +54,88 @@ dark_mode:
     surface: "#2B2930"
     on-background: "#E6E1E5"
 
+intensity:
+  variance: 4     # organic blur shapes and asymmetric elevation create interest, but grids stay structured
+  motion: 6       # state layers animate smoothly, scale feedback on press, glow reveals on hover
+  density: 4      # generous padding, relaxed spacing, content breathes within tonal surfaces
+
+patterns:
+  card:
+    border: "none — tonal surface separation, not borders"
+    shadow: "{elevation.shadow-sm} resting, {elevation.shadow-md} on hover"
+    radius: "{shape.border-radius-xl}"
+    background: "{color.surface}"
+    hover: "hover:scale-[1.02] with shadow transition"
+  button-primary:
+    background: "{color.primary}"
+    border: "none"
+    shadow: "none resting, {elevation.shadow-md} on hover"
+    text: "weight 500, sentence case, {color.on-primary}"
+    radius: "rounded-full"
+    state-layer: "bg-{color.primary}/90 on hover, /80 on active"
+  button-secondary:
+    background: "{color.surface}"
+    border: "none"
+    text: "weight 500, sentence case, on-secondary-container"
+    radius: "rounded-full"
+    state-layer: "bg-{color.primary}/10 on hover"
+  input:
+    border: "2px solid {shape.border-color} on bottom only"
+    radius: "rounded-t-lg, square bottom"
+    background: "surface-container-low ({color.surface} darker)"
+    focus: "bottom border shifts to {color.primary}"
+    height: "h-14"
+  badge:
+    shape: "rounded-full"
+    text: "text-xs font-medium"
+    background: "{color.primary}/15 with {color.primary} text"
+  nav:
+    style: "horizontal tabs or bottom nav"
+    selection: "underline indicator in {color.primary} for tabs"
+    hover: "bg-{color.primary}/10 state layer"
+  layout:
+    archetype: "tonal-surface-hierarchy"
+    max-width: "container mx-auto"
+    section-spacing: "py-12 to py-24"
+    grid-gap: "gap-6 to gap-8"
+    surfaces: "tonal — never pure white, layer: background→surface-container→surface-container-low"
+    decoration: "organic blur shapes (blur-3xl) in primary/secondary/tertiary at 10-30% opacity"
+    hero: "extra-large radius (rounded-[48px]) container with surface-container background"
+
+constraints:
+  never:
+    - "pure white (#FFFFFF) backgrounds — always use tinted surface color"
+    - "rectangular buttons — all buttons must be rounded-full (pill-shaped)"
+    - "heavy drop shadows — subtle elevation with tonal surfaces preferred"
+    - "hover color changes on solid buttons — use state layers (opacity overlays) instead"
+    - "sharp corners on major containers — 24px minimum card radius"
+    - "borders for container separation — use tonal backgrounds instead"
+    - "pure black text — use on-surface (#1C1B1F) with warmth"
+    - "flat inputs — filled text field style with bottom border required"
+  always:
+    - "pill-shaped (rounded-full) buttons on every variant"
+    - "organic blur shapes in hero and key sections"
+    - "state layer interaction model (opacity overlays, not color shifts)"
+    - "active:scale-95 on all clickable elements for tactile feedback"
+    - "tonal surface hierarchy (background→container→container-low)"
+    - "Material easing cubic-bezier(0.2, 0, 0, 1) on all transitions"
+    - "generous border radii: 24px cards, 32-48px hero sections"
+
+effects:
+  interaction-vocabulary: [state-layer, tactile-press, tonal-step, glow-reveal, hover-scale]
+  hover:
+    card: "hover-scale — scale-[1.02], shadow steps sm→md"
+    button-primary: "state-layer — bg-{color.primary}/90 overlay"
+    button-secondary: "state-layer — bg-{color.primary}/10 overlay"
+    image: "hover-scale — scale-105 with overflow-hidden"
+  active:
+    button: "tactile-press — active:scale-95, state-layer at /80"
+  focus:
+    general: "ring-2 ring-{color.primary} ring-offset-2"
+  transition: "duration-200 to duration-300, cubic-bezier(0.2, 0, 0, 1)"
+  ambient:
+    - "glow-reveal — hidden blur behind badges reveals on hover (opacity-0→30)"
+    - "blob-drift — organic background shapes with mix-blend-multiply"
+
 compatibility: [professional, fluent]
 clashes: [neubrutalism, monochrome, retro]

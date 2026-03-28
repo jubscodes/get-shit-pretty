@@ -54,5 +54,86 @@ tokens:
     halftone-opacity: 0.03
     dot-grid-opacity: 0.02
 
+intensity:
+  variance: 5     # asymmetric column splits (8/4, 5/7) but grid-disciplined overall
+  motion: 2       # fast snappy state changes only, no cinematic movement
+  density: 9      # newspaper-tight padding, collapsed grid borders, maximum information
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {color.on-background}"
+    shadow: "none resting, 4px 4px 0px 0px {color.on-background} on hover"
+    radius: "0px"
+    background: "{color.background}"
+    header: "border-b-4 separator, optional inverted (black bg, white text)"
+  button-primary:
+    background: "{color.on-background}"
+    border: "1px solid transparent"
+    shadow: "none"
+    text: "uppercase, weight {typography.font-weight-heading}, tracking-widest, font-ui"
+    radius: "0px"
+  button-secondary:
+    background: "transparent"
+    border: "{shape.border-width} solid {color.on-background}"
+    shadow: "none"
+    text: "uppercase, weight {typography.font-weight-heading}, tracking-widest"
+    radius: "0px"
+  input:
+    border: "border-b-2 {color.on-background} only — no full border"
+    radius: "0px"
+    background: "transparent"
+    focus: "background fills {color.surface}, no ring, no outline"
+    height: "h-12"
+    font: "monospace"
+  badge:
+    shape: "0px radius, {shape.border-width} border"
+    text: "uppercase tracking-widest text-xs font-mono"
+    decoration: "accent background for breaking/alert badges only"
+  nav:
+    logo: "serif font-black, edition metadata (Vol. 1 | Date | City)"
+    links: "uppercase tracking-widest font-sans, hover turns {color.accent}"
+    mobile: "hamburger as bordered square"
+    border: "border-b-4 {color.on-background}"
+  layout:
+    archetype: "editorial-grid"
+    max-width: "max-w-screen-xl"
+    section-spacing: "py-16"
+    grid-gap: "gap-6 to gap-8"
+    asymmetry: "8/4, 5/7 column splits — never 50/50"
+    surfaces: "dot grid at {texture.dot-grid-opacity}, line grid overlay, halftone on images"
+    decoration: "drop caps (text-7xl float-left), ornamental dividers, grayscale images"
+    columns: "12-column grid with collapsed borders (border-r, border-b)"
+
+constraints:
+  never:
+    - "border-radius above 0px — everything sharp-edged, no exceptions"
+    - "soft or blurred shadows — only hard-offset (4px 4px 0px 0px) on hover"
+    - "gradient backgrounds — solid color blocks only"
+    - "thin font weights — minimum bold for headings, medium for body"
+    - "backdrop-filter or blur — flat editorial surfaces only"
+    - "rounded pill buttons or badges — square geometry only"
+    - "more than one accent color in a section — 99% black and white, red is emergency only"
+  always:
+    - "zero border-radius on every element"
+    - "visible grid structure — collapsed borders between columns and rows"
+    - "serif headlines (Playfair Display), serif body (Lora), sans UI (Inter)"
+    - "uppercase labels, metadata, and navigation with tracking-widest"
+    - "at least one inverted section (black bg, white text)"
+    - "drop caps on key introductory paragraphs"
+    - "halftone dot pattern on images, grayscale default with sepia hover"
+
+effects:
+  interaction-vocabulary: [color-invert, hard-lift, underline-reveal, scale-dot]
+  hover:
+    card: "hard-lift — 4px 4px hard-offset shadow appears, translate(-2px, -2px)"
+    button: "color-invert — black becomes white bg with black border, or vice versa"
+    link: "underline-reveal — thick red underline (decoration-2 decoration-{color.accent})"
+    icon-box: "color-invert — bg fills black, icon turns white"
+  active:
+    button: "translate covers shadow offset, mechanical click"
+  focus:
+    general: "ring-2 ring-{color.on-background} ring-offset-2"
+  transition: "duration-100 to duration-200, ease-out"
+
 compatibility: [monochrome, swiss-minimalist, academia]
 clashes: [glassmorphism, cyberpunk, vaporwave]

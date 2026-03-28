@@ -62,5 +62,73 @@ dark_mode:
     on-background: "#FFFFFF"
     border-color: "#FFFFFF"
 
+intensity:
+  variance: 3     # editorial asymmetry through type scale, but structurally disciplined
+  motion: 1       # near-zero motion — instant binary state changes
+  density: 2      # dramatic negative space, editorial breathing room
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "none — zero shadows, depth from inversion and borders"
+    radius: "0px"
+    background: "{color.background}"
+  button-primary:
+    background: "{color.primary}"
+    border: "none"
+    text: "uppercase, tracking-widest, font-medium, text-sm"
+    radius: "0px"
+  button-secondary:
+    background: "transparent"
+    border: "{shape.border-width} solid {shape.border-color}"
+    text: "uppercase, tracking-widest, {color.on-background}"
+    radius: "0px"
+  input:
+    border: "border-b {shape.border-width} solid {shape.border-color}"
+    radius: "0px"
+    background: "{color.background}"
+    focus: "border thickens to 4px — border-only focus, no ring, no glow"
+  badge:
+    shape: "0px radius, thin border"
+    text: "uppercase, tracking-widest, text-xs"
+  nav:
+    style: "minimal — logo + sparse links, heavy rule below"
+    links: "uppercase tracking-wider, underline appears on hover"
+  layout:
+    archetype: "editorial-whitespace"
+    max-width: "max-w-6xl"
+    section-spacing: "py-24 to py-40 — extreme negative space"
+    grid-gap: "gap-8 to gap-16"
+    surfaces: "horizontal lines, grid, and noise texture at very low opacity — paper-like quality"
+    dividers: "4px to 8px black horizontal rules between all major sections"
+
+constraints:
+  never:
+    - "any color besides black, white, and gray — palette is absolute"
+    - "box-shadow of any kind — depth from inversion and border weight only"
+    - "border-radius above 0px — sharp 90-degree corners everywhere"
+    - "gradients — solid fills only"
+    - "rounded or pill shapes — angular geometry is non-negotiable"
+    - "slow easing or bouncy animation — instant or 100ms maximum"
+    - "backdrop-blur or glass effects — strictly flat and opaque"
+  always:
+    - "serif typography for display and body (Playfair Display, Source Serif 4)"
+    - "oversized headlines (8xl to 9xl) as primary visual element"
+    - "heavy horizontal rules (4px-8px) between sections"
+    - "color inversion (black bg / white text) for emphasis instead of accent colors"
+    - "texture overlays (lines, grid, noise) for paper-like depth"
+    - "dramatic negative space framing all content"
+
+effects:
+  interaction-vocabulary: [color-invert, border-thicken, instant-snap]
+  hover:
+    card: "color-invert — full bg/text/border inversion, 100ms"
+    button: "color-invert — black/white swap, instant"
+  active:
+    button: "instant-snap — no transform, color change only"
+  focus:
+    general: "outline 3px solid {color.primary} offset 3px — high contrast, no ring"
+  transition: "duration-0 to duration-100, linear"
+
 compatibility: [swiss-minimalist, newsprint, bold-typography]
 clashes: [vaporwave, maximalism, cyberpunk]

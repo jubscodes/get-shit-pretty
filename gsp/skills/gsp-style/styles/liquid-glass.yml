@@ -62,5 +62,96 @@ dark_mode:
     on-background: "#F5F5F7"
     border-color: "rgba(255, 255, 255, 0.18)"
 
+intensity:
+  variance: 3     # clean Apple grid layouts, consistent spacing, restrained composition
+  motion: 7       # fluid shape morphing between states, smooth 350ms transitions, specular animation
+  density: 4      # generous Apple-style whitespace, content breathes within glass surfaces
+
+patterns:
+  card:
+    background: "{color.surface}"
+    blur: "backdrop-blur-[2px] backdrop-saturate-[180%]"
+    border: "1px solid {shape.border-color}"
+    shadow: "{elevation.shadow-md} with {glass.highlight}"
+    radius: "{shape.border-radius-md}"
+    inner-layer: "::after — backdrop-blur-[1px], bg-white/10, refraction edge shadow"
+    hover: "surface opacity steps 0.60→0.70, border 0.80→0.90, shadow deepens"
+  button-primary:
+    background: "{color.primary}"
+    border: "1px solid white/20"
+    shadow: "0 2px 8px {color.primary}/30, inset 0 1px 0 white/30 (specular highlight)"
+    text: "weight 600, sentence case, white"
+    radius: "{shape.border-radius-sm}"
+    hover: "bg darkens, shadow expands, specular brightens"
+  button-secondary:
+    background: "{color.surface}"
+    blur: "backdrop-blur-[2px] backdrop-saturate-[180%]"
+    border: "1px solid {shape.border-color}"
+    text: "weight 600, {color.primary}"
+    radius: "{shape.border-radius-sm}"
+    shadow: "{elevation.shadow-sm}, inset 0 2px 8px white/20"
+  input:
+    background: "rgba(255,255,255,0.40)"
+    blur: "backdrop-blur-[2px]"
+    border: "1px solid white/60"
+    radius: "{shape.border-radius-sm}"
+    focus: "bg steps to 0.60, border shifts to {color.primary}/50, ring glow 3px {color.primary}/20"
+    shadow: "inset 0 1px 3px rgba(0,0,0,0.06)"
+  badge:
+    shape: "rounded-full"
+    background: "{color.primary}/15"
+    text: "text-xs font-medium {color.primary}"
+    border: "1px solid {color.primary}/20"
+    blur: "backdrop-blur-[1px]"
+  nav:
+    background: "rgba(255,255,255,0.50)"
+    blur: "backdrop-blur-[4px] backdrop-saturate-[180%]"
+    border: "border-b border-white/60"
+    position: "fixed top-0, z-50"
+    shadow: "0 1px 0 rgba(0,0,0,0.04)"
+  layout:
+    archetype: "apple-clean-grid"
+    max-width: "max-w-7xl"
+    section-spacing: "py-16 to py-24"
+    grid-gap: "gap-3 to gap-4"
+    surfaces: "light background (#F2F2F7), pastel gradient washes (blue-200/30, purple-200/20)"
+    depth: "surface opacity scale: 0.40→0.50→0.60→0.70→0.80 by z-level"
+    background: "warm-neutral, never stark white — subtle color washes behind glass"
+
+constraints:
+  never:
+    - "high blur (12px+) — that is glassmorphism, not Liquid Glass; 2px is the refractive sweet spot"
+    - "low-opacity borders (0.20) — borders must be 0.80+ for polished glass edge"
+    - "dark backgrounds as default — light mode (#F2F2F7) is canonical"
+    - "surfaces without specular highlights — inner shadows or ::after refraction required"
+    - "hard state swaps — all state changes must use fluid shape transitions"
+    - "bold neon background orbs — use pastel washes only (blue-200, purple-200)"
+    - "mixing glassmorphism high-blur with Liquid Glass high-opacity — they cancel out"
+    - "pure white (#FFFFFF) page backgrounds — use #F2F2F7 system grey"
+  always:
+    - "specular highlights (inset box-shadow or ::after) on every glass surface"
+    - "backdrop-blur at 2px (1-4px range) — refractive, not frosted"
+    - "strong borders (white/80+) for polished glass edge quality"
+    - "dual-layer construction (outer glass + inner ::after light layer)"
+    - "-webkit-backdrop-filter prefix for Safari"
+    - "fluid shape morphing between states (border-radius, scale, shadow transitions)"
+    - "surface opacity hierarchy matching z-depth"
+
+effects:
+  interaction-vocabulary: [glass-brighten, specular-shift, fluid-morph, tactile-press, refraction-step]
+  hover:
+    card: "glass-brighten — surface 0.60→0.70, border 0.80→0.90, shadow deepens"
+    button-primary: "specular-shift — bg darkens, glow expands, inset highlight strengthens"
+    button-secondary: "glass-brighten — surface brightens, shadow deepens"
+    tab: "refraction-step — inactive→active with glass surface + specular emerging"
+  active:
+    button: "tactile-press — scale-[0.98], shadow contracts, specular dims"
+  focus:
+    general: "ring glow — 0 0 0 3px {color.primary}/20, border shifts to {color.primary}/50"
+  transition: "duration-200 to duration-350, cubic-bezier(0.2, 0.8, 0.2, 1)"
+  ambient:
+    - "specular-drift — inner light layer shifts subtly with scroll position"
+    - "pastel-wash — background gradient washes drift slowly for glass tinting"
+
 compatibility: [glassmorphism, aurora-gradients]
 clashes: [neubrutalism, terminal, cyberpunk]

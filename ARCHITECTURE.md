@@ -119,8 +119,8 @@ graph LR
 | `launch` | `gsp-campaign-director` | -- | yes |
 | `brand-research` | `gsp-researcher` | -- | no |
 | `brand-strategy` | `gsp-brand-strategist` | -- | no |
-| `brand-identity` | `gsp-identity-designer` | -- | no |
-| `brand-patterns` | `gsp-pattern-architect` | -- | no |
+| `brand-identity` | `gsp-creative-director` | -- | no |
+| `brand-guidelines` | `gsp-brand-engineer` | -- | no |
 | `brand-audit` | `gsp-brand-auditor` | -- | no |
 | `brand-sync` | `gsp-brand-syncer` | -- | no |
 | `project-brief` | `gsp-scoper` | -- | no |
@@ -289,12 +289,12 @@ graph TD
 
 ```mermaid
 graph LR
-    SRC["gsp/<br/>skills + agents + prompts<br/>+ templates + references"]
+    SRC["gsp/<br/>skills + agents<br/>+ templates + references"]
 
-    SRC -->|"symlink (local)"| CC[".claude/<br/>skills/ agents/ prompts/<br/>templates/ references/"]
-    SRC -->|"copy + convert"| OC[".opencode/<br/>skills/ agents/ prompts/<br/>templates/ references/"]
-    SRC -->|"copy + convert"| GE[".gemini/<br/>skills/ agents/ prompts/<br/>templates/ references/"]
-    SRC -->|"copy + convert<br/>(no agents)"| CX[".codex/ + .agents/skills/<br/>prompts/ templates/ references/"]
+    SRC -->|"symlink (local)"| CC[".claude/<br/>skills/ agents/<br/>templates/ references/"]
+    SRC -->|"copy + convert"| OC[".opencode/<br/>skills/ agents/<br/>templates/ references/"]
+    SRC -->|"copy + convert"| GE[".gemini/<br/>skills/ agents/<br/>templates/ references/"]
+    SRC -->|"copy + convert<br/>(no agents)"| CX[".codex/ + .agents/skills/<br/>templates/ references/"]
 
     subgraph "Stripped per runtime"
         ST["model, effort, context, agent<br/>allowed-tools, user-invocable<br/>color, argument-hint"]
@@ -313,7 +313,7 @@ graph LR
 
 **Agent** — A markdown file (`gsp/agents/gsp-{name}.md`) defining a specialized executor. Spawned by skills via the Agent tool into a fresh context. Agents receive all content inlined in their prompt — they don't re-read input files (exceptions: builder reads live codebase, reviewer uses Grep/Glob on source). Each agent is owned by one or more skills.
 
-**Prompt** — A short persona definition (`gsp/prompts/{NN}-{name}.md`, 3-49 lines) that shapes an agent's methodology. Example: "03-ui-ux-pattern-master" tells the designer agent to follow Apple HIG. Loaded via execution_context in the skill, then inlined into the agent's spawn prompt.
+**Prompt** — (Deprecated) Agent methodology now lives directly in agent definitions (`gsp/agents/gsp-*.md`). The `gsp/prompts/` directory is reserved but empty.
 
 **Reference** — Domain knowledge (`gsp/references/{name}.md`, 55-760 lines) that agents need for their work. Examples: Nielsen's 10 heuristics, WCAG 2.2 checklist, Apple HIG patterns, typography scale definitions, visual effects vocabulary. Loaded at spawn time via explicit Read calls, NOT in execution_context.
 

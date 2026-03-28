@@ -1,5 +1,5 @@
 ---
-name: project-research
+name: gsp-project-research
 description: Research UX patterns and technical approaches
 user-invocable: true
 model: sonnet
@@ -17,7 +17,7 @@ allowed-tools:
 <context>
 Phase 2 of the GSP project diamond. Deep research phase that investigates UX patterns, competitor experiences, technical approaches, accessibility strategies, and content patterns specific to what this project is building.
 
-This is NOT brand-level discovery (that's `/gsp:brand-research`). This is project-level research — focused on the product type, user flows, and implementation challenges.
+This is NOT brand-level discovery (that's `/gsp-brand-research`). This is project-level research — focused on the product type, user flows, and implementation challenges.
 
 Works with the dual-diamond architecture: reads brand context from `.design/branding/{brand}/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 </context>
@@ -31,7 +31,6 @@ Deep research into UX patterns, competitor experiences, and technical approaches
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../../prompts/12-project-researcher.md
 @${CLAUDE_SKILL_DIR}/../../templates/phases/research.md
 </execution_context>
 
@@ -48,7 +47,7 @@ Read `{PROJECT_PATH}/brand.ref` → set `BRAND_PATH`.
 
 Read `{PROJECT_PATH}/brief/INDEX.md`. If it exists, load `scope.md` and `target-adaptations.md`.
 
-If brief doesn't exist, tell the user to run `/gsp:project-brief` first.
+If brief doesn't exist, tell the user to run `/gsp-project-brief` first.
 
 ### Brand system (selective)
 
@@ -73,7 +72,7 @@ Read:
 **If `design_scope` is `tokens`:**
 1. Update `{PROJECT_PATH}/STATE.md` — set Phase 2 (Research) status to `skipped`
 2. Display: "Research phase skipped — design scope is `tokens`."
-3. Route: "Run `/gsp:project-build`."
+3. Route: "Run `/gsp-project-build`."
 4. Stop here.
 
 ## Step 1.75: Pre-fetch references (background)
@@ -91,7 +90,7 @@ Pass in the agent prompt:
 - **Content of** custom references (loaded in Step 1)
 - **Content of** BRIEF.md (loaded in Step 1)
 - Any pre-fetched reference content (from Step 1.75)
-- The Project Researcher prompt (12), research output template (from execution_context)
+- Research output template (from execution_context)
 - `implementation_target`, `platform`, `tech_stack`
 - **Output path:** `{PROJECT_PATH}/research/`
 

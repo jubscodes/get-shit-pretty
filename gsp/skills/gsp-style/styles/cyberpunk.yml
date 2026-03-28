@@ -58,5 +58,92 @@ dark_mode:
     background: "#050508"
     surface: "#0A0A12"
 
+intensity:
+  variance: 8     # asymmetric HUD layouts, skewed grids, overlapping neon panels
+  motion: 7       # glitch animations, scanline scrolls, neon pulses, chromatic flicker
+  density: 7      # layered textures — scanlines, circuit grids, noise, gradient mesh
+
+patterns:
+  card:
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-md} neon glow, intensifies on hover"
+    radius: "clip-path chamfer — 45-degree corner cuts, never border-radius"
+    background: "{color.surface}"
+    variants: "default (chamfered), terminal (traffic-light header bar), holographic (glass + corner accents)"
+  button-primary:
+    background: "transparent, border {shape.border-width} solid {color.primary}"
+    border: "2px solid {color.primary}"
+    shadow: "{glow.neon-primary} on hover"
+    text: "uppercase, monospace, tracking-wider, {color.primary}"
+    radius: "clip-path chamfer-sm"
+    fill: "hover fills {color.primary}, text inverts to {color.background}"
+  button-secondary:
+    background: "transparent"
+    border: "2px solid {color.secondary}"
+    shadow: "{glow.neon-secondary} on hover"
+    text: "uppercase, monospace, {color.secondary}"
+    radius: "clip-path chamfer-sm"
+  input:
+    border: "{shape.border-width} solid {shape.border-color}"
+    radius: "clip-path chamfer-sm"
+    background: "{color.surface}"
+    prefix: "> symbol in {color.primary}, absolute positioned left"
+    focus: "border becomes {color.primary}, neon glow shadow, no outline"
+  badge:
+    shape: "chamfered or sharp-edged, {shape.border-width} border"
+    text: "font-mono text-xs uppercase tracking-[0.2em] {color.primary}"
+    decoration: "neon glow pulse on featured badges"
+  nav:
+    logo: "monospace uppercase, bordered with chamfered clip-path"
+    links: "monospace, hover adds neon underline glow"
+    mobile: "hamburger icon with neon glow ring"
+  layout:
+    archetype: "hud-schematic"
+    max-width: "max-w-7xl"
+    section-spacing: "py-24 to py-32"
+    grid-gap: "gap-6 to gap-10"
+    asymmetry: "60/40 hero splits, skew-y-1 on feature grids, overlapping negative margins"
+    surfaces: "scanlines + circuit grid + noise — always layered, never flat"
+    decoration: "corner-accent brackets on holographic panels, gradient orbs at low opacity"
+
+constraints:
+  never:
+    - "border-radius above 4px — chamfered clip-path or sharp corners only"
+    - "light backgrounds — dark void canvas is mandatory for neon to read"
+    - "soft diffused shadows — all shadows are neon glow (colored, no blur-only)"
+    - "serif or handwritten fonts — monospace and geometric sans only"
+    - "warm color temperatures — palette is cold: cyan, magenta, electric green"
+    - "rounded-full on containers — pill shapes conflict with angular HUD aesthetic"
+    - "static decorative elements — everything should pulse, scan, or flicker"
+    - "flat borders without glow — borders must emit light via stacked box-shadow"
+  always:
+    - "clip-path chamfered corners on cards and buttons"
+    - "scanline overlay (repeating-linear-gradient) on page or major sections"
+    - "neon glow (multi-layer box-shadow) on every interactive element hover"
+    - "monospace font for all UI labels, inputs, and code-style elements"
+    - "uppercase on headings, buttons, labels, and nav links"
+    - "circuit grid or noise texture on at least one section background"
+    - "chromatic aberration text-shadow on hero headlines"
+
+effects:
+  interaction-vocabulary: [neon-ignite, glitch-flicker, chromatic-shift, press-dim, scan-reveal]
+  hover:
+    card: "neon-ignite — border becomes {color.primary}, glow shadow appears, translateY(-1px)"
+    button: "neon-ignite — background fills accent, neon glow radiates, text inverts"
+    link: "chromatic-shift — text-shadow splits to magenta-left cyan-right"
+    badge: "glitch-flicker — brief clip-path skew animation"
+  active:
+    button: "press-dim — filter brightness(0.85), glow dims"
+  focus:
+    input: "neon-ignite — border {color.primary}, glow shadow, no outline ring"
+    general: "ring-2 ring-{color.primary} ring-offset-2 ring-offset-{color.background}"
+  transition: "duration-100 to duration-200, cubic-bezier(0.25, 0.46, 0.45, 0.94) or steps(4) for digital feel"
+  ambient:
+    - "scanline-scroll — horizontal line sweeps down viewport (8s linear infinite)"
+    - "glitch-pulse — hero text skews +-2px randomly (glitch keyframes, 4s)"
+    - "neon-breathe — glow opacity oscillates 0.3-0.6 on accent elements (3s ease-in-out)"
+    - "rgb-shift — chromatic aberration text-shadow alternates offsets (2s)"
+    - "cursor-blink — terminal cursor opacity steps (1s step-end infinite)"
+
 compatibility: [kinetic-typography, bento-grid]
 clashes: [swiss-minimalist, professional, liquid-glass]

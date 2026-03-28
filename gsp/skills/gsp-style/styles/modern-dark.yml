@@ -55,5 +55,93 @@ tokens:
 
   gradient-text: "bg-gradient-to-b from-white via-white/95 to-white/70"
 
+intensity:
+  variance: 6     # asymmetric bento grids, varied card spans, off-canvas blob positions
+  motion: 8       # animated blobs (8-10s), mouse-tracking spotlights, scroll parallax, stagger entrances
+  density: 5      # balanced — generous section spacing, moderate card padding
+
+patterns:
+  card:
+    background: "bg-gradient-to-b from-white/[0.08] to-white/[0.02]"
+    border: "1px solid rgba(255,255,255,0.06)"
+    shadow: "multi-layer — border-highlight + soft-diffuse + ambient-darkness"
+    radius: "{shape.border-radius-md}"
+    hover: "border brightens to white/10, accent glow appears, spotlight tracks mouse"
+    highlight: "1px gradient at top edge (inner glow line)"
+  button-primary:
+    background: "{color.primary}"
+    border: "inset shadow instead of border"
+    shadow: "multi-layer — 0 0 0 1px {color.primary}/50, 0 4px 12px {color.primary}/30, inset 0 1px 0 white/20"
+    text: "weight 500, sentence case, white"
+    radius: "{shape.border-radius-sm}"
+    shine: "pseudo-element gradient sweep on hover"
+  button-secondary:
+    background: "rgba(255,255,255,0.05)"
+    border: "inset shadow only"
+    text: "weight 500, {color.on-background}"
+    radius: "{shape.border-radius-sm}"
+    hover: "bg-white/[0.08], subtle outer glow"
+  input:
+    background: "#0F0F12"
+    border: "1px solid rgba(255,255,255,0.10)"
+    radius: "{shape.border-radius-sm}"
+    focus: "border-{color.primary}, accent glow ring"
+    text: "text-gray-100, placeholder text-gray-500"
+  badge:
+    shape: "rounded-full"
+    border: "1px solid {color.primary}/30"
+    text: "font-mono text-xs tracking-widest"
+  nav:
+    background: "bg-{color.background}/95 backdrop-blur-xl"
+    border: "border-b border-white/[0.06]"
+    style: "inline links desktop, animated hamburger mobile"
+  layout:
+    archetype: "asymmetric-bento"
+    max-width: "container responsive"
+    section-spacing: "py-24 to py-32"
+    grid-gap: "gap-4 to gap-8"
+    grid: "6-column base, mix col-span-2/3/4, variable row heights"
+    surfaces: "never flat — layered gradients + noise texture + grid overlay + ambient blobs"
+    decoration: "animated gradient blobs (900-1400px, blur-[150px]), noise at 1.5% opacity, 64px grid at 2%"
+    dividers: "border-t border-white/[0.06] or gradient line via-white/10"
+
+constraints:
+  never:
+    - "flat single-color backgrounds — always layer gradients, noise, and ambient light"
+    - "pure black (#000000) — use near-blacks like #050506 or #020203"
+    - "pure white text — use #EDEDEF or similar off-white"
+    - "large hover movements (>8px) — precision, not playfulness"
+    - "uniform grids — bento layouts must have variety in card sizes"
+    - "harsh visible borders — borders at 6-10% white opacity maximum"
+    - "accent color overuse — monochromatic with selective accent highlights"
+    - "bouncy or spring animations — expo-out easing only"
+    - "missing glow on accent buttons — soft light emission is part of the language"
+  always:
+    - "multi-layer shadows (border-highlight + diffuse + ambient + optional glow)"
+    - "animated ambient blobs in background for cinematic lighting"
+    - "gradient text on headlines (white via-white/95 to-white/70 vertical fade)"
+    - "noise texture overlay at 1-2% opacity"
+    - "mouse-tracking spotlight effect on interactive surfaces"
+    - "inner highlight (inset 0 1px 0 white/10) on elevated surfaces"
+    - "near-black backgrounds, never pure black"
+
+effects:
+  interaction-vocabulary: [spotlight-track, glow-intensify, precision-lift, border-brighten, shine-sweep]
+  hover:
+    card: "spotlight-track — radial gradient follows cursor (300px, 15% opacity), border-brighten"
+    button-primary: "glow-intensify — glow radius/opacity increase, shine-sweep across surface"
+    button-secondary: "border-brighten — bg-white/[0.08], subtle outer glow appears"
+    link: "color brightens, subtle underline"
+  active:
+    button: "scale-[0.98], shadow reduces depth"
+  focus:
+    general: "ring-2 ring-{color.primary}/50 ring-offset-2 ring-offset-{color.background}"
+  transition: "duration-200 to duration-300, cubic-bezier(0.16, 1, 0.3, 1)"
+  ambient:
+    - "blob-float — large gradient blobs drift slowly (8-10s ease-in-out infinite, ±20px)"
+    - "blob-pulse — accent blob in lower area pulses opacity"
+    - "fade-up-stagger — entrance: opacity 0→1, y 24→0, 600ms with 0.08s child stagger"
+    - "parallax-fade — hero fades/scales/translates on scroll"
+
 compatibility: [minimal-dark, glassmorphism]
 clashes: [flat-design, retro, neubrutalism]

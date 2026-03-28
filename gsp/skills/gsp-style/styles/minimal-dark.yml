@@ -57,5 +57,80 @@ tokens:
     base: "#12121A"
     elevated: "#1A1A24"
 
+intensity:
+  variance: 2     # calm, predictable layouts — floating in dark space
+  motion: 4       # smooth subtle interactions with ambient glow shifts
+  density: 2      # extremely spacious — darkspace as breathing room
+
+patterns:
+  card:
+    background: "rgba(26,26,36,0.6)"
+    blur: "backdrop-blur-[8px]"
+    border: "{shape.border-width} solid {shape.border-color}"
+    shadow: "{elevation.shadow-md}"
+    radius: "{shape.border-radius-md}"
+  button-primary:
+    background: "{color.primary}"
+    border: "none"
+    shadow: "0 0 20px rgba(245,158,11,0.15) resting"
+    text: "weight 500, sentence case, {color.on-primary}"
+    radius: "{shape.border-radius-sm}"
+  button-secondary:
+    background: "transparent"
+    border: "{shape.border-width} solid rgba(255,255,255,0.15)"
+    text: "weight 400, {color.on-background}"
+    radius: "{shape.border-radius-sm}"
+  input:
+    background: "rgba(26,26,36,0.6)"
+    blur: "backdrop-blur-[8px]"
+    border: "{shape.border-width} solid {shape.border-color}"
+    radius: "{shape.border-radius-sm}"
+    focus: "border-{color.primary}/50, ring-2 ring-{color.primary}/20, ambient glow"
+  badge:
+    background: "rgba(245,158,11,0.15) or glass"
+    shape: "rounded-full"
+    text: "text-xs, font-medium"
+  nav:
+    background: "glass panel — rgba(18,18,26,0.8) with backdrop-blur"
+    border: "{shape.border-width} solid {shape.border-color}"
+    position: "sticky"
+  layout:
+    archetype: "floating-dark-space"
+    max-width: "max-w-6xl"
+    section-spacing: "py-24 to py-40 — let dark space breathe"
+    grid-gap: "gap-6 to gap-8"
+    surfaces: "layered slate tones ({layers.deep} → {layers.base} → {layers.elevated})"
+    decoration: "ambient orbs with amber glow, radial gradients, subtle noise"
+
+constraints:
+  never:
+    - "pure black (#000000) as background — use rich slate tones instead"
+    - "harsh high-contrast borders — keep border opacity below 15%"
+    - "saturated colors beyond amber accent — cool dark palette only"
+    - "thick borders (>1px) — subtle and low-opacity always"
+    - "bouncy or elastic animations — smooth ease-out only"
+    - "flat shadowless elements — everything needs ambient depth cues"
+  always:
+    - "at least 3 distinct dark layers visible ({layers.deep}, {layers.base}, {layers.elevated})"
+    - "warm amber ({color.primary}) as the sole accent — no cold blues"
+    - "ambient glow on interactive elements (buttons, highlighted cards)"
+    - "glass-effect cards with backdrop-blur and semi-transparent backgrounds"
+    - "generous darkspace padding between sections"
+    - "subtle noise texture (0.02 opacity) for atmospheric grain"
+
+effects:
+  interaction-vocabulary: [glow-intensify, alpha-step, soft-press, border-brighten]
+  hover:
+    card: "alpha-step — border opacity brightens 0.08→0.15, bg opacity increases"
+    button: "glow-intensify — glow radius and opacity increase (0.15→0.4)"
+  active:
+    button: "soft-press — scale-[0.98], glow dims slightly"
+  focus:
+    general: "ring-2 ring-{color.primary}/50 ring-offset-2 ring-offset-{color.background}"
+  transition: "duration-200 to duration-300, ease-out"
+  ambient:
+    - "orb-drift — large blurred amber circles at 0.02-0.04 opacity, fixed positioning"
+    - "glow-pulse — hero badge pulsing dot with amber glow"
+
 compatibility: [modern-dark, terminal]
 clashes: [botanical, flat-design]

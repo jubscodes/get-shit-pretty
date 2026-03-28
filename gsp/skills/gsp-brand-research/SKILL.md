@@ -1,5 +1,5 @@
 ---
-name: brand-research
+name: gsp-brand-research
 description: Research your market and competitors
 user-invocable: true
 model: sonnet
@@ -43,7 +43,7 @@ Research market context that will inform brand strategy.
 
 Resolve brand from `.design/branding/` (one → use it, multiple → ask). Set `BRAND_PATH`.
 
-Read `{BRAND_PATH}/BRIEF.md`. If missing, tell user to run `/gsp:start` first.
+Read `{BRAND_PATH}/BRIEF.md`. If missing, tell user to run `/gsp-start` first.
 Read `{BRAND_PATH}/config.json` for `brand_mode`.
 
 ## Step 2: Confirm research scope

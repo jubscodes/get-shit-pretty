@@ -33,7 +33,7 @@ Naming: `screen-{NN}-{kebab-case-name}.md` (e.g., `screen-01-home.md`, `screen-0
 Self-contained HTML wireframe preview:
 - One section per screen with box-model layout visualization
 - Navigation between screens via sidebar table of contents
-- Brand color accents from tokens.json (or neutral grays)
+- Brand color accents from the brand `.yml` preset (or neutral grays)
 - Responsive, no external dependencies
 
 ## Content Reference

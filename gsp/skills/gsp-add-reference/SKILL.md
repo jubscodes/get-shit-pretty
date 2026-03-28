@@ -1,5 +1,5 @@
 ---
-name: add-reference
+name: gsp-add-reference
 description: Add reference material to a project
 user-invocable: true
 model: sonnet
