@@ -1205,8 +1205,22 @@ function installLocalSymlinks(targetDir, src) {
     forceSymlink(path.join('..', '..', 'gsp', 'skills', dir.name), path.join(skillsDest, dir.name));
     skillCount++;
   }
+  // ── Dev skill symlinks (local only — not shipped in npm package) ──
+  const devSkillsSrc = path.join(cwd, 'dev', 'skills');
+  let devSkillCount = 0;
+  if (fs.existsSync(devSkillsSrc)) {
+    for (const dir of fs.readdirSync(devSkillsSrc, { withFileTypes: true })) {
+      if (!dir.isDirectory()) continue;
+      forceSymlink(path.join('..', '..', 'dev', 'skills', dir.name), path.join(skillsDest, dir.name));
+      devSkillCount++;
+    }
+  }
+
   if (skillCount > 0) {
-    console.log(`  ${c.success}✓${c.reset} Symlinked ${skillCount} skills`);
+    const msg = devSkillCount > 0
+      ? `Symlinked ${skillCount} skills + ${devSkillCount} dev`
+      : `Symlinked ${skillCount} skills`;
+    console.log(`  ${c.success}✓${c.reset} ${msg}`);
   } else { failures.push('skills'); }
 
   // Clean up legacy commands/gsp dir (may be broken symlink)

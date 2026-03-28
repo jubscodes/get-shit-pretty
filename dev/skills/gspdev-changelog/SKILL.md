@@ -1,5 +1,5 @@
 ---
-name: gsp-changelog
+name: gspdev-changelog
 description: Maintain CHANGELOG.md from git history — update Unreleased section, promote to versioned release, or rebuild from scratch. Follows Keep a Changelog format.
 allowed-tools:
   - Read

@@ -1,5 +1,5 @@
 ---
-name: gsp-prompt-audit
+name: gspdev-prompt-audit
 description: AI-driven semantic analysis of GSP skills and agents — finds dead weight, contradictions, vagueness, and over-prompting that automated checks can't catch.
 allowed-tools:
   - Read

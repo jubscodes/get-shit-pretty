@@ -1,5 +1,5 @@
 ---
-name: gsp-audit
+name: gspdev-audit
 description: Verify GSP pipeline integrity — agent/skill contracts, installer correctness, runtime compatibility, version sync, and template coherence. Internal development tool for GSP maintainers.
 allowed-tools:
   - Read
@@ -24,7 +24,7 @@ Source layout:
 - `bin/install.js` — multi-runtime installer
 - `VERSION`, `package.json` — version sources
 
-Runtime compatibility reference: `${CLAUDE_SKILL_DIR}/../gsp-runtime-compat/references/baseline.md`
+Runtime compatibility reference: `${CLAUDE_SKILL_DIR}/../gspdev-runtime-compat/references/baseline.md`
 </context>
 
 <objective>
@@ -51,7 +51,7 @@ Review the output. If all tests pass, report the clean result. If any tests fail
 - **`all`** or empty — run everything
 - **`contracts`** — agent↔skill contract checks only
 - **`installer`** — installer correctness checks only
-- **`runtime`** — runtime compatibility checks (uses gsp-runtime-compat baseline)
+- **`runtime`** — runtime compatibility checks (uses gspdev-runtime-compat baseline)
 - **`versions`** — version sync checks only
 - **`templates`** — template coherence checks only
 
@@ -170,7 +170,7 @@ All skill directories under `gsp/skills/` (except `get-shit-pretty`) must start 
 
 ## Step 5: Runtime Compatibility (R)
 
-Read the baseline reference at `${CLAUDE_SKILL_DIR}/../gsp-runtime-compat/references/baseline.md`.
+Read the baseline reference at `${CLAUDE_SKILL_DIR}/../gspdev-runtime-compat/references/baseline.md`.
 
 ### R1: Discovery paths match installer
 For each runtime, check that the installer writes to the correct discovery paths:

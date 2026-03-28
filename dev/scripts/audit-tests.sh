@@ -579,10 +579,10 @@ fi
 if should_run runtime; then
   header "Runtime Compatibility"
 
-  BASELINE="dev/skills/gsp-runtime-compat/references/baseline.md"
+  BASELINE="dev/skills/gspdev-runtime-compat/references/baseline.md"
 
   if [[ ! -f "$BASELINE" ]]; then
-    fail "R0 Baseline missing" "$BASELINE not found — run /gsp-runtime-compat to generate"
+    fail "R0 Baseline missing" "$BASELINE not found — run /gspdev-runtime-compat to generate"
   else
     pass "R0 Baseline reference exists"
 

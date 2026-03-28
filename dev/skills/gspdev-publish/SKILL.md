@@ -1,5 +1,5 @@
 ---
-name: gsp-publish
+name: gspdev-publish
 description: Publish a new GSP version — bump versions, changelog, audit, tag, release, prompt npm publish
 allowed-tools:
   - Read

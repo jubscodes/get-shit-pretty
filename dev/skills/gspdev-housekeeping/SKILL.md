@@ -1,5 +1,5 @@
 ---
-name: gsp-housekeeping
+name: gspdev-housekeeping
 description: Quick drift-catching pass — find and fix version mismatches, stale references, count drift, and terminology rot after moderate changes. Run often.
 allowed-tools:
   - Read
@@ -10,7 +10,7 @@ allowed-tools:
 argument-hint: "[fix|check] default: check (dry run)"
 ---
 <context>
-Lightweight housekeeping for GSP maintainers. Unlike `/gsp-audit` (comprehensive, read-only, 30+ checks), this skill catches the **most common drift** after a moderate development session and offers to fix it.
+Lightweight housekeeping for GSP maintainers. Unlike `/gspdev-audit` (comprehensive, read-only, 30+ checks), this skill catches the **most common drift** after a moderate development session and offers to fix it.
 
 Run this often — after adding/removing skills or agents, after architecture changes, after version bumps. Think of it as a linter, not a test suite.
 
@@ -70,10 +70,10 @@ Any mismatch → drift issue. The VERSION file is the source of truth.
 Check CHANGELOG.md for common issues:
 
 1. **Unreleased section exists** — `## [Unreleased]` must be present at the top. If missing, flag it.
-2. **Unreleased is not empty** — if there are commits since the last versioned entry but Unreleased has no content, flag: "Unreleased section is empty but there are new commits. Run `/gsp-changelog update` to populate."
+2. **Unreleased is not empty** — if there are commits since the last versioned entry but Unreleased has no content, flag: "Unreleased section is empty but there are new commits. Run `/gspdev-changelog update` to populate."
 3. **Current version coverage** — if VERSION matches the latest versioned section in CHANGELOG.md, that's fine (post-release state). If VERSION is *ahead* of the changelog (no versioned section for it), Unreleased should have content.
 
-This check is informational — don't auto-fix. Suggest `/gsp-changelog update` or `/gsp-changelog release` as appropriate.
+This check is informational — don't auto-fix. Suggest `/gspdev-changelog update` or `/gspdev-changelog release` as appropriate.
 
 **Fix:** not auto-fixable. Report only.
 
@@ -117,7 +117,7 @@ Check `bin/install.js` for comments that reference outdated structure:
 - Outdated count comments
 - Stale function descriptions
 
-Only check **comments** (lines starting with `//` or inside `/* */`), not code logic — code correctness is `/gsp-audit`'s job.
+Only check **comments** (lines starting with `//` or inside `/* */`), not code logic — code correctness is `/gspdev-audit`'s job.
 
 **Fix:** update the comments.
 
@@ -148,7 +148,7 @@ If there are uncommitted changes (staged or unstaged), **propose commits**:
 Output a compact report:
 
 ```
-  /gsp-housekeeping check
+  /gspdev-housekeeping check
   ═══════════════════════════════════════
 
   Versions
@@ -167,17 +167,17 @@ Output a compact report:
 
   Working tree
     M bin/install.js                        (modified, unstaged)
-    ?? dev/skills/gsp-dev/                  (untracked)
+    ?? dev/skills/gspdev-dev/                  (untracked)
 
   Proposed commits
     1. "fix: update version refs in config templates"
        → gsp/templates/projects/config.json
        → gsp/templates/branding/config.json
-    2. "chore: add gsp-dev skill"
-       → dev/skills/gsp-dev/
+    2. "chore: add gspdev-dev skill"
+       → dev/skills/gspdev-dev/
 
   ─────────────────────────────────────
-  5 issues found, 2 commits proposed. Run /gsp-housekeeping fix to apply.
+  5 issues found, 2 commits proposed. Run /gspdev-housekeeping fix to apply.
 ```
 
 In `fix` mode, after the report, walk through each fixable issue:
@@ -191,7 +191,7 @@ After all fixes, re-run the checks to confirm clean state.
 
 - **Fast** — no network calls, no issue fetching, no deep analysis. Pure filesystem checks.
 - **Safe** — in `check` mode, reads only. In `fix` mode, edits only the specific drift patterns.
-- **Complementary to audit** — this catches the 80% of drift that happens day-to-day. Run `/gsp-audit` for the full picture before releases.
+- **Complementary to audit** — this catches the 80% of drift that happens day-to-day. Run `/gspdev-audit` for the full picture before releases.
 - **Don't fix code logic** — only fix metadata, comments, counts, and references. Code correctness is out of scope.
 
 </process>

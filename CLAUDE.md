@@ -212,8 +212,8 @@ Internal development tools live in `dev/` (versioned in repo, never installed to
 
 | Path | Purpose |
 |------|---------|
-| `dev/skills/gsp-audit/` | Pipeline integrity checker — contracts, installer, runtime compat, versions, templates |
-| `dev/skills/gsp-runtime-compat/` | Fetch live runtime docs and flag drift against GSP installer |
+| `dev/skills/gspdev-audit/` | Pipeline integrity checker — contracts, installer, runtime compat, versions, templates |
+| `dev/skills/gspdev-runtime-compat/` | Fetch live runtime docs and flag drift against GSP installer |
 | `dev/scripts/audit-tests.sh` | Automated test suite (65 tests across 7 suites) |
 
 ### Running tests
@@ -229,13 +229,9 @@ bash dev/scripts/audit-tests.sh templates # template coherence
 
 ### Using dev skills
 
-To make dev skills available in your session, symlink into your personal skills:
-```bash
-ln -s "$(pwd)/dev/skills/gsp-audit" ~/.claude/skills/gsp-audit
-ln -s "$(pwd)/dev/skills/gsp-runtime-compat" ~/.claude/skills/gsp-runtime-compat
-```
+Dev skills use the `gspdev-` prefix so the installer's cleanup doesn't remove them. Run `node bin/install.js --claude --local` — it symlinks dev skills alongside GSP skills automatically.
 
-Then invoke `/gsp-audit` or `/gsp-runtime-compat drift`.
+Then invoke `/gspdev-audit` or `/gspdev-runtime-compat drift`.
 
 ## Inspiration links
 

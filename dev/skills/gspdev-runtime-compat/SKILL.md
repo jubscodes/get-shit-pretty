@@ -1,5 +1,5 @@
 ---
-name: gsp-runtime-compat
+name: gspdev-runtime-compat
 description: Research live documentation for Claude Code, OpenCode, Gemini CLI, and Codex CLI — check discovery paths, tool names, frontmatter fields, and flag drift against the GSP installer. Internal GSP development tool.
 allowed-tools:
   - WebFetch

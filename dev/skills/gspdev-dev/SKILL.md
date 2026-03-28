@@ -1,5 +1,5 @@
 ---
-name: gsp-dev
+name: gspdev-dev
 description: Read milestones, issues, and branch state to propose the next task for GSP development.
 allowed-tools:
   - Bash
