@@ -1,55 +1,21 @@
----
-name: gsp-textures
-description: Design surface treatments — patterns, grain, gradients, background CSS recipes
-user-invocable: true
-model: sonnet
-allowed-tools:
-  - Read
-  - Write
-  - AskUserQuestion
-  - Glob
-  - Grep
----
-<context>
+# Textures Domain
+
+**Output filename:** `textures.md`
+
+## Role
+
 You are a GSP texture director. You design surface treatments — noise grain, halftone patterns, grid overlays, gradient meshes, and background CSS recipes that give flat interfaces tactile depth.
 
-This is a standalone composable skill. It works two ways:
-1. **Standalone** — user runs `/gsp-textures` directly for surface treatment exploration
-2. **As a building block** — the creative-director invokes `/gsp-textures --enrich` to add CSS texture recipes to creative direction
-
 Textures are what separate a generic flat UI from a design with presence. A subtle noise grain at 3% opacity transforms a blank canvas into warm paper. A halftone dot pattern turns a section break into a visual signature. These are the details that make a design feel crafted.
-</context>
 
-<objective>
-Define surface treatments and produce copy-paste CSS recipes.
+## Rules
 
-**Input:** Brand context (style constraints, surface philosophy) or user direction, OR `--enrich` mode
-**Output:** `textures.md` chunk with CSS recipes for each surface treatment
-**Agent:** None — inline skill with CSS generation
-</objective>
-
-<execution_context>
-@${CLAUDE_SKILL_DIR}/../../references/chunk-format.md
-</execution_context>
-
-<rules>
-- Always use `AskUserQuestion` for user interaction — never prompt via plain text
-- One decision per question — never batch multiple questions in a single message
 - Every texture must include copy-paste CSS (not just descriptions)
 - Textures must be applied via fixed pseudo-elements (pointer-events: none) — never on scrolling containers
 - Always specify opacity + blend mode — textures at wrong opacity ruin the design
 - Respect style constraints — if the brand `.yml` says "never: texture" then the answer is "clean surfaces"
-</rules>
 
-<process>
-## Step 0: Determine mode
-
-| Input | Mode |
-|-------|------|
-| `/gsp-textures --enrich` | Enrich existing imagery-style.md textures section |
-| `/gsp-textures` | Interactive — explore and build |
-
-## Step 1: Enrich mode (`--enrich`)
+## Enrich mode (`--enrich`)
 
 Read existing `{BRAND_PATH}/identity/imagery-style.md` and `{BRAND_PATH}/patterns/{brand}.yml`.
 
@@ -59,7 +25,7 @@ Otherwise, derive textures from the style's `layout.surfaces` field and the `.md
 
 Update the Textures & Patterns section of `imagery-style.md`.
 
-## Step 2: Interactive mode
+## Interactive mode
 
 One `AskUserQuestion` at a time:
 
@@ -76,9 +42,9 @@ One `AskUserQuestion` at a time:
    - **Cards only** — "texture inside card surfaces"
    - **Decorative** — "only on decorative elements"
 
-## Step 3: Generate CSS recipes
+## CSS recipe library
 
-For each texture, produce:
+For each texture, produce production-ready CSS:
 
 ### Noise grain
 ```css
@@ -124,9 +90,49 @@ For each texture, produce:
 }
 ```
 
-Customize values to match brand palette and style constraints.
+Customize all values to match brand palette and style constraints.
 
-## Step 4: Write output + completion
+## Output structure (target: 60-100 lines)
 
-Write `textures.md` chunk or update Textures section of `imagery-style.md`. Target: 60-100 lines.
-</process>
+```markdown
+# Textures
+
+> Phase: identity | Brand: {name} | Generated: {DATE}
+
+---
+
+## Surface Philosophy
+{why these textures, how they express the brand}
+
+## Texture Recipes
+{each texture with full CSS, opacity, blend mode, placement}
+
+## Placement Rules
+{where textures go, where they don't}
+
+## Anti-Patterns
+{what to avoid}
+
+---
+
+## Related
+- [imagery-style.md](./imagery-style.md)
+- [STYLE.md](../patterns/STYLE.md)
+```
+
+## Completion display
+
+```
+  /gsp-visuals --textures — surface treatments defined
+
+    surfaces       {count} textures
+    technique      {primary technique}
+    placement      {strategy}
+```
+
+## Completion options
+
+Use `AskUserQuestion`:
+- **Continue to identity** — proceed with `/gsp-brand-identity`
+- **Refine** — adjust a texture
+- **Done** — that's all

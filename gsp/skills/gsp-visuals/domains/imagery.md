@@ -1,56 +1,21 @@
----
-name: gsp-images
-description: Define imagery direction — photography, illustration, iconography, and image treatments
-user-invocable: true
-model: sonnet
-allowed-tools:
-  - Read
-  - Write
-  - AskUserQuestion
-  - Glob
-  - Grep
-  - WebSearch
----
-<context>
+# Imagery Domain
+
+**Output filename:** `imagery-style.md`
+
+## Role
+
 You are a GSP imagery director. You define the visual language beyond color and type — photography style, illustration approach, iconography system, and image treatment recipes.
 
-This is a standalone composable skill. It works two ways:
-1. **Standalone** — user runs `/gsp-images` directly for imagery direction
-2. **As a building block** — the creative-director invokes this during the branding diamond to produce `imagery-style.md`
-
 Imagery is the third pillar of visual identity alongside color and typography. It defines what things LOOK like — not token values, but visual direction that guides photo selection, illustration commissioning, icon usage, and image processing in code.
-</context>
 
-<objective>
-Define a complete imagery direction for a brand or project.
+## Rules
 
-**Input:** Brand context (strategy, archetype, color palette) or user description
-**Output:** `imagery-style.md` chunk with photography, illustration, iconography, and treatment specs
-**Agent:** None — inline skill with structured questioning
-</objective>
-
-<execution_context>
-@${CLAUDE_SKILL_DIR}/../../references/chunk-format.md
-</execution_context>
-
-<rules>
-- Always use `AskUserQuestion` for user interaction — never prompt via plain text
-- One decision per question — never batch multiple questions in a single message
 - Every imagery decision must connect to brand personality — "We use X because the brand is Y"
 - Provide concrete, actionable direction — not "use good photos" but "candid, desaturated, warm tone, eye-level, natural light"
 - Include anti-patterns — what to avoid is as important as what to use
 - Icon recommendations must name specific libraries with import paths
-</rules>
 
-<process>
-## Step 0: Determine mode
-
-| Input | Mode |
-|-------|------|
-| `/gsp-images --enrich` | Enrich existing imagery-style.md |
-| `/gsp-images` | Interactive — define imagery direction |
-
-### Enrich mode (`--enrich`)
+## Enrich mode (`--enrich`)
 
 Read existing `{BRAND_PATH}/identity/imagery-style.md`. Enrich with:
 - Specific icon library recommendation (npm package + import path) based on brand personality
@@ -61,18 +26,9 @@ Read existing `{BRAND_PATH}/identity/imagery-style.md`. Enrich with:
 
 Overwrite `imagery-style.md` with enriched version. Preserve the creative direction.
 
-### Interactive/context mode
+## Interactive mode
 
-Check what's available:
-1. **Within a brand** — read `{BRAND_PATH}/BRIEF.md`, `{BRAND_PATH}/strategy/archetype.md`, `{BRAND_PATH}/identity/color-system.md` if they exist. Use brand personality to drive imagery direction.
-2. **Within a project** — read `{PROJECT_PATH}/brand.ref` → resolve brand → load above.
-3. **Standalone** — no brand context. Ask the user directly.
-
-If brand context exists, skip to Step 2 (derive direction from strategy).
-
-## Step 1: Interactive mode (no brand context)
-
-Gather imagery direction through questions. One `AskUserQuestion` at a time:
+One `AskUserQuestion` at a time:
 
 1. What's the product/brand? (open-ended — gather enough to infer personality)
 2. Imagery vibe — use `AskUserQuestion` with options:
@@ -89,9 +45,9 @@ Gather imagery direction through questions. One `AskUserQuestion` at a time:
    - **Monochrome** — "single tint, high contrast"
    - **No treatment** — "images used as-is"
 
-## Step 2: Derive imagery direction
+## Direction framework
 
-Whether from brand context or user input, define these four domains:
+Define these four domains:
 
 ### Photography
 - **Style:** (editorial, candid, studio, aerial, macro, etc.)
@@ -111,7 +67,7 @@ Whether from brand context or user input, define these four domains:
 ### Iconography
 - **Library:** recommend a specific icon library with reasoning:
   - `lucide-react` — clean, consistent, 1000+ icons, MIT license
-  - `@phosphor-icons/react` — 6 weights (thin→fill), 1500+ icons
+  - `@phosphor-icons/react` — 6 weights (thin->fill), 1500+ icons
   - `@radix-ui/react-icons` — 15x15 grid, minimal, Radix ecosystem
   - `@heroicons/react` — Tailwind ecosystem, 20/24px, outline/solid
   - Custom SVG — when brand needs unique iconography
@@ -136,16 +92,8 @@ Whether from brand context or user input, define these four domains:
 - **Responsive:** art direction breakpoints, object-fit strategy
 - **Loading:** blur-up placeholder, skeleton, dominant color
 
-## Step 3: Write imagery-style.md
+## Output structure (target: 100-150 lines)
 
-Resolve output path:
-- Within a brand: `{BRAND_PATH}/identity/imagery-style.md`
-- Within a project: `{PROJECT_PATH}/references/imagery-style.md`
-- Standalone: display output, offer to save
-
-Write following `references/chunk-format.md` format. Target: 100-150 lines.
-
-Structure:
 ```markdown
 # Imagery Style
 
@@ -178,11 +126,10 @@ Structure:
 - [STYLE.md](../patterns/STYLE.md)
 ```
 
-## Step 4: Completion
+## Completion display
 
-Display summary:
 ```
-  /gsp-images — imagery direction defined
+  /gsp-visuals --imagery — imagery direction defined
 
     photography    {style} — {treatment}
     illustration   {style} — {when used}
@@ -190,8 +137,9 @@ Display summary:
     treatments     {key technique}
 ```
 
+## Completion options
+
 Use `AskUserQuestion`:
 - **Continue to identity** — proceed with `/gsp-brand-identity`
 - **Refine** — adjust a specific domain
 - **Done** — that's all
-</process>
