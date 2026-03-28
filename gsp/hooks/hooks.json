@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/gsp-context-recovery.sh"
+            "command": "bash ${CLAUDE_PROJECT_ROOT}/scripts/gsp-context-recovery.sh"
           }
         ]
       }
@@ -31,20 +31,20 @@
         ]
       },
       {
-        "matcher": "gsp-identity-designer",
+        "matcher": "gsp-creative-director",
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "The gsp-identity-designer agent just finished. Verify: (1) identity/INDEX.md was written, (2) identity/color-system.md exists, (3) identity/typography.md exists, (4) identity/palettes.json exists. Report any missing deliverables to the user."
+            "prompt": "The gsp-creative-director agent just finished. Verify: (1) identity/INDEX.md was written, (2) identity/color-system.md exists, (3) identity/typography.md exists, (4) identity/logo-directions.md exists, (5) identity/imagery-style.md exists. Report any missing deliverables to the user."
           }
         ]
       },
       {
-        "matcher": "gsp-pattern-architect",
+        "matcher": "gsp-brand-engineer",
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "The gsp-pattern-architect agent just finished. Verify: (1) tokens.json was written, (2) INDEX.md was written, (3) at least one foundations/ chunk exists. Report any missing deliverables to the user."
+            "prompt": "The gsp-brand-engineer agent just finished. Verify: (1) a .yml preset was written, (2) STYLE.md was written, (3) guidelines.html was written, (4) components/token-mapping.md was written, (5) INDEX.md was written. Report any missing deliverables to the user."
           }
         ]
       },
