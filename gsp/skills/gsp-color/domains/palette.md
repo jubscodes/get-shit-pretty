@@ -1,85 +1,37 @@
+# Palette Generation
+
+Domain expertise for OKLCH palette generation from hex colors.
+
 ---
-name: gsp-palette
-description: Generate OKLCH color palettes — standalone or as a building block for identity
-user-invocable: true
-model: sonnet
-allowed-tools:
-  - Read
-  - Write
-  - Bash
-  - AskUserQuestion
-  - WebFetch
----
-<context>
-You are a GSP palette generator. You produce OKLCH 11-stop color scales from input hex colors using the tints.dev API. Downstream agents (creative-director, system-architect, builder) consume the output files.
 
-This is a standalone composable skill. It works two ways:
-1. **Standalone** — user runs `/gsp-palette #FF5733 #3366FF` directly, gets palettes
-2. **As a building block** — identity phase detects existing palette files and reuses them
-</context>
-
-<objective>
-Generate production-ready OKLCH color palettes from hex colors.
-
-**Input:** Hex color(s), optional flags (`--preview`)
-**Output:** `palettes.json` + `color-system.md` foundation chunk in the target directory
-**Agent:** None — deterministic API calls, handled inline
-</objective>
-
-<execution_context>
-@${CLAUDE_SKILL_DIR}/../../references/chunk-format.md
-</execution_context>
-
-<rules>
-- Always use `AskUserQuestion` for user interaction — never prompt via plain text
-- One decision per question — never batch multiple questions in a single message
-- Palettes are deterministic — same hex input always produces the same OKLCH scales
-- Foundation chunks follow `references/chunk-format.md` format exactly
-- Every palette gets the full 11-stop scale: 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950
-- Minimum colors: primary. Secondary and accent are recommended but optional
-- Color names must be semantic (primary, secondary, accent, neutral) not literal (red, blue)
-</rules>
-
-<process>
-## Step 0: Parse invocation
-
-Read the user's input to determine the mode:
+## Modes
 
 | Input | Mode |
 |-------|------|
-| `/gsp-palette #FF5733 #3366FF` | Direct — hex colors from args |
-| `/gsp-palette #FF5733 #3366FF --preview` | Preview — show scales without writing files |
-| `/gsp-palette` | Interactive — ask for colors |
+| `#hex [#hex...]` | Direct — parse hex values, assign roles in order |
+| `#hex [#hex...] --preview` | Preview — show scales without writing files |
 
-## Step 1: Collect colors
+## Color role assignment
 
-### Direct mode (hex args provided)
-
-Parse hex values from the invocation. Assign semantic roles in order:
+Parse hex values from invocation and assign semantic roles in order:
 1. First color → **primary**
 2. Second color → **secondary**
 3. Third color → **accent**
 4. Additional colors → **custom-{n}**
 
-### Interactive mode (no args)
+Minimum colors: primary. Secondary and accent are recommended but optional.
 
-Use `AskUserQuestion` to collect colors:
+Color names must be semantic (primary, secondary, accent, neutral) — not literal (red, blue).
 
-1. **Primary color** — "What's your primary brand color? (hex code, e.g. #FF5733)"
+## Complement generation
 
-2. **More colors?** — after getting primary:
-   - **Add secondary** — "I have a secondary color"
-   - **Add accent** — "I have an accent color"
-   - **Generate complements** — "suggest secondary/accent from my primary"
-   - **Just primary** — "that's enough, generate from one color"
+When the user has only a primary and wants suggestions:
+- **Secondary:** rotate hue by 180 degrees (complement)
+- **Accent:** rotate hue by 30 degrees (analogous)
 
-If "generate complements": calculate harmonious colors from the primary:
-- Secondary: rotate hue by 180° (complement)
-- Accent: rotate hue by 30° (analogous)
+Present the generated suggestions and let the user confirm or adjust via `AskUserQuestion`.
 
-Present the generated suggestions and let the user confirm or adjust.
-
-## Step 2: Generate OKLCH scales via tints.dev API
+## OKLCH scale generation via tints.dev API
 
 For each color, call the tints.dev API:
 
@@ -93,14 +45,16 @@ Where:
 
 The API returns an 11-stop OKLCH scale (50-950) with L, C, H values for each stop.
 
-Parse the response and extract the scale values.
+Every palette gets the full 11-stop scale: 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950.
 
-## Step 3: Preview mode (`--preview`)
+Palettes are deterministic — same hex input always produces the same OKLCH scales.
 
-If `--preview`, display the scales without writing files:
+## Preview mode (`--preview`)
+
+Display scales without writing files:
 
 ```
-  /gsp-palette preview
+  /gsp-color preview
   ═══════════════════════════════════════
 
   primary (#FF5733)
@@ -120,14 +74,12 @@ If `--preview`, display the scales without writing files:
     ...
 
   ─────────────────────────────────────
-  Run /gsp-palette #FF5733 #3366FF to write files.
+  Run /gsp-color #FF5733 #3366FF to write files.
 ```
 
 Stop here. Do not write any files.
 
-## Step 4: Resolve output path
-
-Determine where to write the palette output:
+## Output path resolution
 
 ### Within a brand identity
 If a brand context exists (`.design/branding/{brand}/`):
@@ -138,15 +90,13 @@ If a brand context exists (`.design/branding/{brand}/`):
 - Write to `.design/branding/_palette/`
 - Create minimal directory structure
 
-## Step 5: Write palettes.json
+## palettes.json format
 
-If `{OUTPUT_PATH}/palettes.json` already exists, use `AskUserQuestion`: "palettes.json already exists — overwrite with new palette?" with options **Overwrite** and **Cancel**. If cancelled, skip writing palettes.json and proceed to the next step.
-
-Write `{OUTPUT_PATH}/palettes.json` with the full OKLCH scales:
+If `{OUTPUT_PATH}/palettes.json` already exists, use `AskUserQuestion`: "palettes.json already exists — overwrite with new palette?" with options **Overwrite** and **Cancel**. If cancelled, skip writing.
 
 ```json
 {
-  "$description": "OKLCH 11-stop color palettes generated by /gsp-palette",
+  "$description": "OKLCH 11-stop color palettes generated by /gsp-color",
   "$source": "tints.dev",
   "primary": {
     "source": "#FF5733",
@@ -167,9 +117,9 @@ Write `{OUTPUT_PATH}/palettes.json` with the full OKLCH scales:
 }
 ```
 
-## Step 6: Write color-system.md
+## color-system.md format (palette-only)
 
-Write `{OUTPUT_PATH}/color-system.md` as a foundation chunk per `references/chunk-format.md`:
+Write `{OUTPUT_PATH}/color-system.md` as a foundation chunk per chunk-format.md:
 
 ```markdown
 # Color System
@@ -222,16 +172,6 @@ Write `{OUTPUT_PATH}/color-system.md` as a foundation chunk per `references/chun
 | primary-900 (text) | primary-100 | Invert for readability |
 | secondary-500 | secondary-400 | Same shift as primary |
 
-## Semantic Assignments
-
-| Token | Light value | Dark value |
-|-------|-------------|------------|
-| --color-brand | primary-500 | primary-400 |
-| --color-brand-hover | primary-600 | primary-300 |
-| --color-surface | primary-50 | primary-950 |
-| --color-text | primary-900 | primary-50 |
-| --color-accent | accent-500 | accent-400 |
-
 ---
 
 ## Related
@@ -240,12 +180,10 @@ Write `{OUTPUT_PATH}/color-system.md` as a foundation chunk per `references/chun
 - [typography.md](./typography.md)
 ```
 
-## Step 7: Completion output
-
-Display the result:
+## Completion output
 
 ```
-  /gsp-palette — {n} colors scaled
+  /gsp-color — {n} colors scaled
   ═══════════════════════════════════════
 
   {OUTPUT_PATH}/
@@ -257,11 +195,3 @@ Display the result:
 
   ─────────────────────────────────────
 ```
-
-Then use `AskUserQuestion` with routing options:
-
-- **Generate type scale** — "pair these palettes with typography" → route to `/gsp-typescale`
-- **Apply a full style** — "use a style preset for the complete system" → route to `/gsp-style`
-- **Continue to identity** — "use these palettes in the branding diamond" → route to `/gsp-brand-identity`
-- **Done** — "that's all for now"
-</process>
