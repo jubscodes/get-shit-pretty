@@ -31,13 +31,12 @@ if should_run versions; then
 
   V_FILE=$(cat VERSION 2>/dev/null | tr -d '[:space:]')
   V_PKG=$(node -e "process.stdout.write(require('./package.json').version)" 2>/dev/null)
-  V_PLUGIN=$(node -e "process.stdout.write(require('./.claude-plugin/plugin.json').version)" 2>/dev/null)
 
-  # V1: All three version sources agree
-  if [[ "$V_FILE" == "$V_PKG" && "$V_PKG" == "$V_PLUGIN" ]]; then
+  # V1: VERSION and package.json agree
+  if [[ "$V_FILE" == "$V_PKG" ]]; then
     pass "V1 Version agreement ($V_FILE)"
   else
-    fail "V1 Version mismatch" "VERSION=$V_FILE package.json=$V_PKG plugin.json=$V_PLUGIN"
+    fail "V1 Version mismatch" "VERSION=$V_FILE package.json=$V_PKG"
   fi
 
   # V2: CHANGELOG has entry for current version
@@ -72,18 +71,15 @@ if should_run versions; then
   # V6: CLAUDE.md counts match filesystem
   ACTUAL_SKILLS=$(ls -d gsp/skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
   ACTUAL_AGENTS=$(ls gsp/agents/gsp-*.md 2>/dev/null | wc -l | tr -d ' ')
-  ACTUAL_PROMPTS=$(ls gsp/prompts/*.md 2>/dev/null | wc -l | tr -d ' ')
   V6_OK=true
   if [[ -f CLAUDE.md ]]; then
     # Check source table counts
-    for pair in "skills:$ACTUAL_SKILLS" "agents:$ACTUAL_AGENTS" "prompts:$ACTUAL_PROMPTS"; do
+    for pair in "skills:$ACTUAL_SKILLS" "agents:$ACTUAL_AGENTS"; do
       kind="${pair%%:*}"
       actual="${pair##*:}"
-      # Match patterns like "30 skills", "15 subagents", "12 agent system prompts"
+      # Match patterns like "38 skills", "15 subagents"
       if [[ "$kind" == "agents" ]]; then
         pat="$actual subagents\|$actual agents"
-      elif [[ "$kind" == "prompts" ]]; then
-        pat="$actual agent system prompts\|$actual prompts"
       else
         pat="$actual $kind"
       fi
@@ -95,7 +91,7 @@ if should_run versions; then
     # Check installer table agent counts — "(N)" pattern
     INSTALLER_AGENT_COUNTS=$(grep -oE '\(([0-9]+)\)' CLAUDE.md | grep -oE '[0-9]+' | sort -u)
     for count in $INSTALLER_AGENT_COUNTS; do
-      if [[ "$count" != "$ACTUAL_AGENTS" && "$count" != "$ACTUAL_SKILLS" && "$count" != "$ACTUAL_PROMPTS" ]]; then
+      if [[ "$count" != "$ACTUAL_AGENTS" && "$count" != "$ACTUAL_SKILLS" ]]; then
         # Only flag if it looks like an agent count (appears in the installer table near "agents")
         if grep -q "agents.*($count)" CLAUDE.md 2>/dev/null; then
           V6_OK=false
@@ -104,7 +100,7 @@ if should_run versions; then
       fi
     done
   fi
-  $V6_OK && pass "V6 CLAUDE.md counts match filesystem (skills=$ACTUAL_SKILLS agents=$ACTUAL_AGENTS prompts=$ACTUAL_PROMPTS)"
+  $V6_OK && pass "V6 CLAUDE.md counts match filesystem (skills=$ACTUAL_SKILLS agents=$ACTUAL_AGENTS)"
 
   # V4: Zero production dependencies
   DEP_COUNT=$(node -e "const d=require('./package.json').dependencies;process.stdout.write(String(d?Object.keys(d).length:0))" 2>/dev/null)
@@ -121,12 +117,33 @@ if should_run contracts; then
   header "Contracts"
 
   # C3: Every skill that spawns agents references valid agents
+  # Build set of known skill dir names to exclude from agent-reference matching
+  SKILL_NAMES=""
+  for d in gsp/skills/*/; do
+    SKILL_NAMES="$SKILL_NAMES|$(basename "$d")"
+  done
+  SKILL_NAMES="${SKILL_NAMES#|}" # remove leading pipe
+
   BAD_SKILL_REFS=()
-  for skill in gsp/skills/gsp-*/SKILL.md; do
-    agents=$(grep -oE 'gsp-[a-z][-a-z]*' "$skill" | grep -v 'gsp-start\|gsp-help\|gsp-doctor\|gsp-progress\|gsp-update\|gsp-pretty\|gsp-art\|gsp-brand-\|gsp-project-\|gsp-add-\|gsp-launch\|gsp-style' | sort -u)
+  for skill in gsp/skills/*/SKILL.md; do
+    dir=$(basename "$(dirname "$skill")")
+    [[ "$dir" == "get-shit-pretty" ]] && continue
+    # Match gsp-word patterns, exclude known skill names and their prefixes
+    agents=$(grep -oE '\bgsp-[a-z][-a-z]*[a-z]\b' "$skill" | grep -vE "$SKILL_NAMES" | sort -u)
+    # Filter out partial skill name prefixes (e.g. gsp-brand from gsp-brand-{phase})
+    filtered=""
+    for agent in $agents; do
+      is_prefix=false
+      for d in gsp/skills/*/; do
+        sname=$(basename "$d")
+        [[ "$sname" == "$agent"-* ]] && is_prefix=true && break
+      done
+      $is_prefix || filtered="$filtered $agent"
+    done
+    agents="$filtered"
     for agent in $agents; do
       if [[ ! -f "gsp/agents/${agent}.md" ]]; then
-        BAD_SKILL_REFS+=("$(basename "$(dirname "$skill")"):${agent}")
+        BAD_SKILL_REFS+=("${dir}:${agent}")
       fi
     done
   done
@@ -234,8 +251,8 @@ if should_run contracts; then
         C10_OK=false
       fi
     fi
-    # Must reference current bundle dirs (prompts/, templates/, references/)
-    for dir in prompts templates references; do
+    # Must reference current bundle dirs (templates/, references/)
+    for dir in templates references; do
       if ! grep -q "$dir/" "$UPDATE_SKILL"; then
         C10_OK=false
       fi
@@ -326,7 +343,7 @@ if should_run installer; then
 
   # I5: Bundle directories exist
   BUNDLE_OK=true
-  for dir in gsp/prompts gsp/templates gsp/references; do
+  for dir in gsp/templates gsp/references; do
     if [[ ! -d "$dir" ]]; then
       BUNDLE_OK=false
       fail "I5 Missing bundle dir" "$dir"
@@ -514,7 +531,7 @@ if should_run installer; then
   done
   if [[ ${#SKILLS_WITH_SIBLINGS[@]} -gt 0 ]]; then
     # Verify copyClaudeSkills handles subdirectories (not just SKILL.md)
-    if grep -A30 'function copyClaudeSkills' bin/install.js | grep -q 'copyFileSync\|cpSync\|readdirSync.*entry\|recursive.*copy\|copyDir\|copySibling'; then
+    if grep -A40 'function copyClaudeSkills' bin/install.js | grep -q 'copyFileSync\|cpSync\|readdirSync.*entry\|recursive.*copy\|copyDir\|copySibling'; then
       pass "I17 Skills with siblings installed correctly (${SKILLS_WITH_SIBLINGS[*]})"
     else
       fail "I17 Skills with sibling files not fully copied" "copyClaudeSkills only copies SKILL.md — missing siblings: ${SKILLS_WITH_SIBLINGS[*]}"
@@ -523,15 +540,21 @@ if should_run installer; then
     pass "I17 No skills with sibling files"
   fi
 
-  # I18: gsp- prefix guard in all copy functions
-  PREFIX_OK=true
-  for fn in copyClaudeSkills copyOpencodeSkills copyGeminiSkills copyCodexSkillsFromSource; do
-    if ! grep -A20 "function $fn" bin/install.js | grep -q "startsWith('gsp-')"; then
-      PREFIX_OK=false
-      fail "I18 Missing gsp- prefix guard" "$fn does not add gsp- prefix"
+  # I18: All source skill dirs (except get-shit-pretty) have gsp- prefix
+  # Source dirs carry the prefix directly — installer copies as-is
+  I18_BAD=()
+  for dir in gsp/skills/*/; do
+    name=$(basename "$dir")
+    [[ "$name" == "get-shit-pretty" ]] && continue
+    if [[ "$name" != gsp-* ]]; then
+      I18_BAD+=("$name")
     fi
   done
-  $PREFIX_OK && pass "I18 All copy functions have gsp- prefix guard"
+  if [[ ${#I18_BAD[@]} -eq 0 ]]; then
+    pass "I18 All source skill dirs have gsp- prefix"
+  else
+    fail "I18 Source skill dirs missing gsp- prefix" "${I18_BAD[*]}"
+  fi
 
   # I19: Skill converters strip model: and effort: fields
   I19_OK=true
@@ -548,6 +571,7 @@ if should_run installer; then
   else
     fail "I19 Missing model/effort stripping" "All 3 skill converters must strip model: and effort:"
   fi
+
 fi
 
 # ── R: Runtime Compatibility ────────────────────────
@@ -768,6 +792,93 @@ if should_run templates; then
     fi
   done
   $BR_OK && pass "T7 Brief templates present"
+
+  # T8: Style presets have required schema blocks
+  STYLE_DIR="gsp/skills/gsp-style/styles"
+  T8_MISSING=()
+  for yml in "$STYLE_DIR"/*.yml; do
+    [[ "$(basename "$yml")" == "INDEX.yml" ]] && continue
+    name=$(basename "$yml" .yml)
+    for block in "^intensity:" "^patterns:" "^constraints:" "^effects:"; do
+      if ! grep -q "$block" "$yml" 2>/dev/null; then
+        T8_MISSING+=("${name}:${block//^/}")
+      fi
+    done
+  done
+  if [[ ${#T8_MISSING[@]} -eq 0 ]]; then
+    PRESET_COUNT=$(ls "$STYLE_DIR"/*.yml 2>/dev/null | grep -v INDEX | wc -l | tr -d ' ')
+    pass "T8 All $PRESET_COUNT presets have intensity+patterns+constraints+effects"
+  else
+    fail "T8 Presets missing schema blocks" "${T8_MISSING[*]}"
+  fi
+
+  # T9: Style presets have valid intensity dials (1-10)
+  T9_BAD=()
+  for yml in "$STYLE_DIR"/*.yml; do
+    [[ "$(basename "$yml")" == "INDEX.yml" ]] && continue
+    name=$(basename "$yml" .yml)
+    for dial in variance motion density; do
+      val=$(grep -A3 "^intensity:" "$yml" | grep "$dial:" | awk '{print $2}' | tr -d '[:space:]')
+      if [[ -n "$val" ]]; then
+        if [[ "$val" -lt 1 || "$val" -gt 10 ]] 2>/dev/null; then
+          T9_BAD+=("${name}:${dial}=${val}")
+        fi
+      else
+        T9_BAD+=("${name}:${dial}=missing")
+      fi
+    done
+  done
+  if [[ ${#T9_BAD[@]} -eq 0 ]]; then
+    pass "T9 All preset intensity dials are 1-10"
+  else
+    fail "T9 Invalid intensity dials" "${T9_BAD[*]}"
+  fi
+
+  # T10: Style presets have interaction-vocabulary in effects
+  T10_MISSING=()
+  for yml in "$STYLE_DIR"/*.yml; do
+    [[ "$(basename "$yml")" == "INDEX.yml" ]] && continue
+    name=$(basename "$yml" .yml)
+    if ! grep -q "interaction-vocabulary:" "$yml" 2>/dev/null; then
+      T10_MISSING+=("$name")
+    fi
+  done
+  if [[ ${#T10_MISSING[@]} -eq 0 ]]; then
+    pass "T10 All presets have interaction-vocabulary"
+  else
+    fail "T10 Presets missing interaction-vocabulary" "${T10_MISSING[*]}"
+  fi
+
+  # T11: Style presets have layout archetype
+  T11_MISSING=()
+  for yml in "$STYLE_DIR"/*.yml; do
+    [[ "$(basename "$yml")" == "INDEX.yml" ]] && continue
+    name=$(basename "$yml" .yml)
+    if ! grep -q "archetype:" "$yml" 2>/dev/null; then
+      T11_MISSING+=("$name")
+    fi
+  done
+  if [[ ${#T11_MISSING[@]} -eq 0 ]]; then
+    pass "T11 All presets have layout archetype"
+  else
+    fail "T11 Presets missing layout archetype" "${T11_MISSING[*]}"
+  fi
+
+  # T12: Style template exists
+  SC_TEMPLATE="gsp/templates/phases/style.md"
+  if [[ -f "$SC_TEMPLATE" && -s "$SC_TEMPLATE" ]]; then
+    pass "T12 Style template exists"
+  else
+    fail "T12 Style template" "Missing or empty: $SC_TEMPLATE"
+  fi
+
+  # T13: Token mapping reference exists
+  TM_REF="gsp/references/token-mapping.md"
+  if [[ -f "$TM_REF" && -s "$TM_REF" ]]; then
+    pass "T13 Token mapping reference exists"
+  else
+    fail "T13 Token mapping reference" "Missing or empty: $TM_REF"
+  fi
 fi
 
 # ── P: Prompt Quality ─────────────────────────────────
@@ -791,13 +902,6 @@ if should_run prompts; then
       P1_OVER+=("$name:${lines}L")
     fi
   done
-  for prompt in gsp/prompts/*.md; do
-    name=$(basename "$prompt")
-    lines=$(wc -l < "$prompt" | tr -d ' ')
-    if [[ "$lines" -gt 80 ]]; then
-      P1_OVER+=("$name:${lines}L")
-    fi
-  done
   if [[ ${#P1_OVER[@]} -eq 0 ]]; then
     pass "P1 All files within line budgets"
   else
@@ -811,11 +915,7 @@ if should_run prompts; then
       P2_BAD+=("$(basename "$agent")")
     fi
   done
-  for prompt in gsp/prompts/*.md; do
-    if grep -q '<rules>' "$prompt"; then
-      P2_BAD+=("$(basename "$prompt")")
-    fi
-  done
+  # prompts removed — only check agents
   if [[ ${#P2_BAD[@]} -eq 0 ]]; then
     pass "P2 <rules> only in skills"
   else
@@ -842,7 +942,7 @@ if should_run prompts; then
   # P4: Cross-file duplicate lines — lines appearing in 3+ files
   # Extract non-blank, non-header, non-trivial lines (>30 chars) from all files
   P4_DUPES=0
-  ALL_PROMPT_FILES=$(find gsp/skills -name 'SKILL.md' && find gsp/agents -name 'gsp-*.md' && find gsp/prompts -name '*.md')
+  ALL_PROMPT_FILES=$(find gsp/skills -name 'SKILL.md' && find gsp/agents -name 'gsp-*.md')
   P4_RESULT=$(echo "$ALL_PROMPT_FILES" | xargs grep -hx '.\{30,\}' 2>/dev/null \
     | grep -v '^#\|^---\|^$\|^\s*$\|^```\|^|' \
     | sort | uniq -c | sort -rn | awk '$1 >= 3 { print }' | head -10)
@@ -855,8 +955,9 @@ if should_run prompts; then
 
   # P5: Skill↔agent instruction overlap — shared non-trivial lines between paired files
   P5_OVERLAPS=()
-  for skill in gsp/skills/gsp-*/SKILL.md; do
+  for skill in gsp/skills/*/SKILL.md; do
     dir=$(basename "$(dirname "$skill")")
+    [[ "$dir" == "get-shit-pretty" ]] && continue
     # Find agents this skill references
     for agent in gsp/agents/gsp-*.md; do
       agent_name=$(basename "$agent" .md)
@@ -905,7 +1006,7 @@ if should_run prompts; then
   # P7: Vague directive detection — known anti-patterns
   P7_VAGUE=()
   VAGUE_PATTERNS='be natural|use good tone|write clean|be helpful|ensure quality|be thorough|be creative|be professional|use best practices'
-  for file in $(find gsp/skills -name 'SKILL.md' && find gsp/agents -name 'gsp-*.md' && find gsp/prompts -name '*.md'); do
+  for file in $(find gsp/skills -name 'SKILL.md' && find gsp/agents -name 'gsp-*.md'); do
     matches=$(grep -ciE "$VAGUE_PATTERNS" "$file" 2>/dev/null | tr -d '[:space:]')
     [[ -z "$matches" ]] && matches=0
     if [[ "$matches" -gt 0 ]]; then

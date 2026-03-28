@@ -1,5 +1,5 @@
 ---
-name: update
+name: gsp-update
 description: Update GSP to the latest version
 user-invocable: true
 model: sonnet
@@ -80,7 +80,6 @@ If the fetch succeeds, extract and display the section(s) between the installed 
 ```
 The update replaces:
   • skills/gsp-*          (all GSP skills + sibling files)
-  • prompts/              (agent system prompts)
   • templates/            (config, state, brief templates)
   • references/           (shared reference material)
   • agents/gsp-*          (all GSP agents)

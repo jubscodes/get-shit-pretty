@@ -258,7 +258,7 @@ GSP works across all major AI coding tools. The installer converts Claude Code's
 | Gemini CLI | `~/.gemini/` | `~/.gemini/skills/` | `~/.gemini/agents/` |
 | Codex CLI | `~/.codex/` | `~/.agents/skills/` | — |
 
-> **Codex note:** Skills are discovered at `~/.agents/skills/`, not `~/.codex/skills/`. Config and bundle files (prompts, templates, references) stay at `~/.codex/get-shit-pretty/`. Codex does not support agent `.md` files.
+> **Codex note:** Skills are discovered at `~/.agents/skills/`, not `~/.codex/skills/`. Config and bundle files (templates, references) stay at `~/.codex/get-shit-pretty/`. Codex does not support agent `.md` files.
 
 ---
 
@@ -308,14 +308,14 @@ npx get-shit-pretty --codex --global --uninstall
 </details>
 
 <details>
-<summary><strong>Use as Claude Code plugin</strong></summary>
+<summary><strong>Local development</strong></summary>
 
 ```bash
-# From a project directory:
-claude --plugin-dir /path/to/get-shit-pretty
+# From the repo root:
+node bin/install.js --claude --local
 ```
 
-Uses the `.claude-plugin/plugin.json` manifest. Skills, agents, and hooks load directly from source — no install step needed.
+Symlinks skills and agents to `.claude/` — edits to `gsp/` are reflected immediately.
 
 </details>
 
@@ -325,15 +325,13 @@ Uses the `.claude-plugin/plugin.json` manifest. Skills, agents, and hooks load d
 
 ```
 get-shit-pretty/
-├── .claude-plugin/        Plugin manifest (plugin.json)
 ├── bin/
 │   └── install.js         Multi-runtime installer
 ├── scripts/               Hook scripts and utilities
 ├── gsp/                   Source of truth for all content
 │   ├── agents/            15 subagents (gsp-*.md)
-│   ├── skills/            30 skills (*/SKILL.md)
-│   ├── hooks/             Plugin-level hooks (hooks.json)
-│   ├── prompts/           12 agent system prompts
+│   ├── skills/            38 skills (*/SKILL.md)
+│   ├── hooks/             Hooks (hooks.json)
 │   ├── templates/         Config, state, brief, roadmap templates
 │   └── references/        Shared reference material
 ├── dev/                   Internal dev tools (not installed)
@@ -355,9 +353,6 @@ Edit source under `gsp/` — never edit inside `.claude/` or other runtime dirs 
 ```bash
 # Install locally with symlinks
 node bin/install.js --claude --local
-
-# Test as a plugin
-claude --plugin-dir .
 
 # Run the integrity test suite
 bash dev/scripts/audit-tests.sh

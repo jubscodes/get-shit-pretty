@@ -1,5 +1,5 @@
 ---
-name: project-brief
+name: gsp-project-brief
 description: Scope what you're building
 user-invocable: true
 model: sonnet
@@ -28,7 +28,6 @@ Scope the project and plan adaptations from the brand system.
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../../prompts/10-project-scoper.md
 @${CLAUDE_SKILL_DIR}/../../templates/phases/brief.md
 </execution_context>
 
@@ -37,7 +36,7 @@ Scope the project and plan adaptations from the brand system.
 
 Resolve project from `.design/projects/` (one → use it, multiple → ask). Set `PROJECT_PATH`.
 
-Read `{PROJECT_PATH}/brand.ref` → set `BRAND_PATH`. If brand.ref doesn't exist, tell the user to run `/gsp:start`.
+Read `{PROJECT_PATH}/brand.ref` → set `BRAND_PATH`. If brand.ref doesn't exist, tell the user to run `/gsp-start`.
 
 ## Step 1: Load context
 
@@ -45,9 +44,9 @@ Read `{PROJECT_PATH}/brand.ref` → set `BRAND_PATH`. If brand.ref doesn't exist
 
 Read `{BRAND_PATH}/patterns/INDEX.md`. If it exists, load all foundation chunks + selective component chunks.
 
-If it doesn't exist, tell the user to run `/gsp:brand-patterns` first to create the brand's design patterns.
+If it doesn't exist, tell the user to run `/gsp-brand-guidelines` first to create the brand's design patterns.
 
-Also read `{BRAND_PATH}/patterns/tokens.json`.
+Also read the brand `.yml` preset from `{BRAND_PATH}/patterns/`.
 
 ### Project context
 
@@ -68,7 +67,7 @@ Glob `.design/projects/*/STATE.md` — detect active sibling projects.
 **If `design_scope` is `tokens`:**
 1. Update `{PROJECT_PATH}/STATE.md` — set Phase 1 (Brief) status to `skipped`
 2. Display: "Brief phase skipped — design scope is `tokens`."
-3. Route: "Run `/gsp:project-build`."
+3. Route: "Run `/gsp-project-build`."
 4. Stop here.
 
 ## Step 1.7: Issue framing
@@ -84,11 +83,11 @@ Spawn the `gsp-scoper` agent. **Inline all content** — the agent should not ne
 
 Pass in the agent prompt:
 - **Content of** brand patterns foundation + component chunks (loaded in Step 1)
-- **Content of** tokens.json (loaded in Step 1)
+- **Content of** brand `.yml` preset (loaded in Step 1)
 - **Content of** BRIEF.md (loaded in Step 1)
 - **Content of** `.design/system/STACK.md`, `COMPONENTS.md` (when loaded in Step 1)
 - **Content of** CHANGELOG.md + relevant MANIFEST.md files (loaded in Step 1)
-- The Project Scoper prompt (10), brief output template (from execution_context)
+- Brief output template (from execution_context)
 - `implementation_target`, `design_scope`, `codebase_type`
 - **Output path:** `{PROJECT_PATH}/brief/`
 

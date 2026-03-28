@@ -1218,11 +1218,16 @@ function installLocalSymlinks(targetDir, src) {
   } catch {}
 
   // ── Bundle symlinks (templates, references → runtime root) ──
-  // Clean up legacy get-shit-pretty/ bundle dir
+  // Clean up legacy dirs
   const legacyBundleDest = path.join(targetDir, 'get-shit-pretty');
   if (fs.existsSync(legacyBundleDest)) {
     fs.rmSync(legacyBundleDest, { recursive: true });
     console.log(`  ${c.success}✓${c.reset} Removed legacy get-shit-pretty/ bundle`);
+  }
+  const legacyPrompts = path.join(targetDir, 'prompts');
+  if (fs.existsSync(legacyPrompts)) {
+    fs.rmSync(legacyPrompts, { recursive: true });
+    console.log(`  ${c.success}✓${c.reset} Removed legacy prompts/`);
   }
 
   for (const dir of ['templates', 'references']) {
@@ -1418,11 +1423,16 @@ function install(isGlobal, runtime = 'claude') {
   }
 
   // ── Bundle: templates, references → runtime root ──
-  // Clean up legacy get-shit-pretty/ bundle dir from previous installs
+  // Clean up legacy dirs from previous installs
   const legacyBundle = path.join(targetDir, 'get-shit-pretty');
   if (fs.existsSync(legacyBundle)) {
     fs.rmSync(legacyBundle, { recursive: true });
     console.log(`  ${c.success}✓${c.reset} Removed legacy get-shit-pretty/ bundle`);
+  }
+  const legacyPromptsDir = path.join(targetDir, 'prompts');
+  if (fs.existsSync(legacyPromptsDir)) {
+    fs.rmSync(legacyPromptsDir, { recursive: true });
+    console.log(`  ${c.success}✓${c.reset} Removed legacy prompts/`);
   }
 
   const bundleDirs = ['templates', 'references'];

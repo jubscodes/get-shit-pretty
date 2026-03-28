@@ -1,6 +1,6 @@
 ---
 name: gsp-prompt-audit
-description: AI-driven semantic analysis of GSP skills, agents, and prompts — finds dead weight, contradictions, vagueness, and over-prompting that automated checks can't catch.
+description: AI-driven semantic analysis of GSP skills and agents — finds dead weight, contradictions, vagueness, and over-prompting that automated checks can't catch.
 allowed-tools:
   - Read
   - Glob
@@ -8,20 +8,19 @@ allowed-tools:
   - Bash
   - Write
   - Agent
-argument-hint: "[scope] e.g. 'all', 'skills', 'agents', 'prompts', or a specific name like 'gsp-designer'"
+argument-hint: "[scope] e.g. 'all', 'skills', 'agents', or a specific name like 'gsp-designer'"
 ---
 
 <context>
-GSP has 27 skills, 14 agents, and 12 system prompts — ~7,400 lines of prompt engineering. Over time, rules accumulate to fix individual bad outputs, creating contradiction, repetition, and vagueness that makes the AI *worse*, not better.
+GSP has 38 skills and 15 agents. Over time, rules accumulate to fix individual bad outputs, creating contradiction, repetition, and vagueness that makes the AI *worse*, not better.
 
 This skill performs semantic analysis that automated tests (P1–P7 in `audit-tests.sh`) can't catch. It evaluates meaning, not just structure.
 
 Principle: "Your AI setup should be getting simpler over time — addition by subtraction."
 
 Source layout:
-- `gsp/skills/*/SKILL.md` — 27 skills
-- `gsp/agents/gsp-*.md` — 14 agents
-- `gsp/prompts/*.md` — 12 system prompts
+- `gsp/skills/*/SKILL.md` — 38 skills
+- `gsp/agents/gsp-*.md` — 15 agents
 </context>
 
 <objective>
@@ -33,10 +32,9 @@ Analyze prompt files for semantic quality issues and produce a report with speci
 ## Step 1: Parse scope
 
 `$ARGUMENTS` determines what to analyze:
-- **`all`** or empty — analyze everything (skills → agents → prompts → cross-file)
+- **`all`** or empty — analyze everything (skills → agents → cross-file)
 - **`skills`** — skills only
 - **`agents`** — agents only
-- **`prompts`** — system prompts only
 - **specific name** (e.g. `gsp-designer`) — analyze that one file + its paired skill/agent
 
 ## Step 2: Run automated baseline first
@@ -102,14 +100,7 @@ For each skill that spawns an agent, compare:
 
 Flag instructions that appear in both — the agent receives them twice.
 
-### 4b: Agent → Prompt duplication
-For each agent, compare:
-- The agent's markdown definition
-- Its referenced system prompt (in `gsp/prompts/`)
-
-Flag methodology that's in both the agent definition and the system prompt.
-
-### 4c: Global patterns
+### 4b: Global patterns
 Look for instructions that appear across 3+ files with slight variations. These should either be:
 - Consolidated into a shared reference
 - Removed entirely if they're default model behavior

@@ -9,20 +9,18 @@ allowed-tools:
   - WebFetch
   - WebSearch
   - Agent
-argument-hint: "[focus] e.g. 'all', 'contracts', 'installer', 'runtime', 'versions', 'templates', 'prompts'"
+argument-hint: "[focus] e.g. 'all', 'contracts', 'installer', 'runtime', 'versions', 'templates'"
 disable-model-invocation: true
 ---
 
 <context>
-GSP internal integrity checker for maintainers. Verifies that the plugin's moving parts stay consistent as the codebase evolves. This is NOT the user-facing `/gsp:doctor` (which checks `.design/` project health) — this checks the GSP *source code* itself.
+GSP internal integrity checker for maintainers. Verifies that the framework's moving parts stay consistent as the codebase evolves. This is NOT the user-facing `/gsp-doctor` (which checks `.design/` project health) — this checks the GSP *source code* itself.
 
 Source layout:
-- `gsp/skills/` — 30 skills (SKILL.md files)
+- `gsp/skills/` — 38 skills (SKILL.md files, gsp-* prefixed dirs)
 - `gsp/agents/` — 15 agents (gsp-*.md files)
 - `gsp/templates/` — config, state, brief, roadmap templates
 - `gsp/references/` — shared reference material
-- `gsp/prompts/` — 12 system prompts
-- `.claude-plugin/plugin.json` — plugin manifest
 - `bin/install.js` — multi-runtime installer
 - `VERSION`, `package.json` — version sources
 
@@ -43,7 +41,7 @@ Run the test suite first — it covers versions, contracts, installer, runtime, 
 bash dev/scripts/audit-tests.sh $ARGUMENTS
 ```
 
-The script accepts: `all` (default), `versions`, `contracts`, `installer`, `runtime`, `templates`, `prompts`.
+The script accepts: `all` (default), `versions`, `contracts`, `installer`, `runtime`, `templates`.
 
 Review the output. If all tests pass, report the clean result. If any tests fail or warn, investigate each issue using the deeper analysis steps below.
 
@@ -56,32 +54,30 @@ Review the output. If all tests pass, report the clean result. If any tests fail
 - **`runtime`** — runtime compatibility checks (uses gsp-runtime-compat baseline)
 - **`versions`** — version sync checks only
 - **`templates`** — template coherence checks only
-- **`prompts`** — prompt quality checks only (line budgets, duplication, vague directives)
 
 ## Step 2: Version Sync (V)
 
-Three version sources must agree:
+Two version sources must agree:
 
 ```bash
 cat VERSION
 node -e "console.log(require('./package.json').version)"
-node -e "console.log(require('./.claude-plugin/plugin.json').version)"
 ```
 
-**V1: Version agreement** — all three match → PASS, any mismatch → FAIL with which disagrees.
+**V1: Version agreement** — both match → PASS, mismatch → FAIL.
 
 **V2: CHANGELOG coverage** — `CHANGELOG.md` has an entry for the current version → PASS, missing → WARN.
 
 **V5: Template config versions** — `gsp/templates/branding/config.json` and `gsp/templates/projects/config.json` version fields must match VERSION → PASS, any mismatch → FAIL.
 
-**V6: CLAUDE.md counts match filesystem** — skill, agent, and prompt counts referenced in CLAUDE.md (both the source layout table and the installer table) must match actual filesystem counts → PASS, any stale count → FAIL.
+**V6: CLAUDE.md counts match filesystem** — skill and agent counts referenced in CLAUDE.md (both the source layout table and the installer table) must match actual filesystem counts → PASS, any stale count → FAIL.
 
 ## Step 3: Contract Checks (C)
 
 Verify that skills and agents reference each other correctly.
 
 ### C3: Every skill that spawns agents references valid agents
-For each `gsp/skills/gsp-*/SKILL.md`, extract agent references (patterns: `gsp-{name}`). Check each referenced agent exists in `gsp/agents/`.
+For each `gsp/skills/*/SKILL.md` (skip `get-shit-pretty`), extract agent references (patterns: `gsp-{name}`). Check each referenced agent exists in `gsp/agents/`.
 - All references valid → PASS
 - Missing agents → FAIL
 
@@ -106,12 +102,12 @@ Each skill must have `name:` and `description:` in frontmatter.
 - Missing fields → FAIL
 
 ### C9: User-invocable skills have `user-invocable: true`
-Every skill in `gsp/skills/` (except `get-shit-pretty`, which is the plugin entry point with `user-invocable: false`) must have `user-invocable: true` in frontmatter. Without it, Claude Code won't list the skill in the slash-command menu.
+Every skill in `gsp/skills/` (except `get-shit-pretty`, which is the entry point with `user-invocable: false`) must have `user-invocable: true` in frontmatter. Without it, Claude Code won't list the skill in the slash-command menu.
 - All present → PASS
 - Missing → FAIL with list of skills
 
 ### C10: Update skill aligned with installer
-Verify `gsp-update/SKILL.md` references all installer runtime flags (`--claude`, `--opencode`, `--gemini`, `--codex`, `--local`, `--global`, `--all`), current bundle layout (`prompts/`, `templates/`, `references/`), and doesn't reference legacy bundle paths in "what gets replaced" sections. Catches drift when installer evolves but update skill doesn't.
+Verify `gsp-update/SKILL.md` references all installer runtime flags (`--claude`, `--opencode`, `--gemini`, `--codex`, `--local`, `--global`, `--all`), current bundle layout (`templates/`, `references/`), and doesn't reference legacy bundle paths in "what gets replaced" sections. Catches drift when installer evolves but update skill doesn't.
 
 ### C8: Claude-only field usage matches known set
 Canary test — grep agents for `memory:`, `background:`, `hooks:`, `isolation:`, `skills:`, `mcpServers:`. Compare against expected list (gsp-builder.md, gsp-reviewer.md). WARN if set changes so developer verifies converters handle new fields.
@@ -131,7 +127,7 @@ Verify ≥20 skills exist in `gsp/skills/`.
 Verify ≥14 agents exist in `gsp/agents/`.
 
 ### I5: Bundle directories present
-Verify `gsp/prompts`, `gsp/templates`, `gsp/references` exist.
+Verify `gsp/templates`, `gsp/references` exist.
 
 ### I6: package.json `files` field
 Everything in the `files` list should exist on disk.
@@ -169,8 +165,8 @@ Every `@${CLAUDE_SKILL_DIR}/../../` reference in skill `<execution_context>` blo
 ### I17: Skills with sibling files get full directory copy
 If a skill directory contains files beyond SKILL.md (e.g. `gsp-style/styles/`), verify the installer's copy functions handle subdirectories (not just SKILL.md). FAIL if copy functions don't support siblings.
 
-### I18: All copy functions have gsp- prefix guard
-Every runtime's copy function (`copyClaudeSkills`, `copyOpencodeSkills`, `copyGeminiSkills`, `copyCodexSkillsFromSource`) must add the `gsp-` prefix to dirs that don't have it. FAIL if any function is missing the guard.
+### I18: Source skill dirs have gsp- prefix
+All skill directories under `gsp/skills/` (except `get-shit-pretty`) must start with `gsp-`. The installer copies as-is — no renaming. FAIL if any source skill dir is missing the prefix.
 
 ## Step 5: Runtime Compatibility (R)
 
@@ -200,12 +196,12 @@ Grep each `apply*BodyReplacements` for `(?=` near `Skill` — ensures the replac
 ### T1-T7: Config fields, state templates, phase templates, exports index, chunk format, state/brief templates
 See automated test suite for details.
 
-## Step 6b: Prompt Quality (P)
+## Step 6b: Prompt Engineering Quality (P)
 
-Automated checks for prompt engineering hygiene across all skills, agents, and prompts.
+Automated checks for prompt engineering hygiene across skills and agents.
 
 ### P1: Line count budgets
-Flag files exceeding size thresholds: skills >300 lines, agents >150 lines, prompts >80 lines.
+Flag files exceeding size thresholds: skills >300 lines, agents >150 lines.
 
 ### P2: `<rules>` placement
 `<rules>` sections should only appear in skills, not in agent definitions or system prompts.
@@ -262,7 +258,7 @@ Installer
   ✅ I15. Statusline VERSION ....... PASS
   ✅ I16. Skill refs resolve ....... PASS
   ✅ I17. Sibling file copy ........ PASS
-  ✅ I18. gsp- prefix guard ........ PASS
+  ✅ I18. Source dirs gsp- prefix ... PASS
 
 Runtime Compatibility
   ✅ R1. Discovery paths ............ PASS
@@ -274,7 +270,7 @@ Runtime Compatibility
 Templates
   ✅ T1-T7. All template checks ..... PASS
 
-Prompt Quality
+Prompt Engineering
   ✅ P1. Line budgets ............... PASS
   ✅ P2. <rules> placement .......... PASS
   ✅ P3. <rules> size ............... PASS
