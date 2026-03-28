@@ -1,5 +1,5 @@
 ---
-name: project-build
+name: gsp-project-build
 description: Translate designs to code
 user-invocable: true
 model: opus
@@ -22,10 +22,10 @@ Works with the dual-diamond architecture: reads brand system from `.design/brand
 **Pipeline architecture:**
 ```
 Phase 1: SCAFFOLD (skill-level, no agent)
-  └─ /gsp:scaffold → verify build passes
+  └─ /gsp-scaffold → verify build passes
 
 Phase 2: FOUNDATIONS (agent: gsp-builder mode:foundations)
-  ├─ Context: tokens.json, target-adaptations.md, STACK.md, CONVENTIONS.md
+  ├─ Context: {brand-name}.yml + token-mapping.md, target-adaptations.md, STACK.md, CONVENTIONS.md
   ├─ Writes: token config, global CSS, layout, shared utils
   └─ CHECKPOINT: build must compile
 
@@ -49,7 +49,6 @@ Implement designs as production-ready code in the codebase via phased pipeline w
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../../prompts/09-design-to-code-translator.md
 @${CLAUDE_SKILL_DIR}/../../templates/phases/build.md
 </execution_context>
 
@@ -63,7 +62,7 @@ Read `{PROJECT_PATH}/brand.ref` → set `BRAND_PATH`.
 ## Step 0.5: Validate prerequisites
 
 Read `{PROJECT_PATH}/STATE.md`. Check that Design (Phase 3) is `complete` or `needs-revision` (revision means critique ran and is feeding back).
-If design is `pending` or missing: "No designs found. Run `/gsp:project-design` first — building without designs leads to poor results." Then stop.
+If design is `pending` or missing: "No designs found. Run `/gsp-project-design` first — building without designs leads to poor results." Then stop.
 
 Exception: if `design_scope` is `tokens` in config.json, skip this check (tokens-only projects don't need design).
 
@@ -90,7 +89,7 @@ Check `{PROJECT_PATH}/STATE.md` for build status. If status is `needs-revision`:
 
 ### Design check
 
-If design doesn't exist (no `design/` dir or no screen chunks in it), tell the user to run `/gsp:project-design` first and stop.
+If design doesn't exist (no `design/` dir or no screen chunks in it), tell the user to run `/gsp-project-design` first and stop.
 
 ### Enumerate screens
 
@@ -101,7 +100,7 @@ Log screen list for user visibility.
 
 ## Step 2: Phase 1 — SCAFFOLD
 
-Invoke `/gsp:scaffold` via the Skill tool.
+Invoke `/gsp-scaffold` via the Skill tool.
 
 This handles: dependency installation, config file creation, component library init, build verification.
 
@@ -114,9 +113,10 @@ After scaffold completes, verify `{PROJECT_PATH}/build/SCAFFOLD-LOG.md` exists. 
 Read these reference files (relative to skill dir `${CLAUDE_SKILL_DIR}/../../references/`):
 - `visual-effects.md`
 - `block-patterns.md`
-- `anti-patterns.md`
 
 Hold their content for inlining into agent prompts in Steps 3 and 5.
+
+> **Note:** Anti-patterns are distilled into the `gsp-builder` agent prompt. Full ref remains on disk for edge-case agent lookup.
 
 ## Step 3: Phase 2 — FOUNDATIONS
 
@@ -126,15 +126,15 @@ Spawn `gsp-builder` agent with **execution_mode: foundations**.
 
 | File | Purpose |
 |------|---------|
-| `{BRAND_PATH}/patterns/tokens.json` | Design tokens |
-| `{BRAND_PATH}/patterns/{brand-name}.md` | Brand visual DNA — effects, component stylings, bold bets (if exists) |
+| `{BRAND_PATH}/patterns/{brand-name}.yml` | Token values only — used with `references/token-mapping.md` to generate CSS variables. Do NOT re-read patterns/constraints/effects from here — those are in STYLE.md. |
+| `{BRAND_PATH}/patterns/STYLE.md` | Design law — philosophy, patterns, constraints, effects, bold bets, implementation hints (if exists; fall back to `{brand-name}.md`) |
 | `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations for target |
 | `.design/system/STACK.md` | Stack state |
 | `.design/system/CONVENTIONS.md` | Codebase conventions (if exists) |
 | `.design/system/COMPONENTS.md` | Existing components (if exists) |
 | `{PROJECT_PATH}/config.json` | Tech stack, target |
-| Design-to-Code Translator prompt (09, from execution_context) | Translation methodology |
-| Visual effects, block patterns, anti-patterns refs (loaded in Step 2.5) | Design patterns + constraints |
+| Build output template (from execution_context) | Build log structure |
+| Visual effects, block patterns refs (loaded in Step 2.5) | Design patterns + CSS recipes |
 
 ### Agent instructions:
 
@@ -146,7 +146,7 @@ Spawn `gsp-builder` agent with **execution_mode: foundations**.
 > 2. Create global CSS (resets, base styles, font imports, dark mode setup)
 > 3. Create root layout with nav shell and footer shell (structure only — no page content)
 > 4. Create shared utilities (cn helper, theme provider if needed)
-> 5. Apply the brand style prompt's visual effects and signature patterns — create CSS utilities or Tailwind extensions for the brand's signature effects (glass, glow, gradients, shadows, motion patterns)
+> 5. Apply the STYLE.md bold bets and effects vocabulary — create CSS utilities or Tailwind extensions for the brand's signature effects. Validate against constraints (never/always rules are non-negotiable).
 > 6. Do NOT build individual screens or page content
 > 7. Write code directly to the codebase, not to `.design/`
 > 8. Leave changes unstaged
@@ -210,10 +210,10 @@ If the user requests adjustments during foundation review:
 
 1. Apply the changes to the project codebase first (directly or via a quick builder re-run)
 2. Ask: "Should this change also update the brand system? (Other projects using this brand would inherit it)"
-3. If yes, spawn a background `gsp-pattern-architect` agent to update brand patterns:
+3. If yes, spawn a background `gsp-brand-engineer` agent to update brand patterns:
    - Pass: the specific changes made (what tokens/values changed, old → new)
-   - Pass: `{BRAND_PATH}/patterns/tokens.json` and relevant identity chunks
-   - Agent updates tokens.json, foundation chunks, and style preset YAML if applicable
+   - Pass: `{BRAND_PATH}/patterns/{brand-name}.yml` and relevant identity chunks
+   - Agent updates the `.yml` preset, foundation chunks, and STYLE.md if applicable
    - Agent writes to `{BRAND_PATH}/` — the brand source of truth
    - Run in background (`run_in_background: true`) so the build pipeline continues
 4. Continue to Step 5 without waiting for brand sync
@@ -231,10 +231,10 @@ Build screens sequentially. For each screen in `SCREENS`:
 | `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations |
 | `{PROJECT_PATH}/research/reference-specs.md` (if exists) | Technical specs |
 | `{PROJECT_PATH}/critique/prioritized-fixes.md` (if exists) | Critique fixes relevant to this screen |
-| Design-to-Code Translator prompt (09, from execution_context) | Translation methodology |
-| Visual effects, block patterns, anti-patterns refs (loaded in Step 2.5) | Design patterns + constraints |
+| Build output template (from execution_context) | Build log structure |
+| Visual effects, block patterns refs (loaded in Step 2.5) | Design patterns + CSS recipes |
 
-**Does NOT receive:** other screen chunks, tokens.json (already in codebase), full brand system, research monoliths.
+**Does NOT receive:** other screen chunks, brand `.yml` (already integrated into codebase), full brand system, research monoliths.
 
 ### Agent instructions per screen:
 
@@ -308,7 +308,7 @@ This step is **not auto-applied** — the user decides what to extract.
 If the extraction scan finds hardcoded values that should be tokens (finding type #2), and those tokens are missing from the brand system:
 
 1. After applying fixes in the project, ask: "These token gaps also exist in the brand. Update brand patterns?"
-2. If yes, spawn a background `gsp-pattern-architect` agent with the missing token definitions to add them to `{BRAND_PATH}/patterns/tokens.json` and relevant foundation chunks.
+2. If yes, spawn a background `gsp-brand-engineer` agent with the missing token definitions to add them to `{BRAND_PATH}/patterns/{brand-name}.yml` and relevant foundation chunks.
 
 ## Step 6: Finalize
 
@@ -365,7 +365,7 @@ For `needs-revision` status, spawn a single `gsp-builder` agent with execution_m
 After the revision agent completes, check if any QA fixes changed token-level values (colors, typography, spacing, shadows). If so:
 
 1. Ask: "These revisions changed brand-level values. Update brand patterns so future projects inherit the fix?"
-2. If yes, spawn a background `gsp-pattern-architect` agent with the changed values to update `{BRAND_PATH}/patterns/`.
+2. If yes, spawn a background `gsp-brand-engineer` agent with the changed values to update `{BRAND_PATH}/patterns/`.
 
 Then continue from Step 6 (finalize).
 </process>
