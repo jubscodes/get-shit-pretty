@@ -113,7 +113,7 @@ After the creative-director finishes, invoke domain skills to add technical prec
 1. **Invoke `/gsp-logo --enrich`** — reads `logo-directions.md`, enriches each direction with detailed construction geometry, complete variation specs, clear space rules, and minimum size calculations.
 2. **Invoke `/gsp-color --enrich`** — reads `color-system.md`, generates OKLCH palettes via tints.dev, calculates WCAG contrast, writes `palettes.json`, enriches with contrast ratios and semantic mapping.
 3. **Invoke `/gsp-typography --enrich`** — reads `typography.md`, generates mathematical type scale, adds fluid type formulas, enriches with font loading instructions.
-4. **Invoke `/gsp-images --enrich`** — reads `imagery-style.md`, adds icon library specifics, CSS texture/treatment recipes, enriches with technical implementation details.
+4. **Invoke `/gsp-visuals --imagery --enrich`** — reads `imagery-style.md`, adds icon library specifics, CSS texture/treatment recipes, enriches with technical implementation details.
 
 Each skill loads its own domain references on-demand — no upfront context cost.
 

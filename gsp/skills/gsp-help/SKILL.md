@@ -56,11 +56,12 @@ Skill names are left-padded with 4 spaces. Descriptions start at column 27 (4 in
     /gsp-project-review    QA validate implementation against designs
     /gsp-add-reference     add reference material to a project
 
-  ─── Composable ──────────────────────
+  ─── Expertise ───────────────────────
 
+    /gsp-color             color systems — palettes, contrast, semantic mapping, dark mode
+    /gsp-typography        type systems — scale, pairing, fluid type, vertical rhythm
+    /gsp-visuals           visual direction — imagery, 3D, video, textures
     /gsp-accessibility     accessibility audit — contrast, WCAG, code checks
-    /gsp-palette           generate OKLCH color palettes
-    /gsp-typescale         generate mathematical type scales
     /gsp-style             apply a design style preset
 
   ─── Utilities ────────────────────────
