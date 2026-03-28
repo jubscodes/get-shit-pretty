@@ -93,5 +93,5 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ## Step 4: Phase transition output
 
-Render phase transition (see `phase-transitions.md`). This is the final phase.
+Invoke `/gsp-phase-transition` with phase `launch` and output directory `{PROJECT_PATH}/launch/`.
 </process>

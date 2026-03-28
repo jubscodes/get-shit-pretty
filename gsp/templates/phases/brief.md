@@ -22,7 +22,7 @@
 
 ## Content Reference
 
-Each chunk follows the format in `references/chunk-format.md`. Below is the structural reference for what each chunk should contain:
+Each chunk follows the standard chunk format. Below is the structural reference for what each chunk should contain:
 
 ### scope.md
 - **Screen list:** prioritized list of screens to design and build

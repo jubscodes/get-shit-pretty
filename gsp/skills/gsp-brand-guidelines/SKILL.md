@@ -212,7 +212,7 @@ Update `{BRAND_PATH}/STATE.md`:
 
 ## Step 5: Phase transition output
 
-Render phase transition (see `phase-transitions.md`).
+Invoke `/gsp-phase-transition` with phase `guidelines` and output directory `{BRAND_PATH}/patterns/`.
 
 **E2E mode:** Read `{BRAND_PATH}/config.json`. If `e2e` is `true`, auto-invoke `/gsp-start` via Skill tool — it will detect the completed brand and route directly to project setup (Step 4). No need to ask the user.
 

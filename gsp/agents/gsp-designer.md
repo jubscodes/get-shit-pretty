@@ -93,7 +93,7 @@ Write your screens as chunks to the project's design directory (path provided by
 
 ### Screen chunks
 
-Write one chunk per screen (~150-200 lines each), following `references/chunk-format.md`:
+Write one chunk per screen (~150-200 lines each), following the standard chunk format:
 
 **Naming:** `screen-{NN}-{kebab-case-name}.md` (e.g., `screen-01-home.md`, `screen-03-user-profile.md`)
 

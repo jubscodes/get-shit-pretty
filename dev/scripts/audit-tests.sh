@@ -222,8 +222,9 @@ if should_run contracts; then
   MISSING_INVOCABLE=()
   for skill in gsp/skills/*/SKILL.md; do
     dir=$(basename "$(dirname "$skill")")
-    # Skip the plugin entry point (get-shit-pretty) — it uses user-invocable: false
+    # Skip non-user-invocable utility skills
     [[ "$dir" == "get-shit-pretty" ]] && continue
+    [[ "$dir" == "gsp-phase-transition" ]] && continue
     if ! grep -q '^user-invocable: true' "$skill"; then
       MISSING_INVOCABLE+=("$dir")
     fi
@@ -950,8 +951,8 @@ if should_run prompts; then
   for skill in gsp/skills/*/SKILL.md; do
     dir=$(basename "$(dirname "$skill")")
     [[ "$dir" == "get-shit-pretty" ]] && continue
-    # Only check skills that have AskUserQuestion in allowed-tools
-    if grep -q 'AskUserQuestion' "$skill" 2>/dev/null; then
+    # Only check skills that have AskUserQuestion in allowed-tools (frontmatter section)
+    if sed -n '/^allowed-tools:/,/^---/p' "$skill" | grep -q 'AskUserQuestion' 2>/dev/null; then
       HAS_ONE_Q=$(grep -ci 'one decision per question\|one.*question.*at a time' "$skill")
       HAS_ASK=$(grep -ci 'always use.*AskUserQuestion\|AskUserQuestion.*for user' "$skill")
       if [[ "$HAS_ONE_Q" -eq 0 || "$HAS_ASK" -eq 0 ]]; then

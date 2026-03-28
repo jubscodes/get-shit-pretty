@@ -50,7 +50,7 @@ Write your review as chunks to the project's review directory (path provided by 
 
 ### Review chunks
 
-Write each chunk following the format in `references/chunk-format.md`:
+Write each chunk following the standard chunk format:
 
 1. **`acceptance-report.md`** (~100-150 lines) — Overall verdict (Pass/Conditional Pass/Fail), implementation checklist (per-screen status with codebase file paths), token audit summary, screen coverage, component coverage, accessibility compliance, responsive verification
 2. **`issues.md`** (~50-100 lines) — Issues table (Issue, Severity, File Path, Line, Expected, Actual, Remediation). Critical issues block acceptance. All file paths reference actual codebase locations.

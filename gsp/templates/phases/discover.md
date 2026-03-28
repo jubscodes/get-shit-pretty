@@ -23,7 +23,7 @@
 
 ## Content Reference
 
-Each chunk follows the format in `references/chunk-format.md`.
+Each chunk follows the standard chunk format.
 
 ### market-landscape.md
 - Industry overview and trajectory

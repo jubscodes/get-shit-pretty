@@ -50,7 +50,7 @@ Act as Head of Strategy at a top branding agency. Define the strategic foundatio
 <output>
 Write 5 chunks + INDEX.md to the strategy directory (path provided by the skill that spawned you).
 
-Each chunk follows `references/chunk-format.md`.
+Each chunk follows the standard chunk format.
 
 1. **`positioning.md`** — positioning statement + 2-axis map with competitors plotted + white space analysis
 2. **`archetype.md`** — primary + secondary archetype, rationale, shadow traits, communication style, visual tendencies

@@ -20,7 +20,7 @@ Pick your runtime (Claude Code, OpenCode, Gemini CLI, or Codex CLI), choose glob
 
 ## What You Get
 
-A dual-diamond design pipeline with 33 skills across two layers:
+A dual-diamond design pipeline with 34 skills across two layers:
 
 ```
 ◆ Expertise (knowledge owners — serve the full pipeline)

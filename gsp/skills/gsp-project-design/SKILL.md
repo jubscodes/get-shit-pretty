@@ -155,6 +155,6 @@ Update `{PROJECT_PATH}/STATE.md`:
 
 ## Step 5: Phase transition output
 
-Render phase transition (see `phase-transitions.md`).
+Invoke `/gsp-phase-transition` with phase `design` and output directory `{PROJECT_PATH}/design/`.
 </process>
 </output>

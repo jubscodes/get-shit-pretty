@@ -50,7 +50,7 @@ Write your campaign as chunks to the project's launch directory (path provided b
 
 ### Chunk files
 
-Write each chunk following the format in `references/chunk-format.md`:
+Write each chunk following the standard chunk format:
 
 1. **`campaign-strategy.md`** (~50-80 lines) — Objective, audience, key message, tone, channels
 2. **`digital-ads.md`** (~80-120 lines) — Google Ads + Meta/Instagram + TikTok (all formats and A/B variants)

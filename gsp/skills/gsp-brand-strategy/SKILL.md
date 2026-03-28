@@ -146,5 +146,5 @@ If adjust → loop back. If confirmed → proceed.
 
 Update `{BRAND_PATH}/STATE.md`: set Phase 2 (Strategy) to `complete`.
 
-Render phase transition (see `phase-transitions.md`).
+Invoke `/gsp-phase-transition` with phase `strategy` and output directory `{BRAND_PATH}/strategy/`.
 </process>

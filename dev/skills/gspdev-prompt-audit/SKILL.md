@@ -12,14 +12,14 @@ argument-hint: "[scope] e.g. 'all', 'skills', 'agents', or a specific name like 
 ---
 
 <context>
-GSP has 33 skills and 15 agents. Over time, rules accumulate to fix individual bad outputs, creating contradiction, repetition, and vagueness that makes the AI *worse*, not better.
+GSP has 34 skills and 15 agents. Over time, rules accumulate to fix individual bad outputs, creating contradiction, repetition, and vagueness that makes the AI *worse*, not better.
 
 This skill performs semantic analysis that automated tests (P1–P7 in `audit-tests.sh`) can't catch. It evaluates meaning, not just structure.
 
 Principle: "Your AI setup should be getting simpler over time — addition by subtraction."
 
 Source layout:
-- `gsp/skills/*/SKILL.md` — 33 skills
+- `gsp/skills/*/SKILL.md` — 34 skills
 - `gsp/agents/gsp-*.md` — 15 agents
 </context>
 

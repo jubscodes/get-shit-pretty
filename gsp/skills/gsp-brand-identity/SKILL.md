@@ -137,5 +137,5 @@ Use `AskUserQuestion`:
 
 Update `{BRAND_PATH}/STATE.md`: set Phase 3 (Identity) to `complete`, Prettiness Level to 80%.
 
-Render phase transition (see `phase-transitions.md`).
+Invoke `/gsp-phase-transition` with phase `identity` and output directory `{BRAND_PATH}/identity/`.
 </process>

@@ -46,7 +46,7 @@ Act as a senior design researcher. Analyze the market landscape and competitive 
 <output>
 Write 4 chunks + INDEX.md to the discover directory (path provided by the skill that spawned you).
 
-Each chunk follows `references/chunk-format.md`.
+Each chunk follows the standard chunk format.
 
 1. **`market-landscape.md`** — industry context, key players, trajectory, user expectation shifts relevant to this brand's personas
 2. **`competitive-audit.md`** — competitors on Conservative↔Progressive × Traditional↔Modern axes, visual language analysis, white space

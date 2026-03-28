@@ -55,7 +55,7 @@ You make CREATIVE decisions. Domain skills (`/gsp-color`, `/gsp-typography`, `/g
 <output>
 Write 5 chunks + INDEX.md to the identity directory (path provided by the skill that spawned you).
 
-Each chunk follows `references/chunk-format.md`. Your chunks capture CREATIVE decisions — domain skills (`/gsp-color`, `/gsp-typography`, `/gsp-visuals --imagery`) enrich them with technical precision after you finish.
+Each chunk follows the standard chunk format. Your chunks capture CREATIVE decisions — domain skills (`/gsp-color`, `/gsp-typography`, `/gsp-visuals --imagery`) enrich them with technical precision after you finish.
 
 1. **`logo-directions.md`** (~100-120 lines) — 3 directions with concept, rationale, variations, usage rules
 2. **`color-system.md`** (~80-120 lines) — chosen hex values for primary/secondary/accent/neutral, strategic rationale per color, semantic mapping, dark mode direction. Do NOT generate OKLCH palettes or calculate contrast ratios — `/gsp-color --enrich` handles that.
