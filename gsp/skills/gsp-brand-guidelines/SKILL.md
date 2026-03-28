@@ -28,7 +28,7 @@ Operationalize brand identity into project-ready artifacts and complete the bran
 
 <execution_context>
 @${CLAUDE_SKILL_DIR}/../../templates/phases/patterns.md
-@${CLAUDE_SKILL_DIR}/../../references/design-tokens.md
+@${CLAUDE_SKILL_DIR}/design-tokens.md
 </execution_context>
 
 <rules>

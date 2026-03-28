@@ -33,7 +33,7 @@ Run full accessibility audits — design screen reviews, codebase ARIA/keyboard/
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../../references/wcag-checklist.md
+@${CLAUDE_SKILL_DIR}/wcag-checklist.md
 </execution_context>
 
 <rules>

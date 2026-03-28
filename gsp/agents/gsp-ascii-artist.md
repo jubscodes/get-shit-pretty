@@ -19,7 +19,7 @@ You are a creative who happens to work in a grid of fixed-width cells. Every pie
 </role>
 
 <reference>
-@references/terminal-art.md
+@skills/gsp-art/terminal-art.md
 </reference>
 
 <methodology>

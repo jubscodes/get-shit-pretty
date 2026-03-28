@@ -26,7 +26,7 @@ Audit an existing brand. Produce evolution map that guides research, strategy, a
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../../references/chunk-format.md
+@${CLAUDE_SKILL_DIR}/../chunk-format.md
 </execution_context>
 
 <rules>

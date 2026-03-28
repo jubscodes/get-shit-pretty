@@ -31,7 +31,7 @@ Build a production-ready typography system — scale, pairing, fluid type, verti
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../../references/chunk-format.md
+@${CLAUDE_SKILL_DIR}/../chunk-format.md
 </execution_context>
 
 <rules>

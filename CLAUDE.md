@@ -36,7 +36,7 @@ Examples: `/gsp-accessibility` (WCAG audits), `/gsp-style` (tokens + foundations
 | `gsp/hooks/` | Hooks (`hooks.json`) |
 | `gsp/prompts/` | Reserved (agent methodology lives in agent definitions) |
 | `gsp/templates/` | Project/brand config, state, brief, roadmap templates |
-| `gsp/references/` | Shared reference material (trends, HIG, chunk format) |
+| `gsp/references/` | Shared reference material — **being migrated** into skill directories (see reference colocation rule) |
 | `.mcp.json` | Bundled MCP servers (GitHub, Figma) |
 | `scripts/` | Hook scripts and utilities (at repo root) |
 
@@ -88,7 +88,7 @@ To reinstall after adding/removing files: `node bin/install.js --claude --local`
 - Skill source of truth: `gsp/skills/gsp-{name}/SKILL.md`
 - Never edit inside `.claude/` directly — it's symlinked to source
 - Agent output paths must be dynamic: `"path provided by the skill that spawned you"` (no hardcoded `.design/` paths)
-- Skills resolve paths via `${CLAUDE_SKILL_DIR}/../../` for shared files (prompts, templates, references live directly in the runtime root, e.g. `.claude/prompts/`)
+- Skills resolve shared files via `${CLAUDE_SKILL_DIR}/../../` for templates, and `${CLAUDE_SKILL_DIR}/../gsp-{skill}/` for colocated references (see reference colocation rule)
 
 ### Agent input inlining rule
 
@@ -101,6 +101,44 @@ Exceptions — agents that legitimately need to read from disk:
 - `gsp-reviewer` — Grep/Glob on actual source files
 - `gsp-brand-syncer` — scans brand files + codebase
 - `gsp-accessibility-auditor` (code mode) — Grep/Glob on source files
+
+### Claude Code context cost model
+
+Understanding what loads when is critical for keeping sessions lean. These costs apply to every conversation, not just GSP workflows.
+
+**Session start (always loaded, every conversation):**
+- `.claude/agents/*.md` — full file content of every agent definition
+- `.claude/references/*.md` — full file content of every reference file
+- Skill descriptions — the `description:` line from each SKILL.md (negligible)
+- `CLAUDE.md` files — project and user-level
+
+**Skill invocation (loaded on demand):**
+- Full SKILL.md body — only when the skill is triggered
+- `@` references in `<execution_context>` — resolved and inlined when the skill runs
+- Sibling files in skill directories — **inert** until explicitly Read by the skill
+
+**Agent spawn (loaded on demand):**
+- Agent `.md` definition is already in context from session start
+- Agent gets its own context window with the spawning skill's prompt
+
+**Implications for GSP:**
+- **Never put reference files in `gsp/references/` (installed to `.claude/references/`).** Every file there costs context in every session, even sessions that never run GSP. Move references into the skill directories that consume them as sibling files.
+- **Keep agent definitions lean.** Agent `.md` files load at session start. Methodology and reference knowledge should be inlined by the spawning skill, not baked into the agent definition.
+- **Skill sibling files are free until used.** A skill directory with 74 `.yml` presets costs zero at session start. Use this for reference material, examples, and templates that the skill reads on demand.
+- **Cross-skill references use relative paths:** `${CLAUDE_SKILL_DIR}/../gsp-other-skill/ref.md` — this reads the file on demand with zero session-start cost.
+
+### Reference colocation rule
+
+Reference files live inside the skill directory that is their primary consumer, not in a shared `references/` directory. This ensures:
+1. Zero session-start context cost (sibling files are inert)
+2. Skills are self-contained and portable (standalone capability)
+3. References load only when the consuming skill runs
+
+**Single-owner references** go directly into the primary skill's directory.
+
+**Shared references** (consumed by 2-4 skills) go into the primary consumer's directory. Other skills read them via `${CLAUDE_SKILL_DIR}/../gsp-primary-skill/ref.md`.
+
+**Ubiquitous references** (consumed by 5+ skills, e.g. `chunk-format.md`) are an exception — these stay shared but live at the skills root (`gsp/skills/chunk-format.md`, installed to `.claude/skills/chunk-format.md`) rather than in `references/`.
 
 ### Context optimization rules
 
@@ -129,7 +167,7 @@ These rules minimize token waste across the pipeline. Enforced by audit tests C1
 - `gsp/templates/projects/config.json` — project config template
 - `gsp/templates/branding/config.json` — brand config template
 - `gsp/templates/exports-index.md` — chunked exports index with BEGIN/END markers per phase
-- `gsp/references/chunk-format.md` — standard chunk format spec
+- `gsp/skills/chunk-format.md` — standard chunk format spec (ubiquitous reference, lives at skills root)
 
 ## npm publication
 

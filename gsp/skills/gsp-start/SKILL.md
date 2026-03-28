@@ -30,7 +30,7 @@ Through a sequential one-question-at-a-time conversation, gather a complete brie
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../../references/questioning.md
+@${CLAUDE_SKILL_DIR}/questioning.md
 </execution_context>
 
 <rules>

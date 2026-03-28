@@ -110,9 +110,9 @@ After scaffold completes, verify `{PROJECT_PATH}/build/SCAFFOLD-LOG.md` exists. 
 
 ## Step 2.5: Load build references
 
-Read these reference files (relative to skill dir `${CLAUDE_SKILL_DIR}/../../references/`):
-- `visual-effects.md`
-- `block-patterns.md`
+Read these reference files:
+- `${CLAUDE_SKILL_DIR}/visual-effects.md`
+- `${CLAUDE_SKILL_DIR}/../gsp-project-design/block-patterns.md`
 
 Hold their content for inlining into agent prompts in Steps 3 and 5.
 

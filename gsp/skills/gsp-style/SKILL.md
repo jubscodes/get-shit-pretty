@@ -29,8 +29,8 @@ Apply a named style preset to produce production-ready design tokens and foundat
 
 <execution_context>
 @${CLAUDE_SKILL_DIR}/styles/INDEX.yml
-@${CLAUDE_SKILL_DIR}/../../references/design-tokens.md
-@${CLAUDE_SKILL_DIR}/../../references/chunk-format.md
+@${CLAUDE_SKILL_DIR}/../gsp-brand-guidelines/design-tokens.md
+@${CLAUDE_SKILL_DIR}/../chunk-format.md
 @${CLAUDE_SKILL_DIR}/../../templates/phases/patterns.md
 </execution_context>
 

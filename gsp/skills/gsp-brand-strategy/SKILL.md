@@ -27,9 +27,9 @@ Define brand strategy and voice through interactive creative direction, then pro
 
 <execution_context>
 @${CLAUDE_SKILL_DIR}/../../templates/phases/strategy.md
-@${CLAUDE_SKILL_DIR}/../../references/brand-archetypes.md
-@${CLAUDE_SKILL_DIR}/../../references/positioning-frameworks.md
-@${CLAUDE_SKILL_DIR}/../../references/voice-tone.md
+@${CLAUDE_SKILL_DIR}/brand-archetypes.md
+@${CLAUDE_SKILL_DIR}/positioning-frameworks.md
+@${CLAUDE_SKILL_DIR}/voice-tone.md
 </execution_context>
 
 <rules>

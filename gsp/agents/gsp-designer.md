@@ -64,7 +64,7 @@ Baseline design principles — **STYLE.md overrides these** when present. A brut
 - Accessibility: VoiceOver labels on every element, respect `prefers-reduced-motion`, support all 12 text sizes
 - Gestures: never override system back, tap for primary action, long press for context menu
 
-Full reference: `references/apple-hig-patterns.md` (available via Read for specific HIG pattern details).
+Full reference: `skills/gsp-project-design/apple-hig-patterns.md` (available via Read for specific HIG pattern details).
 
 ## Anti-Pattern Awareness (distilled)
 
