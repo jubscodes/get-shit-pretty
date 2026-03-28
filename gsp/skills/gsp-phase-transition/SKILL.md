@@ -1,6 +1,6 @@
 ---
 name: gsp-phase-transition
-description: "Render phase transition screens — pipeline progress line, file tree, completion message. Invoked by pipeline skills at phase completion."
+description: "Render phase transition screens — pipeline progress, completion banner, file tree. Invoked by pipeline skills at phase completion."
 user-invocable: false
 model: sonnet
 allowed-tools:
@@ -8,16 +8,16 @@ allowed-tools:
   - Glob
 ---
 <context>
-Rendering utility invoked by pipeline skills at phase completion. Produces the visual transition — progress line, file tree, completion banner — then returns control to the calling skill for routing.
+Rendering utility invoked by pipeline skills at phase completion. Produces the visual transition — pipeline progress line, completion banner, file tree of outputs — then returns control to the calling skill for routing.
 
 The calling skill provides phase name and output directory. This skill reads STATE.md, renders the transition, and returns. The calling skill handles routing (AskUserQuestion, E2E auto-invoke, etc.) after this skill completes.
 </context>
 
 <objective>
-Render a phase transition screen showing pipeline progress, completed phase, and output file tree.
+Render a phase transition screen showing pipeline progress, the completed phase, and output file tree.
 
 **Input:** Phase name + output directory path from the invoking skill
-**Output:** Terminal output with progress line, completion banner, and file tree
+**Output:** Terminal output with pipeline progress, completion banner, and file tree
 **Agent:** None — inline rendering
 </objective>
 
