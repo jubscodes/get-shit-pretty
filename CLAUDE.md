@@ -19,24 +19,46 @@ Edit source under `gsp/`; the installer keeps runtimes in sync. Never edit insid
 
 Dual-diamond: **Branding** (discover → strategy → identity → patterns) + **Project** (brief → research → design → critique → build → review). Optional: launch. Verbal identity is merged into brand-strategy (4 phases, not 5).
 
-### Composable skills
+### Two skill layers
 
-Skills produce artifacts to `.design/`; agents consume them. The filesystem is the integration layer — no skill-to-skill invocation.
+**Expertise skills** (knowledge owners): `gsp-color`, `gsp-typography`, `gsp-visuals`, `gsp-accessibility`, `gsp-style`
 
-Composable skills work two ways: (1) standalone — user runs directly for quick output, (2) as building blocks — pipeline phases consume their output files. Each composable skill runs inline (no agent), is deterministic, writes to a predictable path, and produces foundation chunks per `references/chunk-format.md`.
+Own domain knowledge as sibling files (`domains/`, `references/`). Serve the full pipeline, not just one phase. Two consumption patterns:
+- **Read** (passive) — pipeline skill or agent reads expertise skill's sibling files for domain context
+- **Invoke** (active) — pipeline skill calls the expertise skill to run its logic (e.g. `--enrich`, `--validate`)
 
-Examples: `/gsp-accessibility` (WCAG audits), `/gsp-style` (tokens + foundations), `/gsp-palette` (OKLCH palettes), `/gsp-typescale` (type scale), `/gsp-design-system` (codebase design system scan).
+Rule: **never duplicate domain knowledge in pipeline skills.** If an expertise skill owns it, pipeline skills read or invoke.
+
+**Pipeline skills** (orchestrators): `brand-research`, `brand-strategy`, `brand-identity`, `brand-guidelines`, `project-brief`, `project-research`, `project-design`, `project-critique`, `project-build`, `project-review`, `launch`
+
+Own workflow: state management, phase gates, agent spawning, user interaction. Consume domain knowledge from expertise skills. Produce artifacts to `.design/`.
+
+### Skill architecture
+
+Skills are lean routers. SKILL.md handles mode/flag parsing, context resolution, and delegation. Domain knowledge, questioning frameworks, output templates, and technical specs live in sibling files that the skill reads on demand.
+
+Expertise skills use a `domains/` + `references/` structure:
+```
+gsp-color/
+├── SKILL.md              ← thin router (~60-80 lines)
+├── domains/
+│   ├── palette.md        ← OKLCH generation spec
+│   └── system.md         ← full color system direction
+└── references/
+    └── color-composition.md
+```
+
+The filesystem is the integration layer — skills produce artifacts to `.design/`; agents consume them. No skill-to-skill invocation except explicit `--enrich`/`--validate` calls.
 
 ## Pack structure
 
 | Directory | Contents |
 |-----------|----------|
-| `gsp/skills/` | 38 skills — each is a `gsp-<name>/SKILL.md` directory (single source for all runtimes) |
+| `gsp/skills/` | 33 skills — each is a `gsp-<name>/SKILL.md` directory with optional `domains/` and `references/` siblings |
 | `gsp/agents/` | 15 subagents (`gsp-{name}.md`) |
 | `gsp/hooks/` | Hooks (`hooks.json`) |
 | `gsp/prompts/` | Reserved (agent methodology lives in agent definitions) |
 | `gsp/templates/` | Project/brand config, state, brief, roadmap templates |
-| `gsp/references/` | Shared reference material — **being migrated** into skill directories (see reference colocation rule) |
 | `.mcp.json` | Bundled MCP servers (GitHub, Figma) |
 | `scripts/` | Hook scripts and utilities (at repo root) |
 
@@ -63,10 +85,10 @@ Cross-references between skills use `gsp-` prefixed paths: `${CLAUDE_SKILL_DIR}/
 
 | Runtime | Skills location | Agents | Bundle location |
 |---------|-----------------|--------|-----------------|
-| Claude Code | `.claude/skills/` | `.claude/agents/` (15) | `.claude/{prompts,templates,references}/` |
-| OpenCode | `.opencode/skills/` | `.opencode/agents/` (15) | `.opencode/{prompts,templates,references}/` |
-| Gemini CLI | `.gemini/skills/` | `.gemini/agents/` (15, experimental) | `.gemini/{prompts,templates,references}/` |
-| Codex CLI | **`.agents/skills/`** (not `.codex/`) | **None** (not supported) | `.codex/{prompts,templates,references}/` |
+| Claude Code | `.claude/skills/` | `.claude/agents/` (15) | `.claude/{prompts,templates}/` |
+| OpenCode | `.opencode/skills/` | `.opencode/agents/` (15) | `.opencode/{prompts,templates}/` |
+| Gemini CLI | `.gemini/skills/` | `.gemini/agents/` (15, experimental) | `.gemini/{prompts,templates}/` |
+| Codex CLI | **`.agents/skills/`** (not `.codex/`) | **None** (not supported) | `.codex/{prompts,templates}/` |
 
 Skills are the single source for all runtimes — commands have been removed.
 
@@ -78,7 +100,7 @@ Key points:
 
 ## Local development
 
-`.claude/agents/`, `.claude/skills/*` (GSP skills), `.claude/{prompts,templates,references}` are **symlinks** to `gsp/` source dirs. Edit source under `gsp/` directly — changes reflect immediately without reinstalling. These paths are gitignored.
+`.claude/agents/`, `.claude/skills/*` (GSP skills), `.claude/{prompts,templates}` are **symlinks** to `gsp/` source dirs. Edit source under `gsp/` directly — changes reflect immediately without reinstalling. These paths are gitignored. Domain knowledge lives as sibling files inside skill directories — no separate `references/` runtime directory.
 
 To reinstall after adding/removing files: `node bin/install.js --claude --local`
 
@@ -122,7 +144,7 @@ Understanding what loads when is critical for keeping sessions lean. These costs
 - Agent gets its own context window with the spawning skill's prompt
 
 **Implications for GSP:**
-- **Never put reference files in `gsp/references/` (installed to `.claude/references/`).** Every file there costs context in every session, even sessions that never run GSP. Move references into the skill directories that consume them as sibling files.
+- **`gsp/references/` is empty — all references live in skill directories.** Domain knowledge is colocated with the expertise skill that owns it. Pipeline skills read from expertise skills via cross-skill paths. Nothing installs to `.claude/references/`.
 - **Keep agent definitions lean.** Agent `.md` files load at session start. Methodology and reference knowledge should be inlined by the spawning skill, not baked into the agent definition.
 - **Skill sibling files are free until used.** A skill directory with 74 `.yml` presets costs zero at session start. Use this for reference material, examples, and templates that the skill reads on demand.
 - **Cross-skill references use relative paths:** `${CLAUDE_SKILL_DIR}/../gsp-other-skill/ref.md` — this reads the file on demand with zero session-start cost.
