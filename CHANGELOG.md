@@ -4,6 +4,34 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+## [0.7.0] — 2026-03-29
+
+### Added
+- `gsp-phase-transition` utility skill — single source of truth for phase transition rendering (pipeline progress line, file tree, completion banner)
+- `gsp-visuals` expertise skill — consolidates `gsp-images`, `gsp-3d`, `gsp-video`, `gsp-textures` into one skill with `domains/` architecture
+- `domains/` architecture for expertise skills — domain knowledge in sibling files loaded on demand, zero session-start cost
+- `gsp-color/domains/palette.md` and `gsp-color/domains/system.md` — split palette generation from full color system design
+- `gsp-typography/domains/scale.md`, `pairing.md`, `system.md` — split scale generation, font pairing, and full system design
+- UX contract enforcement (P4 audit test) — interactive skills must have "one decision per question" and "always use AskUserQuestion" rules
+- Style preset schema upgraded with `intensity`, `patterns`, `constraints`, `effects` blocks (moved to `gsp-style/style-preset-schema.md`)
+
+### Changed
+- **Two-layer skill architecture** — expertise skills (knowledge owners: color, typography, visuals, accessibility, style) vs pipeline skills (orchestrators). Skills are lean routers delegating to domain files
+- **Reference colocation** — all 21 files from `gsp/references/` moved into their primary consumer's skill directory. Ubiquitous references (`chunk-format.md`, `phase-transitions.md`) duplicated or extracted into skills
+- **10 skills → 5 expertise skills** — `gsp-palette` → `gsp-color`, `gsp-typescale` → `gsp-typography`, `gsp-images`/`gsp-3d`/`gsp-video`/`gsp-textures` → `gsp-visuals`
+- **12 duplicated `phase-transitions.md` → 1 skill** — pipeline skills now invoke `/gsp-phase-transition` instead of reading a reference file (-1,584 lines)
+- **Dev skills renamed** `gsp-*` → `gspdev-*` — prevents installer cleanup from wiping dev skills; auto-symlinked on `--local`
+- Installer no longer bundles `references/` directory — all references colocated in skill directories
+- Agent/template prose updated from `references/chunk-format.md` to "standard chunk format" (content inlined by spawning skills)
+- P4 audit test scoped to `allowed-tools` frontmatter, not arbitrary prose mentions
+
+### Removed
+- `gsp/references/` directory — all files moved to consuming skill directories
+- `gsp-palette` skill (absorbed by `gsp-color`)
+- `gsp-typescale` skill (absorbed by `gsp-typography`)
+- `gsp-images`, `gsp-3d`, `gsp-video`, `gsp-textures` skills (absorbed by `gsp-visuals`)
+- 12 duplicated `phase-transitions.md` files (replaced by `gsp-phase-transition` skill)
+
 ## [0.6.3] — 2026-03-28
 
 ### Added
