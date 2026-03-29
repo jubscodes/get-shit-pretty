@@ -1,0 +1,37 @@
+---
+title: "v0.7.0 -- Two-layer architecture + skill consolidation"
+date: "2026-03-29T00:00:00"
+excerpt: "Skills split into expertise (knowledge owners) and pipeline (orchestrators). 10 skills consolidated into 5. References colocated. Phase transitions extracted into a dedicated skill."
+tags: ["architecture", "consolidation", "performance", "developer-experience"]
+slug: "v0-7-0"
+---
+
+## Two-Layer Skill Architecture
+
+Skills are now explicitly split into two layers. **Expertise skills** (`gsp-color`, `gsp-typography`, `gsp-visuals`, `gsp-accessibility`, `gsp-style`) own domain knowledge as sibling files in `domains/` and `references/` directories. **Pipeline skills** own workflow -- state management, phase gates, agent spawning, user interaction.
+
+Expertise skills serve the entire pipeline, not just one phase. Pipeline skills consume domain knowledge via two patterns: **Read** (passive, load sibling files) and **Invoke** (active, call the expertise skill with `--enrich` or `--validate`). Domain knowledge is never duplicated in pipeline skills.
+
+## Skill Consolidation
+
+10 skills consolidated into 5 expertise skills with `domains/` substructure:
+
+- `gsp-palette` absorbed by `gsp-color` (palette generation becomes `domains/palette.md`, full system design becomes `domains/system.md`)
+- `gsp-typescale` absorbed by `gsp-typography` (scale generation, font pairing, and full system design split across three domain files)
+- `gsp-images`, `gsp-3d`, `gsp-video`, `gsp-textures` absorbed by `gsp-visuals` (each becomes a domain file, the skill routes by `--imagery`, `--3d`, `--video`, `--textures` flags)
+
+Skills are now lean routers -- SKILL.md handles mode/flag parsing, context resolution, and delegation. Domain files contain the actual knowledge.
+
+## Reference Colocation
+
+All 21 files from `gsp/references/` moved into the skill directory of their primary consumer. Single-owner references go directly into the skill. Shared references (2-4 consumers) live in the primary consumer's directory; others read via cross-skill paths. Ubiquitous references (`chunk-format.md`) are duplicated into each consuming skill.
+
+This eliminates the `references/` runtime directory entirely. Sibling files in skill directories cost zero at session start -- they're inert until the skill runs and reads them.
+
+## Phase Transition Skill
+
+The 12 identical copies of `phase-transitions.md` (1,584 lines total) are replaced by a single `gsp-phase-transition` utility skill. Pipeline skills invoke it with phase name and output directory; it reads STATE.md, renders the pipeline progress line and file tree, then returns control to the calling skill for routing.
+
+## Dev Skill Prefix
+
+Dev skills renamed from `gsp-*` to `gspdev-*` so the installer's `cleanStaleGspDirs` function doesn't wipe them during upgrades. `node bin/install.js --claude --local` now auto-symlinks dev skills alongside GSP skills.
