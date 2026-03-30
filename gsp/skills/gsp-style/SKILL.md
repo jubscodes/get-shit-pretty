@@ -136,7 +136,7 @@ Read the style template from `${CLAUDE_SKILL_DIR}/../../templates/phases/style.m
 
 Read BOTH source files:
 - `styles/{name}.yml` — structured data (tokens, intensity, patterns, constraints, effects)
-- `styles/{name}.md` — prose companion (design philosophy, CSS code hints, component styling, textures). Skip the `<role>` block — start from `<design-system>`.
+- `styles/{name}.md` — prose companion (design philosophy, CSS code hints, component styling, textures).
 
 If the `.md` companion doesn't exist, render STYLE.md from `.yml` data only (thinner but functional).
 
