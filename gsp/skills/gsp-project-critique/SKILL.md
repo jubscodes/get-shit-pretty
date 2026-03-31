@@ -22,7 +22,7 @@ Critique design quality and audit accessibility compliance.
 
 **Input:** All prior project chunks + brand identity
 **Output:** `{project}/critique/` (critique + accessibility chunks + INDEX.md) + exports/INDEX.md update
-**Agents:** `gsp-critic` + `gsp-accessibility-auditor`
+**Agents:** `gsp-project-critic` + `gsp-accessibility-auditor`
 </objective>
 
 <execution_context>
@@ -77,17 +77,17 @@ Read these reference files:
 
 Hold their content for inlining into agent prompts in Step 2.
 
-> **Note:** Nielsen's heuristics, visual taste, and anti-patterns are distilled into the `gsp-critic` agent prompt. Full refs remain on disk for edge-case agent lookup.
+> **Note:** Nielsen's heuristics, visual taste, and anti-patterns are distilled into the `gsp-project-critic` agent prompt. Full refs remain on disk for edge-case agent lookup.
 
 ## Step 1.9: Load agent methodology
 
-Read `${CLAUDE_SKILL_DIR}/methodology/gsp-critic.md`. Include the full content as **Agent methodology** in the gsp-critic agent prompt below.
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-project-critic.md`. Include the full content as **Agent methodology** in the gsp-project-critic agent prompt below.
 
 ## Step 2: Spawn critics (parallel)
 
 **Inline all project content** — agents should not need to read project files. Reference files for supplementary evaluation (visual-taste, anti-patterns) are on disk — the critic reads them as needed.
 
-**Agent 1: gsp-critic** — Pass in the agent prompt:
+**Agent 1: gsp-project-critic** — Pass in the agent prompt:
 - **Agent methodology** (loaded in Step 1.9)
 - **Content of** all design chunks (loaded in Step 1)
 - **Content of** all identity chunks (loaded in Step 1)

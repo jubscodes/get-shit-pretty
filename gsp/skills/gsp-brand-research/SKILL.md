@@ -22,7 +22,7 @@ Research market context that will inform brand strategy.
 
 **Input:** `.design/branding/{brand}/BRIEF.md`
 **Output:** `.design/branding/{brand}/discover/` (4 chunks + INDEX.md)
-**Agent:** `gsp-researcher`
+**Agent:** `gsp-brand-researcher`
 </objective>
 
 <execution_context>
@@ -61,11 +61,11 @@ While preparing the agent context, use `WebFetch` with `run_in_background: true`
 ## Step 3: Spawn researcher
 
 ### Load agent methodology
-Read `${CLAUDE_SKILL_DIR}/methodology/gsp-researcher.md`. Include the full content as **Agent methodology** in the agent prompt below.
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-researcher.md`. Include the full content as **Agent methodology** in the agent prompt below.
 
 Include any pre-fetched competitor content in the agent context.
 
-Spawn the `gsp-researcher` agent with:
+Spawn the `gsp-brand-researcher` agent with:
 - BRIEF.md content
 - Discover output template
 - Design trends index (reference only — agent loads specific trend files only after open research validates them)

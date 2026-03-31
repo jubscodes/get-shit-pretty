@@ -1,5 +1,5 @@
 ---
-name: gsp-reviewer
+name: gsp-project-reviewer
 description: QA validates actual codebase implementation against design intent. Spawned by /gsp-project-review.
 tools: Read, Write, Bash, Grep, Glob
 disallowedTools: Edit

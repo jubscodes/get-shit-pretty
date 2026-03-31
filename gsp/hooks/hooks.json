@@ -13,29 +13,29 @@
     ],
     "SubagentStop": [
       {
-        "matcher": "gsp-designer",
+        "matcher": "gsp-project-designer",
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "The gsp-designer agent just finished. Verify: (1) at least one design/screen-*.md chunk was written, (2) design/INDEX.md was written, (3) design/preview.html was written. Report any missing deliverables to the user."
+            "prompt": "The gsp-project-designer agent just finished. Verify: (1) at least one design/screen-*.md chunk was written, (2) design/INDEX.md was written, (3) design/preview.html was written. Report any missing deliverables to the user."
           }
         ]
       },
       {
-        "matcher": "gsp-critic",
+        "matcher": "gsp-project-critic",
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "The gsp-critic agent just finished. Verify: (1) critique/critique.md was written with a heuristics score, (2) critique/prioritized-fixes.md was written, (3) critique/strengths.md was written. Report any missing deliverables to the user."
+            "prompt": "The gsp-project-critic agent just finished. Verify: (1) critique/critique.md was written with a heuristics score, (2) critique/prioritized-fixes.md was written, (3) critique/strengths.md was written. Report any missing deliverables to the user."
           }
         ]
       },
       {
-        "matcher": "gsp-creative-director",
+        "matcher": "gsp-brand-creative-director",
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "The gsp-creative-director agent just finished. Verify: (1) identity/INDEX.md was written, (2) identity/color-system.md exists, (3) identity/typography.md exists, (4) identity/logo-directions.md exists, (5) identity/imagery-style.md exists. Report any missing deliverables to the user."
+            "prompt": "The gsp-brand-creative-director agent just finished. Verify: (1) identity/INDEX.md was written, (2) identity/color-system.md exists, (3) identity/typography.md exists, (4) identity/logo-directions.md exists, (5) identity/imagery-style.md exists. Report any missing deliverables to the user."
           }
         ]
       },
@@ -49,20 +49,20 @@
         ]
       },
       {
-        "matcher": "gsp-builder",
+        "matcher": "gsp-project-builder",
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "The gsp-builder agent just finished. Verify: (1) BUILD-LOG.md was written, (2) build/INDEX.md was written, (3) no files were left with TODO/FIXME placeholder code. Report any issues to the user."
+            "prompt": "The gsp-project-builder agent just finished. Verify: (1) BUILD-LOG.md was written, (2) build/INDEX.md was written, (3) no files were left with TODO/FIXME placeholder code. Report any issues to the user."
           }
         ]
       },
       {
-        "matcher": "gsp-reviewer",
+        "matcher": "gsp-project-reviewer",
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "The gsp-reviewer agent just finished. Verify: (1) acceptance-report.md was written, (2) issues.md was written, (3) review/INDEX.md was written, (4) verdict is clearly stated as Pass, Conditional Pass, or Fail. Report any issues to the user."
+            "prompt": "The gsp-project-reviewer agent just finished. Verify: (1) acceptance-report.md was written, (2) issues.md was written, (3) review/INDEX.md was written, (4) verdict is clearly stated as Pass, Conditional Pass, or Fail. Report any issues to the user."
           }
         ]
       }

@@ -24,7 +24,7 @@ QA validate the codebase implementation against design intent.
 
 **Input:** BUILD-LOG.md + actual codebase files + `git diff` + design chunks + brand system
 **Output:** `{project}/review/` (acceptance-report.md + issues.md + INDEX.md) + exports/INDEX.md update
-**Agent:** `gsp-reviewer`
+**Agent:** `gsp-project-reviewer`
 </objective>
 
 <execution_context>
@@ -80,11 +80,11 @@ Also read `{BRAND_PATH}/patterns/{brand-name}.yml` (the brand's token/style sour
 
 ## Step 1.8: Load agent methodology
 
-Read `${CLAUDE_SKILL_DIR}/methodology/gsp-reviewer.md`. Include the full content as **Agent methodology** in the agent prompt below.
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-project-reviewer.md`. Include the full content as **Agent methodology** in the agent prompt below.
 
 ## Step 2: Spawn reviewer
 
-Spawn the `gsp-reviewer` agent with:
+Spawn the `gsp-project-reviewer` agent with:
 - **Agent methodology** (loaded in Step 1.8)
 - BUILD-LOG.md contents
 - Actual codebase file paths (from BUILD-LOG.md)

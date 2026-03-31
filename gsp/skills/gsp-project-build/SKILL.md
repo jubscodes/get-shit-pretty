@@ -24,7 +24,7 @@ Works with the dual-diamond architecture: reads brand system from `.design/brand
 Phase 1: SCAFFOLD (skill-level, no agent)
   └─ /gsp-scaffold → verify build passes
 
-Phase 2: FOUNDATIONS (agent: gsp-builder mode:foundations)
+Phase 2: FOUNDATIONS (agent: gsp-project-builder mode:foundations)
   ├─ Context: {brand-name}.yml + token-mapping.md, target-adaptations.md, STACK.md, CONVENTIONS.md
   ├─ Writes: token config, global CSS, layout, shared utils
   └─ CHECKPOINT: build must compile
@@ -32,7 +32,7 @@ Phase 2: FOUNDATIONS (agent: gsp-builder mode:foundations)
 Phase 3: FOUNDATION REVIEW (interactive)
   └─ Present summary → user confirms
 
-Phase 4: SCREENS (agent: gsp-builder mode:screen, one per screen)
+Phase 4: SCREENS (agent: gsp-project-builder mode:screen, one per screen)
   ├─ Context per screen: its design chunk + referenced components only
   ├─ Agent reads foundations from codebase (not from context)
   ├─ CHECKPOINT per screen: compile check
@@ -45,7 +45,7 @@ Implement designs as production-ready code in the codebase via phased pipeline w
 
 **Input:** Design chunks + research chunks + brief chunks + brand system chunks
 **Output:** Code in the codebase + `{project}/build/BUILD-LOG.md` + `{project}/build/SCAFFOLD-LOG.md`
-**Agent:** `gsp-builder` (spawned per phase with execution mode)
+**Agent:** `gsp-project-builder` (spawned per phase with execution mode)
 </objective>
 
 <execution_context>
@@ -115,7 +115,7 @@ After scaffold completes, verify `{PROJECT_PATH}/build/SCAFFOLD-LOG.md` exists. 
 
 ## Step 2.5: Load agent methodology
 
-Read `${CLAUDE_SKILL_DIR}/methodology/gsp-builder.md`. Include the full content as **Agent methodology** in all agent prompts below (Steps 3, 5, 7, 8).
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-project-builder.md`. Include the full content as **Agent methodology** in all agent prompts below (Steps 3, 5, 7, 8).
 
 ## Step 2.6: Load build references
 
@@ -125,11 +125,11 @@ Read these reference files:
 
 Hold their content for inlining into agent prompts in Steps 3, 5, 7, and 8.
 
-> **Note:** Anti-patterns are distilled into the `gsp-builder` agent prompt. Full ref remains on disk for edge-case agent lookup.
+> **Note:** Anti-patterns are distilled into the `gsp-project-builder` agent prompt. Full ref remains on disk for edge-case agent lookup.
 
 ## Step 3: Phase 2 — FOUNDATIONS
 
-Spawn `gsp-builder` agent with **execution_mode: foundations**.
+Spawn `gsp-project-builder` agent with **execution_mode: foundations**.
 
 ### Context for foundations agent (lean — no screen chunks):
 
@@ -365,11 +365,11 @@ Invoke `/gsp-phase-transition` with phase `build` and output directory `{PROJECT
 
 ## Step 7: Figma fallback
 
-For `implementation_target: figma`, skip the phased pipeline. Spawn a single `gsp-builder` agent with execution_mode: `full` and spec-only flag. Builder writes `build/CODE.md` + `build/components/` instead of editing codebase. Then continue from Step 6 (finalize).
+For `implementation_target: figma`, skip the phased pipeline. Spawn a single `gsp-project-builder` agent with execution_mode: `full` and spec-only flag. Builder writes `build/CODE.md` + `build/components/` instead of editing codebase. Then continue from Step 6 (finalize).
 
 ## Step 8: Revision mode
 
-For `needs-revision` status, spawn a single `gsp-builder` agent with execution_mode: `full` and `review/issues.md` contents. The agent fixes QA issues in the codebase and appends revision sections to BUILD-LOG.md.
+For `needs-revision` status, spawn a single `gsp-project-builder` agent with execution_mode: `full` and `review/issues.md` contents. The agent fixes QA issues in the codebase and appends revision sections to BUILD-LOG.md.
 
 ### Brand feedback on revisions
 

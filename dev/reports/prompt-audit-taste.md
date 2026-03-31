@@ -68,7 +68,7 @@ None.
 
 ---
 
-### `gsp/agents/gsp-critic.md` (66 lines)
+### `gsp/agents/gsp-project-critic.md` (66 lines)
 
 **Dead weight** (1 item)
 - Line ~17: "Every criticism must include a concrete fix." — This is then repeated more specifically in the Quality Standards section: "Fixes must be actionable ('Change X to Y' not 'Improve the thing')." The first instance is vague enough to be dead weight given the second exists.
@@ -224,7 +224,7 @@ These two 15-item lists overlap significantly in topic but differ in framing:
 |------|-------|------|-----------|---------|-------|--------|---------------|
 | anti-patterns.md | 174 | 1 | 0 | 1 | 0 | 4 | ~10 lines |
 | visual-taste.md | 121 | 0 | 0 | 0 | 2 | 3 | 0 (cross-refs only) |
-| gsp-critic.md | 66 | 1 | 1 | 0 | 0 | 1 | ~8 lines |
+| gsp-project-critic.md | 66 | 1 | 1 | 0 | 0 | 1 | ~8 lines |
 | prompt 09 | 51 | 0 | 1 | 0 | 1 | 3 | ~2 lines |
 | visual-effects.md | 476 | 0 | 0 | 0 | 0 | 0 | 0 |
 | block-patterns.md | 136 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -236,7 +236,7 @@ These two 15-item lists overlap significantly in topic but differ in framing:
 
 ## Top 5 highest-impact changes
 
-1. **Remove duplicated scoring table from gsp-critic.md** (lines ~32-39) — The agent already loads `nielsen-heuristics.md` which contains this table. Removing it saves 8 lines and eliminates a maintenance burden (two places to update if scoring changes). Impact: high (critic is used every pipeline run).
+1. **Remove duplicated scoring table from gsp-project-critic.md** (lines ~32-39) — The agent already loads `nielsen-heuristics.md` which contains this table. Removing it saves 8 lines and eliminates a maintenance burden (two places to update if scoring changes). Impact: high (critic is used every pipeline run).
 
 2. **Trim anti-patterns.md Motion section to cross-references** — The Motion anti-patterns (lines ~106-120) are restated with better detail in visual-effects.md. Replace the 6 motion anti-patterns with 2 lines: the pattern names + "See `visual-effects.md` for correct implementations." Impact: medium (anti-patterns.md is loaded by designer, builder, and critic).
 
@@ -252,6 +252,6 @@ These two 15-item lists overlap significantly in topic but differ in framing:
 
 The taste incorporation is **clean, well-structured work**. The new references (anti-patterns.md, visual-taste.md) are high-quality additions that fill genuine gaps. The enrichments to visual-effects.md and block-patterns.md are additive without creating conflicts. The main finding is expected overlap between files that serve different audiences (builder vs critic) with the same underlying design knowledge — this is intentional and mostly fine.
 
-The 2 contradictions found are minor (scoring scale semantic tension in gsp-critic.md, circular anti-pattern checking in prompt 09). Neither would cause bad outputs; they're efficiency issues, not correctness issues.
+The 2 contradictions found are minor (scoring scale semantic tension in gsp-project-critic.md, circular anti-pattern checking in prompt 09). Neither would cause bad outputs; they're efficiency issues, not correctness issues.
 
 No instances of anti-patterns.md contradicting visual-effects.md recommendations. The two files are properly complementary: one says what to avoid, the other provides what to use instead.

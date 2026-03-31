@@ -16,7 +16,7 @@ graph TB
     end
 
     subgraph "Agent Layer (11 agents)"
-        AG[gsp-designer, gsp-builder, gsp-critic, ...]
+        AG[gsp-project-designer, gsp-project-builder, gsp-project-critic, ...]
     end
 
     subgraph "Knowledge Layer"
@@ -112,13 +112,13 @@ graph LR
 
 | Skill | Agent(s) | SubagentStop hook | Forked |
 |-------|----------|-------------------|--------|
-| `project-design` | `gsp-designer` | screen chunks + INDEX.md + preview.html | yes |
-| `project-critique` | `gsp-critic` + `gsp-accessibility-auditor` | critique.md + prioritized-fixes.md + strengths.md | yes |
-| `project-build` | `gsp-builder` (N times) | BUILD-LOG.md + INDEX.md + no TODOs | no |
-| `project-review` | `gsp-reviewer` | acceptance-report.md + issues.md + INDEX.md + verdict | yes |
-| `brand-research` | `gsp-researcher` | -- | no |
+| `project-design` | `gsp-project-designer` | screen chunks + INDEX.md + preview.html | yes |
+| `project-critique` | `gsp-project-critic` + `gsp-accessibility-auditor` | critique.md + prioritized-fixes.md + strengths.md | yes |
+| `project-build` | `gsp-project-builder` (N times) | BUILD-LOG.md + INDEX.md + no TODOs | no |
+| `project-review` | `gsp-project-reviewer` | acceptance-report.md + issues.md + INDEX.md + verdict | yes |
+| `brand-research` | `gsp-brand-researcher` | -- | no |
 | `brand-strategy` | `gsp-brand-strategist` | -- | no |
-| `brand-identity` | `gsp-creative-director` | -- | no |
+| `brand-identity` | `gsp-brand-creative-director` | -- | no |
 | `brand-guidelines` | `gsp-brand-engineer` | -- | no |
 | `brand-audit` | `gsp-brand-auditor` | -- | no |
 | `brand-sync` | -- (inlined) | -- | no |
@@ -245,11 +245,11 @@ Agent `.md` files are thin stubs (~12 lines): frontmatter (tools, model, hooks) 
 gsp/skills/gsp-project-design/
 ├── SKILL.md                              ← orchestrator
 ├── methodology/
-│   └── gsp-designer.md                   ← agent methodology (loaded at spawn)
+│   └── gsp-project-designer.md            ← agent methodology (loaded at spawn)
 ├── apple-hig-patterns.md                 ← domain reference
 └── ...
 
-gsp/agents/gsp-designer.md               ← stub: tools + permissions only
+gsp/agents/gsp-project-designer.md       ← stub: tools + permissions only
 ```
 
 **Flow:** Skill reads `methodology/gsp-{agent}.md` → inlines into Agent tool prompt → agent gets clean context with full methodology.
@@ -343,7 +343,7 @@ graph LR
 
 **Hook** — A lifecycle callback defined in `gsp/hooks/hooks.json`. Runs automatically at specific events: `SessionStart` (context recovery after compaction), `SubagentStop` (verify agent wrote its expected deliverables), `PostToolUse` (lint files after Edit/Write). Hooks are prompt-type (inject verification instructions) or command-type (run a shell script).
 
-**Script** — Shell or JS utilities in `scripts/` invoked by hooks or the installer. `gsp-context-recovery.sh` rebuilds `.design/` context after compaction. `lint-check.sh` runs after gsp-builder writes files. `gsp-statusline.js` + `statusline-dispatcher.js` power the terminal status display.
+**Script** — Shell or JS utilities in `scripts/` invoked by hooks or the installer. `gsp-context-recovery.sh` rebuilds `.design/` context after compaction. `lint-check.sh` runs after gsp-project-builder writes files. `gsp-statusline.js` + `statusline-dispatcher.js` power the terminal status display.
 
 **Chunk** — A self-contained markdown file in `.design/` representing one atomic deliverable. Follows the format spec in `references/chunk-format.md`. Has a header line with phase, project, and generation date. Chunks are the integration unit: each phase reads prior chunks from disk and writes new ones. Indexed via `INDEX.md` files per phase.
 
@@ -363,13 +363,13 @@ graph LR
 
 **brand.ref** — A small file in each project directory that points to which brand the project uses. Contains brand name, relative path, consumed_at date, and identity_hash. This is how the project diamond knows which branding diamond to read.
 
-**tokens.json** — W3C design tokens in the brand's `patterns/` directory. The source of truth for colors, typography, spacing, elevation, radius. Consumed by `gsp-builder` to integrate into the codebase (CSS variables, Tailwind config, or theme file).
+**tokens.json** — W3C design tokens in the brand's `patterns/` directory. The source of truth for colors, typography, spacing, elevation, radius. Consumed by `gsp-project-builder` to integrate into the codebase (CSS variables, Tailwind config, or theme file).
 
 **INDEX.md** — Phase-level chunk index. Each phase directory has one. Contains a markdown table listing all chunks with file paths and approximate line counts. Used by downstream phases to discover what a prior phase produced.
 
 **exports/INDEX.md** — Cross-phase exports index with `<!-- BEGIN:{phase} -->` / `<!-- END:{phase} -->` markers. Each phase appends its key deliverables here. Provides a single entry point to all project artifacts.
 
-**BUILD-LOG.md** — Written by `gsp-builder` during the build phase. Records what files were created/modified per build sub-phase (foundations, each screen). Used by the review phase to know what to verify.
+**BUILD-LOG.md** — Written by `gsp-project-builder` during the build phase. Records what files were created/modified per build sub-phase (foundations, each screen). Used by the review phase to know what to verify.
 
 **MANIFEST.md** — Written at the end of build. Maps components, patterns, and files produced. Cross-references with `.design/system/COMPONENTS.md` to track what was added vs modified.
 

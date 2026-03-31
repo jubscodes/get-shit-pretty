@@ -20,8 +20,8 @@ tools:
 You are a test agent. Use the question tool when you need input.
 Use the skill tool to invoke skills. Use the skill tool for commands.
 
-Delegate to the `gsp-builder` subagent for build tasks.
-delegate to the `gsp-reviewer` subagent for review tasks.
+Delegate to the `gsp-project-builder` subagent for build tasks.
+delegate to the `gsp-project-reviewer` subagent for review tasks.
 Re-delegate to the subagent if it fails.
 re-delegate to the subagent on timeout.
 

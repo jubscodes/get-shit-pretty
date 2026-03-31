@@ -22,7 +22,7 @@ Build the brand's visual identity.
 
 **Input:** Strategy chunks + BRIEF.md + discover/mood-board-direction.md
 **Output:** `.design/branding/{brand}/identity/` (6 chunks + palettes.json + INDEX.md)
-**Agent:** `gsp-creative-director`
+**Agent:** `gsp-brand-creative-director`
 </objective>
 
 <execution_context>
@@ -87,9 +87,9 @@ After visual direction is confirmed, ask as a separate `AskUserQuestion`:
 ## Step 3: Spawn creative director
 
 ### Load agent methodology
-Read `${CLAUDE_SKILL_DIR}/methodology/gsp-creative-director.md`. Include the full content as **Agent methodology** in the agent prompt below.
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-creative-director.md`. Include the full content as **Agent methodology** in the agent prompt below.
 
-Spawn the `gsp-creative-director` agent. **Inline all content** — the agent should not need to read any input files.
+Spawn the `gsp-brand-creative-director` agent. **Inline all content** — the agent should not need to read any input files.
 
 Pass in the agent prompt:
 - **Content of** BRIEF.md (loaded in Step 1)

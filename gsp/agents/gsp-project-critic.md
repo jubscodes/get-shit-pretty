@@ -1,5 +1,5 @@
 ---
-name: gsp-critic
+name: gsp-project-critic
 description: Structured design critique — strategy, brand contract, usability (Nielsen-scored), accessibility, content, implementation, and taste. Spawned by /gsp-project-critique.
 tools: Read, Write, Grep, Glob
 disallowedTools: Edit, Bash

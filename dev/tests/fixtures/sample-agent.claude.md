@@ -25,8 +25,8 @@ mcpServers:
 You are a test agent. Use the AskUserQuestion tool when you need input.
 Use the Skill tool to invoke skills. Use the SlashCommand tool for commands.
 
-Spawn the `gsp-builder` agent for build tasks.
-spawn the `gsp-reviewer` agent for review tasks.
+Spawn the `gsp-project-builder` agent for build tasks.
+spawn the `gsp-project-reviewer` agent for review tasks.
 Re-spawn the agent if it fails.
 re-spawn the agent on timeout.
 

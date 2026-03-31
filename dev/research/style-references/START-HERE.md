@@ -52,7 +52,7 @@ GSP presets currently cover Philosophy (`.md`) and Tokens (`.yml`). The last thr
 
 **Constraints are as important as patterns.** The taste-skill approach of explicit "BANNED" lists with reasoning produces better output than prose descriptions. Agents need to know what's forbidden, not just what's preferred.
 
-**The redesign-skill's audit checklist** is essentially what our `gsp-critic` agent should internalize — 80+ specific anti-patterns organized by domain.
+**The redesign-skill's audit checklist** is essentially what our `gsp-project-critic` agent should internalize — 80+ specific anti-patterns organized by domain.
 
 **Impeccable's decomposition** (separate skills for color, type, animation, critique) validates GSP's composable skills approach.
 
@@ -112,9 +112,9 @@ effects:
 | `style-preset-schema.md` | Document the new blocks |
 | `/gsp:style` skill | Write `style-rules.md` chunk alongside tokens |
 | `/gsp:brand-patterns` | Pattern-architect inherits preset constraints, can extend but not violate |
-| `gsp-designer` agent | Constraints become hard rules in prompt |
-| `gsp-builder` agent | Validate against constraints during build |
-| `gsp-critic` agent | Check output against constraints in critique |
+| `gsp-project-designer` agent | Constraints become hard rules in prompt |
+| `gsp-project-builder` agent | Validate against constraints during build |
+| `gsp-project-critic` agent | Check output against constraints in critique |
 | SubagentStop hooks | Optionally grep for `never:` constraint violations |
 
 ## Approach

@@ -109,7 +109,7 @@ Every skill in `gsp/skills/` (except `get-shit-pretty`, which is the entry point
 Verify `gsp-update/SKILL.md` references all installer runtime flags (`--claude`, `--opencode`, `--gemini`, `--codex`, `--local`, `--global`, `--all`), current bundle layout (`templates/`), and doesn't reference legacy bundle paths in "what gets replaced" sections. Catches drift when installer evolves but update skill doesn't.
 
 ### C8: Claude-only field usage matches known set
-Canary test — grep agents for `memory:`, `background:`, `hooks:`, `isolation:`, `skills:`, `mcpServers:`. Compare against expected list (gsp-builder.md, gsp-reviewer.md). WARN if set changes so developer verifies converters handle new fields.
+Canary test — grep agents for `memory:`, `background:`, `hooks:`, `isolation:`, `skills:`, `mcpServers:`. Compare against expected list (gsp-project-builder.md, gsp-project-reviewer.md). WARN if set changes so developer verifies converters handle new fields.
 
 ## Step 4: Installer Checks (I)
 

@@ -1,5 +1,5 @@
 ---
-name: gsp-builder
+name: gsp-project-builder
 description: Implements designs in the codebase as production-ready frontend code. Spawned by /gsp-project-build.
 tools: Read, Write, Edit, Bash, Grep, Glob
 maxTurns: 100
