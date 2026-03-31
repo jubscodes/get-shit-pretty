@@ -18,7 +18,7 @@ GSP internal integrity checker for maintainers. Verifies that the framework's mo
 
 Source layout:
 - `gsp/skills/` — 34 skills (SKILL.md files, gsp-* prefixed dirs, with `domains/` and `references/` siblings)
-- `gsp/agents/` — 15 agents (gsp-*.md files)
+- `gsp/agents/` — 11 agents (gsp-*.md stub files, methodology in skills)
 - `gsp/templates/` — config, state, brief, roadmap templates
 - `bin/install.js` — multi-runtime installer
 - `VERSION`, `package.json` — version sources
@@ -123,7 +123,7 @@ PASS if exit 0, FAIL if syntax error.
 Verify ≥20 skills exist in `gsp/skills/`.
 
 ### I3: Source agent count
-Verify ≥14 agents exist in `gsp/agents/`.
+Verify ≥10 agents exist in `gsp/agents/`.
 
 ### I5: Bundle directories present
 Verify `gsp/templates` exists.
@@ -243,7 +243,7 @@ Contracts
 Installer
   ✅ I1. Installer syntax ........... PASS
   ✅ I2. Skills exist ............... PASS (21)
-  ✅ I3. Agents exist ............... PASS (15)
+  ✅ I3. Agents exist ............... PASS (11)
   ✅ I5. Bundle dirs ................ PASS
   ✅ I6. Files field ................ PASS
   ✅ I7. Codex skills path .......... PASS
@@ -289,7 +289,7 @@ Prompt Engineering
 - **Read-only** — do NOT modify any files, only report findings
 - **Be specific** — every issue names the exact file and suggests the exact fix
 - **Don't over-report** — if the same root cause triggers multiple checks, note it once and cross-reference
-- **Count everything** — the report should show exact counts (24 skills, 15 agents)
+- **Count everything** — the report should show exact counts (34 skills, 11 agents)
 - **Runtime compat uses baseline** — read the baseline.md reference file, don't re-derive from scratch
 
 </process>

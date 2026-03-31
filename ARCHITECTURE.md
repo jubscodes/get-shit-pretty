@@ -8,7 +8,7 @@ graph TB
         CLI["/gsp:start, /gsp:brand-research, ..."]
     end
 
-    subgraph "Skills Layer (30 skills)"
+    subgraph "Skills Layer (34 skills)"
         direction TB
         PS[Pipeline Skills]
         CS[Composable Skills]
@@ -20,8 +20,8 @@ graph TB
     end
 
     subgraph "Knowledge Layer"
-        PR[Prompts — 11 persona files]
-        RF[References — 20 domain knowledge files]
+        PR[Methodology — 11 files in skill dirs]
+        RF[References — domain knowledge in skill dirs]
         TM[Templates — 27 structural scaffolds]
     end
 
