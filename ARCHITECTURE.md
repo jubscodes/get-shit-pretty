@@ -15,7 +15,7 @@ graph TB
         US[Utility Skills]
     end
 
-    subgraph "Agent Layer (15 agents)"
+    subgraph "Agent Layer (12 agents)"
         AG[gsp-designer, gsp-builder, gsp-critic, ...]
     end
 
@@ -122,8 +122,8 @@ graph LR
 | `brand-identity` | `gsp-creative-director` | -- | no |
 | `brand-guidelines` | `gsp-brand-engineer` | -- | no |
 | `brand-audit` | `gsp-brand-auditor` | -- | no |
-| `brand-sync` | `gsp-brand-syncer` | -- | no |
-| `project-brief` | `gsp-scoper` | -- | no |
+| `brand-sync` | -- (inlined) | -- | no |
+| `project-brief` | -- (inlined) | -- | no |
 | `project-research` | `gsp-project-researcher` | -- | no |
 | `accessibility-audit` | `gsp-accessibility-auditor` | -- | no |
 | `art` / `pretty` | `gsp-ascii-artist` | -- | no |

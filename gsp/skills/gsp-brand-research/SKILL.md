@@ -60,6 +60,9 @@ While preparing the agent context, use `WebFetch` with `run_in_background: true`
 
 ## Step 3: Spawn researcher
 
+### Load agent methodology
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-researcher.md`. Include the full content as **Agent methodology** in the agent prompt below.
+
 Include any pre-fetched competitor content in the agent context.
 
 Spawn the `gsp-researcher` agent with:
@@ -69,6 +72,7 @@ Spawn the `gsp-researcher` agent with:
 - Style presets index (`INDEX.yml`) — agent matches research findings to existing aesthetics
 - User-confirmed scope adjustments
 - `brand_mode` from config.json
+- **Agent methodology** (loaded above)
 - Audit chunks if they exist
 - **Output path:** `{BRAND_PATH}/discover/`
 

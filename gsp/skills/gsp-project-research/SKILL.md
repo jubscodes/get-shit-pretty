@@ -81,6 +81,9 @@ If competitor URLs or reference sites are mentioned in BRIEF.md or `{PROJECT_PAT
 
 ## Step 2: Spawn project researcher
 
+### Load agent methodology
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-project-researcher.md`. Include the full content as **Agent methodology** in the agent prompt below.
+
 Spawn the `gsp-project-researcher` agent. **Inline all content** — the agent should not need to read any input files.
 
 Pass in the agent prompt:
@@ -90,6 +93,7 @@ Pass in the agent prompt:
 - **Content of** custom references (loaded in Step 1)
 - **Content of** BRIEF.md (loaded in Step 1)
 - Any pre-fetched reference content (from Step 1.75)
+- **Agent methodology** (loaded above)
 - Research output template (from execution_context)
 - `implementation_target`, `platform`, `tech_stack`
 - **Output path:** `{PROJECT_PATH}/research/`

@@ -116,6 +116,9 @@ Redesign the system from the ground up, informed by what exists.
 
 ## Step 3: Spawn brand engineer — Pass 1: Core
 
+### Load agent methodology
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-engineer.md`. Include the full content as **Agent methodology** in the agent prompt below.
+
 Spawn the `gsp-brand-engineer` agent. **Inline all content** — the agent should not need to read input files.
 
 Pass in the agent prompt:
@@ -123,6 +126,7 @@ Pass in the agent prompt:
 - **Content of** strategy chunks: voice-and-tone.md, archetype.md, positioning.md (loaded in Step 1)
 - **Content of** BRIEF.md (loaded in Step 1)
 - **Content of** style base preset `.yml` + `.md` (loaded in Step 1) — `.yml` as structural scaffold, `.md` as philosophy + implementation content for STYLE.md
+- **Agent methodology** (loaded above)
 - Patterns output template, design tokens reference (from execution_context)
 - The `system_strategy` and `tech_stack` values
 - **Output path:** `{BRAND_PATH}/patterns/`
@@ -187,11 +191,12 @@ If adjust → use `/gsp-brand-refine` with the concern, then re-present. If conf
 
 ## Step 4: Spawn brand engineer — Pass 2: Components
 
-Spawn the `gsp-brand-engineer` agent with:
+Spawn the `gsp-brand-engineer` agent with (reuse **Agent methodology** loaded in Step 3):
 - **Content of** the confirmed `{BRAND_PATH}/patterns/{brand-name}.yml`
 - **Content of** `{BRAND_PATH}/patterns/STYLE.md`
 - **Content of** `.design/system/STACK.md`, `COMPONENTS.md`, `TOKENS.md` (when loaded in Step 1.5)
 - The `system_strategy` and `tech_stack` values
+- **Agent methodology** (loaded in Step 3)
 - Design tokens reference (from execution_context)
 - **Output path:** `{BRAND_PATH}/patterns/`
 

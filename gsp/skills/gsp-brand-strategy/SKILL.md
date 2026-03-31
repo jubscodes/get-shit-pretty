@@ -103,6 +103,9 @@ If the Style Affinity section doesn't exist or discover was skipped, skip this s
 
 ## Step 6: Spawn strategist
 
+### Load agent methodology
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-strategist.md`. Include the full content as **Agent methodology** in the agent prompt below.
+
 With confirmed archetype, positioning, and voice direction, spawn the `gsp-brand-strategist` agent with:
 - BRIEF.md content
 - All discover chunks
@@ -111,6 +114,7 @@ With confirmed archetype, positioning, and voice direction, spawn the `gsp-brand
 - Brand archetypes reference
 - Positioning frameworks reference
 - Voice-tone reference
+- **Agent methodology** (loaded above)
 - Audit chunks if they exist: `evolution-map.md`, `equity-analysis.md`
 - `brand_mode` from config.json
 - `style_base` from config.json (may be empty)

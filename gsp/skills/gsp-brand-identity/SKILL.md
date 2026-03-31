@@ -86,6 +86,9 @@ After visual direction is confirmed, ask as a separate `AskUserQuestion`:
 
 ## Step 3: Spawn creative director
 
+### Load agent methodology
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-creative-director.md`. Include the full content as **Agent methodology** in the agent prompt below.
+
 Spawn the `gsp-creative-director` agent. **Inline all content** — the agent should not need to read any input files.
 
 Pass in the agent prompt:
@@ -94,6 +97,7 @@ Pass in the agent prompt:
 - **Content of** discover/mood-board-direction.md (loaded in Step 1)
 - **Content of** style base preset `.yml` + `.md` (when loaded in Step 1) — `.yml` as structural scaffold, `.md` as design philosophy and signature techniques
 - **Content of** audit/brand-inventory.md (when loaded in Step 2)
+- **Agent methodology** (loaded above)
 - Identity output template, color composition reference (from execution_context)
 - User-confirmed visual direction + constraints
 - **Output path:** `{BRAND_PATH}/identity/`

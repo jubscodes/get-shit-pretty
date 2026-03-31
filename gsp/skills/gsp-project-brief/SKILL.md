@@ -7,7 +7,6 @@ allowed-tools:
   - Read
   - Write
   - Bash
-  - Agent
   - Grep
   - Glob
 ---
@@ -24,7 +23,6 @@ Scope the project and plan adaptations from the brand system.
 
 **Input:** Brand system (via brand.ref) + project BRIEF.md + config.json
 **Output:** `{project}/brief/` (scope.md, target-adaptations.md, conditionals, INDEX.md)
-**Agent:** `gsp-scoper`
 </objective>
 
 <execution_context>
@@ -77,30 +75,62 @@ Suggest to the user:
 
 If the project scope feels large, suggest breaking it into multiple bounded issues — each one a focused deliverable that can be reviewed independently.
 
-## Step 2: Spawn scoper
+## Step 2: Scope the project
 
-Spawn the `gsp-scoper` agent. **Inline all content** — the agent should not need to read any input files.
-
-Pass in the agent prompt:
-- **Content of** brand patterns foundation + component chunks (loaded in Step 1)
-- **Content of** brand `.yml` preset (loaded in Step 1)
-- **Content of** BRIEF.md (loaded in Step 1)
-- **Content of** `.design/system/STACK.md`, `COMPONENTS.md` (when loaded in Step 1)
-- **Content of** CHANGELOG.md + relevant MANIFEST.md files (loaded in Step 1)
-- Brief output template (from execution_context)
-- `implementation_target`, `design_scope`, `codebase_type`
-- **Output path:** `{PROJECT_PATH}/brief/`
+Using all context loaded in Step 1, scope the project directly. Act as a Senior Design Project Lead bridging the brand system and the project's specific needs.
 
 If any sibling project is active and its scope overlaps with this project, flag it: "⚠️ {name} is actively working on {scope}. Coordinate to avoid conflicts."
 If this project modifies components from a sibling's manifest, note provenance.
 
-The agent writes chunks directly:
-- `brief/scope.md`
-- `brief/target-adaptations.md`
-- `brief/install-manifest.md` (shadcn/rn-reusables)
-- `brief/gap-analysis.md` (existing target)
-- `brief/file-references.md` (existing target)
-- `brief/INDEX.md`
+### Scoping process
+
+1. **Analyze brief** — what's being built, for whom, on what platforms
+2. **Define screen list** — prioritized screens from brief, user flows, success criteria
+3. **Map component scope** — which brand system components this project needs
+4. **Identify adaptations** — project-specific variants, overrides, or extensions to brand components
+5. **Map to implementation target** — connect design components to target primitives (shadcn, rn-reusables, existing, code)
+6. **Gap analysis** (existing codebases) — what's in the brand system but missing from the codebase
+7. **Generate install manifest** (shadcn/rn-reusables) — install commands for needed components
+8. **Issue framing** — suggest how to break the project into bounded, shippable issues
+
+### Quality standards
+
+- Every screen has a clear purpose and priority level
+- Component adaptations reference specific brand system components
+- Gap analysis is concrete (component names, token names)
+- Install manifests are copy-paste ready
+- Scope boundaries are explicit (what's in, what's out)
+
+### Write chunks to `{PROJECT_PATH}/brief/`
+
+Use the brief output template from execution_context for chunk formatting.
+
+1. **`scope.md`** (~80-120 lines) — prioritized screen list, component scope, project boundaries, success criteria, dependencies, issue framing
+2. **`target-adaptations.md`** (~60-100 lines) — token overrides, component adaptations, platform considerations, implementation target mapping
+3. **`install-manifest.md`** (shadcn/rn-reusables only) — install commands for all needed components
+4. **`gap-analysis.md`** (existing target only) — components/tokens in brand system but not in codebase
+5. **`file-references.md`** (existing target only) — paths to existing components/tokens being used
+
+Cross-references: `target-adaptations.md` links to `{BRAND_PATH}/patterns/components/{name}.md`; `gap-analysis.md` links to brand system components and tokens; `scope.md` references the project BRIEF.md.
+
+### Write `INDEX.md`
+
+```markdown
+# Brief
+> Phase: brief | Project: {name} | Generated: {DATE}
+
+## Scoping
+
+| Chunk | File | ~Lines |
+|-------|------|--------|
+| Scope | [scope.md](./scope.md) | ~{N} |
+| Target Adaptations | [target-adaptations.md](./target-adaptations.md) | ~{N} |
+| Install Manifest | [install-manifest.md](./install-manifest.md) | ~{N} |
+| Gap Analysis | [gap-analysis.md](./gap-analysis.md) | ~{N} |
+| File References | [file-references.md](./file-references.md) | ~{N} |
+```
+
+Only include rows for chunks that were actually produced.
 
 ## Step 3: Write exports
 

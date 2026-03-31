@@ -73,16 +73,22 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 Read these reference files:
 - `${CLAUDE_SKILL_DIR}/../gsp-accessibility-audit/wcag-checklist.md`
 - `${CLAUDE_SKILL_DIR}/../gsp-color/references/color-composition.md`
+- `${CLAUDE_SKILL_DIR}/../gsp-accessibility-audit/methodology/gsp-accessibility-auditor.md`
 
 Hold their content for inlining into agent prompts in Step 2.
 
 > **Note:** Nielsen's heuristics, visual taste, and anti-patterns are distilled into the `gsp-critic` agent prompt. Full refs remain on disk for edge-case agent lookup.
+
+## Step 1.9: Load agent methodology
+
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-critic.md`. Include the full content as **Agent methodology** in the gsp-critic agent prompt below.
 
 ## Step 2: Spawn critics (parallel)
 
 **Inline all project content** — agents should not need to read project files. Reference files for supplementary evaluation (visual-taste, anti-patterns) are on disk — the critic reads them as needed.
 
 **Agent 1: gsp-critic** — Pass in the agent prompt:
+- **Agent methodology** (loaded in Step 1.9)
 - **Content of** all design chunks (loaded in Step 1)
 - **Content of** all identity chunks (loaded in Step 1)
 - **Content of** all patterns chunks (loaded in Step 1)
@@ -100,6 +106,7 @@ Hold their content for inlining into agent prompts in Step 2.
 - **Content of** identity color-system.md and typography.md (loaded in Step 1)
 - **Content of** patterns tokens chunks (loaded in Step 1)
 - **Content of** WCAG checklist reference (loaded in Step 1.8)
+- **Agent methodology** (loaded in Step 1.8)
 - `accessibility_level` from config (defaults to "WCAG 2.2 AA")
 - Output path: `{PROJECT_PATH}/critique/`
 

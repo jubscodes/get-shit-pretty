@@ -336,10 +336,10 @@ if should_run installer; then
 
   # I3: Source agent count
   AGENT_COUNT=$(find gsp/agents -name 'gsp-*.md' -type f | wc -l | tr -d ' ')
-  if [[ "$AGENT_COUNT" -ge 14 ]]; then
+  if [[ "$AGENT_COUNT" -ge 11 ]]; then
     pass "I3 Agents exist ($AGENT_COUNT)"
   else
-    warn "I3 Low agent count" "Expected ≥14, found $AGENT_COUNT"
+    warn "I3 Low agent count" "Expected ≥11, found $AGENT_COUNT"
   fi
 
   # I5: Bundle directories exist

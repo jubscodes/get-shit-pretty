@@ -78,9 +78,14 @@ Also read `{BRAND_PATH}/patterns/{brand-name}.yml` (the brand's token/style sour
 6. Route: display verdict and suggest `/gsp-launch` or re-run `/gsp-project-review`
 7. **Stop here**
 
+## Step 1.8: Load agent methodology
+
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-reviewer.md`. Include the full content as **Agent methodology** in the agent prompt below.
+
 ## Step 2: Spawn reviewer
 
 Spawn the `gsp-reviewer` agent with:
+- **Agent methodology** (loaded in Step 1.8)
 - BUILD-LOG.md contents
 - Actual codebase file paths (from BUILD-LOG.md)
 - `git diff` output

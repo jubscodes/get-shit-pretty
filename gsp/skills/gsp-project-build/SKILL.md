@@ -113,13 +113,17 @@ After scaffold completes, verify `{PROJECT_PATH}/build/SCAFFOLD-LOG.md` exists. 
 
 **Gate:** If scaffold reports build failure, stop and surface the error. Do not proceed to foundations with a broken build.
 
-## Step 2.5: Load build references
+## Step 2.5: Load agent methodology
+
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-builder.md`. Include the full content as **Agent methodology** in all agent prompts below (Steps 3, 5, 7, 8).
+
+## Step 2.6: Load build references
 
 Read these reference files:
 - `${CLAUDE_SKILL_DIR}/visual-effects.md`
 - `${CLAUDE_SKILL_DIR}/../gsp-project-design/block-patterns.md`
 
-Hold their content for inlining into agent prompts in Steps 3 and 5.
+Hold their content for inlining into agent prompts in Steps 3, 5, 7, and 8.
 
 > **Note:** Anti-patterns are distilled into the `gsp-builder` agent prompt. Full ref remains on disk for edge-case agent lookup.
 
@@ -139,7 +143,8 @@ Spawn `gsp-builder` agent with **execution_mode: foundations**.
 | `.design/system/COMPONENTS.md` | Existing components (if exists) |
 | `{PROJECT_PATH}/config.json` | Tech stack, target |
 | Build output template (from execution_context) | Build log structure |
-| Visual effects, block patterns refs (loaded in Step 2.5) | Design patterns + CSS recipes |
+| Visual effects, block patterns refs (loaded in Step 2.6) | Design patterns + CSS recipes |
+| Agent methodology (loaded in Step 2.5) | Builder role, process, quality standards |
 
 ### Agent instructions:
 
@@ -237,7 +242,8 @@ Build screens sequentially. For each screen in `SCREENS`:
 | `{PROJECT_PATH}/research/reference-specs.md` (if exists) | Technical specs |
 | `{PROJECT_PATH}/critique/prioritized-fixes.md` (if exists) | Critique fixes relevant to this screen |
 | Build output template (from execution_context) | Build log structure |
-| Visual effects, block patterns refs (loaded in Step 2.5) | Design patterns + CSS recipes |
+| Visual effects, block patterns refs (loaded in Step 2.6) | Design patterns + CSS recipes |
+| Agent methodology (loaded in Step 2.5) | Builder role, process, quality standards |
 
 **Does NOT receive:** other screen chunks, brand `.yml` (already integrated into codebase), full brand system, research monoliths.
 

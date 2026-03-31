@@ -49,15 +49,6 @@
         ]
       },
       {
-        "matcher": "gsp-scoper",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "The gsp-scoper agent just finished. Verify: (1) brief/scope.md was written, (2) brief/target-adaptations.md was written, (3) brief/INDEX.md was written. Report any missing deliverables to the user."
-          }
-        ]
-      },
-      {
         "matcher": "gsp-campaign-director",
         "hooks": [
           {

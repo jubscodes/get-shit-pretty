@@ -1,7 +1,7 @@
 # Rate Limit Investigation — GSP Skills
 
 **Date:** 2026-03-29
-**Status:** In progress — design direction confirmed, spec pending
+**Status:** Resolved — gsp-start slimmed, 3 agents eliminated, 12 agents stubbed (1,536 → 140 lines at session start)
 
 ## Problem
 

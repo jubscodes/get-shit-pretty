@@ -65,6 +65,9 @@ Read `{PROJECT_PATH}/BRIEF.md` — audience, goals.
 
 ## Step 2: Spawn campaign director
 
+### Load agent methodology
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-campaign-director.md`. Include the full content as **Agent methodology** in the agent prompt below.
+
 Spawn the `gsp-campaign-director` agent. **Inline all content** — the agent should not need to read any input files.
 
 Pass in the agent prompt:
@@ -72,6 +75,7 @@ Pass in the agent prompt:
 - **Content of** strategy voice-and-tone.md + messaging.md (loaded in Step 1)
 - **Content of** all design screen chunks (loaded in Step 1)
 - **Content of** BRIEF.md (loaded in Step 1)
+- **Agent methodology** (loaded above)
 - Launch output template (from execution_context)
 - **Output path:** `{PROJECT_PATH}/launch/`
 
