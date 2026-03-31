@@ -75,7 +75,7 @@ Also read `{BRAND_PATH}/patterns/{brand-name}.yml` (the brand's token/style sour
 3. Write `{PROJECT_PATH}/review/INDEX.md`
 4. Update `{PROJECT_PATH}/exports/INDEX.md` between `<!-- BEGIN:review -->` and `<!-- END:review -->` with populated table
 5. Update `{PROJECT_PATH}/STATE.md` — set Phase 6 (Review) to `complete` or `needs-revision`
-6. Route: display verdict and suggest `/gsp-launch` or re-run `/gsp-project-review`
+6. Route: display verdict or re-run `/gsp-project-review`
 7. **Stop here**
 
 ## Step 1.8: Load agent methodology

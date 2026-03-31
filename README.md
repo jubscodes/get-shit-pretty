@@ -74,8 +74,6 @@ GSP follows a **dual-diamond** architecture — two complete design cycles that 
     └──────────────────────────┘           │    ↓                 │      │
                                            │  project-review ─────┘      │
                                            └──────────────────────────────┘
-                                                      ↓
-                                                  /gsp:launch (optional)
 ```
 
 All artifacts live in `.design/` within your project directory.
@@ -156,14 +154,6 @@ Validate what was built against the original design intent. Catches drift betwee
 
 ---
 
-### Optional: `/gsp:launch`
-
-Create marketing campaign assets — landing page copy, social media content, launch materials. Your product ships with a story, not just code.
-
-**Creates:** `.design/projects/{project}/launch/`
-
----
-
 ## Commands
 
 ### Entry
@@ -195,7 +185,6 @@ Create marketing campaign assets — landing page copy, social media content, la
 | `/gsp:project-critique` | Nielsen's heuristics + WCAG 2.2 AA audit |
 | `/gsp:project-build` | Translate designs to production code |
 | `/gsp:project-review` | QA validation against designs |
-| `/gsp:launch` | Marketing campaign assets |
 
 ### Utility
 
@@ -212,7 +201,7 @@ Create marketing campaign assets — landing page copy, social media content, la
 
 ## Agents
 
-GSP ships with 15 specialized agents, each modeled after a real design discipline:
+GSP ships with 14 specialized agents, each modeled after a real design discipline:
 
 | Agent | Role |
 |-------|------|
@@ -228,7 +217,6 @@ GSP ships with 15 specialized agents, each modeled after a real design disciplin
 | **Accessibility Auditor** | WCAG 2.2 AA compliance auditing |
 | **Design-to-Code Builder** | Designs to production-ready frontend code |
 | **Deliverable Reviewer** | QA validation — implementation against design intent |
-| **Campaign Director** | Marketing campaign asset libraries |
 | **Codebase Scanner** | Tech stack detection and existing pattern inventory |
 | **ASCII Artist** | Terminal ASCII art — context-aware art generation |
 
@@ -243,7 +231,7 @@ GSP works across all major AI coding tools. The installer converts Claude Code's
 | Feature | Claude Code | OpenCode | Gemini CLI | Codex CLI |
 |---------|:-----------:|:--------:|:----------:|:---------:|
 | Skills | 30 | 30 | 30 | 30 |
-| Agents | 15 | 15 | 15 (experimental) | — |
+| Agents | 14 | 14 | 14 (experimental) | — |
 | Slash syntax | `/gsp:command` | `/gsp-command` | `/gsp:command` | `$gsp-command` |
 | Prompts + templates | Yes | Yes | Yes | Yes |
 | References | Yes | Yes | Yes | Yes |
@@ -329,7 +317,7 @@ get-shit-pretty/
 │   └── install.js         Multi-runtime installer
 ├── scripts/               Hook scripts and utilities
 ├── gsp/                   Source of truth for all content
-│   ├── agents/            15 subagents (gsp-*.md)
+│   ├── agents/            14 subagents (gsp-*.md)
 │   ├── skills/            38 skills (*/SKILL.md)
 │   ├── hooks/             Hooks (hooks.json)
 │   ├── templates/         Config, state, brief, roadmap templates

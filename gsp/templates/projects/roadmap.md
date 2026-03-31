@@ -50,10 +50,3 @@
 **Output:** `review/` (acceptance report + issues)
 **Goal:** Validate built deliverables against design intent — token compliance, screen coverage, accessibility.
 
----
-
-## Optional: Launch
-**Command:** `/gsp-launch`
-**Input:** Brand identity + strategy + design
-**Output:** `launch/` (campaign chunks)
-**Goal:** Create marketing campaign assets for launch. Run when needed.

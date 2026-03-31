@@ -15,12 +15,12 @@ graph TB
         US[Utility Skills]
     end
 
-    subgraph "Agent Layer (12 agents)"
+    subgraph "Agent Layer (11 agents)"
         AG[gsp-designer, gsp-builder, gsp-critic, ...]
     end
 
     subgraph "Knowledge Layer"
-        PR[Prompts — 12 persona files]
+        PR[Prompts — 11 persona files]
         RF[References — 20 domain knowledge files]
         TM[Templates — 27 structural scaffolds]
     end
@@ -81,7 +81,6 @@ graph LR
     end
 
     BP -->|"brand.ref"| PBR
-    PRV -.->|optional| LA["Launch<br/><sub>gsp-launch</sub>"]
 ```
 
 ## Skill → Agent → Hook wiring
@@ -117,7 +116,6 @@ graph LR
 | `project-critique` | `gsp-critic` + `gsp-accessibility-auditor` | critique.md + prioritized-fixes.md + strengths.md | yes |
 | `project-build` | `gsp-builder` (N times) | BUILD-LOG.md + INDEX.md + no TODOs | no |
 | `project-review` | `gsp-reviewer` | acceptance-report.md + issues.md + INDEX.md + verdict | yes |
-| `launch` | `gsp-campaign-director` | -- | yes |
 | `brand-research` | `gsp-researcher` | -- | no |
 | `brand-strategy` | `gsp-brand-strategist` | -- | no |
 | `brand-identity` | `gsp-creative-director` | -- | no |
@@ -181,7 +179,6 @@ graph TD
     subgraph "sonnet + effort: high"
         S1[brand-research]
         S2[project-research]
-        S3[launch]
     end
 
     subgraph "sonnet (no effort)"
@@ -257,7 +254,7 @@ gsp/agents/gsp-designer.md               ← stub: tools + permissions only
 
 **Flow:** Skill reads `methodology/gsp-{agent}.md` → inlines into Agent tool prompt → agent gets clean context with full methodology.
 
-**Session-start cost:** 12 agent stubs = ~140 lines (was 1,536 lines with full definitions). Methodology loads on-demand when the skill spawns the agent.
+**Session-start cost:** 11 agent stubs = ~130 lines (was 1,536 lines with full definitions). Methodology loads on-demand when the skill spawns the agent.
 
 **Shared agents:** Secondary consumers read methodology via cross-skill path: `${CLAUDE_SKILL_DIR}/../gsp-{primary-skill}/methodology/gsp-{agent}.md`
 
@@ -272,7 +269,7 @@ gsp/agents/gsp-designer.md               ← stub: tools + permissions only
 | `project-build` | 5 includes (909L) | 2 includes (126L) | **-783L** |
 | `gsp-start` | 10 includes (561L) | 1 include (87L) | **-474L** |
 | **Total (skills)** | **3,364L** | **417L** | **-2,947L** |
-| `agents (session start)` | 1,536L | 140L | **-1,396L** |
+| `agents (session start)` | 1,536L | 130L | **-1,406L** |
 
 ## `.design/` filesystem structure
 

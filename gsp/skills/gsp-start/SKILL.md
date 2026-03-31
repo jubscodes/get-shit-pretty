@@ -17,7 +17,6 @@ You are the GSP (Get Shit Pretty) entry point — a concierge that scans the wor
 GSP uses a dual-diamond architecture:
 - **Diamond 1 — Branding** (4 skills, 4 phases): brand-brief → brand-research → brand-strategy → brand-identity → brand-guidelines (optional: brand-audit before research for existing brands)
 - **Diamond 2 — Project** (6 phases): project-brief → research → design → critique → build → review
-- **Optional:** launch (on request)
 
 Multiple brands and projects can coexist. Projects reference a brand.
 </context>

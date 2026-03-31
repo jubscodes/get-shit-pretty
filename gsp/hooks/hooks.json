@@ -49,15 +49,6 @@
         ]
       },
       {
-        "matcher": "gsp-campaign-director",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "The gsp-campaign-director agent just finished. Verify: (1) launch/campaign-strategy.md was written, (2) launch/INDEX.md was written. Report any missing deliverables to the user."
-          }
-        ]
-      },
-      {
         "matcher": "gsp-builder",
         "hooks": [
           {

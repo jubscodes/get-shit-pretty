@@ -68,7 +68,6 @@ Skill names are left-padded with 4 spaces. Descriptions start at column 27 (4 in
 
     /gsp-doctor            check project health
     /gsp-update            update GSP to latest version
-    /gsp-launch            create launch and marketing assets (optional)
 
   ─── Easter Eggs ────────────────────
 

@@ -17,7 +17,7 @@ Edit source under `gsp/`; the installer keeps runtimes in sync. Never edit insid
 
 ## Architecture
 
-Dual-diamond: **Branding** (discover → strategy → identity → patterns) + **Project** (brief → research → design → critique → build → review). Optional: launch. Verbal identity is merged into brand-strategy (4 phases, not 5).
+Dual-diamond: **Branding** (discover → strategy → identity → patterns) + **Project** (brief → research → design → critique → build → review). Verbal identity is merged into brand-strategy (4 phases, not 5).
 
 ### Two skill layers
 
@@ -29,7 +29,7 @@ Own domain knowledge as sibling files (`domains/`, `references/`). Serve the ful
 
 Rule: **never duplicate domain knowledge in pipeline skills.** If an expertise skill owns it, pipeline skills read or invoke.
 
-**Pipeline skills** (orchestrators): `brand-research`, `brand-strategy`, `brand-identity`, `brand-guidelines`, `project-brief`, `project-research`, `project-design`, `project-critique`, `project-build`, `project-review`, `launch`
+**Pipeline skills** (orchestrators): `brand-research`, `brand-strategy`, `brand-identity`, `brand-guidelines`, `project-brief`, `project-research`, `project-design`, `project-critique`, `project-build`, `project-review`
 
 Own workflow: state management, phase gates, agent spawning, user interaction. Consume domain knowledge from expertise skills. Produce artifacts to `.design/`.
 
@@ -54,8 +54,8 @@ The filesystem is the integration layer — skills produce artifacts to `.design
 
 | Directory | Contents |
 |-----------|----------|
-| `gsp/skills/` | 35 skills — each is a `gsp-<name>/SKILL.md` directory with optional `domains/` and `references/` siblings |
-| `gsp/agents/` | 12 subagents (`gsp-{name}.md`) |
+| `gsp/skills/` | 34 skills — each is a `gsp-<name>/SKILL.md` directory with optional `domains/` and `references/` siblings |
+| `gsp/agents/` | 11 subagents (`gsp-{name}.md`) |
 | `gsp/hooks/` | Hooks (`hooks.json`) |
 | `gsp/prompts/` | Reserved (agent methodology lives in skill `methodology/` directories) |
 | `gsp/templates/` | Project/brand config, state, brief, roadmap templates |
@@ -85,9 +85,9 @@ Cross-references between skills use `gsp-` prefixed paths: `${CLAUDE_SKILL_DIR}/
 
 | Runtime | Skills location | Agents | Bundle location |
 |---------|-----------------|--------|-----------------|
-| Claude Code | `.claude/skills/` | `.claude/agents/` (12) | `.claude/{prompts,templates}/` |
-| OpenCode | `.opencode/skills/` | `.opencode/agents/` (12) | `.opencode/{prompts,templates}/` |
-| Gemini CLI | `.gemini/skills/` | `.gemini/agents/` (12, experimental) | `.gemini/{prompts,templates}/` |
+| Claude Code | `.claude/skills/` | `.claude/agents/` (11) | `.claude/{prompts,templates}/` |
+| OpenCode | `.opencode/skills/` | `.opencode/agents/` (11) | `.opencode/{prompts,templates}/` |
+| Gemini CLI | `.gemini/skills/` | `.gemini/agents/` (11, experimental) | `.gemini/{prompts,templates}/` |
 | Codex CLI | **`.agents/skills/`** (not `.codex/`) | **None** (not supported) | `.codex/{prompts,templates}/` |
 
 Skills are the single source for all runtimes — commands have been removed.
@@ -128,7 +128,7 @@ Exceptions — agents that legitimately need to read from disk:
 Understanding what loads when is critical for keeping sessions lean. These costs apply to every conversation, not just GSP workflows.
 
 **Session start (always loaded, every conversation):**
-- `.claude/agents/*.md` — agent stubs (frontmatter + one-line body, ~12 lines each, ~140 lines total)
+- `.claude/agents/*.md` — agent stubs (frontmatter + one-line body, ~12 lines each, ~130 lines total)
 - `.claude/references/*.md` — full file content of every reference file
 - Skill descriptions — the `description:` line from each SKILL.md (negligible)
 - `CLAUDE.md` files — project and user-level
@@ -145,7 +145,7 @@ Understanding what loads when is critical for keeping sessions lean. These costs
 
 **Implications for GSP:**
 - **`gsp/references/` is empty — all references live in skill directories.** Domain knowledge is colocated with the expertise skill that owns it. Pipeline skills read from expertise skills via cross-skill paths. Nothing installs to `.claude/references/`.
-- **Agent stubs are lean, methodology lives in skills.** Agent `.md` files contain only frontmatter (tools, model, hooks) + a one-line body. Full methodology lives in `gsp/skills/{skill}/methodology/gsp-{agent}.md` and is read by the skill at spawn time. This keeps session-start cost minimal (~140 lines for 12 agents vs ~1,500 for full definitions).
+- **Agent stubs are lean, methodology lives in skills.** Agent `.md` files contain only frontmatter (tools, model, hooks) + a one-line body. Full methodology lives in `gsp/skills/{skill}/methodology/gsp-{agent}.md` and is read by the skill at spawn time. This keeps session-start cost minimal (~130 lines for 11 agents vs ~1,500 for full definitions).
 - **Skill sibling files are free until used.** A skill directory with 74 `.yml` presets costs zero at session start. Use this for reference material, examples, methodology, and templates that the skill reads on demand.
 - **Cross-skill references use relative paths:** `${CLAUDE_SKILL_DIR}/../gsp-other-skill/ref.md` — this reads the file on demand with zero session-start cost.
 
@@ -168,7 +168,7 @@ These rules minimize token waste across the pipeline. Enforced by audit tests C1
 
 **Model and effort routing:** Every skill must declare `model:` in frontmatter. Pipeline creative/technical phases use `opus` + `effort: high`. Research, composable, utility, and fun skills use `sonnet`. The installer strips `model:` and `effort:` for non-Claude runtimes.
 
-**Context fork for pure dispatchers:** Pipeline skills that have zero interactive steps (no `AskUserQuestion` before agent spawn) must use `context: fork` in frontmatter. This isolates execution_context references from the main conversation window. Currently forked: `project-design`, `project-critique`, `project-review`, `launch`. Never fork skills with interactive steps — test C12 enforces this.
+**Context fork for pure dispatchers:** Pipeline skills that have zero interactive steps (no `AskUserQuestion` before agent spawn) must use `context: fork` in frontmatter. This isolates execution_context references from the main conversation window. Currently forked: `project-design`, `project-critique`, `project-review`. Never fork skills with interactive steps — test C12 enforces this.
 
 **Double-dispatch is intentional:** Forked skills use the Agent tool inside the fork to spawn executors. Do NOT collapse this with the `agent:` frontmatter field. The fork isolates the orchestrator; the Agent tool gives the executor a clean start. The orchestrator owns validation, routing, and state updates — the agent owns creative/technical execution.
 
@@ -176,7 +176,7 @@ These rules minimize token waste across the pipeline. Enforced by audit tests C1
 
 **Templates loaded at write time.** Skills that write artifacts from templates (e.g., `gsp-start` writing BRIEF.md, STATE.md) must read templates at the point of writing, not in execution_context. Pattern: `Read templates from ${CLAUDE_SKILL_DIR}/../../templates/{path}/ and write artifacts`.
 
-**SubagentStop hooks for all chunk-producing agents.** Every agent that writes deliverable chunks must have a SubagentStop hook in `gsp/hooks/hooks.json` that verifies expected outputs exist. Covered: `gsp-designer`, `gsp-critic`, `gsp-creative-director`, `gsp-brand-engineer`, `gsp-campaign-director`, `gsp-builder`, `gsp-reviewer`.
+**SubagentStop hooks for all chunk-producing agents.** Every agent that writes deliverable chunks must have a SubagentStop hook in `gsp/hooks/hooks.json` that verifies expected outputs exist. Covered: `gsp-designer`, `gsp-critic`, `gsp-creative-director`, `gsp-brand-engineer`, `gsp-builder`, `gsp-reviewer`.
 
 **Filesystem is the integration layer.** Phases consume prior-phase output from disk (`.design/`), never from conversation context. Forked phases write STATE.md and artifact files to disk — these persist across fork boundaries. No phase should rely on conversation history for prior-phase artifacts.
 

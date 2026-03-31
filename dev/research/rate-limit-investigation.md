@@ -67,7 +67,7 @@ Multiple GSP skills hit Anthropic API rate limits during normal usage:
 
 ### Agent-spawning skills (15)
 
-gsp-start, gsp-brand-research, gsp-brand-strategy, gsp-brand-identity, gsp-brand-guidelines, gsp-brand-audit, gsp-brand-sync, gsp-project-brief, gsp-project-research, gsp-project-design, gsp-project-critique, gsp-project-build, gsp-project-review, gsp-launch, gsp-art
+gsp-start, gsp-brand-research, gsp-brand-strategy, gsp-brand-identity, gsp-brand-guidelines, gsp-brand-audit, gsp-brand-sync, gsp-project-brief, gsp-project-research, gsp-project-design, gsp-project-critique, gsp-project-build, gsp-project-review, gsp-art
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: get-shit-pretty
-description: "Design engineering for AI coding tools. Full pipeline: brand research, strategy, identity, guidelines, UI design, critique, accessibility audit, build, and launch. Expertise skills (color, typography, visuals) serve the entire pipeline. 15 specialized agents with Apple HIG, Nielsen's heuristics, WCAG 2.2 AA, and design token standards."
+description: "Design engineering for AI coding tools. Full pipeline: brand research, strategy, identity, guidelines, UI design, critique, accessibility audit, build, and review. Expertise skills (color, typography, visuals) serve the entire pipeline. 14 specialized agents with Apple HIG, Nielsen's heuristics, WCAG 2.2 AA, and design token standards."
 user-invocable: false
 model: opus
 effort: high
@@ -30,7 +30,7 @@ color · typography · visuals · accessibility · style
 research → strategy → identity → guidelines
 
 ◆ Project
-brief → research → design → critique → build → review → launch
+brief → research → design → critique → build → review
                                 ↑                  │
                                 └──── loop ────────┘
 ```
@@ -47,7 +47,6 @@ Each pipeline phase spawns specialized agents. Expertise skills carry domain kno
 - **Project Critique** — Nielsen's 10 heuristics + WCAG 2.2 AA audit
 - **Project Build** — production code from your design system
 - **Project Review** — QA validation against designs
-- **Launch** — marketing campaign assets
 
 All artifacts live in `.design/` inside your project. Design decisions as code, versioned alongside your codebase.
 
