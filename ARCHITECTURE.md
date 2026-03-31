@@ -93,7 +93,7 @@ graph LR
     end
 
     subgraph "Agent (executor)"
-        A["gsp-{name}.md<br/>creative/technical work"]
+        A["gsp-{name}.md stub<br/>+ methodology from skill"]
     end
 
     subgraph "Hook (verifier)"
@@ -101,11 +101,12 @@ graph LR
     end
 
     S -->|"1. context: fork<br/>isolates orchestrator"| F["Fork boundary"]
-    F -->|"2. Agent tool<br/>clean executor context"| A
-    A -->|"3. writes chunks"| D[".design/"]
-    A -->|"4. completes"| H
-    H -->|"5. verify files exist"| D
-    F -->|"6. STATE.md update"| D
+    F -->|"2. Read methodology/<br/>from skill sibling"| M["methodology/gsp-{name}.md"]
+    M -->|"3. Agent tool<br/>inline methodology + content"| A
+    A -->|"4. writes chunks"| D[".design/"]
+    A -->|"5. completes"| H
+    H -->|"6. verify files exist"| D
+    F -->|"7. STATE.md update"| D
 ```
 
 ### Wiring table
@@ -126,7 +127,7 @@ graph LR
 | `project-brief` | -- (inlined) | -- | no |
 | `project-research` | `gsp-project-researcher` | -- | no |
 | `accessibility-audit` | `gsp-accessibility-auditor` | -- | no |
-| `art` / `pretty` | `gsp-ascii-artist` | -- | no |
+| `art` / `pretty` | -- (inlined) | -- | no |
 
 ## Context flow in a forked skill
 
@@ -143,10 +144,10 @@ sequenceDiagram
     Fork->>Disk: Step 0-1: Read STATE.md, config, brand, brief
     Disk-->>Fork: project artifacts
 
-    Fork->>Disk: Step 2.5: Read references
-    Disk-->>Fork: apple-hig, visual-effects, etc.
+    Fork->>Disk: Step 2.5: Read references + methodology
+    Disk-->>Fork: apple-hig, visual-effects, methodology/gsp-{name}.md
 
-    Fork->>Agent: Step 3: Agent tool (all content inlined)
+    Fork->>Agent: Step 3: Agent tool (methodology + content inlined)
     Note over Agent: Clean context:<br/>only inlined content
 
     Agent->>Disk: Write screen chunks, INDEX.md
@@ -239,6 +240,29 @@ graph TD
     style EC2 fill:#4a2,stroke:#fff,color:#fff
 ```
 
+### Agent methodology extraction
+
+Agent `.md` files are thin stubs (~12 lines): frontmatter (tools, model, hooks) + one-line body. Full methodology lives in the spawning skill's `methodology/` directory:
+
+```
+gsp/skills/gsp-project-design/
+├── SKILL.md                              ← orchestrator
+├── methodology/
+│   └── gsp-designer.md                   ← agent methodology (loaded at spawn)
+├── apple-hig-patterns.md                 ← domain reference
+└── ...
+
+gsp/agents/gsp-designer.md               ← stub: tools + permissions only
+```
+
+**Flow:** Skill reads `methodology/gsp-{agent}.md` → inlines into Agent tool prompt → agent gets clean context with full methodology.
+
+**Session-start cost:** 12 agent stubs = ~140 lines (was 1,536 lines with full definitions). Methodology loads on-demand when the skill spawns the agent.
+
+**Shared agents:** Secondary consumers read methodology via cross-skill path: `${CLAUDE_SKILL_DIR}/../gsp-{primary-skill}/methodology/gsp-{agent}.md`
+
+**Inlined agents (no stub):** 3 agents were eliminated — their work folded directly into the skill: `project-brief` (was scoper), `brand-sync` (was syncer), `art`/`pretty` (was ascii-artist).
+
 ### Context savings per skill
 
 | Skill | Before | After | Saved |
@@ -247,7 +271,8 @@ graph TD
 | `project-critique` | 8 includes (871L) | 3 includes (105L) | **-766L** |
 | `project-build` | 5 includes (909L) | 2 includes (126L) | **-783L** |
 | `gsp-start` | 10 includes (561L) | 1 include (87L) | **-474L** |
-| **Total** | **3,364L** | **417L** | **-2,947L** |
+| **Total (skills)** | **3,364L** | **417L** | **-2,947L** |
+| `agents (session start)` | 1,536L | 140L | **-1,396L** |
 
 ## `.design/` filesystem structure
 
@@ -311,9 +336,9 @@ graph LR
 
 **Skill** — A markdown file (`gsp/skills/{name}/SKILL.md`) that defines a user-invocable command (`/gsp:{name}`). Contains YAML frontmatter + `<context>`, `<objective>`, `<execution_context>`, and `<process>` sections. Skills are orchestrators: they validate prerequisites, load context from disk, spawn agents, and update state. The single source of truth for all runtimes.
 
-**Agent** — A markdown file (`gsp/agents/gsp-{name}.md`) defining a specialized executor. Spawned by skills via the Agent tool into a fresh context. Agents receive all content inlined in their prompt — they don't re-read input files (exceptions: builder reads live codebase, reviewer uses Grep/Glob on source). Each agent is owned by one or more skills.
+**Agent** — A stub markdown file (`gsp/agents/gsp-{name}.md`) defining a specialized executor's tool permissions and identity. Full methodology lives in the spawning skill's `methodology/` directory and is inlined at spawn time. Spawned by skills via the Agent tool into a fresh context. Agents receive all content inlined in their prompt — they don't re-read input files (exceptions: builder reads live codebase, reviewer uses Grep/Glob on source). Each agent is owned by one or more skills. Stubs are ~12 lines each to minimize session-start context cost.
 
-**Prompt** — (Deprecated) Agent methodology now lives directly in agent definitions (`gsp/agents/gsp-*.md`). The `gsp/prompts/` directory is reserved but empty.
+**Prompt** — (Deprecated) Agent methodology lives in skill `methodology/` directories (`gsp/skills/{skill}/methodology/gsp-{agent}.md`), not in agent definitions or prompts. The `gsp/prompts/` directory is reserved but empty.
 
 **Reference** — Domain knowledge (`gsp/references/{name}.md`, 55-760 lines) that agents need for their work. Examples: Nielsen's 10 heuristics, WCAG 2.2 checklist, Apple HIG patterns, typography scale definitions, visual effects vocabulary. Loaded at spawn time via explicit Read calls, NOT in execution_context.
 
