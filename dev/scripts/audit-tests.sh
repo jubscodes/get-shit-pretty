@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # GSP Integrity Test Suite
 # Run from repo root: bash dev/scripts/audit-tests.sh [suite]
-# Suites: all, versions, contracts, installer, runtime, templates, unit, prompts
+# Suites: all, versions, contracts, installer, runtime, templates, unit, prompts, tokenbudget
 # Exit code: number of failures
 
 set -uo pipefail
@@ -1051,6 +1051,54 @@ if should_run unit; then
     pass "U2 Installer integration tests"
   else
     fail "U2 Installer integration tests" "see output above"
+  fi
+fi
+
+# ── TB: Token Budget ───────────────────────────────────
+
+if should_run tokenbudget; then
+  header "Token Budget"
+
+  if [[ -f dev/scripts/token-budget.sh ]]; then
+    bash dev/scripts/token-budget.sh
+
+    # Check for red-threshold skills
+    RED_SKILLS=0
+    for skill_dir in gsp/skills/*/; do
+      [[ -f "$skill_dir/SKILL.md" ]] || continue
+      body=$(wc -l < "$skill_dir/SKILL.md" | tr -d ' ')
+
+      # Count unique agent references that match actual agent files
+      spawns=0
+      for agent_file in gsp/agents/gsp-*.md; do
+        [[ -f "$agent_file" ]] || continue
+        agent_name=$(basename "$agent_file" .md)
+        if grep -q "$agent_name" "$skill_dir/SKILL.md" 2>/dev/null; then
+          spawns=$((spawns + 1))
+        fi
+      done
+
+      fork=0
+      grep -q 'context:.*fork' "$skill_dir/SKILL.md" 2>/dev/null && fork=1
+
+      meth=0
+      if [[ -d "$skill_dir/methodology" ]]; then
+        for mf in "$skill_dir"/methodology/*.md; do
+          [[ -f "$mf" ]] && meth=$((meth + $(wc -l < "$mf" | tr -d ' ')))
+        done
+      fi
+
+      score=$((body + (spawns * 500) + (fork * 300) + meth))
+      [[ $score -ge 1000 ]] && RED_SKILLS=$((RED_SKILLS + 1))
+    done
+
+    if [[ $RED_SKILLS -eq 0 ]]; then
+      pass "TB1 No skills above red threshold (1000)"
+    else
+      warn "TB1 Skills above red threshold" "$RED_SKILLS skill(s) score >= 1000"
+    fi
+  else
+    fail "TB1 Token budget script missing" "dev/scripts/token-budget.sh not found"
   fi
 fi
 
