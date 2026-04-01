@@ -4,6 +4,28 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+## [0.7.1] — 2026-04-01
+
+### Changed
+- **exec_context refactor** — 6 skills moved ~1,579 lines of pass-through refs to spawn-time reads. Orchestrators no longer load content they only forward to agents (brand-strategy, brand-guidelines, brand-identity, brand-research, accessibility-audit, project-critique)
+- **Agent stubs architecture** — 12 agents extracted to lean frontmatter stubs (~130 lines total), methodology moved to skill directories. Session-start context reduced from ~1,536 to ~140 lines
+- **Shared scoring library** — `score_skill()`, constants, and pipeline definitions extracted to `lib-scoring.sh`, shared by `token-budget.sh` and `benchmark.sh`
+- **Model/effort enforcement removed** — skills no longer declare `model:` or `effort:` in frontmatter; users control model selection
+- **Style preset cleanup** — stripped duplicated role preamble from 34 style `.md` files
+
+### Added
+- `dev/scripts/benchmark.sh` — token budget benchmarking: capture snapshots, compare against release baseline, track trajectory across versions
+- `dev/scripts/lib-scoring.sh` — shared scoring library for token budget tools
+- `dev/skills/gspdev-benchmark/` — interactive benchmark skill wrapping the script
+- 8 release snapshots (v0.5.0–v0.7.0) in `dev/benchmarks/` showing weight trajectory
+- `dev/scripts/token-budget.sh` — static token budget analyzer with pipeline path tracing
+- `dev/scripts/token-proxy-start.sh` — live token proxy for measuring real API usage
+- `gsp-brand-brief` skill — extracted from `gsp-start` for dedicated brand brief collection
+
+### Removed
+- `gsp-launch` skill and `gsp-campaign-director` agent
+- `gsp-brand-syncer`, `gsp-scoper`, `gsp-ascii-artist` agents (consolidated or removed)
+
 ## [0.7.0] — 2026-03-29
 
 ### Added
