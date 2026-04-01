@@ -219,6 +219,75 @@ main() {
   echo ""
   echo "  $skill_count skills scored · total weight: $total_score"
   echo ""
+
+  # ── Pipeline Paths ───────────────────────────────────────
+  echo "── Pipeline Paths ───────────────────────────────────────"
+
+  # Define pipeline paths as associative arrays
+  # Order matters for display, so use indexed arrays with ordered paths
+  declare -a path_names=(
+    "brand diamond"
+    "project diamond"
+    "quick flow"
+    "full e2e"
+  )
+
+  declare -a path_skills=(
+    "gsp-start gsp-brand-brief gsp-brand-research gsp-brand-strategy gsp-brand-identity gsp-brand-guidelines"
+    "gsp-project-brief gsp-project-research gsp-project-design gsp-project-critique gsp-project-build gsp-project-review"
+    "gsp-start gsp-style gsp-project-brief"
+    "gsp-start gsp-brand-brief gsp-brand-research gsp-brand-strategy gsp-brand-identity gsp-brand-guidelines gsp-project-brief gsp-project-research gsp-project-design gsp-project-critique gsp-project-build gsp-project-review"
+  )
+
+  # Score each path
+  for i in "${!path_names[@]}"; do
+    local path_name="${path_names[$i]}"
+    local skills_str="${path_skills[$i]}"
+    local path_score=0
+    local path_count=0
+    local heaviest_skill=""
+    local heaviest_score=0
+
+    # Parse and score each skill in the path
+    for skill_name in $skills_str; do
+      local skill_dir="$ROOT/gsp/skills/$skill_name"
+      if [[ -d "$skill_dir" ]]; then
+        path_count=$((path_count + 1))
+        result=$(score_skill "$skill_dir")
+
+        # Extract score
+        local score="${result%%|*}"
+        path_score=$((path_score + score))
+
+        # Track heaviest skill
+        if (( score > heaviest_score )); then
+          heaviest_score=$score
+          heaviest_skill=$skill_name
+        fi
+      fi
+    done
+
+    # Determine color based on average score per skill
+    local avg_score=0
+    if (( path_count > 0 )); then
+      avg_score=$((path_score / path_count))
+    fi
+
+    local color=""
+    if (( avg_score < YELLOW_THRESH )); then
+      color=$GREEN
+    elif (( avg_score < RED_THRESH )); then
+      color=$YELLOW
+    else
+      color=$RED
+    fi
+
+    # Print path with color
+    printf "  ${color}%-25s${RESET} %5d  (%d skills, heaviest: %s at %d)\n" \
+      "$path_name" "$path_score" "$path_count" "$heaviest_skill" "$heaviest_score"
+  done
+
+  echo ""
 }
 
 main "$@"
