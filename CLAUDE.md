@@ -214,17 +214,20 @@ Internal development tools live in `dev/` (versioned in repo, never installed to
 |------|---------|
 | `dev/skills/gspdev-audit/` | Pipeline integrity checker — contracts, installer, runtime compat, versions, templates |
 | `dev/skills/gspdev-runtime-compat/` | Fetch live runtime docs and flag drift against GSP installer |
-| `dev/scripts/audit-tests.sh` | Automated test suite (65 tests across 7 suites) |
+| `dev/scripts/audit-tests.sh` | Automated test suite (65 tests across 8 suites) |
+| `dev/scripts/token-budget.sh` | Static token budget analyzer — scores skills by estimated API weight |
+| `dev/scripts/token-proxy-start.sh` | Live token proxy — mitmproxy addon for measuring real API usage |
 
 ### Running tests
 
 ```bash
-bash dev/scripts/audit-tests.sh          # all suites
-bash dev/scripts/audit-tests.sh versions  # version sync only
-bash dev/scripts/audit-tests.sh contracts # skill↔agent contracts
-bash dev/scripts/audit-tests.sh installer # installer correctness
-bash dev/scripts/audit-tests.sh runtime   # runtime compatibility
-bash dev/scripts/audit-tests.sh templates # template coherence
+bash dev/scripts/audit-tests.sh              # all suites
+bash dev/scripts/audit-tests.sh versions     # version sync only
+bash dev/scripts/audit-tests.sh contracts    # skill↔agent contracts
+bash dev/scripts/audit-tests.sh installer    # installer correctness
+bash dev/scripts/audit-tests.sh runtime      # runtime compatibility
+bash dev/scripts/audit-tests.sh templates    # template coherence
+bash dev/scripts/audit-tests.sh tokenbudget  # token budget analysis
 ```
 
 ### Using dev skills
