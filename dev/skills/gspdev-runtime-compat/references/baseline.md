@@ -138,7 +138,7 @@ Dropped: all Claude-specific fields
 | allowed-tools    | list    | Tool allowlist                     |
 | disallowed-tools | list    | Tool denylist                      |
 | maxTurns         | number  | Max conversation turns             |
-| model            | string  | Model override (sonnet, opus, etc) |
+| model            | string  | Model override (optional, not used by GSP) |
 | color            | string  | Terminal color name                 |
 | permissionMode   | string  | Permission level                   |
 | user-invocable   | boolean | Can user invoke directly           |
