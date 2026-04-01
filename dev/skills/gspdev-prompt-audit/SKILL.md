@@ -8,7 +8,7 @@ allowed-tools:
   - Bash
   - Write
   - Agent
-argument-hint: "[scope] e.g. 'all', 'skills', 'agents', or a specific name like 'gsp-designer'"
+argument-hint: "[scope] e.g. 'all', 'skills', 'agents', or a specific name like 'gsp-project-designer'"
 ---
 
 <context>
@@ -35,7 +35,7 @@ Analyze prompt files for semantic quality issues and produce a report with speci
 - **`all`** or empty — analyze everything (skills → agents → cross-file)
 - **`skills`** — skills only
 - **`agents`** — agents only
-- **specific name** (e.g. `gsp-designer`) — analyze that one file + its paired skill/agent
+- **specific name** (e.g. `gsp-project-designer`) — analyze that one file + its paired skill/agent
 
 ## Step 2: Run automated baseline first
 
@@ -171,7 +171,7 @@ Automated baseline: {P1-P7 summary}
 ## Step 6: Prioritize
 
 After the report, highlight the top 5 highest-impact changes — files where cutting dead weight would most improve output quality. Consider:
-1. Files used most frequently in the pipeline (gsp-start, gsp-project-build, gsp-designer)
+1. Files used most frequently in the pipeline (gsp-start, gsp-project-build, gsp-project-designer)
 2. Files with the most issues per line
 3. Files where contradictions exist (these actively hurt output)
 

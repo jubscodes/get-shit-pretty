@@ -12,8 +12,8 @@ Load templates from `./../../templates/config.json`.
 Use the ask_user tool to ask for project name.
 Use the activate_skill tool to chain skills.
 
-Invoke the `gsp-builder` subagent with the brief.
-invoke the `gsp-reviewer` subagent for QA.
+Invoke the `gsp-project-builder` subagent with the brief.
+invoke the `gsp-project-reviewer` subagent for QA.
 
 Text with *(emphasis)* here.
 

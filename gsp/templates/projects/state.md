@@ -44,10 +44,6 @@
 ## Status Values
 <!-- pending | in-progress | complete | needs-revision | skipped -->
 
-## Launch
-<!-- Optional — run /gsp-launch when needed -->
-<!-- Status: not started -->
-
 ## Decisions
 <!-- Key design decisions and rationale -->
 

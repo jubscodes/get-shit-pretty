@@ -152,15 +152,15 @@ describe('applyOpencodeBodyReplacements', () => {
 
   it('converts Spawn agent pattern', () => {
     assert.equal(
-      applyOpencodeBodyReplacements('Spawn the `gsp-builder` agent'),
-      'Delegate to the `gsp-builder` subagent'
+      applyOpencodeBodyReplacements('Spawn the `gsp-project-builder` agent'),
+      'Delegate to the `gsp-project-builder` subagent'
     );
   });
 
   it('converts spawn (lowercase) agent pattern', () => {
     assert.equal(
-      applyOpencodeBodyReplacements('spawn the `gsp-reviewer` agent'),
-      'delegate to the `gsp-reviewer` subagent'
+      applyOpencodeBodyReplacements('spawn the `gsp-project-reviewer` agent'),
+      'delegate to the `gsp-project-reviewer` subagent'
     );
   });
 
@@ -198,8 +198,8 @@ describe('applyGeminiBodyReplacements', () => {
 
   it('converts Spawn agent pattern', () => {
     assert.equal(
-      applyGeminiBodyReplacements('Spawn the `gsp-builder` agent'),
-      'Invoke the `gsp-builder` subagent'
+      applyGeminiBodyReplacements('Spawn the `gsp-project-builder` agent'),
+      'Invoke the `gsp-project-builder` subagent'
     );
   });
 
@@ -237,8 +237,8 @@ describe('applyCodexBodyReplacements', () => {
 
   it('converts Spawn agent pattern', () => {
     assert.equal(
-      applyCodexBodyReplacements('Spawn the `gsp-builder` agent'),
-      'Spawn a worker agent for `gsp-builder`'
+      applyCodexBodyReplacements('Spawn the `gsp-project-builder` agent'),
+      'Spawn a worker agent for `gsp-project-builder`'
     );
   });
 

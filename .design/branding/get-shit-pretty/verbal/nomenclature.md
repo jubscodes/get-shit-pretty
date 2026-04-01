@@ -28,7 +28,7 @@ Rule: commands use kebab-case after the colon. 1-2 words max.
 
 Pattern: `gsp-{role}`
 
-- `gsp-designer` — not `gsp-design-agent`
+- `gsp-project-designer` — not `gsp-design-agent`
 - `gsp-strategist` — human role names, not function descriptions
 - `gsp-verbal` — exception: phase name when role name is awkward
 

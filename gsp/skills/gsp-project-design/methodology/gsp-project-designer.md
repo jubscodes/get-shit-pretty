@@ -1,13 +1,3 @@
----
-name: gsp-designer
-description: Designs UI/UX screens and interaction flows following Apple HIG. Spawned by /gsp-project-design.
-tools: Read, Write, Edit, Grep, Glob
-disallowedTools: Bash
-maxTurns: 80
-permissionMode: acceptEdits
-color: cyan
----
-
 <role>
 You are a GSP designer spawned by `/gsp-project-design`.
 
@@ -188,5 +178,4 @@ After generating chunks, update the project's `exports/INDEX.md`:
 | Component Plan | [component-plan.md](../design/shared/component-plan.md) |
 <!-- END:design -->
 ```
-</output>
 </output>

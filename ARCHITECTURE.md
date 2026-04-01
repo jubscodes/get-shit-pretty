@@ -8,20 +8,20 @@ graph TB
         CLI["/gsp:start, /gsp:brand-research, ..."]
     end
 
-    subgraph "Skills Layer (30 skills)"
+    subgraph "Skills Layer (34 skills)"
         direction TB
         PS[Pipeline Skills]
         CS[Composable Skills]
         US[Utility Skills]
     end
 
-    subgraph "Agent Layer (15 agents)"
-        AG[gsp-designer, gsp-builder, gsp-critic, ...]
+    subgraph "Agent Layer (11 agents)"
+        AG[gsp-project-designer, gsp-project-builder, gsp-project-critic, ...]
     end
 
     subgraph "Knowledge Layer"
-        PR[Prompts — 12 persona files]
-        RF[References — 20 domain knowledge files]
+        PR[Methodology — 11 files in skill dirs]
+        RF[References — domain knowledge in skill dirs]
         TM[Templates — 27 structural scaffolds]
     end
 
@@ -81,7 +81,6 @@ graph LR
     end
 
     BP -->|"brand.ref"| PBR
-    PRV -.->|optional| LA["Launch<br/><sub>gsp-launch</sub>"]
 ```
 
 ## Skill → Agent → Hook wiring
@@ -93,7 +92,7 @@ graph LR
     end
 
     subgraph "Agent (executor)"
-        A["gsp-{name}.md<br/>creative/technical work"]
+        A["gsp-{name}.md stub<br/>+ methodology from skill"]
     end
 
     subgraph "Hook (verifier)"
@@ -101,32 +100,32 @@ graph LR
     end
 
     S -->|"1. context: fork<br/>isolates orchestrator"| F["Fork boundary"]
-    F -->|"2. Agent tool<br/>clean executor context"| A
-    A -->|"3. writes chunks"| D[".design/"]
-    A -->|"4. completes"| H
-    H -->|"5. verify files exist"| D
-    F -->|"6. STATE.md update"| D
+    F -->|"2. Read methodology/<br/>from skill sibling"| M["methodology/gsp-{name}.md"]
+    M -->|"3. Agent tool<br/>inline methodology + content"| A
+    A -->|"4. writes chunks"| D[".design/"]
+    A -->|"5. completes"| H
+    H -->|"6. verify files exist"| D
+    F -->|"7. STATE.md update"| D
 ```
 
 ### Wiring table
 
 | Skill | Agent(s) | SubagentStop hook | Forked |
 |-------|----------|-------------------|--------|
-| `project-design` | `gsp-designer` | screen chunks + INDEX.md + preview.html | yes |
-| `project-critique` | `gsp-critic` + `gsp-accessibility-auditor` | critique.md + prioritized-fixes.md + strengths.md | yes |
-| `project-build` | `gsp-builder` (N times) | BUILD-LOG.md + INDEX.md + no TODOs | no |
-| `project-review` | `gsp-reviewer` | acceptance-report.md + issues.md + INDEX.md + verdict | yes |
-| `launch` | `gsp-campaign-director` | -- | yes |
-| `brand-research` | `gsp-researcher` | -- | no |
+| `project-design` | `gsp-project-designer` | screen chunks + INDEX.md + preview.html | yes |
+| `project-critique` | `gsp-project-critic` + `gsp-accessibility-auditor` | critique.md + prioritized-fixes.md + strengths.md | yes |
+| `project-build` | `gsp-project-builder` (N times) | BUILD-LOG.md + INDEX.md + no TODOs | no |
+| `project-review` | `gsp-project-reviewer` | acceptance-report.md + issues.md + INDEX.md + verdict | yes |
+| `brand-research` | `gsp-brand-researcher` | -- | no |
 | `brand-strategy` | `gsp-brand-strategist` | -- | no |
-| `brand-identity` | `gsp-creative-director` | -- | no |
+| `brand-identity` | `gsp-brand-creative-director` | -- | no |
 | `brand-guidelines` | `gsp-brand-engineer` | -- | no |
 | `brand-audit` | `gsp-brand-auditor` | -- | no |
-| `brand-sync` | `gsp-brand-syncer` | -- | no |
-| `project-brief` | `gsp-scoper` | -- | no |
+| `brand-sync` | -- (inlined) | -- | no |
+| `project-brief` | -- (inlined) | -- | no |
 | `project-research` | `gsp-project-researcher` | -- | no |
 | `accessibility-audit` | `gsp-accessibility-auditor` | -- | no |
-| `art` / `pretty` | `gsp-ascii-artist` | -- | no |
+| `art` / `pretty` | -- (inlined) | -- | no |
 
 ## Context flow in a forked skill
 
@@ -143,10 +142,10 @@ sequenceDiagram
     Fork->>Disk: Step 0-1: Read STATE.md, config, brand, brief
     Disk-->>Fork: project artifacts
 
-    Fork->>Disk: Step 2.5: Read references
-    Disk-->>Fork: apple-hig, visual-effects, etc.
+    Fork->>Disk: Step 2.5: Read references + methodology
+    Disk-->>Fork: apple-hig, visual-effects, methodology/gsp-{name}.md
 
-    Fork->>Agent: Step 3: Agent tool (all content inlined)
+    Fork->>Agent: Step 3: Agent tool (methodology + content inlined)
     Note over Agent: Clean context:<br/>only inlined content
 
     Agent->>Disk: Write screen chunks, INDEX.md
@@ -159,64 +158,14 @@ sequenceDiagram
     Note over Main: No context pollution
 ```
 
-## Model routing
+## Model guidance
 
-```mermaid
-graph TD
-    subgraph "opus + effort: high"
-        O1[project-design]
-        O2[project-critique]
-        O3[project-build]
-        O4[project-review]
-        O5[brand-strategy]
-        O6[brand-identity]
-        O7[brand-patterns]
-        O8[brand-audit]
-        O9[brand-sync]
-        O10[accessibility-audit]
-        O11[get-shit-pretty]
-    end
+Model selection is the user's choice — skills do not enforce a specific model. Pipeline creative/technical skills include a hint in their `description:` field as passive guidance.
 
-    subgraph "sonnet + effort: high"
-        S1[brand-research]
-        S2[project-research]
-        S3[launch]
-    end
-
-    subgraph "sonnet (no effort)"
-        S4[palette]
-        S5[typescale]
-        S6[accessibility]
-        S7[style]
-        S8[design-system]
-        S9[scaffold]
-        S10[start]
-        S11[progress]
-        S12[help]
-        S13[doctor]
-        S14[update]
-        S15[add-reference]
-        S16[brand-refine]
-        S17[project-brief]
-        S18[art]
-        S19[pretty]
-    end
-
-    style O1 fill:#4a2,stroke:#fff,color:#fff
-    style O2 fill:#4a2,stroke:#fff,color:#fff
-    style O3 fill:#4a2,stroke:#fff,color:#fff
-    style O4 fill:#4a2,stroke:#fff,color:#fff
-    style O5 fill:#4a2,stroke:#fff,color:#fff
-    style O6 fill:#4a2,stroke:#fff,color:#fff
-    style O7 fill:#4a2,stroke:#fff,color:#fff
-    style O8 fill:#4a2,stroke:#fff,color:#fff
-    style O9 fill:#4a2,stroke:#fff,color:#fff
-    style O10 fill:#4a2,stroke:#fff,color:#fff
-    style O11 fill:#4a2,stroke:#fff,color:#fff
-    style S1 fill:#26a,stroke:#fff,color:#fff
-    style S2 fill:#26a,stroke:#fff,color:#fff
-    style S3 fill:#26a,stroke:#fff,color:#fff
-```
+**Recommendations** (not enforced):
+- **Creative/technical phases** (design, critique, build, strategy, identity, guidelines) — benefit from the most capable model available
+- **Research/utility phases** (research, scaffold, doctor, start, help) — work well with faster/cheaper models
+- **Expertise skills** (color, typography, accessibility, style) — work well with any model
 
 ## Execution context optimization
 
@@ -239,6 +188,29 @@ graph TD
     style EC2 fill:#4a2,stroke:#fff,color:#fff
 ```
 
+### Agent methodology extraction
+
+Agent `.md` files are thin stubs (~12 lines): frontmatter (tools, hooks) + one-line body. Full methodology lives in the spawning skill's `methodology/` directory:
+
+```
+gsp/skills/gsp-project-design/
+├── SKILL.md                              ← orchestrator
+├── methodology/
+│   └── gsp-project-designer.md            ← agent methodology (loaded at spawn)
+├── apple-hig-patterns.md                 ← domain reference
+└── ...
+
+gsp/agents/gsp-project-designer.md       ← stub: tools + permissions only
+```
+
+**Flow:** Skill reads `methodology/gsp-{agent}.md` → inlines into Agent tool prompt → agent gets clean context with full methodology.
+
+**Session-start cost:** 11 agent stubs = ~130 lines (was 1,536 lines with full definitions). Methodology loads on-demand when the skill spawns the agent.
+
+**Shared agents:** Secondary consumers read methodology via cross-skill path: `${CLAUDE_SKILL_DIR}/../gsp-{primary-skill}/methodology/gsp-{agent}.md`
+
+**Inlined agents (no stub):** 3 agents were eliminated — their work folded directly into the skill: `project-brief` (was scoper), `brand-sync` (was syncer), `art`/`pretty` (was ascii-artist).
+
 ### Context savings per skill
 
 | Skill | Before | After | Saved |
@@ -247,7 +219,8 @@ graph TD
 | `project-critique` | 8 includes (871L) | 3 includes (105L) | **-766L** |
 | `project-build` | 5 includes (909L) | 2 includes (126L) | **-783L** |
 | `gsp-start` | 10 includes (561L) | 1 include (87L) | **-474L** |
-| **Total** | **3,364L** | **417L** | **-2,947L** |
+| **Total (skills)** | **3,364L** | **417L** | **-2,947L** |
+| `agents (session start)` | 1,536L | 130L | **-1,406L** |
 
 ## `.design/` filesystem structure
 
@@ -311,9 +284,9 @@ graph LR
 
 **Skill** — A markdown file (`gsp/skills/{name}/SKILL.md`) that defines a user-invocable command (`/gsp:{name}`). Contains YAML frontmatter + `<context>`, `<objective>`, `<execution_context>`, and `<process>` sections. Skills are orchestrators: they validate prerequisites, load context from disk, spawn agents, and update state. The single source of truth for all runtimes.
 
-**Agent** — A markdown file (`gsp/agents/gsp-{name}.md`) defining a specialized executor. Spawned by skills via the Agent tool into a fresh context. Agents receive all content inlined in their prompt — they don't re-read input files (exceptions: builder reads live codebase, reviewer uses Grep/Glob on source). Each agent is owned by one or more skills.
+**Agent** — A stub markdown file (`gsp/agents/gsp-{name}.md`) defining a specialized executor's tool permissions and identity. Full methodology lives in the spawning skill's `methodology/` directory and is inlined at spawn time. Spawned by skills via the Agent tool into a fresh context. Agents receive all content inlined in their prompt — they don't re-read input files (exceptions: builder reads live codebase, reviewer uses Grep/Glob on source). Each agent is owned by one or more skills. Stubs are ~12 lines each to minimize session-start context cost.
 
-**Prompt** — (Deprecated) Agent methodology now lives directly in agent definitions (`gsp/agents/gsp-*.md`). The `gsp/prompts/` directory is reserved but empty.
+**Prompt** — (Deprecated) Agent methodology lives in skill `methodology/` directories (`gsp/skills/{skill}/methodology/gsp-{agent}.md`), not in agent definitions or prompts. The `gsp/prompts/` directory is reserved but empty.
 
 **Reference** — Domain knowledge (`gsp/references/{name}.md`, 55-760 lines) that agents need for their work. Examples: Nielsen's 10 heuristics, WCAG 2.2 checklist, Apple HIG patterns, typography scale definitions, visual effects vocabulary. Loaded at spawn time via explicit Read calls, NOT in execution_context.
 
@@ -321,7 +294,7 @@ graph LR
 
 **Hook** — A lifecycle callback defined in `gsp/hooks/hooks.json`. Runs automatically at specific events: `SessionStart` (context recovery after compaction), `SubagentStop` (verify agent wrote its expected deliverables), `PostToolUse` (lint files after Edit/Write). Hooks are prompt-type (inject verification instructions) or command-type (run a shell script).
 
-**Script** — Shell or JS utilities in `scripts/` invoked by hooks or the installer. `gsp-context-recovery.sh` rebuilds `.design/` context after compaction. `lint-check.sh` runs after gsp-builder writes files. `gsp-statusline.js` + `statusline-dispatcher.js` power the terminal status display.
+**Script** — Shell or JS utilities in `scripts/` invoked by hooks or the installer. `gsp-context-recovery.sh` rebuilds `.design/` context after compaction. `lint-check.sh` runs after gsp-project-builder writes files. `gsp-statusline.js` + `statusline-dispatcher.js` power the terminal status display.
 
 **Chunk** — A self-contained markdown file in `.design/` representing one atomic deliverable. Follows the format spec in `references/chunk-format.md`. Has a header line with phase, project, and generation date. Chunks are the integration unit: each phase reads prior chunks from disk and writes new ones. Indexed via `INDEX.md` files per phase.
 
@@ -341,13 +314,13 @@ graph LR
 
 **brand.ref** — A small file in each project directory that points to which brand the project uses. Contains brand name, relative path, consumed_at date, and identity_hash. This is how the project diamond knows which branding diamond to read.
 
-**tokens.json** — W3C design tokens in the brand's `patterns/` directory. The source of truth for colors, typography, spacing, elevation, radius. Consumed by `gsp-builder` to integrate into the codebase (CSS variables, Tailwind config, or theme file).
+**tokens.json** — W3C design tokens in the brand's `patterns/` directory. The source of truth for colors, typography, spacing, elevation, radius. Consumed by `gsp-project-builder` to integrate into the codebase (CSS variables, Tailwind config, or theme file).
 
 **INDEX.md** — Phase-level chunk index. Each phase directory has one. Contains a markdown table listing all chunks with file paths and approximate line counts. Used by downstream phases to discover what a prior phase produced.
 
 **exports/INDEX.md** — Cross-phase exports index with `<!-- BEGIN:{phase} -->` / `<!-- END:{phase} -->` markers. Each phase appends its key deliverables here. Provides a single entry point to all project artifacts.
 
-**BUILD-LOG.md** — Written by `gsp-builder` during the build phase. Records what files were created/modified per build sub-phase (foundations, each screen). Used by the review phase to know what to verify.
+**BUILD-LOG.md** — Written by `gsp-project-builder` during the build phase. Records what files were created/modified per build sub-phase (foundations, each screen). Used by the review phase to know what to verify.
 
 **MANIFEST.md** — Written at the end of build. Maps components, patterns, and files produced. Cross-references with `.design/system/COMPONENTS.md` to track what was added vs modified.
 
@@ -368,8 +341,8 @@ graph LR
 | `name` | kebab-case | Skill identifier, becomes `/gsp:{name}` |
 | `description` | string, max 200 chars | What the skill does — Claude uses this to decide when to auto-invoke |
 | `user-invocable` | `true` / `false` | Whether the skill appears in `/` menu. `false` for meta skills. |
-| `model` | `opus` / `sonnet` / `haiku` | Model override. Pipeline creative = opus, research/utility = sonnet. |
-| `effort` | `low` / `medium` / `high` / `max` | Effort level. Pipeline phases use `high`. `max` is Opus-only. |
+| `model` | `opus` / `sonnet` / `haiku` | Optional model hint. Not used by GSP — user controls model selection. Installer strips for non-Claude runtimes. |
+| `effort` | `low` / `medium` / `high` / `max` | Optional effort hint. Not used by GSP — user controls effort level. Installer strips for non-Claude runtimes. |
 | `context` | `fork` | Run in isolated subagent. Only for skills with zero AskUserQuestion calls. |
 | `allowed-tools` | list of tool names | Tools available during skill execution. |
 

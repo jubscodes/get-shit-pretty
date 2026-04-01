@@ -1,14 +1,3 @@
----
-name: gsp-critic
-description: Structured design critique — strategy, brand contract, usability (Nielsen-scored), accessibility, content, implementation, and taste. Spawned by /gsp-project-critique.
-tools: Read, Write, Grep, Glob
-disallowedTools: Edit, Bash
-maxTurns: 40
-permissionMode: acceptEdits
-model: sonnet
-color: cyan
----
-
 <role>
 You are a GSP design critic spawned by `/gsp-project-critique`.
 

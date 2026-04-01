@@ -1,9 +1,7 @@
 ---
 name: gsp-project-critique
-description: Critique your designs + accessibility audit
+description: Critique your designs + accessibility audit (creative phase — benefits from capable models)
 user-invocable: true
-model: opus
-effort: high
 context: fork
 allowed-tools:
   - Read
@@ -22,12 +20,8 @@ Critique design quality and audit accessibility compliance.
 
 **Input:** All prior project chunks + brand identity
 **Output:** `{project}/critique/` (critique + accessibility chunks + INDEX.md) + exports/INDEX.md update
-**Agents:** `gsp-critic` + `gsp-accessibility-auditor`
+**Agents:** `gsp-project-critic` + `gsp-accessibility-auditor`
 </objective>
-
-<execution_context>
-@${CLAUDE_SKILL_DIR}/../../templates/phases/critique.md
-</execution_context>
 
 <process>
 ## Step 0: Resolve project and brand
@@ -70,19 +64,24 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 
 ## Step 1.8: Load critique references
 
-Read these reference files:
+Read these reference files and hold their content for inlining into agent prompts in Step 2:
 - `${CLAUDE_SKILL_DIR}/../gsp-accessibility-audit/wcag-checklist.md`
 - `${CLAUDE_SKILL_DIR}/../gsp-color/references/color-composition.md`
+- `${CLAUDE_SKILL_DIR}/../gsp-accessibility-audit/methodology/gsp-accessibility-auditor.md`
+- `${CLAUDE_SKILL_DIR}/../../templates/phases/critique.md` — critique output template
 
-Hold their content for inlining into agent prompts in Step 2.
+> **Note:** Nielsen's heuristics, visual taste, and anti-patterns are distilled into the `gsp-project-critic` agent prompt. Full refs remain on disk for edge-case agent lookup.
 
-> **Note:** Nielsen's heuristics, visual taste, and anti-patterns are distilled into the `gsp-critic` agent prompt. Full refs remain on disk for edge-case agent lookup.
+## Step 1.9: Load agent methodology
+
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-project-critic.md`. Include the full content as **Agent methodology** in the gsp-project-critic agent prompt below.
 
 ## Step 2: Spawn critics (parallel)
 
 **Inline all project content** — agents should not need to read project files. Reference files for supplementary evaluation (visual-taste, anti-patterns) are on disk — the critic reads them as needed.
 
-**Agent 1: gsp-critic** — Pass in the agent prompt:
+**Agent 1: gsp-project-critic** — Pass in the agent prompt:
+- **Agent methodology** (loaded in Step 1.9)
 - **Content of** all design chunks (loaded in Step 1)
 - **Content of** all identity chunks (loaded in Step 1)
 - **Content of** all patterns chunks (loaded in Step 1)
@@ -91,7 +90,7 @@ Hold their content for inlining into agent prompts in Step 2.
 - **Content of** research recommendations.md (loaded in Step 1)
 - **Content of** BRIEF.md
 - **Content of** color composition reference (loaded in Step 1.8)
-- Critique output template (from execution_context)
+- **Content of** critique output template (loaded in Step 1.8)
 - `references_path`: `${CLAUDE_SKILL_DIR}/` — for supplementary Read access to visual-taste.md, anti-patterns.md
 - Output path: `{PROJECT_PATH}/critique/`
 
@@ -100,6 +99,7 @@ Hold their content for inlining into agent prompts in Step 2.
 - **Content of** identity color-system.md and typography.md (loaded in Step 1)
 - **Content of** patterns tokens chunks (loaded in Step 1)
 - **Content of** WCAG checklist reference (loaded in Step 1.8)
+- **Agent methodology** (loaded in Step 1.8)
 - `accessibility_level` from config (defaults to "WCAG 2.2 AA")
 - Output path: `{PROJECT_PATH}/critique/`
 

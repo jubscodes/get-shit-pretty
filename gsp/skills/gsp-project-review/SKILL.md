@@ -2,8 +2,6 @@
 name: gsp-project-review
 description: QA review — validate implementation against designs
 user-invocable: true
-model: opus
-effort: high
 context: fork
 allowed-tools:
   - Read
@@ -24,7 +22,7 @@ QA validate the codebase implementation against design intent.
 
 **Input:** BUILD-LOG.md + actual codebase files + `git diff` + design chunks + brand system
 **Output:** `{project}/review/` (acceptance-report.md + issues.md + INDEX.md) + exports/INDEX.md update
-**Agent:** `gsp-reviewer`
+**Agent:** `gsp-project-reviewer`
 </objective>
 
 <execution_context>
@@ -75,12 +73,17 @@ Also read `{BRAND_PATH}/patterns/{brand-name}.yml` (the brand's token/style sour
 3. Write `{PROJECT_PATH}/review/INDEX.md`
 4. Update `{PROJECT_PATH}/exports/INDEX.md` between `<!-- BEGIN:review -->` and `<!-- END:review -->` with populated table
 5. Update `{PROJECT_PATH}/STATE.md` — set Phase 6 (Review) to `complete` or `needs-revision`
-6. Route: display verdict and suggest `/gsp-launch` or re-run `/gsp-project-review`
+6. Route: display verdict or re-run `/gsp-project-review`
 7. **Stop here**
+
+## Step 1.8: Load agent methodology
+
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-project-reviewer.md`. Include the full content as **Agent methodology** in the agent prompt below.
 
 ## Step 2: Spawn reviewer
 
-Spawn the `gsp-reviewer` agent with:
+Spawn the `gsp-project-reviewer` agent with:
+- **Agent methodology** (loaded in Step 1.8)
 - BUILD-LOG.md contents
 - Actual codebase file paths (from BUILD-LOG.md)
 - `git diff` output

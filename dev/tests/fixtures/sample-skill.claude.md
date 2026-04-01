@@ -12,7 +12,7 @@ argument-hint: <project-name>
 color: cyan
 context:
   - file: config.json
-agent: gsp-builder
+agent: gsp-project-builder
 ---
 
 # Test Skill
@@ -23,8 +23,8 @@ Load templates from `${CLAUDE_SKILL_DIR}/../../templates/config.json`.
 Use the AskUserQuestion tool to ask for project name.
 Use the Skill tool to chain skills.
 
-Spawn the `gsp-builder` agent with the brief.
-spawn the `gsp-reviewer` agent for QA.
+Spawn the `gsp-project-builder` agent with the brief.
+spawn the `gsp-project-reviewer` agent for QA.
 
 Text with <sub>emphasis</sub> here.
 

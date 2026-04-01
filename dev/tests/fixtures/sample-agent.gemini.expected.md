@@ -17,8 +17,8 @@ tools:
 You are a test agent. Use the ask_user tool when you need input.
 Use the activate_skill tool to invoke skills. Use the activate_skill tool for commands.
 
-Invoke the `gsp-builder` subagent for build tasks.
-invoke the `gsp-reviewer` subagent for review tasks.
+Invoke the `gsp-project-builder` subagent for build tasks.
+invoke the `gsp-project-reviewer` subagent for review tasks.
 Re-invoke the subagent if it fails.
 re-invoke the subagent on timeout.
 

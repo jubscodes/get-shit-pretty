@@ -2,8 +2,6 @@
 name: gsp-brand-audit
 description: Audit an existing brand before evolving it
 user-invocable: true
-model: opus
-effort: high
 allowed-tools:
   - Read
   - Write
@@ -62,10 +60,14 @@ If URLs were provided (in brief or just now), use WebFetch. Don't re-ask for inf
 mkdir -p {BRAND_PATH}/audit
 ```
 
+### Load agent methodology
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-auditor.md`. Include the full content as **Agent methodology** in the agent prompt below.
+
 Spawn the `gsp-brand-auditor` agent with:
 - All gathered assets/descriptions
 - BRIEF.md content (personas, competitive landscape, brand essence)
 - config.json evolution_scope
+- **Agent methodology** (loaded above)
 - **Output path:** `{BRAND_PATH}/audit/`
 
 The agent writes 5 chunks + INDEX.md:

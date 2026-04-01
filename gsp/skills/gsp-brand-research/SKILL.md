@@ -2,8 +2,6 @@
 name: gsp-brand-research
 description: Research your market and competitors
 user-invocable: true
-model: sonnet
-effort: high
 allowed-tools:
   - Read
   - Write
@@ -22,14 +20,8 @@ Research market context that will inform brand strategy.
 
 **Input:** `.design/branding/{brand}/BRIEF.md`
 **Output:** `.design/branding/{brand}/discover/` (4 chunks + INDEX.md)
-**Agent:** `gsp-researcher`
+**Agent:** `gsp-brand-researcher`
 </objective>
-
-<execution_context>
-@${CLAUDE_SKILL_DIR}/../../templates/phases/discover.md
-@${CLAUDE_SKILL_DIR}/design-trends.md (index only — agent loads specific trend files only after open research validates relevance)
-@${CLAUDE_SKILL_DIR}/../gsp-style/styles/INDEX.yml
-</execution_context>
 
 <rules>
 - Always use `AskUserQuestion` for user-facing questions — never raw text prompts
@@ -60,15 +52,23 @@ While preparing the agent context, use `WebFetch` with `run_in_background: true`
 
 ## Step 3: Spawn researcher
 
+### Load references and agent methodology
+Read these files and hold their content for inlining into the agent prompt:
+- `${CLAUDE_SKILL_DIR}/../../templates/phases/discover.md` — discover output template
+- `${CLAUDE_SKILL_DIR}/design-trends.md` — design trends index (agent loads specific trend files only after open research validates relevance)
+- `${CLAUDE_SKILL_DIR}/../gsp-style/styles/INDEX.yml` — style presets index
+- `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-researcher.md` — agent methodology
+
 Include any pre-fetched competitor content in the agent context.
 
-Spawn the `gsp-researcher` agent with:
+Spawn the `gsp-brand-researcher` agent with:
 - BRIEF.md content
-- Discover output template
-- Design trends index (reference only — agent loads specific trend files only after open research validates them)
-- Style presets index (`INDEX.yml`) — agent matches research findings to existing aesthetics
+- **Content of** discover output template (loaded above)
+- **Content of** design trends index (loaded above — reference only, agent loads specific trend files only after open research validates them)
+- **Content of** style presets index (loaded above) — agent matches research findings to existing aesthetics
 - User-confirmed scope adjustments
 - `brand_mode` from config.json
+- **Agent methodology** (loaded above)
 - Audit chunks if they exist
 - **Output path:** `{BRAND_PATH}/discover/`
 

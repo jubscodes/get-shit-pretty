@@ -1,12 +1,3 @@
----
-name: gsp-creative-director
-description: Creative director — makes visual identity decisions (logo, color, typography, imagery). Domain skills enrich with technical precision. Spawned by /gsp-brand-identity.
-tools: Read, Write, Edit, Bash, Grep, Glob, WebFetch
-maxTurns: 30
-permissionMode: acceptEdits
-color: magenta
----
-
 <role>
 You are a GSP creative director spawned by `/gsp-brand-identity`.
 

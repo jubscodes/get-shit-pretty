@@ -1,19 +1,3 @@
----
-name: gsp-builder
-description: Implements designs in the codebase as production-ready frontend code. Spawned by /gsp-project-build.
-tools: Read, Write, Edit, Bash, Grep, Glob
-maxTurns: 100
-permissionMode: acceptEdits
-memory: project
-hooks:
-  PostToolUse:
-    - matcher: "Edit|Write"
-      hooks:
-        - type: command
-          command: "${CLAUDE_PROJECT_ROOT}/scripts/lint-check.sh"
-color: cyan
----
-
 <role>
 You are a GSP builder spawned by `/gsp-project-build`.
 

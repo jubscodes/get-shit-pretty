@@ -2,15 +2,14 @@
 name: gsp-art
 description: "Craft ASCII art interactively — you direct, the artist creates"
 user-invocable: true
-model: sonnet
 allowed-tools:
   - Read
   - Bash
+  - Write
   - AskUserQuestion
-  - Agent
 ---
 <context>
-Interactive terminal art studio. You describe what you want, the ASCII artist creates it, and you iterate until it's perfect.
+Interactive terminal art studio. You describe what you want, you create it, and iterate until it's perfect.
 
 Not part of the main design pipeline. Just for fun.
 </context>
@@ -20,7 +19,6 @@ Create terminal art with the user in the loop — gather intent, create, iterate
 
 **Input:** User's vision (subject, mood, size, usage)
 **Output:** Rendered art in the terminal + reusable code snippet
-**Agent:** `gsp-ascii-artist`
 </objective>
 
 <rules>
@@ -48,14 +46,19 @@ Optionally ask about usage (one-off fun, splash screen, CLI output, embedded in 
 
 ## Step 2: Create the art
 
-Spawn the `gsp-ascii-artist` agent with the user's request. Ask for 2-3 options so the user can pick.
+Read `${CLAUDE_SKILL_DIR}/terminal-art.md` for the full ANSI/Unicode reference if needed.
 
-The agent will:
-1. Draft the art
-2. Test each option via `node -e` in the terminal
-3. Return all rendered results and reusable code
+Create 2-3 options for the user. For each option:
+
+1. **Pick a technique** — gradient bars (`░▒▓█`), scatter/splatter, block text, box frames, dividers, shadow/depth, or negative space
+2. **Draft in plain text first** — get the layout right without color
+3. **Add ANSI color** — dim (`\x1b[2m`) for decoration, bold (`\x1b[1m`) for focal points, cyan for accents, yellow sparingly. Avoid red/green (semantic meaning)
+4. **Test via `node -e`** — render in the actual terminal to verify alignment and color
+5. **Deliver as a `console.log()` template literal** ready to reuse
+
+**Constraints:** max 80 columns wide, max 25 lines tall, no emoji, always reset ANSI (`\x1b[0m`), must be readable without color, respect `NO_COLOR`.
 
 ## Step 3: Show and iterate
 
-Present the options to the user. Let them pick a favorite, request tweaks, or ask for a completely new direction. Re-spawn the agent as needed until the user is happy.
+Present the options to the user. Let them pick a favorite, request tweaks, or ask for a completely new direction. Repeat Step 2 as needed until the user is happy.
 </process>

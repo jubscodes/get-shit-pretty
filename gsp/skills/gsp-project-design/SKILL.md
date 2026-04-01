@@ -1,9 +1,7 @@
 ---
 name: gsp-project-design
-description: Design screens and interaction flows
+description: Design screens and interaction flows (creative phase — benefits from capable models)
 user-invocable: true
-model: opus
-effort: high
 context: fork
 allowed-tools:
   - Read
@@ -24,7 +22,7 @@ Design core UI/UX screens and interaction flows.
 
 **Input:** Research + brief + brand system + project BRIEF.md
 **Output:** `{project}/design/` (screen chunks + shared/ + INDEX.md) + exports/INDEX.md update
-**Agent:** `gsp-designer`
+**Agent:** `gsp-project-designer`
 </objective>
 
 <execution_context>
@@ -118,13 +116,18 @@ Read these reference files (relative to skill dir `${CLAUDE_SKILL_DIR}/../../ref
 
 Hold their content for inlining into the agent prompt in Step 3.
 
-> **Note:** Apple HIG patterns and anti-patterns are distilled into the `gsp-designer` agent prompt. Visual effects are covered by STYLE.md's patterns/constraints/effects blocks (from #69). Full refs remain on disk for edge-case agent lookup.
+> **Note:** Apple HIG patterns and anti-patterns are distilled into the `gsp-project-designer` agent prompt. Visual effects are covered by STYLE.md's patterns/constraints/effects blocks (from #69). Full refs remain on disk for edge-case agent lookup.
+
+## Step 2.8: Load agent methodology
+
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-project-designer.md`. Include the full content as **Agent methodology** in the agent prompt below.
 
 ## Step 3: Spawn designer
 
-Spawn the `gsp-designer` agent. **Inline all content** — the agent should not need to read any input files.
+Spawn the `gsp-project-designer` agent. **Inline all content** — the agent should not need to read any input files.
 
 Pass in the agent prompt:
+- **Agent methodology** (loaded in Step 2.8)
 - **Content of** STYLE.md when available — this is the primary visual direction. When STYLE.md exists, skip foundation chunks (color-system, typography, spacing, elevation, border-radius) — STYLE.md already contains this data. Only load selective component chunks.
 - **Content of** all brand patterns foundation chunks (only when STYLE.md does NOT exist — fallback for older brands)
 - **Content of** brand identity chunks: imagery-style.md (always — not covered by STYLE.md). Skip identity color-system.md and typography.md when STYLE.md exists (redundant).

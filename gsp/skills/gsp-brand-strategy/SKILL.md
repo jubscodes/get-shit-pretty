@@ -1,9 +1,7 @@
 ---
 name: gsp-brand-strategy
-description: Define positioning, voice, and messaging
+description: Define positioning, voice, and messaging (creative phase — benefits from capable models)
 user-invocable: true
-model: opus
-effort: high
 allowed-tools:
   - Read
   - Write
@@ -24,13 +22,6 @@ Define brand strategy and voice through interactive creative direction, then pro
 **Output:** `.design/branding/{brand}/strategy/` (5 chunks + INDEX.md)
 **Agent:** `gsp-brand-strategist`
 </objective>
-
-<execution_context>
-@${CLAUDE_SKILL_DIR}/../../templates/phases/strategy.md
-@${CLAUDE_SKILL_DIR}/brand-archetypes.md
-@${CLAUDE_SKILL_DIR}/positioning-frameworks.md
-@${CLAUDE_SKILL_DIR}/voice-tone.md
-</execution_context>
 
 <rules>
 - Always use `AskUserQuestion` for user-facing questions — never raw text prompts
@@ -103,14 +94,23 @@ If the Style Affinity section doesn't exist or discover was skipped, skip this s
 
 ## Step 6: Spawn strategist
 
+### Load references and agent methodology
+Read these files and hold their content for inlining into the agent prompt:
+- `${CLAUDE_SKILL_DIR}/../../templates/phases/strategy.md` — strategy output template
+- `${CLAUDE_SKILL_DIR}/brand-archetypes.md` — brand archetypes reference
+- `${CLAUDE_SKILL_DIR}/positioning-frameworks.md` — positioning frameworks reference
+- `${CLAUDE_SKILL_DIR}/voice-tone.md` — voice-tone reference
+- `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-strategist.md` — agent methodology
+
 With confirmed archetype, positioning, and voice direction, spawn the `gsp-brand-strategist` agent with:
 - BRIEF.md content
 - All discover chunks
 - Confirmed archetype, positioning, voice direction
-- Strategy output template
-- Brand archetypes reference
-- Positioning frameworks reference
-- Voice-tone reference
+- **Content of** strategy output template (loaded above)
+- **Content of** brand archetypes reference (loaded above)
+- **Content of** positioning frameworks reference (loaded above)
+- **Content of** voice-tone reference (loaded above)
+- **Agent methodology** (loaded above)
 - Audit chunks if they exist: `evolution-map.md`, `equity-analysis.md`
 - `brand_mode` from config.json
 - `style_base` from config.json (may be empty)

@@ -133,7 +133,7 @@ The largest category by far is **repetition** — the same instructions appearin
 
 ---
 
-### gsp-reviewer.md (90 lines — agent, P7 flagged)
+### gsp-project-reviewer.md (90 lines — agent, P7 flagged)
 
 **Vague directives** (1 item)
 - Line ~19: "You are the final quality gate before a project ships. You review real code, not specs. Be thorough but fair." — "Be thorough but fair" is vague. What does "fair" mean? Not flagging false positives? Acknowledging good work? The methodology doesn't clarify. P7 flagged this.
@@ -173,7 +173,7 @@ The largest category by far is **repetition** — the same instructions appearin
 
 ---
 
-### gsp-researcher.md (80 lines — agent)
+### gsp-brand-researcher.md (80 lines — agent)
 
 **Dead weight** (1 item)
 - Line ~15: "Be specific and opinionated — 'Use X because Y' not 'Options are X, Y, Z.'" — This is good guidance but duplicates the Quality Standards line ~43: "Recommendations must be specific to this brand's personas, not generic."
@@ -186,7 +186,7 @@ The largest category by far is **repetition** — the same instructions appearin
 
 ---
 
-### gsp-designer.md (149 lines — agent)
+### gsp-project-designer.md (149 lines — agent)
 
 **Dead weight** (1 item)
 - Line ~17: "Design for real users with real goals. Every screen should solve a specific problem." — Generic design platitude. The methodology already specifies persona-driven design with specific user flows.
@@ -199,7 +199,7 @@ The largest category by far is **repetition** — the same instructions appearin
 
 ---
 
-### gsp-builder.md (139 lines — agent)
+### gsp-project-builder.md (139 lines — agent)
 
 **Dead weight** (1 item)
 - Line ~30: "Write real, production-ready code directly in the codebase. Not pseudocode. Not 'implementation left as exercise.' Actual files that run." — The role already says "editing real source files, creating real components, wiring real routes. Not specs. Not docs. Real code." Same instruction twice in 8 lines.
@@ -244,7 +244,7 @@ The largest category by far is **repetition** — the same instructions appearin
 
 ---
 
-### gsp-critic.md (64 lines — agent)
+### gsp-project-critic.md (64 lines — agent)
 
 **Dead weight** (1 item)
 - Line ~18: "Be constructive, specific, and actionable. Every criticism must include a concrete fix." — "Constructive" is vague and subjective. The methodology already specifies that every score needs an example and alternatives must be proposed.
@@ -288,16 +288,16 @@ The prompts are the shortest and leanest files in the system. Most issues are re
 - Repetition: "Act as Creative Director at Pentagram" role + expected output list duplicates the agent's role and output sections. When the agent loads this prompt, it receives the same instructions twice.
 
 **03-ui-ux-pattern-master.md (43 lines)**
-- Repetition: Role and methodology duplicates gsp-designer agent. "Detail 8 core screens" = agent methodology Step 4.
+- Repetition: Role and methodology duplicates gsp-project-designer agent. "Detail 8 core screens" = agent methodology Step 4.
 
 **04-marketing-asset-factory.md (27 lines)**
 - Repetition: Role duplicates gsp-campaign-director agent role.
 
 **05-implementation-spec-expert.md (42 lines)**
-- Repetition: Implementation target descriptions duplicate gsp-builder agent's target-specific behavior.
+- Repetition: Implementation target descriptions duplicate gsp-project-builder agent's target-specific behavior.
 
 **06-design-critique-partner.md (30 lines)**
-- Repetition: "Score 1-5 with examples" duplicates gsp-critic agent scoring guide.
+- Repetition: "Score 1-5 with examples" duplicates gsp-project-critic agent scoring guide.
 
 **07-design-trend-synthesizer.md (30 lines)**
 - This prompt is NOT loaded by any agent or skill. It appears orphaned — no execution_context references it.
@@ -313,7 +313,7 @@ The prompts are the shortest and leanest files in the system. Most issues are re
 - Repetition: Implementation target descriptions duplicate gsp-scoper agent methodology.
 
 **11-deliverable-reviewer.md (67 lines)**
-- Repetition: Review methodology duplicates gsp-reviewer agent methodology.
+- Repetition: Review methodology duplicates gsp-project-reviewer agent methodology.
 
 **12-project-researcher.md (57 lines)**
 - Repetition: Research methodology duplicates gsp-project-researcher agent methodology.
@@ -353,14 +353,14 @@ For each skill that spawns an agent, the following categories of instructions ap
 | gsp-brand-patterns | gsp-pattern-architect | System strategy (GENERATE/EXTEND/REFACTOR), 3-tier component strategy, output file list | ~50 |
 | gsp-brand-strategy | gsp-brand-strategist | Quality gate ("swap competitor name"), methodology steps | ~12 |
 | gsp-brand-identity | gsp-identity-designer | "Every visual decision traces to strategy", methodology steps | ~10 |
-| gsp-brand-research | gsp-researcher | Research methodology, output chunks | ~8 |
+| gsp-brand-research | gsp-brand-researcher | Research methodology, output chunks | ~8 |
 | gsp-brand-audit | gsp-brand-auditor | Audit methodology, output chunks | ~6 |
 | gsp-project-brief | gsp-scoper | Output chunk list, exports/INDEX.md update | ~22 |
-| gsp-project-design | gsp-designer | Screen naming convention, component plan, output structure | ~15 |
+| gsp-project-design | gsp-project-designer | Screen naming convention, component plan, output structure | ~15 |
 | gsp-project-research | gsp-project-researcher | Research output structure, exports/INDEX.md update | ~22 |
-| gsp-project-critique | gsp-critic | Critique output structure | ~5 |
-| gsp-project-build | gsp-builder | Foundations mode instructions, checkpoint process | ~15 |
-| gsp-project-review | gsp-reviewer | Review methodology, "review real code" instruction | ~18 |
+| gsp-project-critique | gsp-project-critic | Critique output structure | ~5 |
+| gsp-project-build | gsp-project-builder | Foundations mode instructions, checkpoint process | ~15 |
+| gsp-project-review | gsp-project-reviewer | Review methodology, "review real code" instruction | ~18 |
 | gsp-launch | gsp-campaign-director | Output chunks, exports/INDEX.md update | ~20 |
 
 **Total duplicated lines: ~203**
@@ -377,14 +377,14 @@ Every agent that loads a system prompt receives the prompt's role description an
 |-------|--------|---------|
 | gsp-pattern-architect | 01-design-system-architect | Role + full strategy descriptions (~40 lines) |
 | gsp-identity-designer | 02-brand-identity-creator | Role + expected output (~15 lines) |
-| gsp-designer | 03-ui-ux-pattern-master | Role + screen design methodology (~20 lines) |
+| gsp-project-designer | 03-ui-ux-pattern-master | Role + screen design methodology (~20 lines) |
 | gsp-campaign-director | 04-marketing-asset-factory | Role + campaign methodology (~15 lines) |
-| gsp-builder | 09-design-to-code-translator | Role + translation methodology (~25 lines) |
+| gsp-project-builder | 09-design-to-code-translator | Role + translation methodology (~25 lines) |
 | gsp-scoper | 10-project-scoper | Role + scoping methodology (~20 lines) |
-| gsp-reviewer | 11-deliverable-reviewer | Role + review methodology (~30 lines) |
+| gsp-project-reviewer | 11-deliverable-reviewer | Role + review methodology (~30 lines) |
 | gsp-accessibility-auditor | 08-accessibility-auditor | Role + WCAG audit methodology (~20 lines) |
 | gsp-project-researcher | 12-project-researcher | Role + research methodology (~25 lines) |
-| gsp-critic | 06-design-critique-partner | Role + heuristics methodology (~15 lines) |
+| gsp-project-critic | 06-design-critique-partner | Role + heuristics methodology (~15 lines) |
 
 **Total duplicated lines: ~225**
 
@@ -419,26 +419,26 @@ Every agent that loads a system prompt receives the prompt's role description an
 | gsp-accessibility (skill) | 348 | 1 | 0 | 0 | 0 | 3 | ~50 |
 | gsp-doctor (skill) | 326 | 2 | 0 | 1 | 0 | 1 | ~8 |
 | gsp-pattern-architect (agent) | 251 | 1 | 0 | 0 | 0 | 5 | ~70 |
-| gsp-designer (agent) | 149 | 1 | 0 | 0 | 0 | 2 | ~10 |
-| gsp-builder (agent) | 139 | 1 | 0 | 0 | 0 | 2 | ~12 |
+| gsp-project-designer (agent) | 149 | 1 | 0 | 0 | 0 | 2 | ~10 |
+| gsp-project-builder (agent) | 139 | 1 | 0 | 0 | 0 | 2 | ~12 |
 | gsp-scoper (agent) | 106 | 0 | 0 | 0 | 0 | 3 | ~22 |
 | gsp-project-researcher (agent) | 105 | 0 | 0 | 0 | 0 | 3 | ~22 |
 | gsp-campaign-director (agent) | 100 | 0 | 0 | 0 | 0 | 2 | ~20 |
-| gsp-reviewer (agent) | 90 | 0 | 0 | 0 | 1 | 3 | ~18 |
+| gsp-project-reviewer (agent) | 90 | 0 | 0 | 0 | 1 | 3 | ~18 |
 | gsp-identity-designer (agent) | 81 | 1 | 0 | 0 | 0 | 2 | ~8 |
-| gsp-researcher (agent) | 80 | 1 | 0 | 0 | 0 | 2 | ~4 |
+| gsp-brand-researcher (agent) | 80 | 1 | 0 | 0 | 0 | 2 | ~4 |
 | gsp-brand-strategist (agent) | 77 | 1 | 0 | 0 | 0 | 2 | ~10 |
 | gsp-brand-auditor (agent) | 73 | 1 | 0 | 0 | 0 | 1 | ~5 |
 | gsp-accessibility-auditor (agent) | 73 | 0 | 0 | 0 | 1 | 2 | ~10 |
 | gsp-ascii-artist (agent) | 66 | 0 | 0 | 1 | 0 | 0 | ~2 |
-| gsp-critic (agent) | 64 | 1 | 0 | 0 | 0 | 1 | ~5 |
+| gsp-project-critic (agent) | 64 | 1 | 0 | 0 | 0 | 1 | ~5 |
 | 12 prompts (combined) | 542 | 0 | 0 | 0 | 0 | 12 | ~225 |
 | 18 other skills (combined) | 2488 | 0 | 0 | 0 | 0 | 3 | ~5 |
 | **TOTALS** | **6771** | **12** | **0** | **4** | **3** | **51** | **~1071** |
 
 Note: Contradictions found: 0 formal contradictions. 3 tension points exist (noted inline) but none where both instructions can't be satisfied simultaneously.
 
-Vague directives from P7: 2 (gsp-accessibility-auditor "Be thorough and specific", gsp-reviewer "Be thorough but fair"). Additional vague items found during semantic analysis: 6 more (total 8 including the P7 hits).
+Vague directives from P7: 2 (gsp-accessibility-auditor "Be thorough and specific", gsp-project-reviewer "Be thorough but fair"). Additional vague items found during semantic analysis: 6 more (total 8 including the P7 hits).
 
 **Total potential reduction: ~1,071 lines (15.8% of corpus)**
 

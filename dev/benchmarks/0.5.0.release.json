@@ -1,0 +1,62 @@
+{
+  "version": "0.5.0",
+  "label": "",
+  "date": "2026-04-01",
+  "branch": "HEAD",
+  "commit": "773893c",
+  "skills": {
+    "gsp-accessibility": { "score": 1045, "body": 348, "exec": 197, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-add-reference": { "score": 97, "body": 97, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-art": { "score": 555, "body": 55, "exec": 0, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-audit": { "score": 639, "body": 91, "exec": 48, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-identity": { "score": 903, "body": 131, "exec": 272, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-patterns": { "score": 1105, "body": 251, "exec": 354, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-research": { "score": 871, "body": 85, "exec": 286, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-strategy": { "score": 1253, "body": 149, "exec": 604, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-design-system": { "score": 347, "body": 153, "exec": 194, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-doctor": { "score": 326, "body": 326, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-help": { "score": 121, "body": 121, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-launch": { "score": 677, "body": 95, "exec": 82, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-palette": { "score": 311, "body": 263, "exec": 48, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-pretty": { "score": 562, "body": 62, "exec": 0, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-progress": { "score": 185, "body": 185, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-project-brief": { "score": 762, "body": 158, "exec": 104, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-project-build": { "score": 907, "body": 282, "exec": 125, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-project-critique": { "score": 1791, "body": 182, "exec": 609, "agents": 2, "fork": 0, "methodology": 0 },
+    "gsp-project-design": { "score": 904, "body": 144, "exec": 260, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-project-research": { "score": 786, "body": 148, "exec": 138, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-project-review": { "score": 816, "body": 209, "exec": 107, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-scaffold": { "score": 247, "body": 247, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-start": { "score": 941, "body": 401, "exec": 540, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-style": { "score": 1065, "body": 544, "exec": 521, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-typescale": { "score": 1459, "body": 651, "exec": 808, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-update": { "score": 103, "body": 103, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 }
+  },
+  "pipelines": {
+    "brand_diamond": { "score": 3968, "skills": 4, "heaviest": "gsp-brand-strategy", "heaviest_score": 1253 },
+    "project_diamond": { "score": 5966, "skills": 6, "heaviest": "gsp-project-critique", "heaviest_score": 1791 },
+    "quick_flow": { "score": 2768, "skills": 3, "heaviest": "gsp-style", "heaviest_score": 1065 },
+    "full_e2e": { "score": 9934, "skills": 10, "heaviest": "gsp-project-critique", "heaviest_score": 1791 }
+  },
+  "rate_limit": {
+    "double_dispatch_skills": [],
+    "double_dispatch_count": 0,
+    "api_conversations_full_e2e": 20
+  },
+  "tests": {
+    "pass": 42,
+    "warn": 0,
+    "fail": 0
+  },
+  "counts": {
+    "skills": 26,
+    "agents": 14,
+    "presets": 35,
+    "methodologies": 0
+  },
+  "totals": {
+    "weight": 18778,
+    "skill_count": 26,
+    "red_zone": 6
+  }
+}

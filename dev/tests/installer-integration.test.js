@@ -98,12 +98,12 @@ describe('Clean install — Claude', () => {
     assert.ok(content.includes('<sub>'), 'keeps <sub> tags');
   });
 
-  it('preserves model: and effort: fields (Claude-only)', () => {
+  it('does not inject model: or effort: fields', () => {
     const skillsDir = path.join(tmpDir, 'skills');
     copyClaudeSkills(path.join(FIXTURES, 'skills'), skillsDir, './.claude/');
     const content = fs.readFileSync(path.join(skillsDir, 'gsp-test-skill', 'SKILL.md'), 'utf8');
-    assert.ok(content.includes('model: opus'), 'model preserved');
-    assert.ok(content.includes('effort: high'), 'effort preserved');
+    assert.ok(!content.match(/^model:/m), 'no model field');
+    assert.ok(!content.match(/^effort:/m), 'no effort field');
   });
 
   it('copies sibling files alongside SKILL.md', () => {
@@ -133,13 +133,6 @@ describe('Clean install — OpenCode', () => {
     assert.ok(!content.includes('~/.claude/'), 'no claude path');
   });
 
-  it('strips model: and effort: fields', () => {
-    copyOpencodeSkills(path.join(FIXTURES, 'skills'), tmpDir, '~/.config/opencode/');
-    const content = fs.readFileSync(path.join(tmpDir, 'gsp-test-skill', 'SKILL.md'), 'utf8');
-    assert.ok(!content.includes('model:'), 'model stripped');
-    assert.ok(!content.includes('effort:'), 'effort stripped');
-  });
-
   it('copies sibling files', () => {
     copyOpencodeSkills(path.join(FIXTURES, 'skills'), tmpDir, '~/.config/opencode/');
     assert.ok(
@@ -166,13 +159,6 @@ describe('Clean install — Gemini', () => {
     assert.ok(!content.includes('~/.claude/'), 'no claude path');
   });
 
-  it('strips model: and effort: fields', () => {
-    copyGeminiSkills(path.join(FIXTURES, 'skills'), tmpDir, '~/.gemini/');
-    const content = fs.readFileSync(path.join(tmpDir, 'gsp-test-skill', 'SKILL.md'), 'utf8');
-    assert.ok(!content.includes('model:'), 'model stripped');
-    assert.ok(!content.includes('effort:'), 'effort stripped');
-  });
-
   it('copies sibling files', () => {
     copyGeminiSkills(path.join(FIXTURES, 'skills'), tmpDir, '~/.gemini/');
     assert.ok(
@@ -195,13 +181,6 @@ describe('Clean install — Codex', () => {
     assert.ok(!content.includes('/gsp:build'), 'no /gsp:');
     assert.ok(content.includes('~/.codex/'), 'codex path');
     assert.ok(!content.includes('~/.claude/'), 'no claude path');
-  });
-
-  it('strips model: and effort: fields', () => {
-    copyCodexSkillsFromSource(path.join(FIXTURES, 'skills'), tmpDir, '~/.codex/');
-    const content = fs.readFileSync(path.join(tmpDir, 'gsp-test-skill', 'SKILL.md'), 'utf8');
-    assert.ok(!content.includes('model:'), 'model stripped');
-    assert.ok(!content.includes('effort:'), 'effort stripped');
   });
 
   it('copies sibling files', () => {

@@ -92,10 +92,3 @@ This file is the entry point for coding agents consuming GSP design output.
 | _(populated by /gsp-project-review)_ | |
 <!-- END:review -->
 
-## Launch Campaign (Optional)
-
-<!-- BEGIN:launch -->
-| Section | File |
-|---------|------|
-| _(populated by /gsp-launch — optional)_ | |
-<!-- END:launch -->

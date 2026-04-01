@@ -1,9 +1,7 @@
 ---
 name: gsp-brand-guidelines
-description: Operationalize your brand — assemble tokens, STYLE.md, component mapping, and guidelines
+description: Operationalize your brand — assemble tokens, STYLE.md, component mapping, and guidelines (technical phase — benefits from capable models)
 user-invocable: true
-model: opus
-effort: high
 allowed-tools:
   - Read
   - Write
@@ -25,11 +23,6 @@ Operationalize brand identity into project-ready artifacts and complete the bran
 **Output:** `{brand}/patterns/` ({brand-name}.yml, STYLE.md, guidelines.html, components/, INDEX.md)
 **Agent:** `gsp-brand-engineer`
 </objective>
-
-<execution_context>
-@${CLAUDE_SKILL_DIR}/../../templates/phases/patterns.md
-@${CLAUDE_SKILL_DIR}/design-tokens.md
-</execution_context>
 
 <rules>
 - Always use `AskUserQuestion` for user-facing questions — never raw text prompts
@@ -116,6 +109,12 @@ Redesign the system from the ground up, informed by what exists.
 
 ## Step 3: Spawn brand engineer — Pass 1: Core
 
+### Load references and agent methodology
+Read these files and hold their content for inlining into the agent prompt:
+- `${CLAUDE_SKILL_DIR}/../../templates/phases/patterns.md` — patterns output template
+- `${CLAUDE_SKILL_DIR}/design-tokens.md` — design tokens reference
+- `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-engineer.md` — agent methodology
+
 Spawn the `gsp-brand-engineer` agent. **Inline all content** — the agent should not need to read input files.
 
 Pass in the agent prompt:
@@ -123,7 +122,9 @@ Pass in the agent prompt:
 - **Content of** strategy chunks: voice-and-tone.md, archetype.md, positioning.md (loaded in Step 1)
 - **Content of** BRIEF.md (loaded in Step 1)
 - **Content of** style base preset `.yml` + `.md` (loaded in Step 1) — `.yml` as structural scaffold, `.md` as philosophy + implementation content for STYLE.md
-- Patterns output template, design tokens reference (from execution_context)
+- **Agent methodology** (loaded above)
+- **Content of** patterns output template (loaded above)
+- **Content of** design tokens reference (loaded above)
 - The `system_strategy` and `tech_stack` values
 - **Output path:** `{BRAND_PATH}/patterns/`
 
@@ -187,12 +188,13 @@ If adjust → use `/gsp-brand-refine` with the concern, then re-present. If conf
 
 ## Step 4: Spawn brand engineer — Pass 2: Components
 
-Spawn the `gsp-brand-engineer` agent with:
+Spawn the `gsp-brand-engineer` agent with (reuse **Agent methodology** loaded in Step 3):
 - **Content of** the confirmed `{BRAND_PATH}/patterns/{brand-name}.yml`
 - **Content of** `{BRAND_PATH}/patterns/STYLE.md`
 - **Content of** `.design/system/STACK.md`, `COMPONENTS.md`, `TOKENS.md` (when loaded in Step 1.5)
 - The `system_strategy` and `tech_stack` values
-- Design tokens reference (from execution_context)
+- **Agent methodology** (loaded in Step 3)
+- **Content of** design tokens reference (loaded in Step 3)
 - **Output path:** `{BRAND_PATH}/patterns/`
 
 > Produce the component artifacts:

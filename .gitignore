@@ -20,3 +20,6 @@ tsconfig.tsbuildinfo
 out/
 next-env.d.ts
 .vercel
+
+# Token proxy logs
+dev/reports/

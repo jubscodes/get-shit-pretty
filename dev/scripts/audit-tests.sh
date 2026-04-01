@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # GSP Integrity Test Suite
 # Run from repo root: bash dev/scripts/audit-tests.sh [suite]
-# Suites: all, versions, contracts, installer, runtime, templates, unit, prompts
+# Suites: all, versions, contracts, installer, runtime, templates, unit, prompts, tokenbudget
 # Exit code: number of failures
 
 set -uo pipefail
@@ -266,7 +266,7 @@ if should_run contracts; then
   fi
 
   # C8: Claude-only field usage matches known set (canary)
-  EXPECTED_CLAUDE_ONLY="gsp-builder.md gsp-reviewer.md"
+  EXPECTED_CLAUDE_ONLY="gsp-project-builder.md gsp-project-reviewer.md"
   ACTUAL_CLAUDE_ONLY=$(grep -rlE '^(memory|background|hooks|isolation|skills|mcpServers):' gsp/agents/ 2>/dev/null | xargs -I{} basename {} | sort -u | tr '\n' ' ' | sed 's/ $//')
   if [[ "$ACTUAL_CLAUDE_ONLY" == "$EXPECTED_CLAUDE_ONLY" ]]; then
     pass "C8 Claude-only field usage matches known set ($ACTUAL_CLAUDE_ONLY)"
@@ -274,25 +274,23 @@ if should_run contracts; then
     warn "C8 Claude-only field set changed" "Expected: $EXPECTED_CLAUDE_ONLY Got: $ACTUAL_CLAUDE_ONLY — verify converters handle new fields"
   fi
 
-  # C11: model/effort frontmatter values are from allowed sets
+  # C11: skills must NOT declare model:/effort: (user controls model selection)
   C11_BAD=()
   for skill_dir in gsp/skills/*/; do
     skill_file="$skill_dir/SKILL.md"
     [[ -f "$skill_file" ]] || continue
     skill_name=$(basename "$skill_dir")
-    model_val=$(grep -m1 '^model:' "$skill_file" 2>/dev/null | sed 's/model: *//')
-    effort_val=$(grep -m1 '^effort:' "$skill_file" 2>/dev/null | sed 's/effort: *//')
-    if [[ -n "$model_val" && "$model_val" != "opus" && "$model_val" != "sonnet" && "$model_val" != "haiku" ]]; then
-      C11_BAD+=("$skill_name:model=$model_val")
+    if grep -q '^model:' "$skill_file" 2>/dev/null; then
+      C11_BAD+=("$skill_name:model")
     fi
-    if [[ -n "$effort_val" && "$effort_val" != "low" && "$effort_val" != "medium" && "$effort_val" != "high" && "$effort_val" != "max" ]]; then
-      C11_BAD+=("$skill_name:effort=$effort_val")
+    if grep -q '^effort:' "$skill_file" 2>/dev/null; then
+      C11_BAD+=("$skill_name:effort")
     fi
   done
   if [[ ${#C11_BAD[@]} -eq 0 ]]; then
-    pass "C11 Model/effort values valid"
+    pass "C11 No model/effort in skill frontmatter"
   else
-    fail "C11 Invalid model/effort values" "${C11_BAD[*]}"
+    fail "C11 Skills should not declare model/effort (user controls model selection)" "${C11_BAD[*]}"
   fi
 
   # C12: Skills with context: fork must not have AskUserQuestion in allowed-tools
@@ -336,10 +334,10 @@ if should_run installer; then
 
   # I3: Source agent count
   AGENT_COUNT=$(find gsp/agents -name 'gsp-*.md' -type f | wc -l | tr -d ' ')
-  if [[ "$AGENT_COUNT" -ge 14 ]]; then
+  if [[ "$AGENT_COUNT" -ge 10 ]]; then
     pass "I3 Agents exist ($AGENT_COUNT)"
   else
-    warn "I3 Low agent count" "Expected ≥14, found $AGENT_COUNT"
+    warn "I3 Low agent count" "Expected ≥10, found $AGENT_COUNT"
   fi
 
   # I5: Bundle directories exist
@@ -1051,6 +1049,54 @@ if should_run unit; then
     pass "U2 Installer integration tests"
   else
     fail "U2 Installer integration tests" "see output above"
+  fi
+fi
+
+# ── TB: Token Budget ───────────────────────────────────
+
+if should_run tokenbudget; then
+  header "Token Budget"
+
+  if [[ -f dev/scripts/token-budget.sh ]]; then
+    bash dev/scripts/token-budget.sh
+
+    # Check for red-threshold skills
+    RED_SKILLS=0
+    for skill_dir in gsp/skills/*/; do
+      [[ -f "$skill_dir/SKILL.md" ]] || continue
+      body=$(wc -l < "$skill_dir/SKILL.md" | tr -d ' ')
+
+      # Count unique agent references that match actual agent files
+      spawns=0
+      for agent_file in gsp/agents/gsp-*.md; do
+        [[ -f "$agent_file" ]] || continue
+        agent_name=$(basename "$agent_file" .md)
+        if grep -q "$agent_name" "$skill_dir/SKILL.md" 2>/dev/null; then
+          spawns=$((spawns + 1))
+        fi
+      done
+
+      fork=0
+      grep -q 'context:.*fork' "$skill_dir/SKILL.md" 2>/dev/null && fork=1
+
+      meth=0
+      if [[ -d "$skill_dir/methodology" ]]; then
+        for mf in "$skill_dir"/methodology/*.md; do
+          [[ -f "$mf" ]] && meth=$((meth + $(wc -l < "$mf" | tr -d ' ')))
+        done
+      fi
+
+      score=$((body + (spawns * 500) + (fork * 300) + meth))
+      [[ $score -ge 1000 ]] && RED_SKILLS=$((RED_SKILLS + 1))
+    done
+
+    if [[ $RED_SKILLS -eq 0 ]]; then
+      pass "TB1 No skills above red threshold (1000)"
+    else
+      warn "TB1 Skills above red threshold" "$RED_SKILLS skill(s) score >= 1000"
+    fi
+  else
+    fail "TB1 Token budget script missing" "dev/scripts/token-budget.sh not found"
   fi
 fi
 

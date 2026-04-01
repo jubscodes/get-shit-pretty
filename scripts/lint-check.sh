@@ -1,5 +1,5 @@
 #!/bin/bash
-# PostToolUse hook for gsp-builder: lint files after Edit/Write
+# PostToolUse hook for gsp-project-builder: lint files after Edit/Write
 # Runs the project's linter on modified files if available.
 # Non-blocking — exit 0 even if linter isn't found.
 

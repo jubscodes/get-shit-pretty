@@ -2,7 +2,6 @@
 name: gsp-phase-transition
 description: "Render phase transition screens — pipeline progress, completion banner, file tree. Invoked by pipeline skills at phase completion."
 user-invocable: false
-model: sonnet
 allowed-tools:
   - Read
   - Glob
@@ -65,7 +64,6 @@ If audit phase exists (evolve mode), prepend: `audit ─── `
 
 `brief ─── research ─── design ─── critique ─── build ─── review`
 
-If launch is in scope, append: ` ─── launch`
 
 ## Step 3: Completion banner + file tree
 
@@ -116,7 +114,6 @@ If all phases in the pipeline are complete, add `  fully pretty.` after the divi
 | critique | designs critiqued |
 | build | code implemented |
 | review | implementation validated |
-| launch | campaign assets created |
 
 ## Step 4: Return
 

@@ -74,8 +74,6 @@ GSP follows a **dual-diamond** architecture — two complete design cycles that 
     └──────────────────────────┘           │    ↓                 │      │
                                            │  project-review ─────┘      │
                                            └──────────────────────────────┘
-                                                      ↓
-                                                  /gsp:launch (optional)
 ```
 
 All artifacts live in `.design/` within your project directory.
@@ -156,14 +154,6 @@ Validate what was built against the original design intent. Catches drift betwee
 
 ---
 
-### Optional: `/gsp:launch`
-
-Create marketing campaign assets — landing page copy, social media content, launch materials. Your product ships with a story, not just code.
-
-**Creates:** `.design/projects/{project}/launch/`
-
----
-
 ## Commands
 
 ### Entry
@@ -195,7 +185,6 @@ Create marketing campaign assets — landing page copy, social media content, la
 | `/gsp:project-critique` | Nielsen's heuristics + WCAG 2.2 AA audit |
 | `/gsp:project-build` | Translate designs to production code |
 | `/gsp:project-review` | QA validation against designs |
-| `/gsp:launch` | Marketing campaign assets |
 
 ### Utility
 
@@ -212,27 +201,23 @@ Create marketing campaign assets — landing page copy, social media content, la
 
 ## Agents
 
-GSP ships with 15 specialized agents, each modeled after a real design discipline:
+GSP ships with 11 specialized agents, each modeled after a real design discipline:
 
 | Agent | Role |
 |-------|------|
 | **Brand Strategist** | Brand strategy using Kapferer Prism, archetypes, positioning, voice, and messaging |
-| **Identity Designer** | Visual identity — logo, color palettes, typography systems |
-| **Design System Architect** | Complete design systems — tokens, components, foundations |
+| **Brand Creative Director** | Visual identity — logo, color palettes, typography systems |
+| **Brand Engineer** | Design systems — tokens, components, foundations, guidelines |
 | **Brand Auditor** | Brand coherence assessment and evolution mapping |
-| **Trend Researcher** | Market landscape, competitor analysis, emerging patterns |
+| **Brand Researcher** | Market landscape, competitor analysis, emerging patterns |
 | **Project Researcher** | Deep UX patterns, competitor UX, technical approaches |
-| **Project Scoper** | Project scope through guided Q&A |
-| **UI/UX Designer** | Screen design and interaction flows following Apple HIG |
-| **Design Critic** | Structured critiques using Nielsen's 10 heuristics |
+| **Project Designer** | Screen design and interaction flows following Apple HIG |
+| **Project Critic** | Structured critiques using Nielsen's 10 heuristics |
+| **Project Builder** | Designs to production-ready frontend code |
+| **Project Reviewer** | QA validation — implementation against design intent |
 | **Accessibility Auditor** | WCAG 2.2 AA compliance auditing |
-| **Design-to-Code Builder** | Designs to production-ready frontend code |
-| **Deliverable Reviewer** | QA validation — implementation against design intent |
-| **Campaign Director** | Marketing campaign asset libraries |
-| **Codebase Scanner** | Tech stack detection and existing pattern inventory |
-| **ASCII Artist** | Terminal ASCII art — context-aware art generation |
 
-Each agent carries deep reference material — Apple HIG patterns, Nielsen's heuristics, WCAG checklists, design token standards — baked into its prompts.
+Agents are thin stubs (~12 lines) at session start — full methodology loads on-demand from skill `methodology/` directories when spawned. Each agent gets its own context window for focused creative/technical work.
 
 ---
 
@@ -242,8 +227,8 @@ GSP works across all major AI coding tools. The installer converts Claude Code's
 
 | Feature | Claude Code | OpenCode | Gemini CLI | Codex CLI |
 |---------|:-----------:|:--------:|:----------:|:---------:|
-| Skills | 30 | 30 | 30 | 30 |
-| Agents | 15 | 15 | 15 (experimental) | — |
+| Skills | 34 | 34 | 34 | 34 |
+| Agents | 11 | 11 | 11 (experimental) | — |
 | Slash syntax | `/gsp:command` | `/gsp-command` | `/gsp:command` | `$gsp-command` |
 | Prompts + templates | Yes | Yes | Yes | Yes |
 | References | Yes | Yes | Yes | Yes |
@@ -329,8 +314,8 @@ get-shit-pretty/
 │   └── install.js         Multi-runtime installer
 ├── scripts/               Hook scripts and utilities
 ├── gsp/                   Source of truth for all content
-│   ├── agents/            15 subagents (gsp-*.md)
-│   ├── skills/            38 skills (*/SKILL.md)
+│   ├── agents/            11 subagents (gsp-*.md stubs)
+│   ├── skills/            34 skills (*/SKILL.md + methodology/ siblings)
 │   ├── hooks/             Hooks (hooks.json)
 │   ├── templates/         Config, state, brief, roadmap templates
 │   └── references/        Shared reference material

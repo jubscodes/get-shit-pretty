@@ -1,9 +1,7 @@
 ---
 name: gsp-brand-identity
-description: Create your visual identity — logo, color, typography
+description: Create your visual identity — logo, color, typography (creative phase — benefits from capable models)
 user-invocable: true
-model: opus
-effort: high
 allowed-tools:
   - Read
   - Write
@@ -22,13 +20,8 @@ Build the brand's visual identity.
 
 **Input:** Strategy chunks + BRIEF.md + discover/mood-board-direction.md
 **Output:** `.design/branding/{brand}/identity/` (6 chunks + palettes.json + INDEX.md)
-**Agent:** `gsp-creative-director`
+**Agent:** `gsp-brand-creative-director`
 </objective>
-
-<execution_context>
-@${CLAUDE_SKILL_DIR}/../../templates/phases/identity.md
-@${CLAUDE_SKILL_DIR}/../gsp-color/references/color-composition.md
-</execution_context>
 
 <rules>
 - Always use `AskUserQuestion` for user-facing questions — never raw text prompts
@@ -86,7 +79,13 @@ After visual direction is confirmed, ask as a separate `AskUserQuestion`:
 
 ## Step 3: Spawn creative director
 
-Spawn the `gsp-creative-director` agent. **Inline all content** — the agent should not need to read any input files.
+### Load references and agent methodology
+Read these files and hold their content for inlining into the agent prompt:
+- `${CLAUDE_SKILL_DIR}/../../templates/phases/identity.md` — identity output template
+- `${CLAUDE_SKILL_DIR}/../gsp-color/references/color-composition.md` — color composition reference
+- `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-creative-director.md` — agent methodology
+
+Spawn the `gsp-brand-creative-director` agent. **Inline all content** — the agent should not need to read any input files.
 
 Pass in the agent prompt:
 - **Content of** BRIEF.md (loaded in Step 1)
@@ -94,7 +93,9 @@ Pass in the agent prompt:
 - **Content of** discover/mood-board-direction.md (loaded in Step 1)
 - **Content of** style base preset `.yml` + `.md` (when loaded in Step 1) — `.yml` as structural scaffold, `.md` as design philosophy and signature techniques
 - **Content of** audit/brand-inventory.md (when loaded in Step 2)
-- Identity output template, color composition reference (from execution_context)
+- **Agent methodology** (loaded above)
+- **Content of** identity output template (loaded above)
+- **Content of** color composition reference (loaded above)
 - User-confirmed visual direction + constraints
 - **Output path:** `{BRAND_PATH}/identity/`
 

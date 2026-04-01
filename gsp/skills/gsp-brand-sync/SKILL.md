@@ -2,14 +2,11 @@
 name: gsp-brand-sync
 description: Sync brand to match a project's shipped state — tokens, voice, visual patterns, personality
 user-invocable: true
-model: opus
-effort: high
 allowed-tools:
   - Read
   - Write
   - Edit
   - Bash
-  - Agent
   - Glob
   - Grep
   - AskUserQuestion
@@ -29,7 +26,6 @@ Compare a project's shipped state against its source brand across all dimensions
 
 **Input:** A project with a linked brand (via project config or `.design/branding/`)
 **Output:** Updated brand tokens, strategy chunks, identity chunks, and style preset (as applicable)
-**Agent:** `gsp-brand-syncer`
 </objective>
 
 <execution_context>
@@ -53,18 +49,72 @@ Check that the brand has at least one of: `patterns/{brand-name}.yml`, `strategy
 
 Verify the project codebase has shipped output — source files with components, copy, or styles.
 
-## Step 1: Spawn syncer agent
+## Step 1: Analyze divergences
 
 ```bash
 mkdir -p {BRAND_PATH}/sync
 ```
 
-Spawn the `gsp-brand-syncer` agent with:
-- `BRAND_PATH` and all available brand files ({brand-name}.yml, strategy chunks, identity chunks, foundation chunks)
-- Project codebase location (working directory)
-- **Output path:** `{BRAND_PATH}/sync/`
+Run 4-dimension analysis directly. Read brand files first: `{BRAND_PATH}/patterns/{brand-name}.yml`, strategy chunks, identity chunks.
 
-The agent writes `SYNC-REPORT.md` with divergences across four dimensions: tokens, voice & tone, visual patterns, personality. Each divergence includes evidence (file paths, line numbers, before/after values).
+### Dimension 1: Token diff (quantitative)
+
+Grep for token values in: `tailwind.config.*` (`theme.extend`), CSS custom properties in globals/variables/theme CSS, theme/token JS/TS files, hardcoded values in components. Compare each against brand `.yml`. Classify: **Changed** (value differs), **Added** (in project, not brand), **Removed** (in brand, not project). Skip equivalents and framework defaults.
+
+### Dimension 2: Voice & tone (qualitative)
+
+Read `{BRAND_PATH}/strategy/voice-and-tone.md` for attributes and tone spectrum. Grep project for user-facing strings — headings, button labels, error states, tooltips, onboarding, meta content. Sample 10-15 representative strings. Assess each voice attribute: does copy match? Note drift direction ("more casual", "more technical"). Flag new patterns not in spec.
+
+### Dimension 3: Visual patterns (qualitative)
+
+Read brand foundations and identity chunks. Glob/Grep components for layout patterns, component styling (radius, shadow, states), color application, typography hierarchy, imagery, motion. Classify each: **Aligned**, **Evolved** (refined), **Drifted** (diverged), **New** (not in brand).
+
+### Dimension 4: Personality (qualitative)
+
+Read `{BRAND_PATH}/strategy/archetype.md` and `positioning.md`. Assess holistically: does the product feel like the archetype? Has positioning shifted? Are shadow traits showing? Classify: **On-brand**, **Shifted** (name direction), **Stronger**. Connect evidence from dimensions 1-3.
+
+### Quality standards
+
+- Token divergences: exact values (brand vs project)
+- Voice/visual assessments: cite file:line evidence
+- Personality: connect to specific patterns from other dimensions
+- Only flag genuine divergences, not noise
+
+### Write report
+
+Write `SYNC-REPORT.md` to `{BRAND_PATH}/sync/` with this structure:
+
+```markdown
+# Brand Sync Report
+> Brand: {name} | Project: {directory} | Generated: {DATE}
+
+## Tokens
+| Token | Brand Value | Project Value | Status |
+|-------|------------|---------------|--------|
+
+**Summary:** {N} changed · {N} added · {N} removed
+
+## Voice & Tone
+### Divergences
+- **{attribute}** — {aligned|drifted|new}
+  - Brand: "{spec}" | Project: "{reality}" | Direction: {drift}
+  - Evidence: {file:line}
+### Overall: {N}/{N} attributes aligned
+
+## Visual Patterns
+### Divergences
+- **{pattern}** — {aligned|evolved|drifted|new}
+  - Brand: "{spec}" | Project: "{reality}"
+  - Evidence: {file:line}
+
+## Personality
+- **Archetype:** {on-brand|shifted|stronger} — {assessment + evidence}
+- **Positioning:** {holds|shifted} — {assessment if shifted}
+
+## Update Map
+| Dimension | File to Update | Change |
+|-----------|---------------|--------|
+```
 
 ## Step 2: Present findings
 

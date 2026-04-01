@@ -17,7 +17,7 @@ Edit source under `gsp/`; the installer keeps runtimes in sync. Never edit insid
 
 ## Architecture
 
-Dual-diamond: **Branding** (discover → strategy → identity → patterns) + **Project** (brief → research → design → critique → build → review). Optional: launch. Verbal identity is merged into brand-strategy (4 phases, not 5).
+Dual-diamond: **Branding** (discover → strategy → identity → patterns) + **Project** (brief → research → design → critique → build → review). Verbal identity is merged into brand-strategy (4 phases, not 5).
 
 ### Two skill layers
 
@@ -29,7 +29,7 @@ Own domain knowledge as sibling files (`domains/`, `references/`). Serve the ful
 
 Rule: **never duplicate domain knowledge in pipeline skills.** If an expertise skill owns it, pipeline skills read or invoke.
 
-**Pipeline skills** (orchestrators): `brand-research`, `brand-strategy`, `brand-identity`, `brand-guidelines`, `project-brief`, `project-research`, `project-design`, `project-critique`, `project-build`, `project-review`, `launch`
+**Pipeline skills** (orchestrators): `brand-research`, `brand-strategy`, `brand-identity`, `brand-guidelines`, `project-brief`, `project-research`, `project-design`, `project-critique`, `project-build`, `project-review`
 
 Own workflow: state management, phase gates, agent spawning, user interaction. Consume domain knowledge from expertise skills. Produce artifacts to `.design/`.
 
@@ -55,9 +55,9 @@ The filesystem is the integration layer — skills produce artifacts to `.design
 | Directory | Contents |
 |-----------|----------|
 | `gsp/skills/` | 34 skills — each is a `gsp-<name>/SKILL.md` directory with optional `domains/` and `references/` siblings |
-| `gsp/agents/` | 15 subagents (`gsp-{name}.md`) |
+| `gsp/agents/` | 11 subagents (`gsp-{name}.md`) |
 | `gsp/hooks/` | Hooks (`hooks.json`) |
-| `gsp/prompts/` | Reserved (agent methodology lives in agent definitions) |
+| `gsp/prompts/` | Reserved (agent methodology lives in skill `methodology/` directories) |
 | `gsp/templates/` | Project/brand config, state, brief, roadmap templates |
 | `.mcp.json` | Bundled MCP servers (GitHub, Figma) |
 | `scripts/` | Hook scripts and utilities (at repo root) |
@@ -85,9 +85,9 @@ Cross-references between skills use `gsp-` prefixed paths: `${CLAUDE_SKILL_DIR}/
 
 | Runtime | Skills location | Agents | Bundle location |
 |---------|-----------------|--------|-----------------|
-| Claude Code | `.claude/skills/` | `.claude/agents/` (15) | `.claude/{prompts,templates}/` |
-| OpenCode | `.opencode/skills/` | `.opencode/agents/` (15) | `.opencode/{prompts,templates}/` |
-| Gemini CLI | `.gemini/skills/` | `.gemini/agents/` (15, experimental) | `.gemini/{prompts,templates}/` |
+| Claude Code | `.claude/skills/` | `.claude/agents/` (11) | `.claude/{prompts,templates}/` |
+| OpenCode | `.opencode/skills/` | `.opencode/agents/` (11) | `.opencode/{prompts,templates}/` |
+| Gemini CLI | `.gemini/skills/` | `.gemini/agents/` (11, experimental) | `.gemini/{prompts,templates}/` |
 | Codex CLI | **`.agents/skills/`** (not `.codex/`) | **None** (not supported) | `.codex/{prompts,templates}/` |
 
 Skills are the single source for all runtimes — commands have been removed.
@@ -119,9 +119,8 @@ To reinstall after adding/removing files: `node bin/install.js --claude --local`
 Pattern: `- **Content of** {file} (loaded in Step N)` in the spawn instruction.
 
 Exceptions — agents that legitimately need to read from disk:
-- `gsp-builder` (screen agents) — reads live codebase foundations
-- `gsp-reviewer` — Grep/Glob on actual source files
-- `gsp-brand-syncer` — scans brand files + codebase
+- `gsp-project-builder` (screen agents) — reads live codebase foundations
+- `gsp-project-reviewer` — Grep/Glob on actual source files
 - `gsp-accessibility-auditor` (code mode) — Grep/Glob on source files
 
 ### Claude Code context cost model
@@ -129,7 +128,7 @@ Exceptions — agents that legitimately need to read from disk:
 Understanding what loads when is critical for keeping sessions lean. These costs apply to every conversation, not just GSP workflows.
 
 **Session start (always loaded, every conversation):**
-- `.claude/agents/*.md` — full file content of every agent definition
+- `.claude/agents/*.md` — agent stubs (frontmatter + one-line body, ~12 lines each, ~130 lines total)
 - `.claude/references/*.md` — full file content of every reference file
 - Skill descriptions — the `description:` line from each SKILL.md (negligible)
 - `CLAUDE.md` files — project and user-level
@@ -140,13 +139,14 @@ Understanding what loads when is critical for keeping sessions lean. These costs
 - Sibling files in skill directories — **inert** until explicitly Read by the skill
 
 **Agent spawn (loaded on demand):**
-- Agent `.md` definition is already in context from session start
-- Agent gets its own context window with the spawning skill's prompt
+- Agent stub is already in context from session start (just tool permissions + name)
+- Methodology loaded by the spawning skill from `methodology/gsp-{agent}.md` sibling file
+- Agent gets its own context window with the spawning skill's prompt + inlined methodology
 
 **Implications for GSP:**
 - **`gsp/references/` is empty — all references live in skill directories.** Domain knowledge is colocated with the expertise skill that owns it. Pipeline skills read from expertise skills via cross-skill paths. Nothing installs to `.claude/references/`.
-- **Keep agent definitions lean.** Agent `.md` files load at session start. Methodology and reference knowledge should be inlined by the spawning skill, not baked into the agent definition.
-- **Skill sibling files are free until used.** A skill directory with 74 `.yml` presets costs zero at session start. Use this for reference material, examples, and templates that the skill reads on demand.
+- **Agent stubs are lean, methodology lives in skills.** Agent `.md` files contain only frontmatter (tools, model, hooks) + a one-line body. Full methodology lives in `gsp/skills/{skill}/methodology/gsp-{agent}.md` and is read by the skill at spawn time. This keeps session-start cost minimal (~130 lines for 11 agents vs ~1,500 for full definitions).
+- **Skill sibling files are free until used.** A skill directory with 74 `.yml` presets costs zero at session start. Use this for reference material, examples, methodology, and templates that the skill reads on demand.
 - **Cross-skill references use relative paths:** `${CLAUDE_SKILL_DIR}/../gsp-other-skill/ref.md` — this reads the file on demand with zero session-start cost.
 
 ### Reference colocation rule
@@ -164,11 +164,11 @@ Reference files live inside the skill directory that is their primary consumer, 
 
 ### Context optimization rules
 
-These rules minimize token waste across the pipeline. Enforced by audit tests C11, C12, I19.
+These rules minimize token waste across the pipeline. Enforced by audit tests C12, I19.
 
-**Model and effort routing:** Every skill must declare `model:` in frontmatter. Pipeline creative/technical phases use `opus` + `effort: high`. Research, composable, utility, and fun skills use `sonnet`. The installer strips `model:` and `effort:` for non-Claude runtimes.
+**Model selection is the user's choice.** Skills do not declare `model:` or `effort:` in frontmatter — the user controls which model runs each phase. Pipeline creative/technical skills include a hint in their `description:` field (e.g., "benefits from capable models") as passive guidance. The installer still strips any `model:`/`effort:` fields for non-Claude runtimes (backwards compat for forks).
 
-**Context fork for pure dispatchers:** Pipeline skills that have zero interactive steps (no `AskUserQuestion` before agent spawn) must use `context: fork` in frontmatter. This isolates execution_context references from the main conversation window. Currently forked: `project-design`, `project-critique`, `project-review`, `launch`. Never fork skills with interactive steps — test C12 enforces this.
+**Context fork for pure dispatchers:** Pipeline skills that have zero interactive steps (no `AskUserQuestion` before agent spawn) must use `context: fork` in frontmatter. This isolates execution_context references from the main conversation window. Currently forked: `project-design`, `project-critique`, `project-review`. Never fork skills with interactive steps — test C12 enforces this.
 
 **Double-dispatch is intentional:** Forked skills use the Agent tool inside the fork to spawn executors. Do NOT collapse this with the `agent:` frontmatter field. The fork isolates the orchestrator; the Agent tool gives the executor a clean start. The orchestrator owns validation, routing, and state updates — the agent owns creative/technical execution.
 
@@ -176,7 +176,7 @@ These rules minimize token waste across the pipeline. Enforced by audit tests C1
 
 **Templates loaded at write time.** Skills that write artifacts from templates (e.g., `gsp-start` writing BRIEF.md, STATE.md) must read templates at the point of writing, not in execution_context. Pattern: `Read templates from ${CLAUDE_SKILL_DIR}/../../templates/{path}/ and write artifacts`.
 
-**SubagentStop hooks for all chunk-producing agents.** Every agent that writes deliverable chunks must have a SubagentStop hook in `gsp/hooks/hooks.json` that verifies expected outputs exist. Covered: `gsp-designer`, `gsp-critic`, `gsp-creative-director`, `gsp-brand-engineer`, `gsp-scoper`, `gsp-campaign-director`, `gsp-builder`, `gsp-reviewer`.
+**SubagentStop hooks for all chunk-producing agents.** Every agent that writes deliverable chunks must have a SubagentStop hook in `gsp/hooks/hooks.json` that verifies expected outputs exist. Covered: `gsp-project-designer`, `gsp-project-critic`, `gsp-brand-creative-director`, `gsp-brand-engineer`, `gsp-project-builder`, `gsp-project-reviewer`.
 
 **Filesystem is the integration layer.** Phases consume prior-phase output from disk (`.design/`), never from conversation context. Forked phases write STATE.md and artifact files to disk — these persist across fork boundaries. No phase should rely on conversation history for prior-phase artifacts.
 
@@ -214,17 +214,23 @@ Internal development tools live in `dev/` (versioned in repo, never installed to
 |------|---------|
 | `dev/skills/gspdev-audit/` | Pipeline integrity checker — contracts, installer, runtime compat, versions, templates |
 | `dev/skills/gspdev-runtime-compat/` | Fetch live runtime docs and flag drift against GSP installer |
-| `dev/scripts/audit-tests.sh` | Automated test suite (65 tests across 7 suites) |
+| `dev/scripts/audit-tests.sh` | Automated test suite (65 tests across 8 suites) |
+| `dev/scripts/token-budget.sh` | Static token budget analyzer — scores skills by estimated API weight |
+| `dev/scripts/token-proxy-start.sh` | Live token proxy — mitmproxy addon for measuring real API usage |
+| `dev/scripts/benchmark.sh` | Token budget benchmarking — capture snapshots, compare against release baseline |
+| `dev/skills/gspdev-benchmark/` | Interactive benchmark skill — wraps benchmark.sh with analysis and suggestions |
+| `dev/benchmarks/` | JSON snapshots — one per release, plus working comparisons |
 
 ### Running tests
 
 ```bash
-bash dev/scripts/audit-tests.sh          # all suites
-bash dev/scripts/audit-tests.sh versions  # version sync only
-bash dev/scripts/audit-tests.sh contracts # skill↔agent contracts
-bash dev/scripts/audit-tests.sh installer # installer correctness
-bash dev/scripts/audit-tests.sh runtime   # runtime compatibility
-bash dev/scripts/audit-tests.sh templates # template coherence
+bash dev/scripts/audit-tests.sh              # all suites
+bash dev/scripts/audit-tests.sh versions     # version sync only
+bash dev/scripts/audit-tests.sh contracts    # skill↔agent contracts
+bash dev/scripts/audit-tests.sh installer    # installer correctness
+bash dev/scripts/audit-tests.sh runtime      # runtime compatibility
+bash dev/scripts/audit-tests.sh templates    # template coherence
+bash dev/scripts/audit-tests.sh tokenbudget  # token budget analysis
 ```
 
 ### Using dev skills
