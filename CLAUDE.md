@@ -217,6 +217,9 @@ Internal development tools live in `dev/` (versioned in repo, never installed to
 | `dev/scripts/audit-tests.sh` | Automated test suite (65 tests across 8 suites) |
 | `dev/scripts/token-budget.sh` | Static token budget analyzer — scores skills by estimated API weight |
 | `dev/scripts/token-proxy-start.sh` | Live token proxy — mitmproxy addon for measuring real API usage |
+| `dev/scripts/benchmark.sh` | Token budget benchmarking — capture snapshots, compare against release baseline |
+| `dev/skills/gspdev-benchmark/` | Interactive benchmark skill — wraps benchmark.sh with analysis and suggestions |
+| `dev/benchmarks/` | JSON snapshots — one per release, plus working comparisons |
 
 ### Running tests
 

@@ -1,0 +1,65 @@
+{
+  "version": "0.6.2",
+  "label": "",
+  "date": "2026-04-01",
+  "branch": "HEAD",
+  "commit": "831341b",
+  "skills": {
+    "gsp-accessibility-audit": { "score": 903, "body": 221, "exec": 182, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-accessibility": { "score": 215, "body": 215, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-add-reference": { "score": 98, "body": 98, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-art": { "score": 556, "body": 56, "exec": 0, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-audit": { "score": 671, "body": 92, "exec": 79, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-identity": { "score": 887, "body": 132, "exec": 255, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-patterns": { "score": 1048, "body": 240, "exec": 308, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-refine": { "score": 331, "body": 149, "exec": 182, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-brand-research": { "score": 875, "body": 89, "exec": 286, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-strategy": { "score": 1254, "body": 150, "exec": 604, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-sync": { "score": 863, "body": 102, "exec": 261, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-design-system": { "score": 348, "body": 154, "exec": 194, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-doctor": { "score": 346, "body": 346, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-help": { "score": 124, "body": 124, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-launch": { "score": 967, "body": 98, "exec": 69, "agents": 1, "fork": 300, "methodology": 0 },
+    "gsp-palette": { "score": 346, "body": 267, "exec": 79, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-pretty": { "score": 563, "body": 63, "exec": 0, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-progress": { "score": 186, "body": 186, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-project-brief": { "score": 706, "body": 136, "exec": 70, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-project-build": { "score": 1497, "body": 371, "exec": 126, "agents": 2, "fork": 0, "methodology": 0 },
+    "gsp-project-critique": { "score": 1579, "body": 174, "exec": 105, "agents": 2, "fork": 300, "methodology": 0 },
+    "gsp-project-design": { "score": 1059, "body": 160, "exec": 99, "agents": 1, "fork": 300, "methodology": 0 },
+    "gsp-project-research": { "score": 737, "body": 138, "exec": 99, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-project-review": { "score": 1037, "body": 179, "exec": 58, "agents": 1, "fork": 300, "methodology": 0 },
+    "gsp-scaffold": { "score": 248, "body": 248, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-start": { "score": 418, "body": 331, "exec": 87, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-style": { "score": 732, "body": 180, "exec": 552, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-typescale": { "score": 1073, "body": 234, "exec": 839, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-update": { "score": 141, "body": 141, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 }
+  },
+  "pipelines": {
+    "brand_diamond": { "score": 3434, "skills": 4, "heaviest": "gsp-brand-strategy", "heaviest_score": 1254 },
+    "project_diamond": { "score": 6615, "skills": 6, "heaviest": "gsp-project-critique", "heaviest_score": 1579 },
+    "quick_flow": { "score": 1856, "skills": 3, "heaviest": "gsp-style", "heaviest_score": 732 },
+    "full_e2e": { "score": 10049, "skills": 10, "heaviest": "gsp-project-critique", "heaviest_score": 1579 }
+  },
+  "rate_limit": {
+    "double_dispatch_skills": ["gsp-launch", "gsp-project-critique", "gsp-project-design", "gsp-project-review"],
+    "double_dispatch_count": 4,
+    "api_conversations_full_e2e": 24
+  },
+  "tests": {
+    "pass": 58,
+    "warn": 2,
+    "fail": 0
+  },
+  "counts": {
+    "skills": 29,
+    "agents": 15,
+    "presets": 35,
+    "methodologies": 0
+  },
+  "totals": {
+    "weight": 19808,
+    "skill_count": 29,
+    "red_zone": 7
+  }
+}

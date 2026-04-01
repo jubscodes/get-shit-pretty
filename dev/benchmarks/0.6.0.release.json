@@ -1,0 +1,65 @@
+{
+  "version": "0.6.0",
+  "label": "",
+  "date": "2026-04-01",
+  "branch": "HEAD",
+  "commit": "dfe6547",
+  "skills": {
+    "gsp-accessibility-audit": { "score": 900, "body": 218, "exec": 182, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-accessibility": { "score": 213, "body": 213, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-add-reference": { "score": 97, "body": 97, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-art": { "score": 555, "body": 55, "exec": 0, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-audit": { "score": 666, "body": 87, "exec": 79, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-identity": { "score": 885, "body": 126, "exec": 259, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-patterns": { "score": 1033, "body": 225, "exec": 308, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-refine": { "score": 329, "body": 147, "exec": 182, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-brand-research": { "score": 872, "body": 86, "exec": 286, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-strategy": { "score": 1248, "body": 144, "exec": 604, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-brand-sync": { "score": 860, "body": 99, "exec": 261, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-design-system": { "score": 347, "body": 153, "exec": 194, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-doctor": { "score": 326, "body": 326, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-help": { "score": 123, "body": 123, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-launch": { "score": 658, "body": 89, "exec": 69, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-palette": { "score": 344, "body": 265, "exec": 79, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-pretty": { "score": 562, "body": 62, "exec": 0, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-progress": { "score": 185, "body": 185, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-project-brief": { "score": 705, "body": 135, "exec": 70, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-project-build": { "score": 2270, "body": 361, "exec": 909, "agents": 2, "fork": 0, "methodology": 0 },
+    "gsp-project-critique": { "score": 2021, "body": 150, "exec": 871, "agents": 2, "fork": 0, "methodology": 0 },
+    "gsp-project-design": { "score": 1660, "body": 137, "exec": 1023, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-project-research": { "score": 735, "body": 136, "exec": 99, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-project-review": { "score": 734, "body": 176, "exec": 58, "agents": 1, "fork": 0, "methodology": 0 },
+    "gsp-scaffold": { "score": 247, "body": 247, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-start": { "score": 873, "body": 321, "exec": 552, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-style": { "score": 730, "body": 178, "exec": 552, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-typescale": { "score": 1071, "body": 232, "exec": 839, "agents": 0, "fork": 0, "methodology": 0 },
+    "gsp-update": { "score": 111, "body": 111, "exec": 0, "agents": 0, "fork": 0, "methodology": 0 }
+  },
+  "pipelines": {
+    "brand_diamond": { "score": 3878, "skills": 4, "heaviest": "gsp-brand-strategy", "heaviest_score": 1248 },
+    "project_diamond": { "score": 8125, "skills": 6, "heaviest": "gsp-project-build", "heaviest_score": 2270 },
+    "quick_flow": { "score": 2308, "skills": 3, "heaviest": "gsp-start", "heaviest_score": 873 },
+    "full_e2e": { "score": 12003, "skills": 10, "heaviest": "gsp-project-build", "heaviest_score": 2270 }
+  },
+  "rate_limit": {
+    "double_dispatch_skills": [],
+    "double_dispatch_count": 0,
+    "api_conversations_full_e2e": 21
+  },
+  "tests": {
+    "pass": 48,
+    "warn": 2,
+    "fail": 0
+  },
+  "counts": {
+    "skills": 29,
+    "agents": 15,
+    "presets": 35,
+    "methodologies": 0
+  },
+  "totals": {
+    "weight": 21360,
+    "skill_count": 29,
+    "red_zone": 6
+  }
+}
