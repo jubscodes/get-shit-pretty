@@ -23,11 +23,6 @@ Build the brand's visual identity.
 **Agent:** `gsp-brand-creative-director`
 </objective>
 
-<execution_context>
-@${CLAUDE_SKILL_DIR}/../../templates/phases/identity.md
-@${CLAUDE_SKILL_DIR}/../gsp-color/references/color-composition.md
-</execution_context>
-
 <rules>
 - Always use `AskUserQuestion` for user-facing questions — never raw text prompts
 - One decision per question — never batch multiple questions in a single message
@@ -84,8 +79,11 @@ After visual direction is confirmed, ask as a separate `AskUserQuestion`:
 
 ## Step 3: Spawn creative director
 
-### Load agent methodology
-Read `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-creative-director.md`. Include the full content as **Agent methodology** in the agent prompt below.
+### Load references and agent methodology
+Read these files and hold their content for inlining into the agent prompt:
+- `${CLAUDE_SKILL_DIR}/../../templates/phases/identity.md` — identity output template
+- `${CLAUDE_SKILL_DIR}/../gsp-color/references/color-composition.md` — color composition reference
+- `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-creative-director.md` — agent methodology
 
 Spawn the `gsp-brand-creative-director` agent. **Inline all content** — the agent should not need to read any input files.
 
@@ -96,7 +94,8 @@ Pass in the agent prompt:
 - **Content of** style base preset `.yml` + `.md` (when loaded in Step 1) — `.yml` as structural scaffold, `.md` as design philosophy and signature techniques
 - **Content of** audit/brand-inventory.md (when loaded in Step 2)
 - **Agent methodology** (loaded above)
-- Identity output template, color composition reference (from execution_context)
+- **Content of** identity output template (loaded above)
+- **Content of** color composition reference (loaded above)
 - User-confirmed visual direction + constraints
 - **Output path:** `{BRAND_PATH}/identity/`
 

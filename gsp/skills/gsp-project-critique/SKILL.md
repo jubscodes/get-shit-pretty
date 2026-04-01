@@ -23,10 +23,6 @@ Critique design quality and audit accessibility compliance.
 **Agents:** `gsp-project-critic` + `gsp-accessibility-auditor`
 </objective>
 
-<execution_context>
-@${CLAUDE_SKILL_DIR}/../../templates/phases/critique.md
-</execution_context>
-
 <process>
 ## Step 0: Resolve project and brand
 
@@ -68,12 +64,11 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 
 ## Step 1.8: Load critique references
 
-Read these reference files:
+Read these reference files and hold their content for inlining into agent prompts in Step 2:
 - `${CLAUDE_SKILL_DIR}/../gsp-accessibility-audit/wcag-checklist.md`
 - `${CLAUDE_SKILL_DIR}/../gsp-color/references/color-composition.md`
 - `${CLAUDE_SKILL_DIR}/../gsp-accessibility-audit/methodology/gsp-accessibility-auditor.md`
-
-Hold their content for inlining into agent prompts in Step 2.
+- `${CLAUDE_SKILL_DIR}/../../templates/phases/critique.md` — critique output template
 
 > **Note:** Nielsen's heuristics, visual taste, and anti-patterns are distilled into the `gsp-project-critic` agent prompt. Full refs remain on disk for edge-case agent lookup.
 
@@ -95,7 +90,7 @@ Read `${CLAUDE_SKILL_DIR}/methodology/gsp-project-critic.md`. Include the full c
 - **Content of** research recommendations.md (loaded in Step 1)
 - **Content of** BRIEF.md
 - **Content of** color composition reference (loaded in Step 1.8)
-- Critique output template (from execution_context)
+- **Content of** critique output template (loaded in Step 1.8)
 - `references_path`: `${CLAUDE_SKILL_DIR}/` — for supplementary Read access to visual-taste.md, anti-patterns.md
 - Output path: `{PROJECT_PATH}/critique/`
 

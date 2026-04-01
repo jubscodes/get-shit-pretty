@@ -30,10 +30,6 @@ Run full accessibility audits — design screen reviews, codebase ARIA/keyboard/
 **Agent:** `gsp-accessibility-auditor` (for design and code modes), inline for statement
 </objective>
 
-<execution_context>
-@${CLAUDE_SKILL_DIR}/wcag-checklist.md
-</execution_context>
-
 <rules>
 - Always use `AskUserQuestion` for user interaction — never prompt via plain text
 - One decision per question — never batch multiple questions in a single message
@@ -77,8 +73,10 @@ Verify design chunks exist:
 - Read `{PROJECT_PATH}/design/INDEX.md` to find screen chunks
 - If no design chunks, tell user to complete design phase first and stop
 
-### Load agent methodology
-Read `${CLAUDE_SKILL_DIR}/methodology/gsp-accessibility-auditor.md`. Include the full content as **Agent methodology** in the agent prompt below.
+### Load references and agent methodology
+Read these files and hold their content for inlining into the agent prompt:
+- `${CLAUDE_SKILL_DIR}/wcag-checklist.md` — WCAG checklist reference
+- `${CLAUDE_SKILL_DIR}/methodology/gsp-accessibility-auditor.md` — agent methodology
 
 ### Spawn agent
 
@@ -87,7 +85,7 @@ Spawn `gsp-accessibility-auditor` with:
 - Brand identity context (color system, typography)
 - Brand system context (tokens, components)
 - Conformance level
-- WCAG checklist reference
+- **Content of** WCAG checklist reference (loaded above)
 - **Agent methodology** (loaded above)
 - **Output path:** `{PROJECT_PATH}/critique/`
 - **Instructions:** "Audit all design screens against {level}. Write `accessibility-audit.md` and `accessibility-fixes.md` to the output path."
@@ -126,7 +124,7 @@ Spawn `gsp-accessibility-auditor` with:
 - Codebase paths to audit
 - Brand system tokens (for contrast verification against hardcoded values)
 - Conformance level
-- WCAG checklist reference
+- **Content of** WCAG checklist reference (loaded in Step 3)
 - **Agent methodology** (loaded in Step 3)
 - **Output path:** `{PROJECT_PATH}/review/`
 - **Instructions:** "Code audit mode. Use Grep and Glob to find accessibility issues in the codebase. Check ARIA, keyboard handlers, semantic HTML, heading hierarchy, alt text, lang attributes, skip-nav, focus management. Write `accessibility-audit.md` and `accessibility-fixes.md` to the output path with actual file paths and line numbers."

@@ -24,11 +24,6 @@ Operationalize brand identity into project-ready artifacts and complete the bran
 **Agent:** `gsp-brand-engineer`
 </objective>
 
-<execution_context>
-@${CLAUDE_SKILL_DIR}/../../templates/phases/patterns.md
-@${CLAUDE_SKILL_DIR}/design-tokens.md
-</execution_context>
-
 <rules>
 - Always use `AskUserQuestion` for user-facing questions — never raw text prompts
 - One decision per question — never batch multiple questions in a single message
@@ -114,8 +109,11 @@ Redesign the system from the ground up, informed by what exists.
 
 ## Step 3: Spawn brand engineer — Pass 1: Core
 
-### Load agent methodology
-Read `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-engineer.md`. Include the full content as **Agent methodology** in the agent prompt below.
+### Load references and agent methodology
+Read these files and hold their content for inlining into the agent prompt:
+- `${CLAUDE_SKILL_DIR}/../../templates/phases/patterns.md` — patterns output template
+- `${CLAUDE_SKILL_DIR}/design-tokens.md` — design tokens reference
+- `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-engineer.md` — agent methodology
 
 Spawn the `gsp-brand-engineer` agent. **Inline all content** — the agent should not need to read input files.
 
@@ -125,7 +123,8 @@ Pass in the agent prompt:
 - **Content of** BRIEF.md (loaded in Step 1)
 - **Content of** style base preset `.yml` + `.md` (loaded in Step 1) — `.yml` as structural scaffold, `.md` as philosophy + implementation content for STYLE.md
 - **Agent methodology** (loaded above)
-- Patterns output template, design tokens reference (from execution_context)
+- **Content of** patterns output template (loaded above)
+- **Content of** design tokens reference (loaded above)
 - The `system_strategy` and `tech_stack` values
 - **Output path:** `{BRAND_PATH}/patterns/`
 
@@ -195,7 +194,7 @@ Spawn the `gsp-brand-engineer` agent with (reuse **Agent methodology** loaded in
 - **Content of** `.design/system/STACK.md`, `COMPONENTS.md`, `TOKENS.md` (when loaded in Step 1.5)
 - The `system_strategy` and `tech_stack` values
 - **Agent methodology** (loaded in Step 3)
-- Design tokens reference (from execution_context)
+- **Content of** design tokens reference (loaded in Step 3)
 - **Output path:** `{BRAND_PATH}/patterns/`
 
 > Produce the component artifacts:
