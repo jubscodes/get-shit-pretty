@@ -2,8 +2,6 @@
 name: get-shit-pretty
 description: "Design engineering for AI coding tools. Full pipeline: brand research, strategy, identity, guidelines, UI design, critique, accessibility audit, build, and review. Expertise skills (color, typography, visuals) serve the entire pipeline. 14 specialized agents with Apple HIG, Nielsen's heuristics, WCAG 2.2 AA, and design token standards."
 user-invocable: false
-model: opus
-effort: high
 ---
 
 # Get Shit Pretty

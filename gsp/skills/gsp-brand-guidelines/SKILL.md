@@ -1,9 +1,7 @@
 ---
 name: gsp-brand-guidelines
-description: Operationalize your brand — assemble tokens, STYLE.md, component mapping, and guidelines
+description: Operationalize your brand — assemble tokens, STYLE.md, component mapping, and guidelines (technical phase — benefits from capable models)
 user-invocable: true
-model: opus
-effort: high
 allowed-tools:
   - Read
   - Write

@@ -1,8 +1,6 @@
 ---
 name: gsp-test-skill
 description: Test skill for installer unit tests
-model: opus
-effort: high
 allowed-tools:
   - Read
   - Write

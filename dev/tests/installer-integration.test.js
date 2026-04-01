@@ -98,12 +98,12 @@ describe('Clean install — Claude', () => {
     assert.ok(content.includes('<sub>'), 'keeps <sub> tags');
   });
 
-  it('preserves model: and effort: fields (Claude-only)', () => {
+  it('does not inject model: or effort: fields', () => {
     const skillsDir = path.join(tmpDir, 'skills');
     copyClaudeSkills(path.join(FIXTURES, 'skills'), skillsDir, './.claude/');
     const content = fs.readFileSync(path.join(skillsDir, 'gsp-test-skill', 'SKILL.md'), 'utf8');
-    assert.ok(content.includes('model: opus'), 'model preserved');
-    assert.ok(content.includes('effort: high'), 'effort preserved');
+    assert.ok(!content.match(/^model:/m), 'no model field');
+    assert.ok(!content.match(/^effort:/m), 'no effort field');
   });
 
   it('copies sibling files alongside SKILL.md', () => {

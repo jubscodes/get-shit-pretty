@@ -2,7 +2,6 @@
 name: gsp-pretty
 description: "Surprise ASCII art in the terminal"
 user-invocable: true
-model: sonnet
 allowed-tools:
   - Read
   - Bash

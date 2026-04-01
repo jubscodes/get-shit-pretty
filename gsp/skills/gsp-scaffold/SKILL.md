@@ -2,7 +2,6 @@
 name: gsp-scaffold
 description: Deterministic stack setup — install deps, create configs, verify build compiles
 user-invocable: true
-model: sonnet
 allowed-tools:
   - Read
   - Write

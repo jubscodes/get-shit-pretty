@@ -2,7 +2,6 @@
 name: gsp-help
 description: Show all skills
 user-invocable: true
-model: sonnet
 ---
 <objective>
 Display the complete GSP skill reference as plain text.

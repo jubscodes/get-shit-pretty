@@ -2,7 +2,6 @@
 name: gsp-brand-brief
 description: Define your brand — who, why, and what it should feel like
 user-invocable: true
-model: sonnet
 allowed-tools:
   - Read
   - Write

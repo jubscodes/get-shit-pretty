@@ -2,7 +2,6 @@
 name: gsp-style
 description: Apply a design style — get tokens and foundations without the branding diamond
 user-invocable: true
-model: sonnet
 allowed-tools:
   - Read
   - Write

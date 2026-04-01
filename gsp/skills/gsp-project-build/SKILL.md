@@ -1,9 +1,7 @@
 ---
 name: gsp-project-build
-description: Translate designs to code
+description: Translate designs to code (technical phase — benefits from capable models)
 user-invocable: true
-model: opus
-effort: high
 allowed-tools:
   - Read
   - Write

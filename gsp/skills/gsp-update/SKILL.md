@@ -2,7 +2,6 @@
 name: gsp-update
 description: Update GSP to the latest version
 user-invocable: true
-model: sonnet
 allowed-tools:
   - Read
   - Bash

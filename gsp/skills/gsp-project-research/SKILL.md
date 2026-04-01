@@ -2,8 +2,6 @@
 name: gsp-project-research
 description: Research UX patterns and technical approaches
 user-invocable: true
-model: sonnet
-effort: high
 allowed-tools:
   - Read
   - Write

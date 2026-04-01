@@ -2,7 +2,6 @@
 name: gsp-color
 description: "Design color systems — palettes, contrast, semantic mapping, dark mode"
 user-invocable: true
-model: sonnet
 allowed-tools:
   - Read
   - Write

@@ -2,7 +2,6 @@
 name: gsp-icons
 description: Design icon systems — library selection, sizing, containers, custom SVG direction
 user-invocable: true
-model: sonnet
 allowed-tools:
   - Read
   - Write

@@ -2,7 +2,6 @@
 name: gsp-start
 description: Start here — picks up where you left off
 user-invocable: true
-model: sonnet
 allowed-tools:
   - Read
   - Write

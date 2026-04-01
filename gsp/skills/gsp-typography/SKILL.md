@@ -2,7 +2,6 @@
 name: gsp-typography
 description: "Design type systems — scale, pairing, fluid type, vertical rhythm"
 user-invocable: true
-model: sonnet
 allowed-tools:
   - Read
   - Write

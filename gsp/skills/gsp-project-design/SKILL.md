@@ -1,9 +1,7 @@
 ---
 name: gsp-project-design
-description: Design screens and interaction flows
+description: Design screens and interaction flows (creative phase — benefits from capable models)
 user-invocable: true
-model: opus
-effort: high
 context: fork
 allowed-tools:
   - Read

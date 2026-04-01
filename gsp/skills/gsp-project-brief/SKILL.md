@@ -2,7 +2,6 @@
 name: gsp-project-brief
 description: Scope what you're building
 user-invocable: true
-model: sonnet
 allowed-tools:
   - Read
   - Write

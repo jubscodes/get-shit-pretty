@@ -274,25 +274,23 @@ if should_run contracts; then
     warn "C8 Claude-only field set changed" "Expected: $EXPECTED_CLAUDE_ONLY Got: $ACTUAL_CLAUDE_ONLY — verify converters handle new fields"
   fi
 
-  # C11: model/effort frontmatter values are from allowed sets
+  # C11: skills must NOT declare model:/effort: (user controls model selection)
   C11_BAD=()
   for skill_dir in gsp/skills/*/; do
     skill_file="$skill_dir/SKILL.md"
     [[ -f "$skill_file" ]] || continue
     skill_name=$(basename "$skill_dir")
-    model_val=$(grep -m1 '^model:' "$skill_file" 2>/dev/null | sed 's/model: *//')
-    effort_val=$(grep -m1 '^effort:' "$skill_file" 2>/dev/null | sed 's/effort: *//')
-    if [[ -n "$model_val" && "$model_val" != "opus" && "$model_val" != "sonnet" && "$model_val" != "haiku" ]]; then
-      C11_BAD+=("$skill_name:model=$model_val")
+    if grep -q '^model:' "$skill_file" 2>/dev/null; then
+      C11_BAD+=("$skill_name:model")
     fi
-    if [[ -n "$effort_val" && "$effort_val" != "low" && "$effort_val" != "medium" && "$effort_val" != "high" && "$effort_val" != "max" ]]; then
-      C11_BAD+=("$skill_name:effort=$effort_val")
+    if grep -q '^effort:' "$skill_file" 2>/dev/null; then
+      C11_BAD+=("$skill_name:effort")
     fi
   done
   if [[ ${#C11_BAD[@]} -eq 0 ]]; then
-    pass "C11 Model/effort values valid"
+    pass "C11 No model/effort in skill frontmatter"
   else
-    fail "C11 Invalid model/effort values" "${C11_BAD[*]}"
+    fail "C11 Skills should not declare model/effort (user controls model selection)" "${C11_BAD[*]}"
   fi
 
   # C12: Skills with context: fork must not have AskUserQuestion in allowed-tools

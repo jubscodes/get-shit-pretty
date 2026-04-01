@@ -2,8 +2,6 @@
 name: gsp-accessibility-audit
 description: Full WCAG accessibility audit — design screens, codebase, or generate compliance statement
 user-invocable: true
-model: opus
-effort: high
 allowed-tools:
   - Read
   - Write

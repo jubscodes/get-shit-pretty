@@ -164,9 +164,9 @@ Reference files live inside the skill directory that is their primary consumer, 
 
 ### Context optimization rules
 
-These rules minimize token waste across the pipeline. Enforced by audit tests C11, C12, I19.
+These rules minimize token waste across the pipeline. Enforced by audit tests C12, I19.
 
-**Model and effort routing:** Every skill must declare `model:` in frontmatter. Pipeline creative/technical phases use `opus` + `effort: high`. Research, composable, utility, and fun skills use `sonnet`. The installer strips `model:` and `effort:` for non-Claude runtimes.
+**Model selection is the user's choice.** Skills do not declare `model:` or `effort:` in frontmatter — the user controls which model runs each phase. Pipeline creative/technical skills include a hint in their `description:` field (e.g., "benefits from capable models") as passive guidance. The installer still strips any `model:`/`effort:` fields for non-Claude runtimes (backwards compat for forks).
 
 **Context fork for pure dispatchers:** Pipeline skills that have zero interactive steps (no `AskUserQuestion` before agent spawn) must use `context: fork` in frontmatter. This isolates execution_context references from the main conversation window. Currently forked: `project-design`, `project-critique`, `project-review`. Never fork skills with interactive steps — test C12 enforces this.
 

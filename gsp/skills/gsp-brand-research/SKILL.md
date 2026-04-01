@@ -2,8 +2,6 @@
 name: gsp-brand-research
 description: Research your market and competitors
 user-invocable: true
-model: sonnet
-effort: high
 allowed-tools:
   - Read
   - Write

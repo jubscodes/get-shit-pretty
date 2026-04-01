@@ -2,7 +2,6 @@
 name: gsp-visuals
 description: "Define visual direction — imagery, 3D, video, textures, and surface treatments"
 user-invocable: true
-model: sonnet
 allowed-tools:
   - Read
   - Write

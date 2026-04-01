@@ -1,9 +1,7 @@
 ---
 name: gsp-brand-identity
-description: Create your visual identity — logo, color, typography
+description: Create your visual identity — logo, color, typography (creative phase — benefits from capable models)
 user-invocable: true
-model: opus
-effort: high
 allowed-tools:
   - Read
   - Write

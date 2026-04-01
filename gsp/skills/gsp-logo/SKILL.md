@@ -2,7 +2,6 @@
 name: gsp-logo
 description: Design logo directions — concepts, variations, usage rules, and clear space
 user-invocable: true
-model: sonnet
 allowed-tools:
   - Read
   - Write

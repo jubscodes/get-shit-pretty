@@ -2,8 +2,6 @@
 name: gsp-brand-sync
 description: Sync brand to match a project's shipped state — tokens, voice, visual patterns, personality
 user-invocable: true
-model: opus
-effort: high
 allowed-tools:
   - Read
   - Write

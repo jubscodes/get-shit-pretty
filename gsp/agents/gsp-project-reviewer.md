@@ -5,7 +5,6 @@ tools: Read, Write, Bash, Grep, Glob
 disallowedTools: Edit
 maxTurns: 60
 permissionMode: acceptEdits
-model: sonnet
 memory: project
 color: cyan
 ---

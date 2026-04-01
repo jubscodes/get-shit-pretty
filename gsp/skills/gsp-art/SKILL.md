@@ -2,7 +2,6 @@
 name: gsp-art
 description: "Craft ASCII art interactively — you direct, the artist creates"
 user-invocable: true
-model: sonnet
 allowed-tools:
   - Read
   - Bash

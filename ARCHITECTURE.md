@@ -158,63 +158,14 @@ sequenceDiagram
     Note over Main: No context pollution
 ```
 
-## Model routing
+## Model guidance
 
-```mermaid
-graph TD
-    subgraph "opus + effort: high"
-        O1[project-design]
-        O2[project-critique]
-        O3[project-build]
-        O4[project-review]
-        O5[brand-strategy]
-        O6[brand-identity]
-        O7[brand-patterns]
-        O8[brand-audit]
-        O9[brand-sync]
-        O10[accessibility-audit]
-        O11[get-shit-pretty]
-    end
+Model selection is the user's choice — skills do not enforce a specific model. Pipeline creative/technical skills include a hint in their `description:` field as passive guidance.
 
-    subgraph "sonnet + effort: high"
-        S1[brand-research]
-        S2[project-research]
-    end
-
-    subgraph "sonnet (no effort)"
-        S4[palette]
-        S5[typescale]
-        S6[accessibility]
-        S7[style]
-        S8[design-system]
-        S9[scaffold]
-        S10[start]
-        S11[progress]
-        S12[help]
-        S13[doctor]
-        S14[update]
-        S15[add-reference]
-        S16[brand-refine]
-        S17[project-brief]
-        S18[art]
-        S19[pretty]
-    end
-
-    style O1 fill:#4a2,stroke:#fff,color:#fff
-    style O2 fill:#4a2,stroke:#fff,color:#fff
-    style O3 fill:#4a2,stroke:#fff,color:#fff
-    style O4 fill:#4a2,stroke:#fff,color:#fff
-    style O5 fill:#4a2,stroke:#fff,color:#fff
-    style O6 fill:#4a2,stroke:#fff,color:#fff
-    style O7 fill:#4a2,stroke:#fff,color:#fff
-    style O8 fill:#4a2,stroke:#fff,color:#fff
-    style O9 fill:#4a2,stroke:#fff,color:#fff
-    style O10 fill:#4a2,stroke:#fff,color:#fff
-    style O11 fill:#4a2,stroke:#fff,color:#fff
-    style S1 fill:#26a,stroke:#fff,color:#fff
-    style S2 fill:#26a,stroke:#fff,color:#fff
-    style S3 fill:#26a,stroke:#fff,color:#fff
-```
+**Recommendations** (not enforced):
+- **Creative/technical phases** (design, critique, build, strategy, identity, guidelines) — benefit from the most capable model available
+- **Research/utility phases** (research, scaffold, doctor, start, help) — work well with faster/cheaper models
+- **Expertise skills** (color, typography, accessibility, style) — work well with any model
 
 ## Execution context optimization
 
@@ -239,7 +190,7 @@ graph TD
 
 ### Agent methodology extraction
 
-Agent `.md` files are thin stubs (~12 lines): frontmatter (tools, model, hooks) + one-line body. Full methodology lives in the spawning skill's `methodology/` directory:
+Agent `.md` files are thin stubs (~12 lines): frontmatter (tools, hooks) + one-line body. Full methodology lives in the spawning skill's `methodology/` directory:
 
 ```
 gsp/skills/gsp-project-design/
@@ -390,8 +341,8 @@ graph LR
 | `name` | kebab-case | Skill identifier, becomes `/gsp:{name}` |
 | `description` | string, max 200 chars | What the skill does — Claude uses this to decide when to auto-invoke |
 | `user-invocable` | `true` / `false` | Whether the skill appears in `/` menu. `false` for meta skills. |
-| `model` | `opus` / `sonnet` / `haiku` | Model override. Pipeline creative = opus, research/utility = sonnet. |
-| `effort` | `low` / `medium` / `high` / `max` | Effort level. Pipeline phases use `high`. `max` is Opus-only. |
+| `model` | `opus` / `sonnet` / `haiku` | Optional model hint. Not used by GSP — user controls model selection. Installer strips for non-Claude runtimes. |
+| `effort` | `low` / `medium` / `high` / `max` | Optional effort hint. Not used by GSP — user controls effort level. Installer strips for non-Claude runtimes. |
 | `context` | `fork` | Run in isolated subagent. Only for skills with zero AskUserQuestion calls. |
 | `allowed-tools` | list of tool names | Tools available during skill execution. |
 

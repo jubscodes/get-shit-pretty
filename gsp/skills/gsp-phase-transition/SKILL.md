@@ -2,7 +2,6 @@
 name: gsp-phase-transition
 description: "Render phase transition screens — pipeline progress, completion banner, file tree. Invoked by pipeline skills at phase completion."
 user-invocable: false
-model: sonnet
 allowed-tools:
   - Read
   - Glob

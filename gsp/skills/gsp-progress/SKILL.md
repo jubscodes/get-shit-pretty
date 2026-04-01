@@ -2,7 +2,6 @@
 name: gsp-progress
 description: How pretty are we?
 user-invocable: true
-model: sonnet
 allowed-tools:
   - Read
   - Glob

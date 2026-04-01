@@ -1,9 +1,7 @@
 ---
 name: gsp-brand-strategy
-description: Define positioning, voice, and messaging
+description: Define positioning, voice, and messaging (creative phase — benefits from capable models)
 user-invocable: true
-model: opus
-effort: high
 allowed-tools:
   - Read
   - Write

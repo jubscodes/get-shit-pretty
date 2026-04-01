@@ -1,9 +1,7 @@
 ---
 name: gsp-project-critique
-description: Critique your designs + accessibility audit
+description: Critique your designs + accessibility audit (creative phase — benefits from capable models)
 user-invocable: true
-model: opus
-effort: high
 context: fork
 allowed-tools:
   - Read
