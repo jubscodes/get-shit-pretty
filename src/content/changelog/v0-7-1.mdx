@@ -1,0 +1,32 @@
+---
+title: "v0.7.1 -- Context diet"
+date: "2026-04-01T00:00:00"
+excerpt: "Agent stubs drop session-start from 1,536 to 140 lines. Pass-through exec_context eliminated from 6 skills. New benchmark system tracks weight across releases."
+tags: ["performance", "context-optimization", "benchmarking", "architecture"]
+slug: "v0-7-1"
+---
+
+## Agent Stubs
+
+12 agents extracted to lean frontmatter stubs -- just tool permissions, hooks, and a one-line body. Full methodology moved into skill directories as sibling files (`methodology/gsp-{agent}.md`), loaded on demand at spawn time. Session-start context dropped from ~1,536 lines to ~140 lines. Three agents removed entirely: `gsp-ascii-artist`, `gsp-brand-syncer`, `gsp-campaign-director` (plus `gsp-scoper`).
+
+## exec_context Refactor
+
+Six skills were loading reference files into `<execution_context>` that the orchestrator never read -- they existed purely to be copy-pasted into agent prompts. Moved to explicit Read steps before agent spawn. ~1,579 lines removed from orchestrator context windows. Affected: brand-strategy (604 lines), brand-guidelines (278), brand-identity (239), brand-research (231), accessibility-audit (159), project-critique (68).
+
+## Benchmark System
+
+New `benchmark.sh` captures JSON snapshots of token budget state -- per-skill scores, pipeline path totals, rate limit risk, test results. Release baselines freeze at each version; `compare` diffs against the baseline; `trend` shows trajectory across all releases. Shared scoring extracted to `lib-scoring.sh`, eliminating duplication between `token-budget.sh` and the benchmark. 8 historical snapshots retroactively captured from v0.5.0 through v0.7.0.
+
+## Token Budget Impact
+
+| Metric | v0.6.3 | v0.7.1 | Delta |
+|--------|--------|--------|-------|
+| Total weight | 21,228 | 15,634 | -26% |
+| Red-zone skills | 7 | 4 | -3 |
+| Full E2E pipeline | 10,888 | 9,793 | -10% |
+| Brand diamond | 4,619 | 3,251 | -30% |
+
+## Model Selection
+
+Skills no longer declare `model:` or `effort:` in frontmatter. Users control which model runs each phase. Pipeline skills include a hint in their description (e.g., "benefits from capable models") as passive guidance. The installer strips these fields for non-Claude runtimes.
