@@ -125,7 +125,7 @@ After scaffold completes, verify `{PROJECT_PATH}/build/SCAFFOLD-LOG.md` exists. 
 
 ## Step 2.5: Load agent methodology
 
-Read `${CLAUDE_SKILL_DIR}/methodology/gsp-project-builder.md`. Include the full content as **Agent methodology** in all agent prompts below (Steps 3, 5, 7, 8).
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-project-builder.md`. Include the full content as **Agent methodology** in all agent prompts below (Steps 3, 4.5, 5, 7, 8).
 
 ## Step 2.6: Load build references
 
@@ -133,7 +133,7 @@ Read these reference files:
 - `${CLAUDE_SKILL_DIR}/visual-effects.md`
 - `${CLAUDE_SKILL_DIR}/../gsp-project-design/block-patterns.md`
 
-Hold their content for inlining into agent prompts in Steps 3, 5, 7, and 8.
+Hold their content for inlining into agent prompts in Steps 3, 4.5, 5, 7, and 8.
 
 > **Note:** Anti-patterns are distilled into the `gsp-project-builder` agent prompt. Full ref remains on disk for edge-case agent lookup.
 
