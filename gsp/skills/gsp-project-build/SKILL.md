@@ -238,7 +238,96 @@ If the user requests adjustments during foundation review:
    - Run in background (`run_in_background: true`) so the build pipeline continues
 4. Continue to Step 5 without waiting for brand sync
 
-## Step 5: Phase 4 — SCREENS
+## Step 4.5: Phase 4 — COMPONENTS
+
+### Build component manifest
+
+Read ALL design chunks from `{PROJECT_PATH}/design/` — every `screen-{NN}-{name}.md`. Also read:
+- `{PROJECT_PATH}/brief/scope.md` (feature map)
+- `{PROJECT_PATH}/brief/target-adaptations.md` (component adaptations)
+- `{BRAND_PATH}/patterns/components/token-mapping.md` (if exists)
+
+Extract every component referenced across all screens. Deduplicate. Build a manifest:
+
+```
+COMPONENT_MANIFEST = [
+  { name: "Button", source: "shadcn", classification: "library-default", screens: [01, 03, 05] },
+  { name: "Card", source: "shadcn", classification: "library-customize", screens: [01, 02, 04], overrides: "custom radius + shadow from STYLE.md" },
+  { name: "PricingTier", source: "custom", classification: "custom", screens: [03] },
+  ...
+]
+```
+
+### Classify each component
+
+| Category | Criteria | Action |
+|----------|----------|--------|
+| `library-default` | Exists in target library, no brand overrides needed | Install as-is |
+| `library-customize` | Exists in target library, STYLE.md or token-mapping requires overrides | Install then customize |
+| `custom` | No library match, or design requires bespoke component | Build from scratch |
+| `existing` | Already in codebase (from scaffold or prior project) | Skip — already available |
+
+### Partition into agent groups
+
+Group components to minimize conflicts:
+1. No two agents install the same library component
+2. Group related variants together (Card + CardHeader + CardContent + CardFooter → same agent)
+3. Balance work across agents (aim for 3-6 components per agent)
+4. If total components ≤ 5, use a single agent (no need to parallelize)
+
+### Spawn component agents in parallel
+
+For each partition, spawn `gsp-project-builder` with **execution_mode: component**.
+
+Assign models in round-robin: first agent on user's model, second on `sonnet`, third on user's model, etc. This splits rate-limit pressure across model buckets.
+
+Context per component agent:
+
+| File | Purpose |
+|------|---------|
+| Component partition (list + classifications + overrides) | What to build |
+| `{BRAND_PATH}/patterns/STYLE.md` (or fallback `{brand-name}.md`) | Design constraints, effects vocabulary |
+| `{BRAND_PATH}/patterns/{brand-name}.yml` | Token values |
+| `{BRAND_PATH}/patterns/components/token-mapping.md` | Component-to-token mapping |
+| Design chunk excerpts (only sections referencing these components) | Usage context — how screens use them |
+| `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations for target |
+| `{PROJECT_PATH}/config.json` | Tech stack, implementation target |
+| Visual effects, block patterns refs (loaded in Step 2.6) | Design patterns + CSS recipes |
+| Agent methodology (loaded in Step 2.5) | Builder role, process, quality standards |
+
+Agent instructions template:
+
+> execution_mode: component
+> implementation_target: {target}
+> components: [{partition list with classifications}]
+>
+> Install, customize, or create the assigned components.
+> 1. For library-default: install via CLI, verify import works
+> 2. For library-customize: install via CLI, then apply brand overrides (STYLE.md constraints, token values)
+> 3. For custom: create from scratch following brand patterns and STYLE.md
+> 4. Read foundations from codebase (tokens, utilities already exist)
+> 5. Do NOT modify foundation files (global CSS, layout, tokens, theme provider)
+> 6. Do NOT build screens or page content
+> 7. Write code directly to the codebase
+> 8. Leave changes unstaged
+>
+> After completing components, append to `{PROJECT_PATH}/build/BUILD-LOG.md` — add a components section listing what was installed/customized/created.
+
+### Checkpoint: Compile check
+
+After ALL component agents complete, run the build command:
+
+| Stack | Build command |
+|-------|--------------|
+| Next.js | `npx next build` |
+| Vite | `npx vite build` |
+| TypeScript only | `npx tsc --noEmit` |
+| Generic | `npm run build` |
+
+**Pass:** Continue to Step 5.
+**Fail:** Log the error. Surface to user: "Component build failed: {error}. Fix now or skip to screens?"
+
+## Step 5: Phase 5 — SCREENS
 
 Build screens sequentially. For each screen in `SCREENS`:
 
