@@ -103,6 +103,8 @@ Read `${CLAUDE_SKILL_DIR}/methodology/gsp-project-critic.md`. Include the full c
 - `accessibility_level` from config (defaults to "WCAG 2.2 AA")
 - Output path: `{PROJECT_PATH}/critique/`
 
+**Model assignment:** Spawn `gsp-accessibility-auditor` with `model: sonnet`. The accessibility audit is checklist-based (WCAG compliance) and works well on Sonnet. This splits rate-limit pressure — the critic runs on the user's current model while the auditor runs on Sonnet.
+
 ## Step 3: Write critique INDEX.md
 
 After both agents complete, write `{PROJECT_PATH}/critique/INDEX.md`:
