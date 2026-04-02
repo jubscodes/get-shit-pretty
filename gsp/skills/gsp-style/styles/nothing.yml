@@ -1,0 +1,146 @@
+name: nothing
+description: Monochromatic industrial precision — OLED black, Space Grotesk type hierarchy, red signal accent, dot-matrix motifs, no shadows
+tags: [monochrome, industrial, dark, minimal, technical, instrument, mechanical, swiss]
+
+tokens:
+  color:
+    primary: "#FFFFFF"
+    secondary: "#999999"
+    accent: "#D71921"
+    background: "#000000"
+    surface: "#111111"
+    on-primary: "#000000"
+    on-background: "#E8E8E8"
+    error: "#D71921"
+    success: "#4A9E5C"
+    warning: "#D4A843"
+    info: "#999999"
+    muted: "#666666"
+
+  typography:
+    font-family-primary: "Space Grotesk, DM Sans, system-ui, sans-serif"
+    font-family-mono: "Space Mono, JetBrains Mono, SF Mono, monospace"
+    font-family-display: "Doto, Space Mono, monospace"
+    font-weight-heading: 400
+    font-weight-body: 400
+    font-size-base: "16px"
+    line-height-base: 1.5
+
+  shape:
+    border-radius-sm: "4px"
+    border-radius-md: "8px"
+    border-radius-lg: "12px"
+    border-radius-pill: "999px"
+    border-width: "1px"
+    border-color: "#222222"
+
+  elevation:
+    shadow-sm: "none"
+    shadow-md: "none"
+    shadow-lg: "none"
+    shadow-xl: "none"
+
+  spacing:
+    base: 8
+    scale: [2, 4, 8, 16, 24, 32, 48, 64, 96]
+
+  motion:
+    duration-fast: "150ms"
+    duration-normal: "250ms"
+    easing: "cubic-bezier(0.25, 0.1, 0.25, 1)"
+
+dark_mode:
+  color:
+    background: "#000000"
+    surface: "#111111"
+    on-background: "#E8E8E8"
+    border-color: "#222222"
+    muted: "#666666"
+
+light_mode:
+  color:
+    background: "#F5F5F5"
+    surface: "#FFFFFF"
+    on-background: "#1A1A1A"
+    border-color: "#E8E8E8"
+    muted: "#999999"
+
+intensity:
+  variance: 3     # deliberate asymmetry but disciplined grid
+  motion: 2       # percussive, not fluid — opacity fades only
+  density: 5      # information-dense, instrument-panel aesthetic
+
+patterns:
+  card:
+    border: "1px solid #222222"
+    shadow: "none"
+    radius: "12-16px cards, 8px compact, 4px technical"
+    background: "#111111"
+    padding: "16-24px"
+  button-primary:
+    background: "#FFFFFF"
+    border: "none"
+    text: "Space Mono, 13px, ALL CAPS, letter-spacing 0.06em, #000000"
+    radius: "999px (pill)"
+  button-secondary:
+    background: "transparent"
+    border: "1px solid #333333"
+    text: "Space Mono, 13px, ALL CAPS, letter-spacing 0.06em, #E8E8E8"
+    radius: "999px (pill)"
+  input:
+    border: "1px solid #333333 bottom (underline preferred) or full border 8px radius"
+    radius: "8px"
+    background: "transparent"
+    focus: "border → #E8E8E8"
+  badge:
+    shape: "pill (999px) or technical (4px)"
+    text: "Space Mono, 11px, ALL CAPS, letter-spacing 0.06em"
+  nav:
+    style: "horizontal text bar desktop, bottom bar mobile — bracket [ACTIVE] or pipe delimited"
+    links: "Space Mono, ALL CAPS — active: #FFFFFF + dot/underline, inactive: #666666"
+  layout:
+    archetype: "asymmetric-grid"
+    max-width: "max-w-6xl"
+    section-spacing: "64-96px — vast breathing room"
+    grid-gap: "gap-4 to gap-6"
+    surfaces: "OLED black (#000) → surface (#111) → raised (#1A1A1A)"
+    decoration: "dot-matrix grid (16px spacing, 1px dots), Doto display headlines"
+
+constraints:
+  never:
+    - "gradients in UI chrome"
+    - "shadows or blur — flat surfaces, border separation only"
+    - "skeleton loading screens — use [LOADING...] bracket text"
+    - "toast popups — use inline status: [SAVED], [ERROR: ...]"
+    - "sad-face illustrations, mascots, or emoji as UI"
+    - "zebra striping in tables"
+    - "filled icons or multi-color icons"
+    - "parallax, scroll-jacking, or gratuitous animation"
+    - "spring/bounce easing — subtle ease-out only"
+    - "border-radius > 16px on cards"
+    - "more than 2 font families per screen"
+    - "more than 3 font sizes per screen"
+    - "more than 2 font weights per screen"
+    - "divider lines when spacing alone would work"
+  always:
+    - "three-layer visual hierarchy: primary (display), secondary (body), tertiary (metadata)"
+    - "Space Mono ALL CAPS with wide letter-spacing for all labels"
+    - "OLED black (#000000) as primary background"
+    - "red accent (#D71921) used as signal — one per screen, never decorative"
+    - "one moment of deliberate pattern-break per screen (the design IS the single surprise)"
+    - "asymmetric composition over centered layouts"
+    - "data and numbers displayed in Space Mono — data as beauty"
+
+effects:
+  interaction-vocabulary: [border-brighten, opacity-fade, mechanical-press]
+  hover:
+    card: "border-brighten — border shifts #222→#333, text brightens"
+    button: "border-brighten — border/text brightens, no scale, no shadows"
+  active:
+    button: "mechanical-press — no spring, immediate state change"
+  focus:
+    general: "border → #E8E8E8, no ring glow — sharp and mechanical"
+  transition: "150-250ms cubic-bezier(0.25, 0.1, 0.25, 1)"
+
+compatibility: [terminal, monochrome, industrial]
+clashes: [botanical, glassmorphism, claymorphism, playful-geometric]

@@ -1,8 +1,14 @@
 # Style Preset Index
-# 34 styles — sourced from designprompts.dev, GSP trend references, and original presets
+# 35 styles — sourced from designprompts.dev, GSP trend references, and original presets
 # Tags enable fuzzy matching: /gsp-style "something dark and techy" → cyberpunk, terminal, modern-dark
 
 styles:
+  # ── Industrial ────────────────────────
+  - name: nothing
+    file: nothing.yml
+    tags: [monochrome, industrial, dark, minimal, technical, instrument, mechanical, swiss]
+    vibe: "Nothing Phone DNA — OLED black, dot-matrix Doto headlines, red signal accent, zero shadows"
+
   # ── Minimal ─────────────────────────
   - name: swiss-minimalist
     file: swiss-minimalist.yml
