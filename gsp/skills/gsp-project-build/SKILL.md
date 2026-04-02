@@ -315,14 +315,7 @@ Agent instructions template:
 
 ### Checkpoint: Compile check
 
-After ALL component agents complete, run the build command:
-
-| Stack | Build command |
-|-------|--------------|
-| Next.js | `npx next build` |
-| Vite | `npx vite build` |
-| TypeScript only | `npx tsc --noEmit` |
-| Generic | `npm run build` |
+After ALL component agents complete, run the build command (same stack table as Step 3 checkpoint).
 
 **Pass:** Continue to Step 5.
 **Fail:** Log the error. Surface to user: "Component build failed: {error}. Fix now or skip to screens?"
@@ -338,8 +331,8 @@ Build all screens in parallel. Components exist in the codebase from Phase 4.
 | `{PROJECT_PATH}/design/screen-{NN}-{name}.md` | This screen's design chunk |
 | Component file paths from BUILD-LOG.md components section | Where to import from (paths only — agent reads codebase) |
 | `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations |
-| `{PROJECT_PATH}/research/reference-specs.md` (if exists) | Technical specs |
-| `{PROJECT_PATH}/critique/prioritized-fixes.md` (if exists) | Critique fixes relevant to this screen |
+| `{PROJECT_PATH}/research/reference-specs.md` (if exists) | Technical specs — include only sections relevant to this screen |
+| `{PROJECT_PATH}/critique/prioritized-fixes.md` (if exists) | Critique fixes — include only fixes tagged to this screen |
 | Build output template (from execution_context) | Build log structure |
 | Visual effects, block patterns refs (loaded in Step 2.6) | Design patterns + CSS recipes |
 | Agent methodology (loaded in Step 2.5) | Builder role, process, quality standards |
@@ -372,7 +365,7 @@ Agent instructions per screen:
 
 ### Checkpoint: Compile check
 
-After ALL screen agents complete, run the build command.
+After ALL screen agents complete, run the build command (same stack table as Step 3 checkpoint).
 
 **Pass:** Log success, continue to Step 5.5.
 **Fail:** Log the errors. Present to user: "Build errors after screens phase: {errors}. The following screens may have issues: {list}. Fix now or continue to extraction review?"
