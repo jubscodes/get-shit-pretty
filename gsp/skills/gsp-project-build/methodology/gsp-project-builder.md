@@ -31,6 +31,20 @@ Build a single screen. You receive only that screen's design chunk and its refer
 - Build the screen's route page and its screen-specific components
 - Wire imports to existing foundation components
 
+### `component`
+Install, customize, or create assigned components ONLY. Stop after components.
+- You receive a component partition: a list of components with their classification
+- For **library default**: install via CLI (e.g. `npx shadcn@latest add {name}`) and verify it works
+- For **library + customize**: install via CLI, then apply brand overrides from STYLE.md (radius, shadow, color tokens)
+- For **custom**: create component from scratch following brand patterns, STYLE.md constraints, and token-mapping.md
+- Read foundations from the codebase (tokens, layout, utilities already exist from foundations phase)
+- Follow `implementation_target` rules (shadcn vs rn-reusables vs existing vs code)
+- **Do NOT modify foundation files** (global CSS, layout, tokens, theme provider)
+- **Do NOT build screens or page content**
+- **Do NOT create route pages**
+- Write components to the project's component directory following codebase conventions
+- Leave changes unstaged
+
 ### `full`
 Legacy mode — build everything in one pass. Used as backward-compatible default.
 
