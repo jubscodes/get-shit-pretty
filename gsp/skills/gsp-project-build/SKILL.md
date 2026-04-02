@@ -327,16 +327,16 @@ After ALL component agents complete, run the build command:
 **Pass:** Continue to Step 5.
 **Fail:** Log the error. Surface to user: "Component build failed: {error}. Fix now or skip to screens?"
 
-## Step 5: Phase 5 — SCREENS
+## Step 5: Phase 5 — SCREENS (parallel)
 
-Build screens sequentially. For each screen in `SCREENS`:
+Build all screens in parallel. Components exist in the codebase from Phase 4.
 
 ### Context per screen (lean — only this screen's data):
 
 | File | Purpose |
 |------|---------|
 | `{PROJECT_PATH}/design/screen-{NN}-{name}.md` | This screen's design chunk |
-| Referenced component chunks from `{BRAND_PATH}/patterns/components/` | Only components referenced in this screen's chunk |
+| Component file paths from BUILD-LOG.md components section | Where to import from (paths only — agent reads codebase) |
 | `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations |
 | `{PROJECT_PATH}/research/reference-specs.md` (if exists) | Technical specs |
 | `{PROJECT_PATH}/critique/prioritized-fixes.md` (if exists) | Critique fixes relevant to this screen |
@@ -344,81 +344,70 @@ Build screens sequentially. For each screen in `SCREENS`:
 | Visual effects, block patterns refs (loaded in Step 2.6) | Design patterns + CSS recipes |
 | Agent methodology (loaded in Step 2.5) | Builder role, process, quality standards |
 
-**Does NOT receive:** other screen chunks, brand `.yml` (already integrated into codebase), full brand system, research monoliths.
+**Does NOT receive:** other screen chunks, brand `.yml` (already in codebase), full brand system, research monoliths, component source code (agent reads from codebase).
 
-### Agent instructions per screen:
+### Spawn screen agents in parallel
+
+For each screen in `SCREENS`, spawn `gsp-project-builder` with **execution_mode: screen**.
+
+Assign models in round-robin: first screen on user's model, second on `sonnet`, third on user's model, etc.
+
+Agent instructions per screen:
 
 > execution_mode: screen
 > screen: {name} ({NN})
 >
-> Build the {name} screen. Foundations are already in the codebase — read them, don't recreate them.
+> Build the {name} screen. Foundations and components are already in the codebase.
 >
-> 1. Read the existing layout, tokens, and utilities from the codebase
+> 1. Read the existing layout, tokens, utilities, and components from the codebase
 > 2. Create the route page and screen-specific components
-> 3. Wire imports to existing foundation components
+> 3. Wire imports to existing foundation and component files
 > 4. Do NOT modify foundation files (global CSS, layout, tokens, theme provider)
-> 5. Write code directly to the codebase, not to `.design/`
-> 6. Leave changes unstaged
-> 7. The brand's visual effects were implemented as utilities during foundations — use those utilities/classes rather than re-reading the brand style document
+> 5. Do NOT modify shared component files (they were built in the components phase)
+> 6. Write code directly to the codebase, not to `.design/`
+> 7. Leave changes unstaged
+> 8. The brand's visual effects were implemented as utilities during foundations — use those utilities/classes
 >
-> After completing this screen, append to `{PROJECT_PATH}/build/BUILD-LOG.md` — add this screen's files and status to the existing log.
+> After completing this screen, append to `{PROJECT_PATH}/build/BUILD-LOG.md` — add this screen's files and status.
 
-### Checkpoint per screen: Compile check
+### Checkpoint: Compile check
 
-After each screen agent completes, run the build command.
+After ALL screen agents complete, run the build command.
 
-**Pass:** Log success, continue to next screen.
-**Fail:** Log the error as a warning. Ask user: "Screen {name} has build errors. Fix now, skip, or stop?"
-- **Fix** → re-run build, surface errors for manual resolution
-- **Skip** → mark screen as `partial` in BUILD-LOG, continue
-- **Stop** → halt pipeline, save progress
+**Pass:** Log success, continue to Step 5.5.
+**Fail:** Log the errors. Present to user: "Build errors after screens phase: {errors}. The following screens may have issues: {list}. Fix now or continue to extraction review?"
 
-## Step 5.5: Component extraction checkpoint
+## Step 5.5: Extraction review (lightweight)
 
-After all screens complete, audit the codebase for duplicated patterns before review.
+Components were built in Phase 4, so most reuse is already handled. This is a quick sanity check.
 
 ### Automated scan
 
-Run these checks in the built codebase:
+Run these checks on the built codebase:
 
-1. **Duplicated Tailwind class clusters** — Use Grep to find identical `className` strings (>3 classes) appearing in 2+ files. These are extraction candidates.
-2. **Inline color/spacing values** — Grep for hardcoded hex colors, rgb(), pixel values that should be tokens. Flag any that don't reference CSS variables or Tailwind tokens.
-3. **Repeated component patterns** — Look for similar JSX structures across screen files (e.g., similar card layouts, repeated list items, identical button groups).
+1. **Hardcoded values** — Grep for hardcoded hex colors, rgb(), pixel values that should be tokens. Flag any that don't reference CSS variables or Tailwind tokens.
+2. **Duplicated patterns** — Use Grep to find identical `className` strings (>3 classes) appearing in 2+ screen files. These are patterns the components phase missed.
 
-### Surface proposals
+### Surface findings
 
-Present findings to the user as a numbered list:
+If issues found, present to user:
 
 ```
-  ◆ extraction candidates
+  ◆ post-build scan
 
-    1. Card pattern in 3 screens (landing, changelog-list, dashboard)
-       className="rounded-lg border bg-card p-6 shadow-sm"
-       → extract to <Card> component
-
-    2. Hardcoded colors in 2 files
-       text-[#FF6B35] in hero.tsx, cta.tsx
-       → use text-brand-accent token
-
-    3. Badge pattern in changelog-list, changelog-post
-       → extract to <Badge> component
+    Found {N} hardcoded values and {M} duplicated patterns.
+    {list if any}
 
   ──────────────────────────────
 ```
 
-Use `AskUserQuestion`: "Apply these extractions, skip, or cherry-pick?"
-- **Apply all** → make the changes inline (no agent spawn needed, these are mechanical refactors)
-- **Cherry-pick** → apply selected ones
-- **Skip** → continue to finalize
+If no issues: "Post-build scan clean — no hardcoded values or duplicated patterns found."
 
-This step is **not auto-applied** — the user decides what to extract.
+Use `AskUserQuestion` only if issues were found: "Fix these, or continue to finalize?"
+- **Fix** → apply changes inline (mechanical refactors, no agent needed)
+- **Continue** → proceed to Step 6
 
-### Brand feedback on extraction
-
-If the extraction scan finds hardcoded values that should be tokens (finding type #2), and those tokens are missing from the brand system:
-
-1. After applying fixes in the project, ask: "These token gaps also exist in the brand. Update brand patterns?"
-2. If yes, spawn a background `gsp-brand-engineer` agent with the missing token definitions to add them to `{BRAND_PATH}/patterns/{brand-name}.yml` and relevant foundation chunks.
+If hardcoded values map to missing brand tokens, suggest: "These token gaps may also exist in the brand. Consider running `/gsp-brand-refine` after build completes."
 
 ## Step 6: Finalize
 
