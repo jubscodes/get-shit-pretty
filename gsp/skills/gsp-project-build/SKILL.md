@@ -13,7 +13,7 @@ allowed-tools:
   - AskUserQuestion
 ---
 <context>
-Phase 5 of the GSP project diamond. Uses a 4-phase pipeline with verification checkpoints to implement designs directly in the codebase as production-ready frontend components.
+Phase 5 of the GSP project diamond. Uses a 7-phase pipeline with verification checkpoints to implement designs directly in the codebase as production-ready frontend components.
 
 Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/patterns/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 
@@ -30,11 +30,23 @@ Phase 2: FOUNDATIONS (agent: gsp-project-builder mode:foundations)
 Phase 3: FOUNDATION REVIEW (interactive)
   └─ Present summary → user confirms
 
-Phase 4: SCREENS (agent: gsp-project-builder mode:screen, one per screen)
-  ├─ Context per screen: its design chunk + referenced components only
-  ├─ Agent reads foundations from codebase (not from context)
-  ├─ CHECKPOINT per screen: compile check
-  └─ Sequential (patterns compound)
+Phase 4: COMPONENTS (agents: gsp-project-builder mode:component, parallel)
+  ├─ Orchestrator: reads all design chunks → builds component manifest → partitions
+  ├─ Each agent: installs/customizes/creates its assigned components
+  ├─ Model assignment: round-robin (Opus/Sonnet) for rate-limit distribution
+  └─ CHECKPOINT: build must compile
+
+Phase 5: SCREENS (agents: gsp-project-builder mode:screen, parallel)
+  ├─ Context per screen: its design chunk + component paths (components exist in codebase)
+  ├─ Agent reads foundations + components from codebase (not from context)
+  ├─ Model assignment: round-robin (Opus/Sonnet) for rate-limit distribution
+  └─ CHECKPOINT: build must compile
+
+Phase 6: EXTRACTION REVIEW (lightweight)
+  └─ Grep for hardcoded values, flag remaining duplication
+
+Phase 7: FINALIZE
+  └─ BUILD-LOG, MANIFEST, STATE, phase transition
 ```
 </context>
 
