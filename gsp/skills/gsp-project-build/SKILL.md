@@ -219,8 +219,8 @@ Present a summary of what the foundations phase produced:
   ──────────────────────────────
 ```
 
-Use `AskUserQuestion`: "Foundations look good? Continue building screens, or review first?"
-- **Continue** → proceed to Step 5
+Use `AskUserQuestion`: "Foundations look good? Continue building components, or review first?"
+- **Continue** → proceed to Step 4.5
 - **Review first** → pause, let user inspect, resume when ready
 - **Adjust** → user requests changes (colors, typography, spacing, etc.)
 
@@ -236,7 +236,7 @@ If the user requests adjustments during foundation review:
    - Agent updates the `.yml` preset, foundation chunks, and STYLE.md if applicable
    - Agent writes to `{BRAND_PATH}/` — the brand source of truth
    - Run in background (`run_in_background: true`) so the build pipeline continues
-4. Continue to Step 5 without waiting for brand sync
+4. Continue to Step 4.5 without waiting for brand sync
 
 ## Step 4.5: Phase 4 — COMPONENTS
 
