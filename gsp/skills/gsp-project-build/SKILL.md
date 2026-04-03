@@ -171,7 +171,7 @@ Spawn `gsp-project-builder` agent with **execution_mode: foundations**.
 > 7. Write code directly to the codebase, not to `.design/`
 > 8. Leave changes unstaged
 >
-> After completing foundations, write `{PROJECT_PATH}/build/BUILD-LOG.md` with what was done (foundations section only).
+> After completing foundations, write `{PROJECT_PATH}/build/logs/foundations.md` with what was done (foundations section). Do NOT write to BUILD-LOG.md directly — the orchestrator merges logs after each phase.
 
 ### Checkpoint: Compile check
 
@@ -311,7 +311,7 @@ Agent instructions template:
 > 7. Write code directly to the codebase
 > 8. Leave changes unstaged
 >
-> After completing components, append to `{PROJECT_PATH}/build/BUILD-LOG.md` — add a components section listing what was installed/customized/created.
+> After completing components, write `{PROJECT_PATH}/build/logs/component-{partition-name}.md` — list components installed/customized/created, files written, and any issues. Do NOT write to BUILD-LOG.md directly.
 
 ### Checkpoint: Compile check
 
@@ -319,6 +319,10 @@ After ALL component agents complete, run the build command (same stack table as 
 
 **Pass:** Continue to Step 5.
 **Fail:** Log the error. Surface to user: "Component build failed: {error}. Fix now or skip to screens?"
+
+### Merge component logs
+
+After the compile checkpoint passes, merge all `build/logs/component-*.md` files into `{PROJECT_PATH}/build/BUILD-LOG.md` (foundations section from `build/logs/foundations.md` + all component sections, in partition order).
 
 ## Step 5: Phase 5 — SCREENS (parallel)
 
@@ -361,7 +365,7 @@ Agent instructions per screen:
 > 7. Leave changes unstaged
 > 8. The brand's visual effects were implemented as utilities during foundations — use those utilities/classes
 >
-> After completing this screen, append to `{PROJECT_PATH}/build/BUILD-LOG.md` — add this screen's files and status.
+> After completing this screen, write `{PROJECT_PATH}/build/logs/screen-{NN}-{name}.md` — list files written, components used, and any issues. Do NOT write to BUILD-LOG.md directly.
 
 ### Checkpoint: Compile check
 
@@ -369,6 +373,10 @@ After ALL screen agents complete, run the build command (same stack table as Ste
 
 **Pass:** Log success, continue to Step 5.5.
 **Fail:** Log the errors. Present to user: "Build errors after screens phase: {errors}. The following screens may have issues: {list}. Fix now or continue to extraction review?"
+
+### Merge screen logs
+
+After the compile checkpoint passes, merge all `build/logs/screen-*.md` files into `{PROJECT_PATH}/build/BUILD-LOG.md` (append screen sections in order: 01, 02, 03, etc.).
 
 ## Step 5.5: Extraction review (lightweight)
 
