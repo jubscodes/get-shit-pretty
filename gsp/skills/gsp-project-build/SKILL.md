@@ -460,6 +460,13 @@ For `implementation_target: figma`, skip the phased pipeline. Spawn a single `gs
 
 For `needs-revision` status, spawn a single `gsp-project-builder` agent with execution_mode: `full` and `review/issues.md` contents. The agent fixes QA issues in the codebase and appends revision sections to BUILD-LOG.md.
 
+### Checkpoint: Compile check
+
+After the revision agent completes, run the build command (same stack table as Step 3 checkpoint).
+
+**Pass:** Continue to brand feedback check below.
+**Fail:** Log the error. Surface to user: "Revision introduced build errors: {error}. Fix before finalizing?"
+
 ### Brand feedback on revisions
 
 After the revision agent completes, check if any QA fixes changed token-level values (colors, typography, spacing, shadows). If so:
