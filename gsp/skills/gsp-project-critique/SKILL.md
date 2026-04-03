@@ -147,11 +147,13 @@ Update `{PROJECT_PATH}/exports/INDEX.md`:
 
 ## Step 4: Assess results
 
-Read `critique/critique.md` for the overall heuristics score and `critique/prioritized-fixes.md` for critical issues. Determine verdict:
+Read `critique/critique.md` for the heuristics score (X/50) and brand contract score (X/25, present when STYLE.md was used). Read `critique/prioritized-fixes.md` for critical issues. Determine verdict:
 
-**Pass (score ≥ 40/50, no critical fixes):** Design is solid, proceed to build.
-**Conditional Pass (score 30-39/50 or critical fixes are minor):** Shippable with notes, proceed to build.
-**Fail (score < 30/50 or critical fixes affect layout/navigation/IA):** Design needs revision before building.
+**Pass:** Nielsen ≥ 40/50 AND brand contract ≥ 20/25 (when present) AND no critical fixes. Design is solid, proceed to build.
+**Conditional Pass:** Nielsen 30-39/50 OR brand contract 15-19/25 OR critical fixes are minor. Shippable with notes, proceed to build.
+**Fail:** Nielsen < 30/50 OR brand contract < 15/25 OR any brand contract dimension at 1 (constraint violation) OR critical fixes affect layout/navigation/IA. Design needs revision before building.
+
+Note: If no STYLE.md was used, the brand contract score is absent — apply Nielsen thresholds only.
 
 ## Step 5: Update state
 
