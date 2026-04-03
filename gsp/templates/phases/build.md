@@ -4,7 +4,7 @@
 
 ## Phases
 
-The build phase runs as a 4-phase pipeline:
+The build phase runs as a 7-phase pipeline:
 
 ### Phase 1: Scaffold
 Stack setup via `/gsp-scaffold` — install deps, create configs, verify build compiles. Produces `build/SCAFFOLD-LOG.md`.
@@ -13,10 +13,19 @@ Stack setup via `/gsp-scaffold` — install deps, create configs, verify build c
 Token integration, global styles, layout primitives. Agent mode: `foundations`. Checkpoint: build must compile after foundations.
 
 ### Phase 3: Foundation Review
-Interactive checkpoint — present summary of foundations to user for confirmation before building screens.
+Interactive checkpoint — present summary of foundations to user for confirmation before building components.
 
-### Phase 4: Screens
-One agent per screen, sequential. Agent mode: `screen`. Each screen gets its design chunk + referenced components only. Checkpoint: compile check after each screen.
+### Phase 4: Components (parallel)
+Orchestrator builds component manifest, classifies, partitions. One agent per partition, parallel. Agent mode: `component`. Checkpoint: build must compile after all component agents complete.
+
+### Phase 5: Screens (parallel)
+One agent per screen, parallel. Agent mode: `screen`. Each screen gets its design chunk + component paths only — reads foundations and components from the codebase. Checkpoint: build must compile after all screen agents complete.
+
+### Phase 6: Extraction Review
+Lightweight scan for hardcoded values and duplicated patterns. Interactive only if issues found.
+
+### Phase 7: Finalize
+Merge per-agent logs into BUILD-LOG.md. Write INDEX.md, MANIFEST.md. Update STATE.md. Phase transition.
 
 ---
 
