@@ -235,8 +235,8 @@ If the user requests adjustments during foundation review:
    - Pass: `{BRAND_PATH}/patterns/{brand-name}.yml` and relevant identity chunks
    - Agent updates the `.yml` preset, foundation chunks, and STYLE.md if applicable
    - Agent writes to `{BRAND_PATH}/` — the brand source of truth
-   - Run in background (`run_in_background: true`) so the build pipeline continues
-4. Continue to Step 4.5 without waiting for brand sync
+   - Run synchronously (do NOT use `run_in_background`) — Step 4.5 reads the brand `.yml` from disk, so the updated values must be committed before components begin
+4. Wait for brand sync to complete, then continue to Step 4.5
 
 ## Step 4.5: Phase 4 — COMPONENTS
 
