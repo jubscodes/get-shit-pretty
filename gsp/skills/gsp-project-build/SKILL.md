@@ -275,6 +275,17 @@ Group components to minimize conflicts:
 3. Balance work across agents (aim for 3-6 components per agent)
 4. If total components ≤ 5, use a single agent (no need to parallelize)
 
+### Progress log
+
+Before spawning, log the manifest:
+
+```
+  ◆ components phase
+
+    Spawning {N} agents in parallel:
+    {for each partition}: [{model}] {partition-name} — {component-count} components
+```
+
 ### Spawn component agents in parallel
 
 For each partition, spawn `gsp-project-builder` with **execution_mode: component**.
@@ -324,6 +335,8 @@ After ALL component agents complete, run the build command (same stack table as 
 
 After the compile checkpoint passes, merge all `build/logs/component-*.md` files into `{PROJECT_PATH}/build/BUILD-LOG.md` (foundations section from `build/logs/foundations.md` + all component sections, in partition order).
 
+Log: "  ✓ components complete — {N} agents, build compiles"
+
 ## Step 5: Phase 5 — SCREENS (parallel)
 
 Build all screens in parallel. Components exist in the codebase from Phase 4.
@@ -342,6 +355,17 @@ Build all screens in parallel. Components exist in the codebase from Phase 4.
 | Agent methodology (loaded in Step 2.5) | Builder role, process, quality standards |
 
 **Does NOT receive:** other screen chunks, brand `.yml` (already in codebase), full brand system, research monoliths, component source code (agent reads from codebase).
+
+### Progress log
+
+Before spawning, log:
+
+```
+  ◆ screens phase
+
+    Spawning {N} agents in parallel:
+    {for each screen}: [{model}] screen-{NN}-{name}
+```
 
 ### Spawn screen agents in parallel
 
@@ -377,6 +401,8 @@ After ALL screen agents complete, run the build command (same stack table as Ste
 ### Merge screen logs
 
 After the compile checkpoint passes, merge all `build/logs/screen-*.md` files into `{PROJECT_PATH}/build/BUILD-LOG.md` (append screen sections in order: 01, 02, 03, etc.).
+
+Log: "  ✓ screens complete — {N} screens, build compiles"
 
 ## Step 5.5: Extraction review (lightweight)
 
