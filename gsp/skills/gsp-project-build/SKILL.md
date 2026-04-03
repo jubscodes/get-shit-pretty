@@ -275,6 +275,10 @@ Group components to minimize conflicts:
 3. Balance work across agents (aim for 3-6 components per agent)
 4. If total components ≤ 5, use a single agent (no need to parallelize)
 
+### Resume check
+
+Check for existing `build/status/component-*.json` files. For each partition with a `"status": "complete"` file, skip that agent — log: "Skipping {name} — already complete."
+
 ### Progress log
 
 Before spawning, log the manifest:
@@ -323,6 +327,7 @@ Agent instructions template:
 > 8. Leave changes unstaged
 >
 > After completing components, write `{PROJECT_PATH}/build/logs/component-{partition-name}.md` — list components installed/customized/created, files written, and any issues. Do NOT write to BUILD-LOG.md directly.
+> Also write `{PROJECT_PATH}/build/status/component-{partition-name}.json` with `{"status": "complete", "components": [{list}], "timestamp": "{ISO}"}`.
 
 ### Checkpoint: Compile check
 
@@ -336,6 +341,8 @@ After ALL component agents complete, run the build command (same stack table as 
 After the compile checkpoint passes, merge all `build/logs/component-*.md` files into `{PROJECT_PATH}/build/BUILD-LOG.md` (foundations section from `build/logs/foundations.md` + all component sections, in partition order).
 
 Log: "  ✓ components complete — {N} agents, build compiles"
+
+Update `{PROJECT_PATH}/STATE.md` — set completed component partitions in build status.
 
 ## Step 5: Phase 5 — SCREENS (parallel)
 
@@ -355,6 +362,10 @@ Build all screens in parallel. Components exist in the codebase from Phase 4.
 | Agent methodology (loaded in Step 2.5) | Builder role, process, quality standards |
 
 **Does NOT receive:** other screen chunks, brand `.yml` (already in codebase), full brand system, research monoliths, component source code (agent reads from codebase).
+
+### Resume check
+
+Check for existing `build/status/screen-*.json` files. For each screen with a `"status": "complete"` file, skip that agent — log: "Skipping screen-{NN}-{name} — already complete."
 
 ### Progress log
 
@@ -390,6 +401,7 @@ Agent instructions per screen:
 > 8. The brand's visual effects were implemented as utilities during foundations — use those utilities/classes
 >
 > After completing this screen, write `{PROJECT_PATH}/build/logs/screen-{NN}-{name}.md` — list files written, components used, and any issues. Do NOT write to BUILD-LOG.md directly.
+> Also write `{PROJECT_PATH}/build/status/screen-{NN}-{name}.json` with `{"status": "complete", "screen": "{name}", "files": [{list}], "timestamp": "{ISO}"}`.
 
 ### Checkpoint: Compile check
 
@@ -403,6 +415,8 @@ After ALL screen agents complete, run the build command (same stack table as Ste
 After the compile checkpoint passes, merge all `build/logs/screen-*.md` files into `{PROJECT_PATH}/build/BUILD-LOG.md` (append screen sections in order: 01, 02, 03, etc.).
 
 Log: "  ✓ screens complete — {N} screens, build compiles"
+
+Update `{PROJECT_PATH}/STATE.md` `## Screen Build Status` table — set completed screens to `complete`.
 
 ## Step 5.5: Extraction review (lightweight)
 
