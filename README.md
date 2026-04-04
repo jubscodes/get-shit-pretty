@@ -136,13 +136,13 @@ Design your UI screens and interaction flows following Apple HIG patterns. Layou
 
 #### 4. `/gsp:project-critique` — Critique + accessibility
 
-Two parallel audits: structured design critique using Nielsen's 10 usability heuristics, and a WCAG 2.2 AA accessibility check. If issues surface, loop back and fix before building.
+Two parallel audits on mixed models: structured design critique (Nielsen's 10 heuristics + brand contract scoring) and WCAG 2.2 AA accessibility check. Brand constraint violations auto-fail. If issues surface, loop back and fix before building.
 
 **Creates:** `.design/projects/{project}/critique/`
 
 #### 5. `/gsp:project-build` — Designs to code
 
-Translate reviewed designs into production-ready frontend code — written directly into your codebase. Components, styles, interactions built from your design system and tokens.
+Two-wave parallel build: orchestrator builds a component manifest, partitions work, then spawns agents in parallel — first for components (install/customize/create), then for screens (compose from existing components). Round-robin model assignment splits rate-limit pressure. ~47% faster than sequential builds.
 
 **Creates:** Components and styles in your codebase
 
@@ -213,11 +213,11 @@ GSP ships with 11 specialized agents, each modeled after a real design disciplin
 | **Project Researcher** | Deep UX patterns, competitor UX, technical approaches |
 | **Project Designer** | Screen design and interaction flows following Apple HIG |
 | **Project Critic** | Structured critiques using Nielsen's 10 heuristics |
-| **Project Builder** | Designs to production-ready frontend code |
+| **Project Builder** | Designs to production-ready frontend code (foundations, components, screens) |
 | **Project Reviewer** | QA validation — implementation against design intent |
 | **Accessibility Auditor** | WCAG 2.2 AA compliance auditing |
 
-Agents are thin stubs (~12 lines) at session start — full methodology loads on-demand from skill `methodology/` directories when spawned. Each agent gets its own context window for focused creative/technical work.
+Agents are thin stubs (~12 lines) at session start — full methodology loads on-demand from skill `methodology/` directories when spawned. Each agent gets its own context window for focused creative/technical work. Pipeline phases spawn agents in parallel where possible, with round-robin model assignment (Opus/Sonnet) to distribute rate-limit pressure.
 
 ---
 
@@ -315,10 +315,9 @@ get-shit-pretty/
 ├── scripts/               Hook scripts and utilities
 ├── gsp/                   Source of truth for all content
 │   ├── agents/            11 subagents (gsp-*.md stubs)
-│   ├── skills/            34 skills (*/SKILL.md + methodology/ siblings)
+│   ├── skills/            34 skills (*/SKILL.md + methodology/ + domains/ siblings)
 │   ├── hooks/             Hooks (hooks.json)
-│   ├── templates/         Config, state, brief, roadmap templates
-│   └── references/        Shared reference material
+│   └── templates/         Config, state, brief, roadmap templates
 ├── dev/                   Internal dev tools (not installed)
 │   ├── skills/            Dev-only skills (gsp-audit, gsp-runtime-compat)
 │   └── scripts/           Test suite (audit-tests.sh)
