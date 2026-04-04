@@ -1,0 +1,48 @@
+---
+title: "v0.7.2 -- Parallel agents, half the wait"
+date: "2026-04-04T10:00:00"
+excerpt: "Two-wave parallel agent orchestration cuts build time by ~47% while adding just 171 tokens (+1.1%) to the pipeline. Components phase, resumable builds, mixed-model rate-limit distribution, and 9 pipeline gap fixes."
+tags: ["parallel", "performance", "orchestration", "rate-limit", "resumable", "quality-gates"]
+slug: "v0-7-2"
+---
+
+## Parallel Agent Orchestration
+
+The build phase was the longest in the pipeline -- a 6-screen project spawned 8 sequential agents for ~35 minutes of wall-clock time. Now the orchestrator plans work distribution and spawns agents in parallel waves:
+
+```
+Before: scaffold → foundations → screen-1 → screen-2 → ... → screen-6 (~35 min)
+After:  scaffold → foundations → ┌ components ┐ → ┌ screens ┐ (~18 min)
+                                 └ parallel   ┘   └ parallel┘
+```
+
+A new **components phase** reads all design chunks, builds a component manifest, classifies each (library default, customize, custom, existing), partitions into groups, and spawns agents in parallel. Screen agents then compose from existing components -- no sequential dependency.
+
+**Round-robin model assignment** (Opus/Sonnet alternating) splits rate-limit pressure across model buckets. Max ~3 agents on the same model simultaneously.
+
+## Mixed-Model Critique
+
+Project-critique already spawned two agents (critic + accessibility auditor) but they competed for the same rate bucket. Now the accessibility auditor runs on Sonnet (checklist-based WCAG work) while the critic stays on the user's model. Eliminates rate-limit contention.
+
+## Resumable Builds
+
+Each parallel agent writes a status JSON (`build/status/*.json`) alongside its log. If a session interrupts mid-build, the orchestrator checks for existing complete status files and skips finished agents on resume. STATE.md updates incrementally after each wave, not just at finalize.
+
+## Pipeline Gap Fixes
+
+Nine fixes discovered during the parallel orchestration research:
+
+- **BUILD-LOG.md race condition** -- parallel agents now write individual log files; orchestrator merges after each wave
+- **Brand sync race** -- feedback loop runs synchronously before components phase
+- **Revision mode compile checkpoint** -- QA fixes verified with build command before finalize
+- **Brand contract enforcement** -- critique verdict now checks brand score (X/25) alongside Nielsen (X/50); constraint violations auto-fail
+- **4 missing SubagentStop hooks** -- accessibility-auditor, brand-auditor, brand-researcher, brand-strategist
+- **Parallel identity enrichment** -- 4 domain skills (logo, color, typography, visuals) invoke simultaneously
+
+## Nothing Style Preset
+
+New minimalist design language inspired by Nothing's transparent, dot-matrix aesthetic. Available via `/gsp-style --preset nothing`.
+
+## Performance
+
+Token budget: +171 tokens (+1.1%) over v0.7.0 for ~47% wall-clock time reduction. Red-zone skills unchanged at 4.

@@ -4,6 +4,38 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+## [0.7.2] — 2026-04-04
+
+### Added
+- **Parallel agent orchestration** — project-build now runs components and screens as parallel agent waves with round-robin model assignment (Opus/Sonnet), reducing build wall-clock time by ~47%
+- **Components phase** (Phase 4) — orchestrator builds component manifest, classifies (library-default/customize/custom/existing), partitions, and spawns parallel agents before screens
+- **`component` execution mode** for `gsp-project-builder` — install, customize, or create assigned components
+- **Mixed-model critique** — `gsp-accessibility-auditor` spawns on Sonnet while critic runs on user's model, eliminating rate-limit competition
+- **Resumable builds** — per-agent status files (`build/status/*.json`) enable skipping completed agents on resume
+- **Progress logs** — pre-spawn manifest and post-wave completion summaries for parallel agent waves
+- **Brand contract enforcement in critique** — Step 4 verdict now reads brand contract score (X/25) alongside Nielsen (X/50); constraint violations auto-fail
+- **SubagentStop hooks** for `gsp-accessibility-auditor`, `gsp-brand-auditor`, `gsp-brand-researcher`, `gsp-brand-strategist`
+- **Nothing style preset** — minimalist design language inspired by Nothing's transparent, dot-matrix aesthetic
+
+### Fixed
+- **BUILD-LOG.md race condition** — parallel agents now write to individual log files (`build/logs/*.md`); orchestrator merges after each wave
+- **Brand sync race** — brand feedback loop runs synchronously before components phase (stale `.yml` values prevented)
+- **Foundation review routing** — correctly routes to components phase (Step 4.5), not screens
+- **Revision mode compile checkpoint** — QA fixes now verified with build command before finalize
+- **SubagentStop hook** for `gsp-project-builder` — mode-aware (no longer checks `build/INDEX.md` mid-pipeline)
+
+### Changed
+- **7-phase build pipeline** — scaffold → foundations → review → components (parallel) → screens (parallel) → extraction review → finalize
+- **Lighter extraction review** — components phase handles reuse upfront; post-build scan is just hardcoded-value grep
+- **Per-screen context filtering** — `prioritized-fixes.md` and `reference-specs.md` filtered to per-screen sections instead of full file
+- **Compile checkpoint deduplication** — build command table defined once in Step 3, referenced by Steps 4.5, 5, and 8
+- **Parallel identity enrichment** — 4 domain skills (logo, color, typography, visuals) now invoke simultaneously in Step 3.5
+- **build.md template** updated to reflect 7-phase parallel pipeline
+
+### Performance
+- Token budget: +171 tokens (+1.1%) over v0.7.0 for ~47% wall-clock time reduction
+- Benchmark: total weight 15,634 → 15,805; red-zone skills unchanged at 4
+
 ## [0.7.1] — 2026-04-01
 
 ### Changed
