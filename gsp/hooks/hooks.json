@@ -53,7 +53,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "The gsp-project-builder agent just finished. Verify: (1) BUILD-LOG.md was written, (2) build/INDEX.md was written, (3) no files were left with TODO/FIXME placeholder code. Report any issues to the user."
+            "prompt": "The gsp-project-builder agent just finished. Verify: (1) a log file was written under build/logs/ (foundations.md, component-*.md, or screen-*.md depending on execution mode), (2) no files were left with TODO/FIXME placeholder code. Note: build/INDEX.md is written at finalize, not by individual agents — do not flag its absence. Report any missing deliverables to the user."
           }
         ]
       },
@@ -63,6 +63,42 @@
           {
             "type": "prompt",
             "prompt": "The gsp-project-reviewer agent just finished. Verify: (1) acceptance-report.md was written, (2) issues.md was written, (3) review/INDEX.md was written, (4) verdict is clearly stated as Pass, Conditional Pass, or Fail. Report any issues to the user."
+          }
+        ]
+      },
+      {
+        "matcher": "gsp-accessibility-auditor",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "The gsp-accessibility-auditor agent just finished. Verify: (1) accessibility-audit.md was written, (2) accessibility-fixes.md was written. Report any missing deliverables to the user."
+          }
+        ]
+      },
+      {
+        "matcher": "gsp-brand-auditor",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "The gsp-brand-auditor agent just finished. Verify: (1) audit/INDEX.md was written, (2) audit/brand-inventory.md exists, (3) audit/coherence-assessment.md exists, (4) audit/market-fit.md exists, (5) audit/equity-analysis.md exists, (6) audit/evolution-map.md exists. Report any missing deliverables to the user."
+          }
+        ]
+      },
+      {
+        "matcher": "gsp-brand-researcher",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "The gsp-brand-researcher agent just finished. Verify: (1) discover/INDEX.md was written, (2) discover/market-landscape.md exists, (3) discover/competitive-audit.md exists, (4) discover/trend-analysis.md exists, (5) discover/mood-board-direction.md exists. Report any missing deliverables to the user."
+          }
+        ]
+      },
+      {
+        "matcher": "gsp-brand-strategist",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "The gsp-brand-strategist agent just finished. Verify: (1) strategy/INDEX.md was written, (2) strategy/positioning.md exists, (3) strategy/archetype.md exists, (4) strategy/brand-platform.md exists, (5) strategy/voice-and-tone.md exists, (6) strategy/messaging.md exists. Report any missing deliverables to the user."
           }
         ]
       }

@@ -11,6 +11,9 @@ node_modules/
 # Local dev notes
 .planning/
 
+# Worktrees
+.worktrees/
+
 # Build/test artifacts
 test-results/
 tsconfig.tsbuildinfo

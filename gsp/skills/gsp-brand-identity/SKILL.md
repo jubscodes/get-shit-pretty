@@ -107,16 +107,16 @@ The agent writes 5 chunks + INDEX.md (creative decisions only — no technical e
 5. `brand-applications.md`
 6. `INDEX.md`
 
-## Step 3.5: Enrich with domain skills
+## Step 3.5: Enrich with domain skills (parallel)
 
-After the creative-director finishes, invoke domain skills to add technical precision to the creative decisions. Each skill reads the chunk the agent wrote, enriches it, and overwrites.
+After the creative-director finishes, invoke all 4 domain skills in parallel — they operate on separate chunks with zero dependencies:
 
-1. **Invoke `/gsp-logo --enrich`** — reads `logo-directions.md`, enriches each direction with detailed construction geometry, complete variation specs, clear space rules, and minimum size calculations.
-2. **Invoke `/gsp-color --enrich`** — reads `color-system.md`, generates OKLCH palettes via tints.dev, calculates WCAG contrast, writes `palettes.json`, enriches with contrast ratios and semantic mapping.
-3. **Invoke `/gsp-typography --enrich`** — reads `typography.md`, generates mathematical type scale, adds fluid type formulas, enriches with font loading instructions.
-4. **Invoke `/gsp-visuals --imagery --enrich`** — reads `imagery-style.md`, adds icon library specifics, CSS texture/treatment recipes, enriches with technical implementation details.
+- **`/gsp-logo --enrich`** — reads `logo-directions.md`, enriches with construction geometry, variation specs, clear space rules, minimum size calculations.
+- **`/gsp-color --enrich`** — reads `color-system.md`, generates OKLCH palettes via tints.dev, calculates WCAG contrast, writes `palettes.json`, enriches with contrast ratios and semantic mapping.
+- **`/gsp-typography --enrich`** — reads `typography.md`, generates mathematical type scale, adds fluid type formulas, enriches with font loading instructions.
+- **`/gsp-visuals --imagery --enrich`** — reads `imagery-style.md`, adds icon library specifics, CSS texture/treatment recipes, enriches with technical implementation details.
 
-Each skill loads its own domain references on-demand — no upfront context cost.
+Invoke all 4 using the Skill tool simultaneously. Each skill loads its own domain references on-demand — no upfront context cost.
 
 ## Step 4: Perspective check
 

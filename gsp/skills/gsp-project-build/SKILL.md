@@ -13,7 +13,7 @@ allowed-tools:
   - AskUserQuestion
 ---
 <context>
-Phase 5 of the GSP project diamond. Uses a 4-phase pipeline with verification checkpoints to implement designs directly in the codebase as production-ready frontend components.
+Phase 5 of the GSP project diamond. Uses a 7-phase pipeline with verification checkpoints to implement designs directly in the codebase as production-ready frontend components.
 
 Works with the dual-diamond architecture: reads brand system from `.design/branding/{brand}/patterns/` via `brand.ref`, reads/writes project assets in `.design/projects/{project}/`.
 
@@ -30,11 +30,23 @@ Phase 2: FOUNDATIONS (agent: gsp-project-builder mode:foundations)
 Phase 3: FOUNDATION REVIEW (interactive)
   └─ Present summary → user confirms
 
-Phase 4: SCREENS (agent: gsp-project-builder mode:screen, one per screen)
-  ├─ Context per screen: its design chunk + referenced components only
-  ├─ Agent reads foundations from codebase (not from context)
-  ├─ CHECKPOINT per screen: compile check
-  └─ Sequential (patterns compound)
+Phase 4: COMPONENTS (agents: gsp-project-builder mode:component, parallel)
+  ├─ Orchestrator: reads all design chunks → builds component manifest → partitions
+  ├─ Each agent: installs/customizes/creates its assigned components
+  ├─ Model assignment: round-robin (Opus/Sonnet) for rate-limit distribution
+  └─ CHECKPOINT: build must compile
+
+Phase 5: SCREENS (agents: gsp-project-builder mode:screen, parallel)
+  ├─ Context per screen: its design chunk + component paths (components exist in codebase)
+  ├─ Agent reads foundations + components from codebase (not from context)
+  ├─ Model assignment: round-robin (Opus/Sonnet) for rate-limit distribution
+  └─ CHECKPOINT: build must compile
+
+Phase 6: EXTRACTION REVIEW (lightweight)
+  └─ Grep for hardcoded values, flag remaining duplication
+
+Phase 7: FINALIZE
+  └─ BUILD-LOG, MANIFEST, STATE, phase transition
 ```
 </context>
 
@@ -113,7 +125,7 @@ After scaffold completes, verify `{PROJECT_PATH}/build/SCAFFOLD-LOG.md` exists. 
 
 ## Step 2.5: Load agent methodology
 
-Read `${CLAUDE_SKILL_DIR}/methodology/gsp-project-builder.md`. Include the full content as **Agent methodology** in all agent prompts below (Steps 3, 5, 7, 8).
+Read `${CLAUDE_SKILL_DIR}/methodology/gsp-project-builder.md`. Include the full content as **Agent methodology** in all agent prompts below (Steps 3, 4.5, 5, 7, 8).
 
 ## Step 2.6: Load build references
 
@@ -121,7 +133,7 @@ Read these reference files:
 - `${CLAUDE_SKILL_DIR}/visual-effects.md`
 - `${CLAUDE_SKILL_DIR}/../gsp-project-design/block-patterns.md`
 
-Hold their content for inlining into agent prompts in Steps 3, 5, 7, and 8.
+Hold their content for inlining into agent prompts in Steps 3, 4.5, 5, 7, and 8.
 
 > **Note:** Anti-patterns are distilled into the `gsp-project-builder` agent prompt. Full ref remains on disk for edge-case agent lookup.
 
@@ -159,7 +171,7 @@ Spawn `gsp-project-builder` agent with **execution_mode: foundations**.
 > 7. Write code directly to the codebase, not to `.design/`
 > 8. Leave changes unstaged
 >
-> After completing foundations, write `{PROJECT_PATH}/build/BUILD-LOG.md` with what was done (foundations section only).
+> After completing foundations, write `{PROJECT_PATH}/build/logs/foundations.md` with what was done (foundations section). Do NOT write to BUILD-LOG.md directly — the orchestrator merges logs after each phase.
 
 ### Checkpoint: Compile check
 
@@ -207,8 +219,8 @@ Present a summary of what the foundations phase produced:
   ──────────────────────────────
 ```
 
-Use `AskUserQuestion`: "Foundations look good? Continue building screens, or review first?"
-- **Continue** → proceed to Step 5
+Use `AskUserQuestion`: "Foundations look good? Continue building components, or review first?"
+- **Continue** → proceed to Step 4.5
 - **Review first** → pause, let user inspect, resume when ready
 - **Adjust** → user requests changes (colors, typography, spacing, etc.)
 
@@ -223,101 +235,220 @@ If the user requests adjustments during foundation review:
    - Pass: `{BRAND_PATH}/patterns/{brand-name}.yml` and relevant identity chunks
    - Agent updates the `.yml` preset, foundation chunks, and STYLE.md if applicable
    - Agent writes to `{BRAND_PATH}/` — the brand source of truth
-   - Run in background (`run_in_background: true`) so the build pipeline continues
-4. Continue to Step 5 without waiting for brand sync
+   - Run synchronously (do NOT use `run_in_background`) — Step 4.5 reads the brand `.yml` from disk, so the updated values must be committed before components begin
+4. Wait for brand sync to complete, then continue to Step 4.5
 
-## Step 5: Phase 4 — SCREENS
+## Step 4.5: Phase 4 — COMPONENTS
 
-Build screens sequentially. For each screen in `SCREENS`:
+### Build component manifest
+
+Read ALL design chunks from `{PROJECT_PATH}/design/` — every `screen-{NN}-{name}.md`. Also read:
+- `{PROJECT_PATH}/brief/scope.md` (feature map)
+- `{PROJECT_PATH}/brief/target-adaptations.md` (component adaptations)
+- `{BRAND_PATH}/patterns/components/token-mapping.md` (if exists)
+
+Extract every component referenced across all screens. Deduplicate. Build a manifest:
+
+```
+COMPONENT_MANIFEST = [
+  { name: "Button", source: "shadcn", classification: "library-default", screens: [01, 03, 05] },
+  { name: "Card", source: "shadcn", classification: "library-customize", screens: [01, 02, 04], overrides: "custom radius + shadow from STYLE.md" },
+  { name: "PricingTier", source: "custom", classification: "custom", screens: [03] },
+  ...
+]
+```
+
+### Classify each component
+
+| Category | Criteria | Action |
+|----------|----------|--------|
+| `library-default` | Exists in target library, no brand overrides needed | Install as-is |
+| `library-customize` | Exists in target library, STYLE.md or token-mapping requires overrides | Install then customize |
+| `custom` | No library match, or design requires bespoke component | Build from scratch |
+| `existing` | Already in codebase (from scaffold or prior project) | Skip — already available |
+
+### Partition into agent groups
+
+Group components to minimize conflicts:
+1. No two agents install the same library component
+2. Group related variants together (Card + CardHeader + CardContent + CardFooter → same agent)
+3. Balance work across agents (aim for 3-6 components per agent)
+4. If total components ≤ 5, use a single agent (no need to parallelize)
+
+### Resume check
+
+Check for existing `build/status/component-*.json` files. For each partition with a `"status": "complete"` file, skip that agent — log: "Skipping {name} — already complete."
+
+### Progress log
+
+Before spawning, log the manifest:
+
+```
+  ◆ components phase
+
+    Spawning {N} agents in parallel:
+    {for each partition}: [{model}] {partition-name} — {component-count} components
+```
+
+### Spawn component agents in parallel
+
+For each partition, spawn `gsp-project-builder` with **execution_mode: component**.
+
+Assign models in round-robin: first agent on user's model, second on `sonnet`, third on user's model, etc. This splits rate-limit pressure across model buckets.
+
+Context per component agent:
+
+| File | Purpose |
+|------|---------|
+| Component partition (list + classifications + overrides) | What to build |
+| `{BRAND_PATH}/patterns/STYLE.md` (or fallback `{brand-name}.md`) | Design constraints, effects vocabulary |
+| `{BRAND_PATH}/patterns/{brand-name}.yml` | Token values |
+| `{BRAND_PATH}/patterns/components/token-mapping.md` | Component-to-token mapping |
+| Design chunk excerpts (only sections referencing these components) | Usage context — how screens use them |
+| `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations for target |
+| `{PROJECT_PATH}/config.json` | Tech stack, implementation target |
+| Visual effects, block patterns refs (loaded in Step 2.6) | Design patterns + CSS recipes |
+| Agent methodology (loaded in Step 2.5) | Builder role, process, quality standards |
+
+Agent instructions template:
+
+> execution_mode: component
+> implementation_target: {target}
+> components: [{partition list with classifications}]
+>
+> Install, customize, or create the assigned components.
+> 1. For library-default: install via CLI, verify import works
+> 2. For library-customize: install via CLI, then apply brand overrides (STYLE.md constraints, token values)
+> 3. For custom: create from scratch following brand patterns and STYLE.md
+> 4. Read foundations from codebase (tokens, utilities already exist)
+> 5. Do NOT modify foundation files (global CSS, layout, tokens, theme provider)
+> 6. Do NOT build screens or page content
+> 7. Write code directly to the codebase
+> 8. Leave changes unstaged
+>
+> After completing components, write `{PROJECT_PATH}/build/logs/component-{partition-name}.md` — list components installed/customized/created, files written, and any issues. Do NOT write to BUILD-LOG.md directly.
+> Also write `{PROJECT_PATH}/build/status/component-{partition-name}.json` with `{"status": "complete", "components": [{list}], "timestamp": "{ISO}"}`.
+
+### Checkpoint: Compile check
+
+After ALL component agents complete, run the build command (same stack table as Step 3 checkpoint).
+
+**Pass:** Continue to Step 5.
+**Fail:** Log the error. Surface to user: "Component build failed: {error}. Fix now or skip to screens?"
+
+### Merge component logs
+
+After the compile checkpoint passes, merge all `build/logs/component-*.md` files into `{PROJECT_PATH}/build/BUILD-LOG.md` (foundations section from `build/logs/foundations.md` + all component sections, in partition order).
+
+Log: "  ✓ components complete — {N} agents, build compiles"
+
+Update `{PROJECT_PATH}/STATE.md` — set completed component partitions in build status.
+
+## Step 5: Phase 5 — SCREENS (parallel)
+
+Build all screens in parallel. Components exist in the codebase from Phase 4.
 
 ### Context per screen (lean — only this screen's data):
 
 | File | Purpose |
 |------|---------|
 | `{PROJECT_PATH}/design/screen-{NN}-{name}.md` | This screen's design chunk |
-| Referenced component chunks from `{BRAND_PATH}/patterns/components/` | Only components referenced in this screen's chunk |
+| Component file paths from BUILD-LOG.md components section | Where to import from (paths only — agent reads codebase) |
 | `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations |
-| `{PROJECT_PATH}/research/reference-specs.md` (if exists) | Technical specs |
-| `{PROJECT_PATH}/critique/prioritized-fixes.md` (if exists) | Critique fixes relevant to this screen |
+| `{PROJECT_PATH}/research/reference-specs.md` (if exists) | Technical specs — include only sections relevant to this screen |
+| `{PROJECT_PATH}/critique/prioritized-fixes.md` (if exists) | Critique fixes — include only fixes tagged to this screen |
 | Build output template (from execution_context) | Build log structure |
 | Visual effects, block patterns refs (loaded in Step 2.6) | Design patterns + CSS recipes |
 | Agent methodology (loaded in Step 2.5) | Builder role, process, quality standards |
 
-**Does NOT receive:** other screen chunks, brand `.yml` (already integrated into codebase), full brand system, research monoliths.
+**Does NOT receive:** other screen chunks, brand `.yml` (already in codebase), full brand system, research monoliths, component source code (agent reads from codebase).
 
-### Agent instructions per screen:
+### Resume check
+
+Check for existing `build/status/screen-*.json` files. For each screen with a `"status": "complete"` file, skip that agent — log: "Skipping screen-{NN}-{name} — already complete."
+
+### Progress log
+
+Before spawning, log:
+
+```
+  ◆ screens phase
+
+    Spawning {N} agents in parallel:
+    {for each screen}: [{model}] screen-{NN}-{name}
+```
+
+### Spawn screen agents in parallel
+
+For each screen in `SCREENS`, spawn `gsp-project-builder` with **execution_mode: screen**.
+
+Assign models in round-robin: first screen on user's model, second on `sonnet`, third on user's model, etc.
+
+Agent instructions per screen:
 
 > execution_mode: screen
 > screen: {name} ({NN})
 >
-> Build the {name} screen. Foundations are already in the codebase — read them, don't recreate them.
+> Build the {name} screen. Foundations and components are already in the codebase.
 >
-> 1. Read the existing layout, tokens, and utilities from the codebase
+> 1. Read the existing layout, tokens, utilities, and components from the codebase
 > 2. Create the route page and screen-specific components
-> 3. Wire imports to existing foundation components
+> 3. Wire imports to existing foundation and component files
 > 4. Do NOT modify foundation files (global CSS, layout, tokens, theme provider)
-> 5. Write code directly to the codebase, not to `.design/`
-> 6. Leave changes unstaged
-> 7. The brand's visual effects were implemented as utilities during foundations — use those utilities/classes rather than re-reading the brand style document
+> 5. Do NOT modify shared component files (they were built in the components phase)
+> 6. Write code directly to the codebase, not to `.design/`
+> 7. Leave changes unstaged
+> 8. The brand's visual effects were implemented as utilities during foundations — use those utilities/classes
 >
-> After completing this screen, append to `{PROJECT_PATH}/build/BUILD-LOG.md` — add this screen's files and status to the existing log.
+> After completing this screen, write `{PROJECT_PATH}/build/logs/screen-{NN}-{name}.md` — list files written, components used, and any issues. Do NOT write to BUILD-LOG.md directly.
+> Also write `{PROJECT_PATH}/build/status/screen-{NN}-{name}.json` with `{"status": "complete", "screen": "{name}", "files": [{list}], "timestamp": "{ISO}"}`.
 
-### Checkpoint per screen: Compile check
+### Checkpoint: Compile check
 
-After each screen agent completes, run the build command.
+After ALL screen agents complete, run the build command (same stack table as Step 3 checkpoint).
 
-**Pass:** Log success, continue to next screen.
-**Fail:** Log the error as a warning. Ask user: "Screen {name} has build errors. Fix now, skip, or stop?"
-- **Fix** → re-run build, surface errors for manual resolution
-- **Skip** → mark screen as `partial` in BUILD-LOG, continue
-- **Stop** → halt pipeline, save progress
+**Pass:** Log success, continue to Step 5.5.
+**Fail:** Log the errors. Present to user: "Build errors after screens phase: {errors}. The following screens may have issues: {list}. Fix now or continue to extraction review?"
 
-## Step 5.5: Component extraction checkpoint
+### Merge screen logs
 
-After all screens complete, audit the codebase for duplicated patterns before review.
+After the compile checkpoint passes, merge all `build/logs/screen-*.md` files into `{PROJECT_PATH}/build/BUILD-LOG.md` (append screen sections in order: 01, 02, 03, etc.).
+
+Log: "  ✓ screens complete — {N} screens, build compiles"
+
+Update `{PROJECT_PATH}/STATE.md` `## Screen Build Status` table — set completed screens to `complete`.
+
+## Step 5.5: Extraction review (lightweight)
+
+Components were built in Phase 4, so most reuse is already handled. This is a quick sanity check.
 
 ### Automated scan
 
-Run these checks in the built codebase:
+Run these checks on the built codebase:
 
-1. **Duplicated Tailwind class clusters** — Use Grep to find identical `className` strings (>3 classes) appearing in 2+ files. These are extraction candidates.
-2. **Inline color/spacing values** — Grep for hardcoded hex colors, rgb(), pixel values that should be tokens. Flag any that don't reference CSS variables or Tailwind tokens.
-3. **Repeated component patterns** — Look for similar JSX structures across screen files (e.g., similar card layouts, repeated list items, identical button groups).
+1. **Hardcoded values** — Grep for hardcoded hex colors, rgb(), pixel values that should be tokens. Flag any that don't reference CSS variables or Tailwind tokens.
+2. **Duplicated patterns** — Use Grep to find identical `className` strings (>3 classes) appearing in 2+ screen files. These are patterns the components phase missed.
 
-### Surface proposals
+### Surface findings
 
-Present findings to the user as a numbered list:
+If issues found, present to user:
 
 ```
-  ◆ extraction candidates
+  ◆ post-build scan
 
-    1. Card pattern in 3 screens (landing, changelog-list, dashboard)
-       className="rounded-lg border bg-card p-6 shadow-sm"
-       → extract to <Card> component
-
-    2. Hardcoded colors in 2 files
-       text-[#FF6B35] in hero.tsx, cta.tsx
-       → use text-brand-accent token
-
-    3. Badge pattern in changelog-list, changelog-post
-       → extract to <Badge> component
+    Found {N} hardcoded values and {M} duplicated patterns.
+    {list if any}
 
   ──────────────────────────────
 ```
 
-Use `AskUserQuestion`: "Apply these extractions, skip, or cherry-pick?"
-- **Apply all** → make the changes inline (no agent spawn needed, these are mechanical refactors)
-- **Cherry-pick** → apply selected ones
-- **Skip** → continue to finalize
+If no issues: "Post-build scan clean — no hardcoded values or duplicated patterns found."
 
-This step is **not auto-applied** — the user decides what to extract.
+Use `AskUserQuestion` only if issues were found: "Fix these, or continue to finalize?"
+- **Fix** → apply changes inline (mechanical refactors, no agent needed)
+- **Continue** → proceed to Step 6
 
-### Brand feedback on extraction
-
-If the extraction scan finds hardcoded values that should be tokens (finding type #2), and those tokens are missing from the brand system:
-
-1. After applying fixes in the project, ask: "These token gaps also exist in the brand. Update brand patterns?"
-2. If yes, spawn a background `gsp-brand-engineer` agent with the missing token definitions to add them to `{BRAND_PATH}/patterns/{brand-name}.yml` and relevant foundation chunks.
+If hardcoded values map to missing brand tokens, suggest: "These token gaps may also exist in the brand. Consider running `/gsp-brand-refine` after build completes."
 
 ## Step 6: Finalize
 
@@ -368,6 +499,13 @@ For `implementation_target: figma`, skip the phased pipeline. Spawn a single `gs
 ## Step 8: Revision mode
 
 For `needs-revision` status, spawn a single `gsp-project-builder` agent with execution_mode: `full` and `review/issues.md` contents. The agent fixes QA issues in the codebase and appends revision sections to BUILD-LOG.md.
+
+### Checkpoint: Compile check
+
+After the revision agent completes, run the build command (same stack table as Step 3 checkpoint).
+
+**Pass:** Continue to brand feedback check below.
+**Fail:** Log the error. Surface to user: "Revision introduced build errors: {error}. Fix before finalizing?"
 
 ### Brand feedback on revisions
 
