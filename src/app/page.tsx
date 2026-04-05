@@ -5,40 +5,81 @@ import { AsciiHero } from "@/components/ascii-hero";
 import { InstallCommand } from "@/components/install-command";
 import { TerminalMock } from "@/components/terminal-mock";
 import { PipelineViz } from "@/components/pipeline-viz";
-import { FeatureCard } from "@/components/feature-card";
+import { StylePresetCard } from "@/components/style-preset-card";
 
 const GITHUB_URL = "https://github.com/jubscodes/get-shit-pretty";
 
-const features = [
+const stylePresets = [
   {
-    title: "Brand Strategy",
-    description:
-      "Discover positioning, voice, and verbal identity from a single brief. AI-driven research distilled into actionable brand foundations.",
+    name: "CYBERPUNK",
+    colors: ["#00FFFF", "#FF00FF", "#FFFF00", "#0A0A0F"],
+    constraint: "never: border-radius above 4px",
+    nameClassName: "font-bold text-body tracking-widest uppercase",
+    style: {
+      backgroundColor: "#0A0A0F",
+      border: "1px solid rgba(0, 255, 255, 0.3)",
+      boxShadow: "0 0 16px rgba(0, 255, 255, 0.2)",
+      clipPath:
+        "polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)",
+      color: "#00FFFF",
+      fontFamily: "Orbitron, sans-serif",
+    },
   },
   {
-    title: "Design Tokens",
-    description:
-      "OKLCH color palettes, spacing scales, and radius tokens generated as CSS custom properties. Dark-first, accessible by default.",
+    name: "nothing",
+    colors: ["#FFFFFF", "#999999", "#D71921", "#000000"],
+    constraint: "never: shadows or blur",
+    nameClassName: "text-body font-normal",
+    style: {
+      backgroundColor: "#000000",
+      border: "1px solid #222222",
+      borderRadius: "12px",
+      color: "#E8E8E8",
+      fontFamily: "Space Grotesk, system-ui, sans-serif",
+    },
   },
   {
-    title: "Type & Color",
-    description:
-      "Fluid type scales and expression palettes tuned for terminal and web. Every value has a rationale, not just a number.",
+    name: "NEUBRUTALISM",
+    colors: ["#000000", "#FFD700", "#FF6B6B", "#FFFFFF"],
+    constraint: "never: box-shadow with blur > 0",
+    nameClassName: "font-bold text-body uppercase tracking-wide",
+    style: {
+      backgroundColor: "#FFFFFF",
+      border: "3px solid #000000",
+      boxShadow: "4px 4px 0px 0px #000000",
+      borderRadius: "0px",
+      color: "#000000",
+      fontFamily: "Space Grotesk, sans-serif",
+      transform: "rotate(1deg)",
+    },
   },
   {
-    title: "Component Foundations",
-    description:
-      "shadcn/ui primitives mapped to your brand tokens. Button, card, badge, and more — ready for your codebase.",
+    name: "liquid glass",
+    colors: ["#007AFF", "#5856D6", "#FF2D55", "#F2F2F7"],
+    constraint: "never: hard edges or sharp corners",
+    nameClassName: "text-body font-semibold",
+    style: {
+      backgroundColor: "rgba(242, 242, 247, 0.85)",
+      border: "0.5px solid rgba(255, 255, 255, 0.8)",
+      boxShadow: "0 8px 32px rgba(31, 38, 135, 0.15)",
+      borderRadius: "16px",
+      color: "#1C1C1E",
+      fontFamily: "-apple-system, system-ui, sans-serif",
+    },
   },
   {
-    title: "Terminal Native",
-    description:
-      "Built for Claude Code, OpenCode, Gemini CLI, and Codex. No browser required. Design engineering from your terminal.",
-  },
-  {
-    title: "Open Source",
-    description:
-      "MIT licensed. Inspect every prompt, every agent, every skill. Fork it, extend it, make it yours.",
+    name: "BAUHAUS",
+    colors: ["#D02020", "#1040C0", "#F0C020", "#FFFFFF"],
+    constraint: "never: organic curves in structural elements",
+    nameClassName: "font-extrabold text-body uppercase tracking-wide",
+    style: {
+      backgroundColor: "#FFFFFF",
+      border: "4px solid #000000",
+      boxShadow: "8px 8px 0px 0px #000000",
+      borderRadius: "0px",
+      color: "#000000",
+      fontFamily: "Outfit, sans-serif",
+    },
   },
 ] as const;
 
@@ -86,7 +127,7 @@ export default function Home() {
           >
             <div className="space-y-1">
               <p className="text-gsp-bright font-bold">
-                /gsp: {"\u25c7\u25c7"}
+                /gsp- {"\u25c7\u25c7"}
               </p>
               <p className="text-muted-foreground">&nbsp;</p>
               <p className="text-muted-foreground">
@@ -216,26 +257,43 @@ export default function Home() {
       </section>
 
 
-      {/* ===== FEATURES GRID ===== */}
+      {/* ===== STYLE PRESETS ===== */}
       <section className="py-gsp-16 md:py-gsp-24">
         <div className="mx-auto max-w-[1200px] px-gsp-4 sm:px-gsp-6 lg:px-gsp-8">
           <div className="text-center mb-gsp-12">
             <p className="text-overline text-primary mb-gsp-4">
-              Capabilities
+              Style Presets
             </p>
-            <h2 className="text-h2 text-foreground">
-              Six tools in one pipeline
+            <h2 className="text-h2 text-foreground mb-gsp-6">
+              Start with taste, not a blank canvas
             </h2>
+            <p className="text-body text-muted-foreground max-w-2xl mx-auto mb-gsp-6">
+              35 design languages. Each one is a complete opinion — colors, type,
+              shape, constraints, interaction patterns. Pick one as your
+              foundation, then let the pipeline refine it.
+            </p>
+            <p className="font-mono text-body-sm text-muted-foreground">
+              /gsp-style &quot;something dark and techy&quot;{" "}
+              <span className="text-foreground">
+                {"\u2192"} cyberpunk, terminal, modern-dark
+              </span>
+            </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gsp-6">
-            {features.map((feature) => (
-              <FeatureCard
-                key={feature.title}
-                title={feature.title}
-                description={feature.description}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gsp-6 mb-gsp-8">
+            {stylePresets.map((preset) => (
+              <StylePresetCard
+                key={preset.name}
+                name={preset.name}
+                colors={[...preset.colors]}
+                constraint={preset.constraint}
+                nameClassName={preset.nameClassName}
+                style={preset.style}
               />
             ))}
           </div>
+          <p className="text-body-sm text-muted-foreground text-center">
+            35 presets total — from swiss-minimalist to vaporwave.
+          </p>
         </div>
       </section>
 
