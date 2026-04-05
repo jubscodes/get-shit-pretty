@@ -405,12 +405,43 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== META SIGNAL ===== */}
+      {/* ===== SIGNALS STRIP ===== */}
       <section className="py-gsp-8">
         <div className="mx-auto max-w-[1200px] px-gsp-4 sm:px-gsp-6 lg:px-gsp-8">
-          <Separator className="mb-gsp-6" />
-          <p className="text-caption text-muted-foreground tracking-wider text-center">
-            This site was designed by GSP.
+          <div className="flex flex-wrap items-center justify-center gap-x-gsp-4 gap-y-gsp-2 font-mono text-body-sm">
+            {[
+              { n: "4", label: "runtimes" },
+              { n: "11", label: "agents" },
+              { n: "34", label: "skills" },
+              { n: "35", label: "styles" },
+              { n: "0", label: "dependencies" },
+              { n: "", label: "MIT" },
+            ].map((stat, i) => (
+              <span key={stat.label} className="flex items-center gap-gsp-1">
+                {i > 0 && (
+                  <span
+                    className="text-border mr-gsp-3"
+                    aria-hidden="true"
+                  >
+                    {"\u00b7"}
+                  </span>
+                )}
+                {stat.n && (
+                  <span className="text-foreground">{stat.n}</span>
+                )}
+                <span className="text-muted-foreground">{stat.label}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== META SIGNAL ===== */}
+      <section className="py-gsp-12">
+        <div className="mx-auto max-w-[1200px] px-gsp-4 sm:px-gsp-6 lg:px-gsp-8">
+          <Separator className="mb-gsp-8" />
+          <p className="text-body text-muted-foreground text-center font-mono">
+            {"\u25c6"} From idea to live, made with GSP.
           </p>
         </div>
       </section>
