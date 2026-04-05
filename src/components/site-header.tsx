@@ -25,7 +25,7 @@ export function SiteHeader() {
               transitionTimingFunction: "var(--gsp-motion-easing)",
             }}
           >
-            /gsp: {"\u25c7\u25c7"}
+            /gsp {"\u25c7\u25c7"}
           </Link>
 
           {/* Navigation */}

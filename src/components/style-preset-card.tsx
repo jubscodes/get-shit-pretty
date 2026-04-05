@@ -2,47 +2,54 @@ import { cn } from "@/lib/utils";
 
 interface StylePresetCardProps {
   name: string;
-  colors: string[];
-  constraint: string;
+  description: string;
+  heroStyle: React.CSSProperties;
+  heroContent?: React.ReactNode;
+  infoStyle?: React.CSSProperties;
   nameClassName?: string;
   className?: string;
-  style?: React.CSSProperties;
 }
 
 export function StylePresetCard({
   name,
-  colors,
-  constraint,
+  description,
+  heroStyle,
+  heroContent,
+  infoStyle,
   nameClassName,
   className,
-  style,
 }: StylePresetCardProps) {
   return (
     <div
-      className={cn("p-6 transition-opacity hover:opacity-90", className)}
+      className={cn(
+        "overflow-hidden rounded-md border border-border transition-all hover:border-primary/40",
+        className
+      )}
       style={{
         transitionDuration: "var(--gsp-motion-normal)",
         transitionTimingFunction: "var(--gsp-motion-easing)",
-        ...style,
       }}
     >
-      <p className={cn("mb-gsp-3", nameClassName)}>{name}</p>
-      <div className="flex items-center gap-gsp-2 mb-gsp-3">
-        {colors.map((color) => (
-          <span
-            key={color}
-            className="size-4 rounded-full border border-white/10"
-            style={{ backgroundColor: color }}
-            aria-hidden="true"
-          />
-        ))}
-      </div>
-      <p
-        className="text-caption opacity-60"
-        style={{ fontFamily: "inherit" }}
+      {/* Visual hero area */}
+      <div
+        className="relative h-48 flex items-end p-6"
+        style={heroStyle}
       >
-        {constraint}
-      </p>
+        {heroContent}
+        <p
+          className={cn("relative z-10 text-xl font-bold", nameClassName)}
+          style={{ fontFamily: "inherit" }}
+        >
+          {name}
+        </p>
+      </div>
+      {/* Info bar */}
+      <div
+        className="px-6 py-4 border-t border-border bg-card"
+        style={infoStyle}
+      >
+        <p className="text-caption text-muted-foreground">{description}</p>
+      </div>
     </div>
   );
 }

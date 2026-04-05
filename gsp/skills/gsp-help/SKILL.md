@@ -37,10 +37,11 @@ Skill names are left-padded with 4 spaces. Descriptions start at column 27 (4 in
 
   ─── Branding ─────────────────────────
 
+    /gsp-brand-brief       define your brand through guided Q&A
     /gsp-brand-research    research your market and audience
     /gsp-brand-strategy    define positioning, personality, voice and messaging
     /gsp-brand-identity    create visual identity
-    /gsp-brand-guidelines    build design system tokens and components
+    /gsp-brand-guidelines  build design system tokens and components
     /gsp-brand-sync        sync brand to match a project's shipped state
     /gsp-brand-refine      tweak brand tokens mid-project without re-running identity
     /gsp-brand-audit       audit existing brand before evolving (optional)
@@ -60,11 +61,15 @@ Skill names are left-padded with 4 spaces. Descriptions start at column 27 (4 in
     /gsp-color             color systems — palettes, contrast, semantic mapping, dark mode
     /gsp-typography        type systems — scale, pairing, fluid type, vertical rhythm
     /gsp-visuals           visual direction — imagery, 3D, video, textures
-    /gsp-accessibility     accessibility audit — contrast, WCAG, code checks
+    /gsp-icons             icon systems — library, sizing, containers, custom SVG
+    /gsp-logo              logo directions — concepts, variations, usage rules
+    /gsp-accessibility     contrast checks and token WCAG audits
     /gsp-style             apply a design style preset
 
   ─── Utilities ────────────────────────
 
+    /gsp-design-system     scan and document existing design system state
+    /gsp-scaffold          deterministic stack setup — deps, configs, verify build
     /gsp-doctor            check project health
     /gsp-update            update GSP to latest version
 
@@ -79,7 +84,7 @@ Skill names are left-padded with 4 spaces. Descriptions start at column 27 (4 in
     — or —
     quick mode: pick a style → jump straight to project.
 
-    branding   research → strategy → identity → patterns
+    branding   brief → research → strategy → identity → guidelines
     project    brief → research → design → critique → build → review
                                     ↑                    ↑
                               critique loop         QA loop
@@ -98,7 +103,7 @@ Skill names are left-padded with 4 spaces. Descriptions start at column 27 (4 in
     │       ├── discover/         research chunks
     │       ├── strategy/         strategy + voice and messaging
     │       ├── identity/         visual identity
-    │       └── patterns/         tokens + components
+    │       └── system/           tokens + components
     └── projects/
         └── {project}/
             ├── config.json       project config
@@ -114,7 +119,7 @@ Skill names are left-padded with 4 spaces. Descriptions start at column 27 (4 in
             └── exports/INDEX.md  chunk index
 
   get-shit-pretty v{VERSION}
-  github.com/juliuslipp/get-shit-pretty
+  github.com/jubscodes/get-shit-pretty
 ```
 
 Replace `{VERSION}` with the value read from the VERSION file.
