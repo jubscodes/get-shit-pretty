@@ -4,6 +4,7 @@ import { AsciiHero } from "@/components/ascii-hero";
 import { InstallCommand } from "@/components/install-command";
 import { TerminalMock } from "@/components/terminal-mock";
 import { PipelineViz } from "@/components/pipeline-viz";
+import { LiquidGlass } from "@/components/liquid-glass";
 
 const GITHUB_URL = "https://github.com/jubscodes/get-shit-pretty";
 
@@ -243,10 +244,10 @@ export default function Home() {
           </div>
 
           {/* Bento grid — 4 cols, 2 rows on desktop */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gsp-4 lg:[grid-template-rows:280px_280px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gsp-4 sm:[grid-auto-rows:280px] lg:[grid-template-rows:280px_280px]">
 
-            {/* MODERN DARK — col 1, spans 2 rows */}
-            <div className="lg:row-span-2 relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40 min-h-[280px]" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
+            {/* MODERN DARK — col 1, spans 2 rows on lg */}
+            <div className="lg:row-span-2 relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
               <div className="absolute inset-0" style={{ background: "#050506" }}>
                 {/* Ambient gradient blobs */}
                 <div className="absolute -top-16 -left-16 size-80 rounded-full blur-3xl" style={{ background: "radial-gradient(circle, rgba(94,106,210,0.35) 0%, transparent 60%)" }} />
@@ -277,7 +278,7 @@ export default function Home() {
             </div>
 
             {/* NOTHING — row 1, col 2 */}
-            <div className="relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40 min-h-[280px]" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
+            <div className="relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
               <div className="absolute inset-0" style={{ background: "#000000" }}>
                 <div className="p-8">
                   <div className="h-1.5 w-16 mb-4 rounded-full" style={{ backgroundColor: "#333" }} />
@@ -296,7 +297,7 @@ export default function Home() {
             </div>
 
             {/* NEUBRUTALISM — row 1, col 3 */}
-            <div className="relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40 min-h-[280px]" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
+            <div className="relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
               <div className="absolute inset-0" style={{ background: "#FFFFFF" }}>
                 <div className="p-8">
                   <div className="h-8 w-28 mb-4 flex items-center justify-center" style={{ backgroundColor: "#FF6B6B", border: "3px solid #000", boxShadow: "3px 3px 0px #000" }}>
@@ -314,8 +315,8 @@ export default function Home() {
               </div>
             </div>
 
-            {/* BAUHAUS — col 4, spans 2 rows */}
-            <div className="lg:row-span-2 relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40 min-h-[280px]" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
+            {/* BAUHAUS — col 4, spans 2 rows on lg */}
+            <div className="lg:row-span-2 relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
               <div className="absolute inset-0 flex flex-col" style={{ background: "#FFFFFF" }}>
                 {/* Geometric shapes */}
                 <div className="relative flex-1">
@@ -346,74 +347,39 @@ export default function Home() {
             </div>
 
             {/* LIQUID GLASS — row 2, cols 2-3 */}
-            <div className="lg:col-span-2 relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40 min-h-[280px]" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
-              <div className="absolute inset-0 flex flex-col">
-                {/* macOS-style wallpaper background */}
-                <div className="relative flex-1 overflow-hidden" style={{ background: "linear-gradient(135deg, #3d1a00 0%, #5c2800 25%, #7a3400 45%, #4a1e2e 65%, #2d1230 100%)" }}>
-                  {/* Animated Ventura-style warm surfaces */}
-                  <svg className="absolute -inset-x-8 inset-y-0 h-full" style={{ width: "calc(100% + 64px)" }} viewBox="0 0 900 220" preserveAspectRatio="none" aria-hidden="true">
-                    <path className="animate-[liquid-drift-1_12s_ease-in-out_infinite]" d="M-50,140 C50,60 150,100 250,40 C350,0 450,30 550,10 C650,0 750,30 850,20 L950,220 L-50,220 Z" fill="rgba(255,107,53,0.5)" />
-                    <path className="animate-[liquid-drift-2_10s_ease-in-out_infinite]" d="M-50,170 C30,120 130,80 230,100 C330,130 430,50 530,70 C630,90 730,60 850,80 L950,220 L-50,220 Z" fill="rgba(230,160,40,0.4)" />
-                    <path className="animate-[liquid-drift-3_8s_ease-in-out_infinite]" d="M-50,190 C70,140 170,160 290,130 C410,100 490,140 590,120 C670,105 760,130 850,125 L950,220 L-50,220 Z" fill="rgba(120,40,80,0.45)" />
-                  </svg>
+            <div className="sm:col-span-2 lg:col-span-2 relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40" style={{ transitionDuration: "var(--gsp-motion-normal)", background: "linear-gradient(135deg, #3d1a00 0%, #5c2800 25%, #7a3400 45%, #4a1e2e 65%, #2d1230 100%)" }}>
+              {/* Animated Ventura-style warm surfaces */}
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 900 280" preserveAspectRatio="none" aria-hidden="true">
+                <path className="animate-[liquid-drift-1_12s_ease-in-out_infinite]" d="M-50,140 C50,60 150,100 250,40 C350,0 450,30 550,10 C650,0 750,30 850,20 L950,280 L-50,280 Z" fill="rgba(255,107,53,0.5)" />
+                <path className="animate-[liquid-drift-2_10s_ease-in-out_infinite]" d="M-50,170 C30,120 130,80 230,100 C330,130 430,50 530,70 C630,90 730,60 850,80 L950,280 L-50,280 Z" fill="rgba(230,160,40,0.4)" />
+                <path className="animate-[liquid-drift-3_8s_ease-in-out_infinite]" d="M-50,190 C70,140 170,160 290,130 C410,100 490,140 590,120 C670,105 760,130 850,125 L950,280 L-50,280 Z" fill="rgba(120,40,80,0.45)" />
+              </svg>
 
-                  {/* Glass panel — dark translucent, clear variant */}
+              {/* Glass panel */}
+              <div className="relative m-4" style={{ zIndex: 1 }}>
+                <LiquidGlass>
                   <div
-                    className="absolute inset-4 overflow-hidden"
+                    className="h-8 w-24 mb-3 rounded-full flex items-center justify-center"
                     style={{
-                      background: "rgba(255,255,255,0.05)",
-                      backdropFilter: "blur(2px) saturate(180%)",
-                      WebkitBackdropFilter: "blur(2px) saturate(180%)",
-                      border: "1px solid rgba(255,255,255,0.15)",
-                      borderRadius: "16px",
-                      boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.12)",
+                      background: "rgba(255,255,255,0.1)",
+                      border: "1px solid rgba(255,255,255,0.2)",
                     }}
                   >
-                    {/* Diagonal light streak — the signature liquid glass highlight */}
-                    <div
-                      className="absolute inset-0 pointer-events-none"
-                      style={{
-                        borderRadius: "inherit",
-                        background: "linear-gradient(135deg, transparent 20%, rgba(255,255,255,0.12) 35%, rgba(255,255,255,0.2) 42%, rgba(255,255,255,0.12) 49%, transparent 65%)",
-                      }}
-                    />
-                    {/* Edge rim light */}
-                    <div
-                      className="absolute inset-0 pointer-events-none"
-                      style={{
-                        borderRadius: "inherit",
-                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25), inset 1px 0 0 rgba(255,255,255,0.08), inset -10px -8px 0px -11px rgba(255,255,255,0.2)",
-                      }}
-                    />
-                    {/* Content */}
-                    <div className="relative z-10 p-5">
-                      <div
-                        className="h-8 w-24 mb-3 rounded-full flex items-center justify-center"
-                        style={{
-                          background: "rgba(255,255,255,0.1)",
-                          backdropFilter: "blur(8px)",
-                          WebkitBackdropFilter: "blur(8px)",
-                          border: "1px solid rgba(255,255,255,0.2)",
-                          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1)",
-                        }}
-                      >
-                        <span style={{ color: "#5AC8FA", fontWeight: 600, fontSize: "12px" }}>Get started</span>
-                      </div>
-                      <div style={{ color: "#F5F5F7", fontFamily: "-apple-system, system-ui", fontSize: "20px", fontWeight: 600 }}>
-                        Fluid. Alive. Translucent.
-                      </div>
-                      <div className="mt-1" style={{ color: "rgba(245,245,247,0.5)", fontSize: "13px" }}>
-                        Refractive surfaces that breathe.
-                      </div>
-                    </div>
+                    <span style={{ color: "rgba(255,255,255,0.8)", fontWeight: 500, fontSize: "12px" }}>Get started</span>
                   </div>
-                </div>
+                  <div style={{ color: "#F5F5F7", fontFamily: "-apple-system, system-ui", fontSize: "20px", fontWeight: 600 }}>
+                    Fluid. Alive. Translucent.
+                  </div>
+                  <div className="mt-1" style={{ color: "rgba(245,245,247,0.5)", fontSize: "13px" }}>
+                    Refractive surfaces that breathe.
+                  </div>
+                </LiquidGlass>
+              </div>
 
-                {/* Info bar */}
-                <div className="p-6" style={{ backgroundColor: "rgba(40,18,0,0.9)", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-                  <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "rgba(255,150,80,0.7)" }}>liquid glass</p>
-                  <p className="text-body-sm" style={{ color: "rgba(245,245,247,0.4)" }}>Apple 2025 — refractive, translucent, specular</p>
-                </div>
+              {/* Info bar */}
+              <div className="absolute bottom-0 left-0 right-0 p-6" style={{ backgroundColor: "rgba(40,18,0,0.9)", borderTop: "1px solid rgba(255,255,255,0.08)", zIndex: 1 }}>
+                <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "rgba(245,245,247,0.5)" }}>liquid glass</p>
+                <p className="text-body-sm" style={{ color: "rgba(245,245,247,0.4)" }}>Apple 2025 — refractive, translucent, specular</p>
               </div>
             </div>
 
