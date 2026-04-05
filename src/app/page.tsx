@@ -245,25 +245,33 @@ export default function Home() {
           {/* Bento grid — 4 cols, 2 rows on desktop */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gsp-4 lg:[grid-template-rows:280px_280px]">
 
-            {/* CYBERPUNK — col 1, spans 2 rows */}
+            {/* MODERN DARK — col 1, spans 2 rows */}
             <div className="lg:row-span-2 relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40 min-h-[280px]" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
-              <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, #0A0A0F 0%, #0D0D18 40%, #0A0A0F 100%)" }}>
+              <div className="absolute inset-0" style={{ background: "#050506" }}>
+                {/* Ambient gradient blobs */}
+                <div className="absolute -top-16 -left-16 size-80 rounded-full blur-3xl" style={{ background: "radial-gradient(circle, rgba(94,106,210,0.35) 0%, transparent 60%)" }} />
+                <div className="absolute -bottom-12 -right-12 size-64 rounded-full blur-3xl" style={{ background: "radial-gradient(circle, rgba(236,72,153,0.25) 0%, transparent 60%)" }} />
+                <div className="absolute top-1/3 right-1/4 size-48 rounded-full blur-3xl" style={{ background: "radial-gradient(circle, rgba(6,182,212,0.2) 0%, transparent 60%)" }} />
+                {/* Content */}
                 <div className="absolute top-12 left-8 right-8">
-                  <div className="h-2 w-24 mb-3 rounded-sm" style={{ backgroundColor: "rgba(0,255,255,0.4)" }} />
-                  <div className="mb-4" style={{ background: "linear-gradient(90deg, #00FFFF, #FF00FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontSize: "28px", fontFamily: "monospace", fontWeight: 700 }}>
-                    NEON INTERFACE
+                  <div className="h-2 w-20 mb-3 rounded-full" style={{ backgroundColor: "rgba(94,106,210,0.4)" }} />
+                  <div className="mb-2" style={{ color: "#FAFAFA", fontFamily: "system-ui", fontSize: "26px", fontWeight: 600, lineHeight: 1.2 }}>
+                    Ship faster,<br />look better.
                   </div>
-                  <div className="h-2 w-full mb-2 rounded-sm" style={{ backgroundColor: "rgba(0,255,255,0.08)" }} />
-                  <div className="h-2 w-4/5 mb-6 rounded-sm" style={{ backgroundColor: "rgba(0,255,255,0.06)" }} />
-                  <div className="flex gap-3">
-                    <div className="h-8 w-24 rounded-sm border" style={{ borderColor: "rgba(0,255,255,0.5)", boxShadow: "0 0 12px rgba(0,255,255,0.2)" }} />
-                    <div className="h-8 w-24 rounded-sm border" style={{ borderColor: "rgba(255,0,255,0.3)" }} />
+                  <div className="mt-4 h-2 w-full rounded-full" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
+                  <div className="mt-2 h-2 w-3/4 rounded-full" style={{ backgroundColor: "rgba(255,255,255,0.03)" }} />
+                  <div className="mt-6 flex gap-3">
+                    <div className="h-9 w-28 rounded-lg flex items-center justify-center" style={{ backgroundColor: "#5E6AD2" }}>
+                      <span style={{ color: "#FFF", fontWeight: 500, fontSize: "13px" }}>Get started</span>
+                    </div>
+                    <div className="h-9 w-28 rounded-lg flex items-center justify-center" style={{ border: "1px solid rgba(255,255,255,0.1)" }}>
+                      <span style={{ color: "#A1A1AA", fontWeight: 500, fontSize: "13px" }}>Learn more</span>
+                    </div>
                   </div>
                 </div>
-                <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,255,0.5) 2px, transparent 4px)" }} />
-                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0A0A0F] via-[#0A0A0F]/80 to-transparent pt-16">
-                  <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "rgba(0,255,255,0.6)" }}>cyberpunk</p>
-                  <p className="text-body-sm" style={{ color: "rgba(224,224,255,0.5)" }}>Neon grids, CRT glow, chamfered edges</p>
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#050506] via-[#050506]/80 to-transparent pt-16">
+                  <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "rgba(94,106,210,0.9)" }}>modern-dark</p>
+                  <p className="text-body-sm" style={{ color: "rgba(161,161,170,0.8)" }}>Linear/Vercel aesthetic, ambient blobs, cinematic</p>
                 </div>
               </div>
             </div>
@@ -281,8 +289,8 @@ export default function Home() {
                 </div>
                 <span className="absolute top-8 right-8 size-2.5 rounded-full" style={{ backgroundColor: "#D71921" }} />
                 <div className="absolute bottom-0 left-0 right-0 p-6" style={{ borderTop: "1px solid #222" }}>
-                  <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "#666" }}>nothing</p>
-                  <p className="text-body-sm" style={{ color: "#444" }}>OLED black, zero shadows, red signal</p>
+                  <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "#888" }}>nothing</p>
+                  <p className="text-body-sm" style={{ color: "#666" }}>OLED black, zero shadows, red signal</p>
                 </div>
               </div>
             </div>
@@ -300,57 +308,111 @@ export default function Home() {
                 </div>
                 <div className="absolute top-6 right-6 size-12 rounded-full" style={{ backgroundColor: "#FFD700", border: "3px solid #000", transform: "rotate(-6deg)" }} />
                 <div className="absolute bottom-0 left-0 right-0 p-6" style={{ backgroundColor: "#FFF8F0", borderTop: "3px solid #000" }}>
-                  <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "#666" }}>neubrutalism</p>
-                  <p className="text-body-sm" style={{ color: "#999" }}>Hard shadows, thick borders, bright accents</p>
+                  <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "#444" }}>neubrutalism</p>
+                  <p className="text-body-sm" style={{ color: "#777" }}>Hard shadows, thick borders, bright accents</p>
                 </div>
               </div>
             </div>
 
             {/* BAUHAUS — col 4, spans 2 rows */}
             <div className="lg:row-span-2 relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40 min-h-[280px]" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
-              <div className="absolute inset-0" style={{ background: "#FFFFFF" }}>
-                <div className="absolute top-8 right-8 size-28 rounded-full" style={{ backgroundColor: "#D02020" }} />
-                <div className="absolute top-32 right-24 size-16" style={{ backgroundColor: "#1040C0" }} />
-                <div className="absolute top-20 right-[8.5rem] size-10 rounded-full" style={{ backgroundColor: "#F0C020" }} />
-                <div className="absolute bottom-24 left-8">
-                  <div style={{ color: "#000", fontFamily: "system-ui", fontSize: "32px", fontWeight: 800, textTransform: "uppercase", lineHeight: 1.1 }}>
-                    Form<br />follows<br />function.
+              <div className="absolute inset-0 flex flex-col" style={{ background: "#FFFFFF" }}>
+                {/* Geometric shapes */}
+                <div className="relative flex-1">
+                  <div className="absolute top-8 right-8 size-28 rounded-full" style={{ backgroundColor: "#D02020" }} />
+                  <div className="absolute top-32 right-24 size-16" style={{ backgroundColor: "#1040C0" }} />
+                  <div className="absolute top-20 right-[8.5rem] size-10 rounded-full" style={{ backgroundColor: "#F0C020" }} />
+                  {/* Text + buttons pinned to bottom of content area */}
+                  <div className="absolute bottom-6 left-8">
+                    <div style={{ color: "#000", fontFamily: "system-ui", fontSize: "24px", fontWeight: 800, textTransform: "uppercase", lineHeight: 1.15 }}>
+                      Form<br />follows<br />function.
+                    </div>
+                    <div className="flex gap-2 mt-4">
+                      <div className="h-8 w-20 flex items-center justify-center" style={{ backgroundColor: "#000" }}>
+                        <span style={{ color: "#FFF", fontWeight: 800, fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.15em" }}>Build</span>
+                      </div>
+                      <div className="h-8 w-20 flex items-center justify-center" style={{ border: "4px solid #000" }}>
+                        <span style={{ color: "#000", fontWeight: 800, fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.15em" }}>Learn</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="absolute bottom-8 left-8 flex gap-2">
-                  <div className="h-8 w-20 flex items-center justify-center" style={{ backgroundColor: "#000" }}>
-                    <span style={{ color: "#FFF", fontWeight: 800, fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.15em" }}>Build</span>
-                  </div>
-                  <div className="h-8 w-20 flex items-center justify-center" style={{ border: "4px solid #000" }}>
-                    <span style={{ color: "#000", fontWeight: 800, fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.15em" }}>Learn</span>
-                  </div>
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 p-6" style={{ backgroundColor: "#F0F0F0", borderTop: "4px solid #000" }}>
-                  <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "#666" }}>bauhaus</p>
-                  <p className="text-body-sm" style={{ color: "#999" }}>Primary colors, hard geometry, constructivist</p>
+                {/* Info bar */}
+                <div className="p-6" style={{ backgroundColor: "#F0F0F0", borderTop: "4px solid #000" }}>
+                  <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "#444" }}>bauhaus</p>
+                  <p className="text-body-sm" style={{ color: "#777" }}>Primary colors, hard geometry, constructivist</p>
                 </div>
               </div>
             </div>
 
             {/* LIQUID GLASS — row 2, cols 2-3 */}
             <div className="lg:col-span-2 relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40 min-h-[280px]" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
-              <div className="absolute inset-0" style={{ background: "linear-gradient(145deg, #E8E8F0 0%, #D0D0E8 50%, #E0E0F0 100%)" }}>
-                <div className="p-8">
-                  <div className="h-10 w-32 mb-4 rounded-2xl flex items-center justify-center" style={{ backgroundColor: "rgba(255,255,255,0.5)", border: "0.5px solid rgba(255,255,255,0.8)", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}>
-                    <span style={{ color: "#007AFF", fontWeight: 600, fontSize: "13px" }}>Get started</span>
-                  </div>
-                  <div style={{ color: "#1C1C1E", fontFamily: "-apple-system, system-ui", fontSize: "24px", fontWeight: 600 }}>
-                    Fluid. Alive. Translucent.
-                  </div>
-                  <div className="mt-2" style={{ color: "#3C3C43", fontSize: "15px" }}>
-                    Refractive surfaces that breathe with your content.
+              <div className="absolute inset-0 flex flex-col">
+                {/* macOS-style wallpaper background */}
+                <div className="relative flex-1 overflow-hidden" style={{ background: "linear-gradient(135deg, #3d1a00 0%, #5c2800 25%, #7a3400 45%, #4a1e2e 65%, #2d1230 100%)" }}>
+                  {/* Animated Ventura-style warm surfaces */}
+                  <svg className="absolute -inset-x-8 inset-y-0 h-full" style={{ width: "calc(100% + 64px)" }} viewBox="0 0 900 220" preserveAspectRatio="none" aria-hidden="true">
+                    <path className="animate-[liquid-drift-1_12s_ease-in-out_infinite]" d="M-50,140 C50,60 150,100 250,40 C350,0 450,30 550,10 C650,0 750,30 850,20 L950,220 L-50,220 Z" fill="rgba(255,107,53,0.5)" />
+                    <path className="animate-[liquid-drift-2_10s_ease-in-out_infinite]" d="M-50,170 C30,120 130,80 230,100 C330,130 430,50 530,70 C630,90 730,60 850,80 L950,220 L-50,220 Z" fill="rgba(230,160,40,0.4)" />
+                    <path className="animate-[liquid-drift-3_8s_ease-in-out_infinite]" d="M-50,190 C70,140 170,160 290,130 C410,100 490,140 590,120 C670,105 760,130 850,125 L950,220 L-50,220 Z" fill="rgba(120,40,80,0.45)" />
+                  </svg>
+
+                  {/* Glass panel — dark translucent, clear variant */}
+                  <div
+                    className="absolute inset-4 overflow-hidden"
+                    style={{
+                      background: "rgba(255,255,255,0.05)",
+                      backdropFilter: "blur(2px) saturate(180%)",
+                      WebkitBackdropFilter: "blur(2px) saturate(180%)",
+                      border: "1px solid rgba(255,255,255,0.15)",
+                      borderRadius: "16px",
+                      boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.12)",
+                    }}
+                  >
+                    {/* Diagonal light streak — the signature liquid glass highlight */}
+                    <div
+                      className="absolute inset-0 pointer-events-none"
+                      style={{
+                        borderRadius: "inherit",
+                        background: "linear-gradient(135deg, transparent 20%, rgba(255,255,255,0.12) 35%, rgba(255,255,255,0.2) 42%, rgba(255,255,255,0.12) 49%, transparent 65%)",
+                      }}
+                    />
+                    {/* Edge rim light */}
+                    <div
+                      className="absolute inset-0 pointer-events-none"
+                      style={{
+                        borderRadius: "inherit",
+                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25), inset 1px 0 0 rgba(255,255,255,0.08), inset -10px -8px 0px -11px rgba(255,255,255,0.2)",
+                      }}
+                    />
+                    {/* Content */}
+                    <div className="relative z-10 p-5">
+                      <div
+                        className="h-8 w-24 mb-3 rounded-full flex items-center justify-center"
+                        style={{
+                          background: "rgba(255,255,255,0.1)",
+                          backdropFilter: "blur(8px)",
+                          WebkitBackdropFilter: "blur(8px)",
+                          border: "1px solid rgba(255,255,255,0.2)",
+                          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1)",
+                        }}
+                      >
+                        <span style={{ color: "#5AC8FA", fontWeight: 600, fontSize: "12px" }}>Get started</span>
+                      </div>
+                      <div style={{ color: "#F5F5F7", fontFamily: "-apple-system, system-ui", fontSize: "20px", fontWeight: 600 }}>
+                        Fluid. Alive. Translucent.
+                      </div>
+                      <div className="mt-1" style={{ color: "rgba(245,245,247,0.5)", fontSize: "13px" }}>
+                        Refractive surfaces that breathe.
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="absolute top-8 right-8 size-24 rounded-full" style={{ background: "linear-gradient(135deg, rgba(0,122,255,0.12), rgba(88,86,214,0.08))" }} />
-                <div className="absolute bottom-20 right-24 size-16 rounded-full" style={{ background: "linear-gradient(135deg, rgba(255,45,85,0.1), rgba(0,122,255,0.06))" }} />
-                <div className="absolute bottom-0 left-0 right-0 p-6" style={{ backgroundColor: "rgba(255,255,255,0.3)", borderTop: "0.5px solid rgba(255,255,255,0.4)" }}>
-                  <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "#8E8E93" }}>liquid glass</p>
-                  <p className="text-body-sm" style={{ color: "#AEAEB2" }}>Apple 2025 — refractive, translucent, specular</p>
+
+                {/* Info bar */}
+                <div className="p-6" style={{ backgroundColor: "rgba(40,18,0,0.9)", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+                  <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "rgba(255,150,80,0.7)" }}>liquid glass</p>
+                  <p className="text-body-sm" style={{ color: "rgba(245,245,247,0.4)" }}>Apple 2025 — refractive, translucent, specular</p>
                 </div>
               </div>
             </div>
