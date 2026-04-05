@@ -297,6 +297,114 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== EXPERTISE SKILLS ===== */}
+      <section className="py-gsp-16 md:py-gsp-24">
+        <div className="mx-auto max-w-[1200px] px-gsp-4 sm:px-gsp-6 lg:px-gsp-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-gsp-8 lg:gap-gsp-12 items-center">
+            {/* Prose */}
+            <div className="lg:col-span-5">
+              <p className="text-overline text-primary mb-gsp-4">
+                Expertise Skills
+              </p>
+              <h2 className="text-h2 text-foreground mb-gsp-6">
+                Seven design disciplines, each one standalone
+              </h2>
+              <p className="text-body text-muted-foreground">
+                Pipeline skills invoke these during orchestration. You can also
+                run any of them directly — real design tools, not wrappers.
+              </p>
+            </div>
+
+            {/* Terminal */}
+            <div className="lg:col-span-7">
+              <TerminalMock title="color">
+                <div className="space-y-1">
+                  <p className="text-gsp-bright">$ gsp-color --system</p>
+                  <p className="text-muted-foreground">&nbsp;</p>
+                  <p className="text-gsp-accent">
+                    {"\u25c6"} Color System
+                  </p>
+                  <p className="text-muted-foreground pl-4">
+                    mode:{"       "}OKLCH perceptual
+                  </p>
+                  <p className="text-muted-foreground pl-4">
+                    primary:{"    "}oklch(0.70 0.18 250){"    "}
+                    <span
+                      className="inline-block size-3 rounded-sm align-middle"
+                      style={{ backgroundColor: "#3B82F6" }}
+                      aria-hidden="true"
+                    />
+                  </p>
+                  <p className="text-muted-foreground pl-4">
+                    accent:{"     "}oklch(0.75 0.16 77){"     "}
+                    <span
+                      className="inline-block size-3 rounded-sm align-middle"
+                      style={{ backgroundColor: "#F59E0B" }}
+                      aria-hidden="true"
+                    />
+                  </p>
+                  <p className="text-muted-foreground pl-4">
+                    surface:{"    "}oklch(0.18 0.01 260){"    "}
+                    <span
+                      className="inline-block size-3 rounded-sm align-middle"
+                      style={{ backgroundColor: "#1E293B" }}
+                      aria-hidden="true"
+                    />
+                  </p>
+                  <p className="text-muted-foreground">&nbsp;</p>
+                  <p className="text-gsp-accent">
+                    {"\u25c6"} Contrast
+                  </p>
+                  <p className="text-muted-foreground pl-4">
+                    primary / surface{"    "}
+                    <span className="text-foreground">12.4:1</span>{"  "}
+                    <span className="text-gsp-accent">AAA</span>
+                  </p>
+                  <p className="text-muted-foreground pl-4">
+                    accent / surface{"     "}
+                    <span className="text-foreground">9.8:1</span>{"   "}
+                    <span className="text-gsp-accent">AAA</span>
+                  </p>
+                  <p className="text-muted-foreground">&nbsp;</p>
+                  <p className="text-gsp-accent">
+                    {"\u25c6"} Semantic Scale
+                  </p>
+                  <p className="text-muted-foreground pl-4">
+                    success:{"  "}oklch(0.72 0.19 145)
+                  </p>
+                  <p className="text-muted-foreground pl-4">
+                    warning:{"  "}oklch(0.80 0.16 85)
+                  </p>
+                  <p className="text-muted-foreground pl-4">
+                    error:{"    "}oklch(0.65 0.22 25)
+                  </p>
+                </div>
+              </TerminalMock>
+            </div>
+          </div>
+
+          {/* Skill strip */}
+          <div className="flex flex-wrap items-center justify-center gap-x-gsp-6 gap-y-gsp-2 mt-gsp-12 font-mono text-body-sm text-muted-foreground">
+            {[
+              "color",
+              "typography",
+              "visuals",
+              "icons",
+              "logo",
+              "accessibility",
+              "style",
+            ].map((skill) => (
+              <span key={skill} className="whitespace-nowrap">
+                <span className="text-primary" aria-hidden="true">
+                  {"\u25c6"}
+                </span>{" "}
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ===== META SIGNAL ===== */}
       <section className="py-gsp-8">
         <div className="mx-auto max-w-[1200px] px-gsp-4 sm:px-gsp-6 lg:px-gsp-8">
