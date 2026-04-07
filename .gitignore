@@ -26,3 +26,6 @@ next-env.d.ts
 
 # Token proxy logs
 dev/reports/
+
+# Superpowers planning artifacts
+docs/
