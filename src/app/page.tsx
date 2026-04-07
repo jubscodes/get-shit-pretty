@@ -94,9 +94,9 @@ export default function Home() {
             </p>
           </div>
 
-          <p className="text-body-sm text-muted-foreground text-center mb-gsp-6">
-            <code className="font-mono text-foreground">npx skills add jubscodes/get-shit-pretty</code>
-          </p>
+          <div className="flex justify-center mb-gsp-6">
+            <InstallCommand command="npx skills add jubscodes/get-shit-pretty" />
+          </div>
 
           <div className="border border-border rounded-md overflow-hidden font-mono text-body-sm">
             {[
