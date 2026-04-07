@@ -1779,7 +1779,7 @@ function finishInstall(settingsPath, settings, statuslineCommand, shouldInstallS
 
   ${c.bold}Get started:${c.reset}
     ${c.accent}${newCmd}${c.reset}     ${c.secondary}start here — brand, project, or both${c.reset}
-    ${c.accent}${helpCmd}${c.reset}      ${c.secondary}all commands${c.reset}
+    ${c.accent}${helpCmd}${c.reset}      ${c.secondary}all skills${c.reset}
 `);
   }
 }

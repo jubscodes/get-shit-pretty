@@ -381,3 +381,21 @@
   .text-gsp-rose { color: var(--gsp-rose); }
   .text-gsp-blush { color: var(--gsp-blush); }
 }
+
+/* ---------------------------------------------------------------------------
+   LIQUID GLASS — animated background orbs for bento card
+   --------------------------------------------------------------------------- */
+@keyframes liquid-drift-1 {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(15px); }
+}
+
+@keyframes liquid-drift-2 {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-20px); }
+}
+
+@keyframes liquid-drift-3 {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(10px); }
+}
