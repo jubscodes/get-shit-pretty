@@ -13,9 +13,8 @@ Bento grids use `row-span` and `col-span` to create mixed-size card layouts. The
 ## Breakpoint Strategy
 
 ```
-Mobile  (< 640px)   grid-cols-1    No spans. All cards stack. Equal auto-row height.
-Tablet  (640-1023px) grid-cols-2   col-span-2 for wide cards. NO row-span (creates gaps at 2-col).
-Desktop (1024+)      grid-cols-3/4  Full bento: row-span + col-span. Explicit grid-template-rows.
+All screens           grid-cols-2    2-col base. col-span-2 for wide cards. NO row-span (creates gaps at 2-col).
+Desktop (1024+)       grid-cols-3/4  Full bento: row-span + col-span. Explicit grid-template-rows.
 ```
 
 ## Implementation Pattern
@@ -23,16 +22,15 @@ Desktop (1024+)      grid-cols-3/4  Full bento: row-span + col-span. Explicit gr
 ### Grid container
 
 ```tsx
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4
-  sm:[grid-auto-rows:280px]
+<div className="grid grid-cols-2 lg:grid-cols-4 gap-4
+  [grid-auto-rows:280px]
   lg:[grid-template-rows:280px_280px]"
 >
 ```
 
-- `grid-cols-1` → mobile: single column, auto height
-- `sm:grid-cols-2` → tablet: 2-col, fixed row height (280px)
+- `grid-cols-2` → 2-col base at all sizes, fixed row height (280px)
 - `lg:grid-cols-4` → desktop: 4-col with explicit 2-row template
-- `sm:[grid-auto-rows:280px]` → consistent row height from tablet up
+- `[grid-auto-rows:280px]` → consistent row height at all sizes
 - `lg:[grid-template-rows:280px_280px]` → explicit rows for desktop bento
 
 ### Card classes by type
@@ -43,11 +41,11 @@ className="lg:row-span-2"
 ```
 No `sm:row-span-2` — at 2-col, tall cards break the grid.
 
-**Wide card** (spans 2 columns from tablet up):
+**Wide card** (spans full width at 2-col, 2 of 4 at desktop):
 ```tsx
-className="sm:col-span-2 lg:col-span-2"
+className="col-span-2"
 ```
-Works at both tablet (fills full width) and desktop (fills 2 of 4 columns).
+Full width at 2-col base, fills 2 of 4 columns on desktop.
 
 **Regular card** (1×1 at all sizes):
 ```tsx
@@ -65,26 +63,13 @@ Desktop (4-col):
 │      │   wide D    │      │
 └──────┴─────────────┴──────┘
 
-Tablet (2-col):
+Mobile + Tablet (2-col):
 ┌──────┬──────┐
 │  A   │  B   │
 ├──────┼──────┤
 │  C   │  E   │
 ├──────┴──────┤
 │   wide D    │
-└─────────────┘
-
-Mobile (1-col):
-┌─────────────┐
-│      A      │
-├─────────────┤
-│      B      │
-├─────────────┤
-│      C      │
-├─────────────┤
-│      E      │
-├─────────────┤
-│      D      │
 └─────────────┘
 ```
 

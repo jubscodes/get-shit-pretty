@@ -69,7 +69,7 @@ If there are uncommitted changes, tell the user to commit or stash first. Abort.
 git branch --show-current
 ```
 
-If not on `main`, ask the user if they want to continue anyway (feature releases from branches are unusual but allowed).
+If not on `main`, switch to main and pull: `git checkout main && git pull origin main`. The release commit will go through a PR branch anyway (main is protected).
 
 ### 2c: Up to date with remote
 
@@ -143,20 +143,29 @@ slug: "v{version-with-dashes}"
 
 Present to the user for review before writing.
 
-## Step 7: Commit
+## Step 7: Commit, PR, and merge
 
-Stage and commit all version-bumped files:
+Main is protected — all changes require a PR. Create a release branch, PR it, merge, and pull.
 
 ```bash
-git add VERSION package.json CHANGELOG.md src/content/changelog/v{version}.mdx
+# Stage and commit
+git add VERSION package.json CHANGELOG.md gsp/templates/branding/config.json gsp/templates/projects/config.json src/content/changelog/v{version}.mdx
 git commit -m "release: v{version}"
+
+# Create release branch and push
+git checkout -b release/v{version}
+git push -u origin release/v{version}
+
+# Create and merge PR (label as release)
+gh pr create --title "release: v{version}" --body "Version bump, changelog, and site entry for v{version}." --label "release"
+gh pr merge --squash --subject "release: v{version}"
+
+# Return to main and pull
+git checkout main
+git reset --hard origin/main
 ```
 
-## Step 8: Push and create GitHub release
-
-```bash
-git push origin main
-```
+## Step 8: Create GitHub release
 
 Fetch the milestone for this version (if one exists) to use as release context:
 
