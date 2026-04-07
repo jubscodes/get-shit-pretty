@@ -7,12 +7,13 @@ import { cn } from "@/lib/utils";
 
 const INSTALL_COMMAND = "npx get-shit-pretty";
 
-export function InstallCommand({ className }: { className?: string }) {
+export function InstallCommand({ className, command }: { className?: string; command?: string }) {
   const [copied, setCopied] = useState(false);
+  const cmd = command ?? INSTALL_COMMAND;
 
   const handleCopy = useCallback(async () => {
     try {
-      await navigator.clipboard.writeText(INSTALL_COMMAND);
+      await navigator.clipboard.writeText(cmd);
       setCopied(true);
       toast.success("Copied to clipboard");
       setTimeout(() => setCopied(false), 2000);
@@ -33,7 +34,7 @@ export function InstallCommand({ className }: { className?: string }) {
         transitionTimingFunction: "var(--gsp-motion-easing)",
       }}
     >
-      <code className="select-all">{INSTALL_COMMAND}</code>
+      <code className="select-all">{cmd}</code>
       <button
         onClick={handleCopy}
         className="shrink-0 p-1 text-primary-foreground/60 hover:text-primary-foreground rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
