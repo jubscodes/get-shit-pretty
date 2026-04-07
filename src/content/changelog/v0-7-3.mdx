@@ -1,0 +1,44 @@
+---
+title: "v0.7.3 -- Landing page refresh, skills CLI"
+date: "2026-04-07T10:00:00"
+excerpt: "Frosted glass bento card, responsive ASCII hero, skills CLI cherry-pick install, and help output corrections."
+tags: ["landing-page", "responsive", "glassmorphism", "skills-cli"]
+slug: "v0-7-3"
+---
+
+## Frosted Glass Bento Card
+
+The liquid glass style preset card used `liquid-glass-react` -- a WebGL library that didn't survive SSR and rendered as an empty orange blob. Replaced with pure CSS frosted glass using our own glassmorphism style spec tokens:
+
+```css
+backdrop-filter: blur(12px) saturate(180%);
+background: rgba(255, 255, 255, 0.12);
+border: 1px solid rgba(255, 255, 255, 0.20);
+box-shadow: 0 8px 32px rgba(31, 38, 135, 0.20),
+            inset 0 1px 0 rgba(255, 255, 255, 0.40);
+```
+
+The `liquid-glass-react` dependency was removed entirely -- zero production dependencies maintained.
+
+## Responsive ASCII Hero
+
+The "GET SHIT PRETTY" ASCII art was a single 110-character-wide block that scrolled horizontally on mobile. Now it uses a `useBreakpoint` hook to switch between:
+
+- **Desktop (lg+)**: full single-line layout
+- **Mobile/tablet**: stacked word blocks (GET / SHIT / PRETTY) with `centerPad()` alignment
+
+One interval runs the shimmer effect -- not three hidden instances.
+
+## Skills CLI Install
+
+GSP is now discoverable via the open skills ecosystem. The landing page skills section shows:
+
+```
+npx skills add jubscodes/get-shit-pretty
+```
+
+Users can cherry-pick individual skills without installing the full pack.
+
+## Bento Grid Mobile Layout
+
+The style presets bento grid uses `flex flex-col` on mobile (single-column stacked) and `lg:grid lg:grid-cols-4` on desktop. Each card has explicit mobile heights. SVG wave animations use percentage-based overflow (`w-[120%]`) to hide drift edges.
