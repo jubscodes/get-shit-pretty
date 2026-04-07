@@ -7,21 +7,13 @@ All notable changes to get-shit-pretty are documented here.
 ## [0.7.3] — 2026-04-07
 
 ### Added
-- **Frosted glass bento card** — replaced broken `liquid-glass-react` WebGL with pure CSS `backdrop-filter` using glassmorphism style spec tokens (blur 12px, saturate 180%, indigo ambient shadows, gradient highlight overlay)
-- **Responsive ASCII hero** — stacked word layout (GET / SHIT / PRETTY) on mobile with `centerPad()` alignment, single `useBreakpoint` hook instead of 3 hidden instances
-- **Skills CLI install option** — `npx skills add jubscodes/get-shit-pretty` cherry-pick command added to the skills section
+- **Skills CLI support** — GSP is now discoverable via [The Agent Skills Directory](https://skills.sh/). Cherry-pick individual skills with `npx skills add jubscodes/get-shit-pretty`
 - **Bento grid reference** — `bento-grid.md` added to `gsp-project-build` with responsive layout patterns and common mistakes
 - **New skills in `/gsp-help`** — brand-brief, icons, logo, scaffold, design-system now listed
 
 ### Fixed
-- **Bento grid responsive layout** — single-column flex stack on mobile, 4-col grid on desktop with explicit per-card heights
-- **SVG wave edges visible** — oversized SVG container (`w-[120%]`) hides drift animation edges
 - **Help output corrections** — pipeline diagram (brief → research → ...), directory structure (patterns/ → system/), GitHub URL (jubscodes)
 - **Installer text** — "all commands" → "all skills" in post-install message
-
-### Changed
-- **Removed `liquid-glass-react` dependency** — zero production dependencies maintained
-- **npm audit fix** — resolved 2 moderate picomatch vulnerabilities in devDependencies
 
 ## [0.7.2] — 2026-04-04
 

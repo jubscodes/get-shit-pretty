@@ -1,44 +1,27 @@
 ---
-title: "v0.7.3 -- Landing page refresh, skills CLI"
+title: "v0.7.3 -- Skills CLI, help fixes"
 date: "2026-04-07T10:00:00"
-excerpt: "Frosted glass bento card, responsive ASCII hero, skills CLI cherry-pick install, and help output corrections."
-tags: ["landing-page", "responsive", "glassmorphism", "skills-cli"]
+excerpt: "GSP is now discoverable via The Agent Skills Directory. Cherry-pick individual skills, updated help output, and a new bento grid reference for project builds."
+tags: ["skills-cli", "help", "build-reference"]
 slug: "v0-7-3"
 ---
 
-## Frosted Glass Bento Card
+## Skills CLI Support
 
-The liquid glass style preset card used `liquid-glass-react` -- a WebGL library that didn't survive SSR and rendered as an empty orange blob. Replaced with pure CSS frosted glass using our own glassmorphism style spec tokens:
+GSP is now listed on [The Agent Skills Directory](https://skills.sh/). Users can cherry-pick individual skills without installing the full pack:
 
-```css
-backdrop-filter: blur(12px) saturate(180%);
-background: rgba(255, 255, 255, 0.12);
-border: 1px solid rgba(255, 255, 255, 0.20);
-box-shadow: 0 8px 32px rgba(31, 38, 135, 0.20),
-            inset 0 1px 0 rgba(255, 255, 255, 0.40);
-```
-
-The `liquid-glass-react` dependency was removed entirely -- zero production dependencies maintained.
-
-## Responsive ASCII Hero
-
-The "GET SHIT PRETTY" ASCII art was a single 110-character-wide block that scrolled horizontally on mobile. Now it uses a `useBreakpoint` hook to switch between:
-
-- **Desktop (lg+)**: full single-line layout
-- **Mobile/tablet**: stacked word blocks (GET / SHIT / PRETTY) with `centerPad()` alignment
-
-One interval runs the shimmer effect -- not three hidden instances.
-
-## Skills CLI Install
-
-GSP is now discoverable via the open skills ecosystem. The landing page skills section shows:
-
-```
+```bash
 npx skills add jubscodes/get-shit-pretty
 ```
 
-Users can cherry-pick individual skills without installing the full pack.
+This works with Claude Code, Cursor, Copilot, Gemini, and 20+ other agents. The full pack (`npx get-shit-pretty`) remains the recommended install for the complete pipeline with agents, hooks, and MCP servers.
 
-## Bento Grid Mobile Layout
+## Help Output Fixes
 
-The style presets bento grid uses `flex flex-col` on mobile (single-column stacked) and `lg:grid lg:grid-cols-4` on desktop. Each card has explicit mobile heights. SVG wave animations use percentage-based overflow (`w-[120%]`) to hide drift edges.
+`/gsp-help` now lists 5 skills that were missing: brand-brief, icons, logo, scaffold, and design-system. The pipeline diagram was corrected to show the current flow (brief -> research -> strategy -> identity -> guidelines), the directory structure updated (patterns/ -> system/), and the GitHub URL fixed.
+
+The installer post-install message now says "all skills" instead of "all commands".
+
+## Bento Grid Reference
+
+A new `bento-grid.md` reference was added to `gsp-project-build` -- responsive layout patterns for mixed-size card grids, breakpoint strategies, and common mistakes (like using `row-span` at small breakpoints).
