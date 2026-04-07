@@ -460,6 +460,19 @@ npx get-shit-pretty --codex --global --uninstall
 
 </details>
 
+<details>
+<summary><strong>Cherry-pick skills</strong></summary>
+
+Don't need the full pack? Pick individual skills via the [skills CLI](https://github.com/nicepkg/skills):
+
+```bash
+npx skills add jubscodes/get-shit-pretty
+```
+
+Select the skills you want — no agents, hooks, or pipeline setup. Works with Claude Code.
+
+</details>
+
 ---
 
 ## Repo Structure
