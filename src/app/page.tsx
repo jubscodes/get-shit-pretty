@@ -4,7 +4,7 @@ import { AsciiHero } from "@/components/ascii-hero";
 import { InstallCommand } from "@/components/install-command";
 import { TerminalMock } from "@/components/terminal-mock";
 import { PipelineViz } from "@/components/pipeline-viz";
-import { LiquidGlass } from "@/components/liquid-glass";
+import { FrostedGlass } from "@/components/liquid-glass";
 
 const GITHUB_URL = "https://github.com/jubscodes/get-shit-pretty";
 
@@ -94,6 +94,10 @@ export default function Home() {
             </p>
           </div>
 
+          <p className="text-body-sm text-muted-foreground text-center mb-gsp-6">
+            <code className="font-mono text-foreground">npx skills add jubscodes/get-shit-pretty</code>
+          </p>
+
           <div className="border border-border rounded-md overflow-hidden font-mono text-body-sm">
             {[
               { cmd: "/gsp-brand-brief", desc: "Define your brand through guided Q&A", tag: "branding" },
@@ -137,6 +141,7 @@ export default function Home() {
               + 19 more skills — /gsp-help to see all
             </div>
           </div>
+
         </div>
       </section>
 
@@ -148,7 +153,7 @@ export default function Home() {
             The Process
           </p>
           <h2 className="text-h2 text-foreground mb-gsp-4">
-            /gsp-start guides you through a Brand to Build
+            /gsp-start guides you through Brand to Build
           </h2>
           <p className="text-body text-muted-foreground max-w-xl mx-auto mb-gsp-12">
             A dual-diamond process — from brand research to production code.
@@ -243,17 +248,15 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Bento grid — 4 cols, 2 rows on desktop */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gsp-4 sm:[grid-auto-rows:280px] lg:[grid-template-rows:280px_280px]">
+          {/* Bento grid — mobile: single col stacked, desktop: 4-col 2-row */}
+          <div className="flex flex-col lg:grid lg:grid-cols-4 gap-gsp-4 lg:[grid-template-rows:280px_300px]">
 
-            {/* MODERN DARK — col 1, spans 2 rows on lg */}
-            <div className="lg:row-span-2 relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
+            {/* MODERN DARK — tall card */}
+            <div className="h-[400px] lg:h-auto lg:row-span-2 relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
               <div className="absolute inset-0" style={{ background: "#050506" }}>
-                {/* Ambient gradient blobs */}
                 <div className="absolute -top-16 -left-16 size-80 rounded-full blur-3xl" style={{ background: "radial-gradient(circle, rgba(94,106,210,0.35) 0%, transparent 60%)" }} />
                 <div className="absolute -bottom-12 -right-12 size-64 rounded-full blur-3xl" style={{ background: "radial-gradient(circle, rgba(236,72,153,0.25) 0%, transparent 60%)" }} />
                 <div className="absolute top-1/3 right-1/4 size-48 rounded-full blur-3xl" style={{ background: "radial-gradient(circle, rgba(6,182,212,0.2) 0%, transparent 60%)" }} />
-                {/* Content */}
                 <div className="absolute top-12 left-8 right-8">
                   <div className="h-2 w-20 mb-3 rounded-full" style={{ backgroundColor: "rgba(94,106,210,0.4)" }} />
                   <div className="mb-2" style={{ color: "#FAFAFA", fontFamily: "system-ui", fontSize: "26px", fontWeight: 600, lineHeight: 1.2 }}>
@@ -277,53 +280,54 @@ export default function Home() {
               </div>
             </div>
 
-            {/* NOTHING — row 1, col 2 */}
-            <div className="relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
-              <div className="absolute inset-0" style={{ background: "#000000" }}>
-                <div className="p-8">
-                  <div className="h-1.5 w-16 mb-4 rounded-full" style={{ backgroundColor: "#333" }} />
-                  <div style={{ color: "#E8E8E8", fontFamily: "system-ui", fontSize: "22px", fontWeight: 400 }}>
-                    Pure signal.
+            {/* Small cards — stacked on mobile, single cells on desktop */}
+            <div className="flex flex-col sm:grid sm:grid-cols-2 lg:contents gap-gsp-4">
+              {/* NOTHING */}
+              <div className="h-[240px] lg:h-auto relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
+                <div className="absolute inset-0" style={{ background: "#000000" }}>
+                  <div className="p-8">
+                    <div className="h-1.5 w-16 mb-4 rounded-full" style={{ backgroundColor: "#333" }} />
+                    <div style={{ color: "#E8E8E8", fontFamily: "system-ui", fontSize: "22px", fontWeight: 400 }}>
+                      Pure signal.
+                    </div>
+                    <div className="mt-2 h-1.5 w-3/4 rounded-full" style={{ backgroundColor: "#1A1A1A" }} />
+                    <div className="mt-2 h-1.5 w-1/2 rounded-full" style={{ backgroundColor: "#1A1A1A" }} />
                   </div>
-                  <div className="mt-2 h-1.5 w-3/4 rounded-full" style={{ backgroundColor: "#1A1A1A" }} />
-                  <div className="mt-2 h-1.5 w-1/2 rounded-full" style={{ backgroundColor: "#1A1A1A" }} />
+                  <span className="absolute top-8 right-8 size-2.5 rounded-full" style={{ backgroundColor: "#D71921" }} />
+                  <div className="absolute bottom-0 left-0 right-0 p-6" style={{ borderTop: "1px solid #222" }}>
+                    <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "#888" }}>nothing</p>
+                    <p className="text-body-sm" style={{ color: "#666" }}>OLED black, zero shadows, red signal</p>
+                  </div>
                 </div>
-                <span className="absolute top-8 right-8 size-2.5 rounded-full" style={{ backgroundColor: "#D71921" }} />
-                <div className="absolute bottom-0 left-0 right-0 p-6" style={{ borderTop: "1px solid #222" }}>
-                  <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "#888" }}>nothing</p>
-                  <p className="text-body-sm" style={{ color: "#666" }}>OLED black, zero shadows, red signal</p>
+              </div>
+
+              {/* NEUBRUTALISM */}
+              <div className="h-[240px] lg:h-auto relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
+                <div className="absolute inset-0" style={{ background: "#FFFFFF" }}>
+                  <div className="p-8">
+                    <div className="h-8 w-28 mb-4 flex items-center justify-center" style={{ backgroundColor: "#FF6B6B", border: "3px solid #000", boxShadow: "3px 3px 0px #000" }}>
+                      <span style={{ color: "#000", fontWeight: 700, fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.1em" }}>Click me</span>
+                    </div>
+                    <div style={{ color: "#000", fontFamily: "system-ui", fontSize: "20px", fontWeight: 700, textTransform: "uppercase" }}>
+                      Bold &amp; flat.
+                    </div>
+                  </div>
+                  <div className="absolute top-6 right-6 size-12 rounded-full" style={{ backgroundColor: "#FFD700", border: "3px solid #000", transform: "rotate(-6deg)" }} />
+                  <div className="absolute bottom-0 left-0 right-0 p-6" style={{ backgroundColor: "#FFF8F0", borderTop: "3px solid #000" }}>
+                    <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "#444" }}>neubrutalism</p>
+                    <p className="text-body-sm" style={{ color: "#777" }}>Hard shadows, thick borders, bright accents</p>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* NEUBRUTALISM — row 1, col 3 */}
-            <div className="relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
-              <div className="absolute inset-0" style={{ background: "#FFFFFF" }}>
-                <div className="p-8">
-                  <div className="h-8 w-28 mb-4 flex items-center justify-center" style={{ backgroundColor: "#FF6B6B", border: "3px solid #000", boxShadow: "3px 3px 0px #000" }}>
-                    <span style={{ color: "#000", fontWeight: 700, fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.1em" }}>Click me</span>
-                  </div>
-                  <div style={{ color: "#000", fontFamily: "system-ui", fontSize: "20px", fontWeight: 700, textTransform: "uppercase" }}>
-                    Bold &amp; flat.
-                  </div>
-                </div>
-                <div className="absolute top-6 right-6 size-12 rounded-full" style={{ backgroundColor: "#FFD700", border: "3px solid #000", transform: "rotate(-6deg)" }} />
-                <div className="absolute bottom-0 left-0 right-0 p-6" style={{ backgroundColor: "#FFF8F0", borderTop: "3px solid #000" }}>
-                  <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "#444" }}>neubrutalism</p>
-                  <p className="text-body-sm" style={{ color: "#777" }}>Hard shadows, thick borders, bright accents</p>
-                </div>
-              </div>
-            </div>
-
-            {/* BAUHAUS — col 4, spans 2 rows on lg */}
-            <div className="lg:row-span-2 relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
+            {/* BAUHAUS — tall card */}
+            <div className="h-[400px] lg:h-auto lg:row-span-2 relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40" style={{ transitionDuration: "var(--gsp-motion-normal)" }}>
               <div className="absolute inset-0 flex flex-col" style={{ background: "#FFFFFF" }}>
-                {/* Geometric shapes */}
                 <div className="relative flex-1">
                   <div className="absolute top-8 right-8 size-28 rounded-full" style={{ backgroundColor: "#D02020" }} />
                   <div className="absolute top-32 right-24 size-16" style={{ backgroundColor: "#1040C0" }} />
                   <div className="absolute top-20 right-[8.5rem] size-10 rounded-full" style={{ backgroundColor: "#F0C020" }} />
-                  {/* Text + buttons pinned to bottom of content area */}
                   <div className="absolute bottom-6 left-8">
                     <div style={{ color: "#000", fontFamily: "system-ui", fontSize: "24px", fontWeight: 800, textTransform: "uppercase", lineHeight: 1.15 }}>
                       Form<br />follows<br />function.
@@ -338,7 +342,6 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                {/* Info bar */}
                 <div className="p-6" style={{ backgroundColor: "#F0F0F0", borderTop: "4px solid #000" }}>
                   <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "#444" }}>bauhaus</p>
                   <p className="text-body-sm" style={{ color: "#777" }}>Primary colors, hard geometry, constructivist</p>
@@ -346,18 +349,18 @@ export default function Home() {
               </div>
             </div>
 
-            {/* LIQUID GLASS — row 2, cols 2-3 */}
-            <div className="sm:col-span-2 lg:col-span-2 relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40" style={{ transitionDuration: "var(--gsp-motion-normal)", background: "linear-gradient(135deg, #3d1a00 0%, #5c2800 25%, #7a3400 45%, #4a1e2e 65%, #2d1230 100%)" }}>
-              {/* Animated Ventura-style warm surfaces */}
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 900 280" preserveAspectRatio="none" aria-hidden="true">
-                <path className="animate-[liquid-drift-1_12s_ease-in-out_infinite]" d="M-50,140 C50,60 150,100 250,40 C350,0 450,30 550,10 C650,0 750,30 850,20 L950,280 L-50,280 Z" fill="rgba(255,107,53,0.5)" />
-                <path className="animate-[liquid-drift-2_10s_ease-in-out_infinite]" d="M-50,170 C30,120 130,80 230,100 C330,130 430,50 530,70 C630,90 730,60 850,80 L950,280 L-50,280 Z" fill="rgba(230,160,40,0.4)" />
-                <path className="animate-[liquid-drift-3_8s_ease-in-out_infinite]" d="M-50,190 C70,140 170,160 290,130 C410,100 490,140 590,120 C670,105 760,130 850,125 L950,280 L-50,280 Z" fill="rgba(120,40,80,0.45)" />
+            {/* FROSTED GLASS — wide card */}
+            <div className="h-[300px] lg:h-auto lg:col-span-2 relative overflow-hidden rounded-md border border-border transition-colors hover:border-primary/40" style={{ transitionDuration: "var(--gsp-motion-normal)", background: "linear-gradient(135deg, #3d1a00 0%, #5c2800 25%, #7a3400 45%, #4a1e2e 65%, #2d1230 100%)" }}>
+              {/* Animated warm surfaces — oversized to hide edges during drift */}
+              <svg className="absolute -inset-x-[10%] inset-y-0 w-[120%] h-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <path className="animate-[liquid-drift-1_12s_ease-in-out_infinite]" d="M0,40 C12,20 25,30 37,15 C50,0 62,10 75,5 C87,0 95,10 100,8 L100,100 L0,100 Z" fill="rgba(255,107,53,0.5)" />
+                <path className="animate-[liquid-drift-2_10s_ease-in-out_infinite]" d="M0,55 C10,35 22,25 35,32 C48,40 58,18 70,25 C82,32 92,22 100,28 L100,100 L0,100 Z" fill="rgba(230,160,40,0.4)" />
+                <path className="animate-[liquid-drift-3_8s_ease-in-out_infinite]" d="M0,65 C15,48 28,55 40,45 C55,35 65,48 78,42 C88,38 95,45 100,43 L100,100 L0,100 Z" fill="rgba(120,40,80,0.45)" />
               </svg>
 
-              {/* Glass panel */}
-              <div className="relative m-4" style={{ zIndex: 1 }}>
-                <LiquidGlass>
+              {/* Frosted glass panel — sized to content area only */}
+              <div className="absolute top-5 left-5 right-5 bottom-[68px]" style={{ zIndex: 1 }}>
+                <FrostedGlass>
                   <div
                     className="h-8 w-24 mb-3 rounded-full flex items-center justify-center"
                     style={{
@@ -368,18 +371,18 @@ export default function Home() {
                     <span style={{ color: "rgba(255,255,255,0.8)", fontWeight: 500, fontSize: "12px" }}>Get started</span>
                   </div>
                   <div style={{ color: "#F5F5F7", fontFamily: "-apple-system, system-ui", fontSize: "20px", fontWeight: 600 }}>
-                    Fluid. Alive. Translucent.
+                    Frosted. Layered. Calm.
                   </div>
                   <div className="mt-1" style={{ color: "rgba(245,245,247,0.5)", fontSize: "13px" }}>
-                    Refractive surfaces that breathe.
+                    Translucent surfaces over warm depth.
                   </div>
-                </LiquidGlass>
+                </FrostedGlass>
               </div>
 
               {/* Info bar */}
-              <div className="absolute bottom-0 left-0 right-0 p-6" style={{ backgroundColor: "rgba(40,18,0,0.9)", borderTop: "1px solid rgba(255,255,255,0.08)", zIndex: 1 }}>
-                <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "rgba(245,245,247,0.5)" }}>liquid glass</p>
-                <p className="text-body-sm" style={{ color: "rgba(245,245,247,0.4)" }}>Apple 2025 — refractive, translucent, specular</p>
+              <div className="absolute bottom-0 left-0 right-0 px-6 py-4" style={{ backgroundColor: "rgba(40,18,0,0.95)", borderTop: "1px solid rgba(255,255,255,0.08)", zIndex: 2 }}>
+                <p className="text-caption uppercase tracking-widest mb-1" style={{ color: "rgba(245,245,247,0.5)" }}>frosted glass</p>
+                <p className="text-body-sm" style={{ color: "rgba(245,245,247,0.4)" }}>Backdrop blur, translucent layers, warm depth</p>
               </div>
             </div>
 
