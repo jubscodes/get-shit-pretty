@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "The gsp-project-designer agent just finished. Verify: (1) at least one design/screen-*.md chunk was written, (2) design/INDEX.md was written, (3) design/preview.html was written. Report any missing deliverables to the user."
+            "prompt": "The gsp-project-designer agent just finished. Verify: (1) at least one design/screen-*.md chunk was written, (2) design/INDEX.md was written. Report any missing deliverables to the user."
           }
         ]
       },

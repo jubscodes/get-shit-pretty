@@ -184,6 +184,21 @@ Clear any build cache first (`rm -rf .next` for Next.js), then run the build com
   - After fix attempt, clear cache and re-run build once
 - **Second failure:** Log the error and stop. Do not loop.
 
+## Step 5.5: Capture project context (shadcn targets)
+
+If `implementation_target` is `shadcn`, run `npx shadcn@latest info --json` and capture the output. This provides:
+- `aliases` — the actual alias prefix for imports (`@/`, `~/`)
+- `tailwindVersion` — `"v4"` (uses `@theme inline`) vs `"v3"` (uses `tailwind.config.js`)
+- `tailwindCssFile` — the global CSS file where custom properties go
+- `style` — component visual treatment (nova, vega, etc.)
+- `base` — primitive library (radix or base)
+- `iconLibrary` — determines icon imports (lucide-react, @tabler/icons-react, etc.)
+- `resolvedPaths` — exact file-system destinations for components, utils, hooks
+- `framework` — routing and file conventions (Next.js App Router, Vite SPA, etc.)
+- `isRSC` — whether "use client" directives are needed
+
+Include this JSON in the scaffold log under a `## Project Context` section so the foundations agent can reference it.
+
 ## Step 6: Write scaffold log
 
 Write `{PROJECT_PATH}/build/SCAFFOLD-LOG.md`:
@@ -224,6 +239,10 @@ Write `{PROJECT_PATH}/build/SCAFFOLD-LOG.md`:
 - **Command:** `{build command}`
 - **Result:** {pass / fail}
 - **Output:** {first/last lines if relevant}
+
+## Project Context
+
+{If shadcn target: JSON output from `npx shadcn@latest info --json`. Otherwise: "N/A — non-shadcn target"}
 
 ## Issues
 

@@ -132,6 +132,7 @@ Read `${CLAUDE_SKILL_DIR}/methodology/gsp-project-builder.md`. Include the full 
 Read these reference files:
 - `${CLAUDE_SKILL_DIR}/visual-effects.md`
 - `${CLAUDE_SKILL_DIR}/../gsp-project-design/block-patterns.md`
+- `${CLAUDE_SKILL_DIR}/../gsp-brand-guidelines/token-mapping.md`
 
 Hold their content for inlining into agent prompts in Steps 3, 4.5, 5, 7, and 8.
 
@@ -145,7 +146,7 @@ Spawn `gsp-project-builder` agent with **execution_mode: foundations**.
 
 | File | Purpose |
 |------|---------|
-| `{BRAND_PATH}/patterns/{brand-name}.yml` | Token values only — used with `gsp-brand-guidelines/token-mapping.md` to generate CSS variables. Do NOT re-read patterns/constraints/effects from here — those are in STYLE.md. |
+| `{BRAND_PATH}/patterns/{brand-name}.yml` | Token values only — used with token-mapping.md to generate CSS variables. Do NOT re-read patterns/constraints/effects from here — those are in STYLE.md. |
 | `{BRAND_PATH}/patterns/STYLE.md` | Design law — philosophy, patterns, constraints, effects, bold bets, implementation hints (if exists; fall back to `{brand-name}.md`) |
 | `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations for target |
 | `.design/system/STACK.md` | Stack state |
@@ -153,6 +154,7 @@ Spawn `gsp-project-builder` agent with **execution_mode: foundations**.
 | `.design/system/COMPONENTS.md` | Existing components (if exists) |
 | `{PROJECT_PATH}/config.json` | Tech stack, target |
 | Build output template (from execution_context) | Build log structure |
+| Token mapping ref (loaded in Step 2.6) | Deterministic `.yml` → CSS variable mapping per target (shadcn HSL, Tailwind, vanilla). Includes all 26+ shadcn variables, hex→HSL conversion, dark mode, shape/radius derivation. |
 | Visual effects, block patterns refs (loaded in Step 2.6) | Design patterns + CSS recipes |
 | Agent methodology (loaded in Step 2.5) | Builder role, process, quality standards |
 
@@ -162,14 +164,15 @@ Spawn `gsp-project-builder` agent with **execution_mode: foundations**.
 >
 > Build token integration, global styles, and layout primitives ONLY.
 >
-> 1. Integrate design tokens into the codebase (CSS variables, Tailwind config, or theme file)
+> 1. Integrate design tokens into the codebase using the token-mapping reference: read the `.yml` token values and the token-mapping.md spec, then generate CSS variables per target (shadcn: HSL space-separated in `:root`/`.dark`, Tailwind: custom properties + config extend, vanilla: full custom property system). Map ALL variables — not just colors: background, foreground, card, popover, primary, secondary, muted, accent, destructive, border, input, ring, sidebar-*, chart-1 through chart-5, and --radius.
 > 2. Create global CSS (resets, base styles, font imports, dark mode setup)
 > 3. Create root layout with nav shell and footer shell (structure only — no page content)
 > 4. Create shared utilities (cn helper, theme provider if needed)
 > 5. Apply the STYLE.md bold bets and effects vocabulary — create CSS utilities or Tailwind extensions for the brand's signature effects. Validate against constraints (never/always rules are non-negotiable).
-> 6. Do NOT build individual screens or page content
-> 7. Write code directly to the codebase, not to `.design/`
-> 8. Leave changes unstaged
+> 6. For shadcn targets: use semantic color tokens (`bg-primary`, `text-muted-foreground`) — never raw color values like `bg-blue-500`. Use `gap-*` not `space-y-*`. Use `size-*` when width and height are equal.
+> 7. Do NOT build individual screens or page content
+> 8. Write code directly to the codebase, not to `.design/`
+> 9. Leave changes unstaged
 >
 > After completing foundations, write `{PROJECT_PATH}/build/logs/foundations.md` with what was done (foundations section). Do NOT write to BUILD-LOG.md directly — the orchestrator merges logs after each phase.
 
