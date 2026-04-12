@@ -287,13 +287,13 @@ All notable changes to get-shit-pretty are documented here.
 2. Existing `.design/` project output is compatible — no migration needed for design artifacts
 3. If you have custom hooks or scripts referencing old paths, update to `gsp/` prefix
 
-## [0.4.3] — 2025-11-21
+## [0.4.3] — 2026-03-09
 
 ### Changed
 - README refresh with updated architecture docs
 - Skills discoverability via SKILL.md frontmatter
 
-## [0.4.2] — 2025-11-10
+## [0.4.2] — 2026-03-08
 
 ### Added
 - Build-to-codebase pipeline — builder writes directly to project code
@@ -306,7 +306,7 @@ All notable changes to get-shit-pretty are documented here.
 - Renamed commands: `/gsp:new` → `/gsp:start`, added `project-` prefix to project phases
 - Restored `AskUserQuestion` guided choices across pipeline
 
-## [0.4.1] — 2025-10-30
+## [0.4.1] — 2026-03-08
 
 ### Fixed
 - Executable permission on `bin/install.js`
@@ -317,7 +317,7 @@ All notable changes to get-shit-pretty are documented here.
 - Multi-runtime installer (OpenCode, Gemini, Codex)
 - `/gsp:update` command
 
-## [0.4.0] — 2025-10-20
+## [0.4.0] — 2026-03-07
 
 ### Added
 - Dual-diamond architecture (Branding + Project)
@@ -328,21 +328,21 @@ All notable changes to get-shit-pretty are documented here.
 ### Changed
 - Refactored from single pipeline to dual-diamond model
 
-## [0.3.0] — 2025-10-01
+## [0.3.0] — 2026-03-04
 
 ### Added
 - Chunked export format — agents produce 50-200 line chunks with INDEX.md
 - Codebase-aware pipeline with scope and strategy routing
 - Chunk format reference specification
 
-## [0.2.0] — 2025-09-15
+## [0.2.0] — 2026-03-03
 
 ### Changed
 - Refactored Phase 5: Spec → Implementation Spec
 - Added npm package installer
 - Updated agents and commands for new phase structure
 
-## [0.1.0] — 2025-09-01
+## [0.1.0] — 2026-02-20
 
 ### Added
 - Initial release

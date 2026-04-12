@@ -146,7 +146,6 @@ Pass in the agent prompt:
 The agent writes chunks directly:
 - `design/screen-{NN}-{name}.md` (one per screen)
 - `design/shared/` (personas, IA, navigation, micro-interactions, responsive, component-plan)
-- `design/preview.html` (self-contained wireframe preview)
 - `design/INDEX.md`
 - Updates `{PROJECT_PATH}/exports/INDEX.md` (design section)
 

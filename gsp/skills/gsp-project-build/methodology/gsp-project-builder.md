@@ -17,7 +17,7 @@ You are spawned with an `execution_mode` parameter. Follow the mode strictly:
 
 ### `foundations`
 Build token integration, global styles, and layout primitives ONLY. Stop after foundations.
-- Design tokens → CSS variables / Tailwind config. Write only **global tokens**: brand colors, font families, spacing scale, base radius, base shadows. Do NOT write screen-specific tokens yet.
+- Design tokens → CSS variables / Tailwind config. Use the **token-mapping.md** reference to map `.yml` values to the correct format per target. For shadcn: convert hex to HSL space-separated channels (e.g., `#1E40AF` → `221 72% 40%`), write ALL variables in `:root` and `.dark` scopes (background, foreground, card, popover, primary, secondary, muted, accent, destructive, border, input, ring, sidebar-*, chart-1 through chart-5, --radius). Write only **global tokens**: brand colors, font families, spacing scale, base radius, base shadows. Do NOT write screen-specific tokens yet.
 - Global CSS (resets, base styles, dark mode)
 - Layout components (root layout, nav shell, footer shell)
 - Shared utilities (cn helper, theme provider)
@@ -105,6 +105,36 @@ Check code against these before marking a screen complete — **but STYLE.md tak
 - **Motion:** spring physics (`cubic-bezier(0.16,1,0.3,1)`), `transform`+`opacity` only, 200-300ms minimum, `prefers-reduced-motion`, stagger entrances
 - **Components:** customize shadcn radii/colors/shadows, skeleton loaders not spinners, semantic HTML
 - **Code:** no inline styles mixed with utilities, relative units, clean z-index scale, alt text, verify imports exist
+
+## shadcn/ui Rules (when target is shadcn)
+
+These rules are always enforced for shadcn targets. They reflect the official shadcn/ui composition patterns:
+
+**Styling:**
+- Use semantic color tokens (`bg-primary`, `text-muted-foreground`) — never raw values like `bg-blue-500`
+- No manual `dark:` color overrides — use semantic tokens that auto-adapt
+- Use `gap-*` with flex/grid — never `space-x-*` or `space-y-*`
+- Use `size-*` when width and height are equal — `size-10` not `w-10 h-10`
+- Use `cn()` for conditional classes — never manual template literal ternaries
+- No manual `z-index` on overlay components (Dialog, Sheet, Popover handle their own stacking)
+- Use built-in variants before custom styles (`variant="outline"`, `size="sm"`)
+
+**Composition:**
+- Items always inside their Group (`SelectItem` → `SelectGroup`, `DropdownMenuItem` → `DropdownMenuGroup`)
+- Dialog, Sheet, and Drawer always need a Title (use `className="sr-only"` if visually hidden)
+- Use full Card composition (`CardHeader`/`CardTitle`/`CardDescription`/`CardContent`/`CardFooter`)
+- `TabsTrigger` must be inside `TabsList`
+- `Avatar` always needs `AvatarFallback`
+- Use `Alert` for callouts, `Badge` for status, `Skeleton` for loading, `Separator` for dividers, `sonner` for toast
+
+**Icons:**
+- Icons in `Button` use `data-icon` attribute (`data-icon="inline-start"` or `data-icon="inline-end"`)
+- No sizing classes on icons inside components — components handle icon sizing via CSS
+
+**CLI awareness:**
+- Install components via `npx shadcn@latest add {name}` — never copy/paste from GitHub
+- Use `npx shadcn@latest search` to find components before building custom ones
+- After installing components from registries, verify imports match the project's alias config
 
 Full reference: `references/anti-patterns.md` (available via Read for the complete list with fixes).
 

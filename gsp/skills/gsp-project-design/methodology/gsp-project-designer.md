@@ -13,21 +13,40 @@ When an **Existing Components** inventory is provided (for `shadcn`, `rn-reusabl
 <methodology>
 ## Design Process
 
+### Step 0: Internalize brand DNA (BEFORE designing anything)
+
+When `STYLE.md` is provided, read it first and extract a working checklist before designing any screen. STYLE.md is your design law — not a reference to consult later, but the lens through which every decision is made.
+
+Extract and hold in working memory:
+- **Constraints** → hard boundaries (never/always lists). Violating these is a Critical error.
+- **Patterns** → component composition rules (how to build cards, buttons, inputs, etc.)
+- **Effects vocabulary** → the ONLY interaction techniques you may use. Anything not listed is off-limits.
+- **Bold bets** → brand-specific techniques you MUST actively implement. These are what prevent generic output. If the brand has "purple atmospheric glow" as a bold bet, every relevant screen must show it.
+- **Intensity dials** → calibrate your creativity (variance drives layout, motion drives animation, density drives spacing)
+
+Every screen you design must reference specific techniques by name (e.g., "lift-shadow on feature cards", "press-down on CTA", "purple glow behind glass hero") — never generic terms like "use brand styling."
+
+### Steps 1-8: Design with brand DNA active
+
 1. **Define personas** — From BRIEF.md audience, create primary persona with goals and pain points
 2. **Map information architecture** — Hierarchy, grouping, navigation structure
 3. **Choose navigation pattern** — Tab bar, sidebar, or custom — justified by use case
-4. **Design 8 core screens** — Each with wireframe description, component usage, interactions, and all states
+4. **Design core screens** — Each with wireframe description, component usage, interactions, and all states. Apply brand patterns and effects in every screen — not as a separate pass, but as the default visual language.
 5. **Specify accessibility** — WCAG compliance, VoiceOver order, Dynamic Type behavior
-6. **Define micro-interactions** — Meaningful animations that communicate state changes
+6. **Define micro-interactions** — Only use techniques from the effects vocabulary. Reference them by name.
 7. **Specify image resources** — For each screen section that needs imagery, define: type (photo/illustration/icon composition/CSS-only), description and search terms for sourcing, treatment (dark overlay, blur, crop, rounded). Match the brand's imagery style from `imagery-style.md` — if the brand uses photography, specify photo subjects and mood; if illustration, specify style and subject; if CSS-only, specify the pattern or gradient approach.
 8. **Build component plan** — When existing components inventory is provided, annotate which components to reuse, refactor, or create new
-9. **Apply brand visual DNA** — When `STYLE.md` is provided, use its philosophy, patterns, constraints, effects vocabulary, and bold bets to specify visual treatments per screen. STYLE.md is your design law:
-   - **Patterns** → component composition rules (how to build cards, buttons, inputs, etc.)
-   - **Constraints** → hard boundaries (never/always lists — do not violate these)
-   - **Effects** → interaction vocabulary (only use techniques from the allowed list)
-   - **Bold Bets** → brand-specific techniques to actively implement (prevents generic output)
-   - **Intensity dials** → calibrate your creativity (variance drives layout, motion drives animation, density drives spacing)
-   In screen chunks, reference specific techniques by name (e.g., "lift-shadow on feature cards", "press-down on CTA") — not generic terms like "use brand styling"
+
+### Step 9: Brand fidelity self-check
+
+Before writing INDEX.md, verify your output against STYLE.md:
+- [ ] Every constraint respected (check the never/always lists)
+- [ ] Every bold bet appears in at least one screen (list which screen for each)
+- [ ] Effects vocabulary is the only source of interaction techniques used
+- [ ] Intensity dials match — variance, motion, density are calibrated correctly
+- [ ] No generic visual treatments — every surface, shadow, glow, gradient references a named brand technique
+
+If any bold bet is missing from all screens, go back and add it. Bold bets are the brand's differentiation — skipping them produces generic output.
 
 ## Style Feedback Detection
 
@@ -110,18 +129,6 @@ Write to `design/shared/` (~50-100 lines each):
 6. **`shared/component-plan.md`** (omit when target is `figma`) — Reuse / Refactor / New (shared) / New (local)
 
 Shared chunks link to related shared chunks and relevant screen chunks.
-
-### `design/preview.html`
-
-After writing all screen chunks, generate a self-contained HTML preview file:
-- Single HTML file with embedded CSS (no external dependencies)
-- One section per screen showing a wireframe-level layout visualization
-- Use simple boxes, text labels, and semantic structure to represent each screen's layout
-- Include navigation between screens
-- Use the brand's color tokens (from the brand `.yml`) for accents if available, otherwise use neutral grays
-- Responsive — preview itself adapts to viewport width
-- Add a table of contents sidebar listing all screens
-- Keep it minimal — this is a wireframe preview, not a polished mockup
 
 ### `INDEX.md`
 
