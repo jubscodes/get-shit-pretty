@@ -1,0 +1,33 @@
+---
+title: "v0.7.4 -- Build pipeline quality fixes"
+date: "2026-04-12T10:00:00"
+excerpt: "Fixes a critical bug where the foundations agent had no token-mapping spec, plus brand fidelity gates in design and richer shadcn composition rules in the builder."
+tags: ["build", "shadcn", "design", "bugfix"]
+slug: "v0-7-4"
+---
+
+## Token-Mapping Bug Fixed
+
+The foundations agent was supposed to convert `.yml` hex tokens to shadcn HSL CSS variables but had no mapping spec — it guessed the conversion and produced incomplete output. `token-mapping.md` (which defines all 26+ shadcn CSS variables, hex→HSL conversion, and dark mode mapping) is now explicitly passed to the agent and referenced in its instructions.
+
+If your previous builds had missing CSS variables or incorrect color values in `globals.css`, this is the fix.
+
+## Scaffold Context Capture
+
+A new Step 5.5 runs `npx shadcn@latest info --json` during scaffold and captures the project context — aliases, tailwindVersion, resolvedPaths, isRSC, and more. The foundations agent now knows the actual project configuration instead of inferring it.
+
+## Shadcn Composition Rules
+
+The builder methodology now includes the critical shadcn/ui composition rules that were missing:
+
+- Use semantic tokens (`bg-primary`, `text-primary-foreground`) — never raw color values
+- Use `gap-*` for spacing in flex/grid — not `space-y-*`
+- Card composition: always wrap with `CardHeader`, `CardContent`, `CardFooter`
+- Icons: use `data-icon` attribute, never hardcode sizes
+- CLI awareness: run `npx shadcn@latest add` before customizing, use `--dry-run` for updates
+
+## Brand Fidelity Gates in Design
+
+The low-quality `preview.html` wireframe deliverable has been removed — it was generating system-font HTML that set wrong expectations and wasted 30-90s of agent time per run.
+
+In its place: a new Step 0 "Internalize brand DNA" forces the designer to extract all style constraints, patterns, effects, and bold bets before drawing a single screen. A Step 9 "Brand fidelity self-check" then verifies every bold bet appears in the output and no generic treatments snuck in.
