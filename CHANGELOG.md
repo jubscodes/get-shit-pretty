@@ -4,6 +4,17 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+## [0.7.4] — 2026-04-12
+
+### Fixed
+- **Build: token-mapping.md now passed to foundations agent** — foundations agent was supposed to convert `.yml` hex tokens to shadcn HSL CSS variables but had no mapping spec; now loads `token-mapping.md` in Step 2.6 with explicit instructions for all 26+ shadcn variables, hex→HSL conversion, and dark mode
+- **Scaffold: capture `shadcn info --json`** — new Step 5.5 captures project context (aliases, tailwindVersion, resolvedPaths, isRSC, etc.) so the foundations agent knows the actual project configuration
+- **Shadcn composition rules** — builder methodology now includes semantic token usage, `gap` not `space-y`, Card composition, `data-icon`, and CLI awareness rules
+- **Style skills CLI install button** — corrected the `npx skills add` command in the hero
+
+### Changed
+- **Design: brand fidelity gates** — removed low-quality `preview.html` deliverable; added Step 0 "Internalize brand DNA" (extract constraints, patterns, effects, bold bets before designing) and Step 9 "Brand fidelity self-check" (verify every bold bet appears, no generic treatments)
+
 ## [0.7.3] — 2026-04-07
 
 ### Added
