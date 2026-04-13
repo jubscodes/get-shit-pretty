@@ -4,14 +4,35 @@ tags: [retro, pastel, expressive, nostalgic, gradient]
 
 tokens:
   color:
-    primary: "#FF71CE"
-    secondary: "#01CDFE"
-    accent: "#B967FF"
+    # Core — shadcn/ui CSS vars
     background: "#1A0533"
-    surface: "#2D1B4E"
-    on-primary: "#FFFFFF"
-    on-background: "#E8D5FF"
-    error: "#FF6B6B"
+    foreground: "#E8D5FF"
+    card: "#2D1B4E"
+    card-foreground: "#E8D5FF"
+    popover: "#2D1B4E"
+    popover-foreground: "#E8D5FF"
+    primary: "#FF71CE"
+    primary-foreground: "#FFFFFF"
+    secondary: "#01CDFE"
+    secondary-foreground: "#FFFFFF"
+    accent: "#B967FF"
+    accent-foreground: "#FFFFFF"
+    muted: "#4A3566"
+    muted-foreground: "#A78BCA"
+    destructive: "#FF6B6B"
+    border: "rgba(255, 113, 206, 0.3)"
+    input: "rgba(255, 113, 206, 0.3)"
+    ring: "#FF71CE"
+    # Sidebar
+    sidebar-background: "#2D1B4E"
+    sidebar-foreground: "#E8D5FF"
+    sidebar-primary: "#FF71CE"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#B967FF"
+    sidebar-accent-foreground: "#FFFFFF"
+    sidebar-border: "rgba(255, 113, 206, 0.3)"
+    sidebar-ring: "#FF71CE"
+    # Extras
     success: "#05FFA1"
     warning: "#FFE66D"
     info: "#01CDFE"
@@ -30,7 +51,6 @@ tokens:
     border-radius-md: "12px"
     border-radius-lg: "20px"
     border-width: "2px"
-    border-color: "rgba(255, 113, 206, 0.3)"
 
   elevation:
     shadow-sm: "0 4px 12px rgba(185, 103, 255, 0.15)"
@@ -55,7 +75,16 @@ tokens:
 dark_mode:
   color:
     background: "#0D0019"
-    surface: "#1A0533"
+    foreground: "#E8D5FF"
+    card: "#1A0533"
+    card-foreground: "#E8D5FF"
+    muted: "#3D2660"
+    muted-foreground: "#A78BCA"
+    border: "rgba(255, 113, 206, 0.2)"
+    input: "rgba(255, 113, 206, 0.2)"
+    sidebar-background: "#1A0533"
+    sidebar-foreground: "#E8D5FF"
+    sidebar-border: "rgba(255, 113, 206, 0.2)"
 
 intensity:
   variance: 7     # skewed buttons, rotated icon diamonds, perspective grids, alternating timelines

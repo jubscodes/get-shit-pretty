@@ -5,18 +5,38 @@ trend_ref: trends/enterprise.md
 
 tokens:
   color:
-    primary: "#4F46E5"
-    secondary: "#7C3AED"
-    accent: "#0EA5E9"
+    # Core — shadcn/ui CSS vars
     background: "#F8FAFC"
-    surface: "#FFFFFF"
-    on-primary: "#FFFFFF"
-    on-background: "#0F172A"
-    error: "#EF4444"
+    foreground: "#0F172A"
+    card: "#FFFFFF"
+    card-foreground: "#0F172A"
+    popover: "#FFFFFF"
+    popover-foreground: "#0F172A"
+    primary: "#4F46E5"
+    primary-foreground: "#FFFFFF"
+    secondary: "#7C3AED"
+    secondary-foreground: "#FFFFFF"
+    accent: "#0EA5E9"
+    accent-foreground: "#FFFFFF"
+    muted: "#64748B"
+    muted-foreground: "#94A3B8"
+    destructive: "#EF4444"
+    border: "#CBD5E1"
+    input: "#CBD5E1"
+    ring: "#4F46E5"
+    # Sidebar
+    sidebar-background: "#FFFFFF"
+    sidebar-foreground: "#0F172A"
+    sidebar-primary: "#4F46E5"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#F1F5F9"
+    sidebar-accent-foreground: "#0F172A"
+    sidebar-border: "#CBD5E1"
+    sidebar-ring: "#4F46E5"
+    # Extras
     success: "#10B981"
     warning: "#F59E0B"
     info: "#3B82F6"
-    muted: "#64748B"
 
   typography:
     font-family-primary: "Plus Jakarta Sans, Inter, sans-serif"
@@ -31,7 +51,6 @@ tokens:
     border-radius-md: "6px"
     border-radius-lg: "8px"
     border-width: "1px"
-    border-color: "#CBD5E1"
 
   elevation:
     shadow-sm: "0 1px 3px rgba(79,70,229,0.08)"
@@ -54,9 +73,13 @@ tokens:
 dark_mode:
   color:
     background: "#0F172A"
-    surface: "#1E293B"
-    on-background: "#F1F5F9"
-    border-color: "#334155"
+    foreground: "#F1F5F9"
+    card: "#1E293B"
+    card-foreground: "#F1F5F9"
+    popover: "#1E293B"
+    popover-foreground: "#F1F5F9"
+    border: "#334155"
+    input: "#334155"
 
 intensity:
   variance: 3     # structured grids, predictable zig-zag layouts, controlled hierarchy

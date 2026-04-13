@@ -4,18 +4,38 @@ tags: [newspaper, editorial, journalism, print, serif]
 
 tokens:
   color:
-    primary: "#1A1A1A"
-    secondary: "#4A4A4A"
-    accent: "#DC2626"
+    # Core — shadcn/ui CSS vars
     background: "#F5F5F0"
-    surface: "#FFFFFF"
-    on-primary: "#FFFFFF"
-    on-background: "#1A1A1A"
-    error: "#DC2626"
+    foreground: "#1A1A1A"
+    card: "#FFFFFF"
+    card-foreground: "#1A1A1A"
+    popover: "#FFFFFF"
+    popover-foreground: "#1A1A1A"
+    primary: "#1A1A1A"
+    primary-foreground: "#FFFFFF"
+    secondary: "#4A4A4A"
+    secondary-foreground: "#FFFFFF"
+    accent: "#DC2626"
+    accent-foreground: "#FFFFFF"
+    muted: "#666666"
+    muted-foreground: "#888888"
+    destructive: "#DC2626"
+    border: "#D4D4D4"
+    input: "#D4D4D4"
+    ring: "#1A1A1A"
+    # Sidebar
+    sidebar-background: "#FFFFFF"
+    sidebar-foreground: "#1A1A1A"
+    sidebar-primary: "#1A1A1A"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#F5F5F0"
+    sidebar-accent-foreground: "#1A1A1A"
+    sidebar-border: "#D4D4D4"
+    sidebar-ring: "#1A1A1A"
+    # Extras
     success: "#16A34A"
     warning: "#D97706"
     info: "#2563EB"
-    muted: "#666666"
 
   typography:
     font-family-primary: "Playfair Display, serif"
@@ -33,7 +53,6 @@ tokens:
     border-radius-lg: "0px"
     border-width: "1px"
     border-width-divider: "4px"
-    border-color: "#D4D4D4"
 
   elevation:
     shadow-sm: "none"

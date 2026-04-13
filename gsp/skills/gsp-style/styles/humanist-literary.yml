@@ -4,18 +4,38 @@ tags: [humanist, literary, warm, calm, conversational]
 
 tokens:
   color:
-    primary: "#DA7756"
-    secondary: "#6B6960"
-    accent: "#FAF9F6"
+    # Core — shadcn/ui CSS vars
     background: "#FAF9F6"
-    surface: "#F2F0EB"
-    on-primary: "#FFFFFF"
-    on-background: "#383838"
-    error: "#DC2626"
+    foreground: "#383838"
+    card: "#F2F0EB"
+    card-foreground: "#383838"
+    popover: "#F2F0EB"
+    popover-foreground: "#383838"
+    primary: "#DA7756"
+    primary-foreground: "#FFFFFF"
+    secondary: "#6B6960"
+    secondary-foreground: "#FFFFFF"
+    accent: "#FAF9F6"
+    accent-foreground: "#383838"
+    muted: "#6B6960"
+    muted-foreground: "#9C9A94"
+    destructive: "#DC2626"
+    border: "#E8E6E0"
+    input: "#E8E6E0"
+    ring: "#DA7756"
+    # Sidebar
+    sidebar-background: "#F2F0EB"
+    sidebar-foreground: "#383838"
+    sidebar-primary: "#DA7756"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#E8E6E0"
+    sidebar-accent-foreground: "#383838"
+    sidebar-border: "#E8E6E0"
+    sidebar-ring: "#DA7756"
+    # Extras
     success: "#16A34A"
     warning: "#D97706"
     info: "#2563EB"
-    muted: "#6B6960"
 
   typography:
     font-family-primary: "Merriweather, Tiempos, serif"
@@ -31,7 +51,6 @@ tokens:
     border-radius-md: "16px"
     border-radius-lg: "9999px"
     border-width: "1px"
-    border-color: "#E8E6E0"
 
   elevation:
     shadow-sm: "0 1px 2px rgba(0,0,0,0.04)"
@@ -51,8 +70,13 @@ tokens:
 dark_mode:
   color:
     background: "#1C1B19"
-    surface: "#2A2926"
-    on-background: "#E8E6E0"
+    foreground: "#E8E6E0"
+    card: "#2A2926"
+    card-foreground: "#E8E6E0"
+    popover: "#2A2926"
+    popover-foreground: "#E8E6E0"
+    border: "#3D3B36"
+    input: "#3D3B36"
 
 intensity:
   variance: 2     # predictable, centered, calm — the interface recedes for content

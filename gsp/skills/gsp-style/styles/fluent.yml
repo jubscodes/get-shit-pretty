@@ -5,18 +5,38 @@ trend_ref: trends/fluent.md
 
 tokens:
   color:
-    primary: "#0F6CBD"
-    secondary: "#115EA3"
-    accent: "#0C3B5E"
+    # Core — shadcn/ui CSS vars
     background: "#F5F5F5"
-    surface: "#FFFFFF"
-    on-primary: "#FFFFFF"
-    on-background: "#242424"
-    error: "#C4314B"
+    foreground: "#242424"
+    card: "#FFFFFF"
+    card-foreground: "#242424"
+    popover: "#FFFFFF"
+    popover-foreground: "#242424"
+    primary: "#0F6CBD"
+    primary-foreground: "#FFFFFF"
+    secondary: "#115EA3"
+    secondary-foreground: "#FFFFFF"
+    accent: "#0C3B5E"
+    accent-foreground: "#FFFFFF"
+    muted: "#616161"
+    muted-foreground: "#9E9E9E"
+    destructive: "#C4314B"
+    border: "#E0E0E0"
+    input: "#E0E0E0"
+    ring: "#0F6CBD"
+    # Sidebar
+    sidebar-background: "#FFFFFF"
+    sidebar-foreground: "#242424"
+    sidebar-primary: "#0F6CBD"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#F0F0F0"
+    sidebar-accent-foreground: "#242424"
+    sidebar-border: "#E0E0E0"
+    sidebar-ring: "#0F6CBD"
+    # Extras
     success: "#0E7A0D"
     warning: "#F7630C"
     info: "#0F6CBD"
-    muted: "#616161"
 
   typography:
     font-family-primary: "Segoe UI Variable, Segoe UI, system-ui, sans-serif"
@@ -31,7 +51,6 @@ tokens:
     border-radius-md: "8px"
     border-radius-lg: "12px"
     border-width: "1px"
-    border-color: "#E0E0E0"
 
   elevation:
     shadow-sm: "0 1px 2px rgba(0,0,0,0.12)"
@@ -55,9 +74,13 @@ tokens:
 dark_mode:
   color:
     background: "#292929"
-    surface: "#1F1F1F"
-    on-background: "#FFFFFF"
-    border-color: "#404040"
+    foreground: "#FFFFFF"
+    card: "#1F1F1F"
+    card-foreground: "#FFFFFF"
+    popover: "#1F1F1F"
+    popover-foreground: "#FFFFFF"
+    border: "#404040"
+    input: "#404040"
 
 intensity:
   variance: 2     # strict grid alignment, consistent density, OS-level predictability

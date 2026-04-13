@@ -132,7 +132,7 @@ Read `${CLAUDE_SKILL_DIR}/methodology/gsp-project-builder.md`. Include the full 
 Read these reference files:
 - `${CLAUDE_SKILL_DIR}/visual-effects.md`
 - `${CLAUDE_SKILL_DIR}/../gsp-project-design/block-patterns.md`
-- `${CLAUDE_SKILL_DIR}/../gsp-brand-guidelines/token-mapping.md`
+- `${CLAUDE_SKILL_DIR}/shadcn-composition.md`
 
 Hold their content for inlining into agent prompts in Steps 3, 4.5, 5, 7, and 8.
 
@@ -154,7 +154,7 @@ Spawn `gsp-project-builder` agent with **execution_mode: foundations**.
 | `.design/system/COMPONENTS.md` | Existing components (if exists) |
 | `{PROJECT_PATH}/config.json` | Tech stack, target |
 | Build output template (from execution_context) | Build log structure |
-| Token mapping ref (loaded in Step 2.6) | Deterministic `.yml` → CSS variable mapping per target (shadcn HSL, Tailwind, vanilla). Includes all 26+ shadcn variables, hex→HSL conversion, dark mode, shape/radius derivation. |
+| Token mapping ref (loaded in Step 2.6) | shadcn component composition rules, semantic token usage, `cn()`, `cva`, RSC patterns |
 | Visual effects, block patterns refs (loaded in Step 2.6) | Design patterns + CSS recipes |
 | Agent methodology (loaded in Step 2.5) | Builder role, process, quality standards |
 
@@ -164,7 +164,7 @@ Spawn `gsp-project-builder` agent with **execution_mode: foundations**.
 >
 > Build token integration, global styles, and layout primitives ONLY.
 >
-> 1. Integrate design tokens into the codebase using the token-mapping reference: read the `.yml` token values and the token-mapping.md spec, then generate CSS variables per target (shadcn: HSL space-separated in `:root`/`.dark`, Tailwind: custom properties + config extend, vanilla: full custom property system). Map ALL variables — not just colors: background, foreground, card, popover, primary, secondary, muted, accent, destructive, border, input, ring, sidebar-*, chart-1 through chart-5, and --radius.
+> 1. Integrate design tokens into the codebase: run `node bin/theme-css.js {brand-name}.yml --stdout` and paste the OKLCH `:root`/`.dark` output into `globals.css`. For shadcn targets, follow the `@theme inline` pattern from `shadcn-rules.md`. Map ALL variables — background, foreground, card, popover, primary, secondary, muted, accent, destructive, border, input, ring, sidebar-*, chart-1 through chart-5, and --radius.
 > 2. Create global CSS (resets, base styles, font imports, dark mode setup)
 > 3. Create root layout with nav shell and footer shell (structure only — no page content)
 > 4. Create shared utilities (cn helper, theme provider if needed)
@@ -497,25 +497,13 @@ Invoke `/gsp-phase-transition` with phase `build` and output directory `{PROJECT
 
 ## Step 7: Figma fallback
 
-For `implementation_target: figma`, skip the phased pipeline. Spawn a single `gsp-project-builder` agent with execution_mode: `full` and spec-only flag. Builder writes `build/CODE.md` + `build/components/` instead of editing codebase. Then continue from Step 6 (finalize).
+Read `${CLAUDE_SKILL_DIR}/flows/figma.md` for full instructions.
+
+For `implementation_target: figma`, skip the phased pipeline. Produce Figma-ready implementation specs instead of editing the codebase. Then continue from Step 6 (finalize).
 
 ## Step 8: Revision mode
 
-For `needs-revision` status, spawn a single `gsp-project-builder` agent with execution_mode: `full` and `review/issues.md` contents. The agent fixes QA issues in the codebase and appends revision sections to BUILD-LOG.md.
+Read `${CLAUDE_SKILL_DIR}/flows/revision.md` for full instructions.
 
-### Checkpoint: Compile check
-
-After the revision agent completes, run the build command (same stack table as Step 3 checkpoint).
-
-**Pass:** Continue to brand feedback check below.
-**Fail:** Log the error. Surface to user: "Revision introduced build errors: {error}. Fix before finalizing?"
-
-### Brand feedback on revisions
-
-After the revision agent completes, check if any QA fixes changed token-level values (colors, typography, spacing, shadows). If so:
-
-1. Ask: "These revisions changed brand-level values. Update brand patterns so future projects inherit the fix?"
-2. If yes, spawn a background `gsp-brand-engineer` agent with the changed values to update `{BRAND_PATH}/patterns/`.
-
-Then continue from Step 6 (finalize).
+For `needs-revision` status, fix QA issues from `review/issues.md` via a single revision agent. Then continue from Step 6 (finalize).
 </process>

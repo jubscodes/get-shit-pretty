@@ -4,18 +4,38 @@ tags: [monochrome, industrial, dark, minimal, technical, instrument, mechanical,
 
 tokens:
   color:
-    primary: "#FFFFFF"
-    secondary: "#999999"
-    accent: "#D71921"
+    # Core — shadcn/ui CSS vars
     background: "#000000"
-    surface: "#111111"
-    on-primary: "#000000"
-    on-background: "#E8E8E8"
-    error: "#D71921"
+    foreground: "#E8E8E8"
+    card: "#111111"
+    card-foreground: "#E8E8E8"
+    popover: "#111111"
+    popover-foreground: "#E8E8E8"
+    primary: "#FFFFFF"
+    primary-foreground: "#000000"
+    secondary: "#999999"
+    secondary-foreground: "#000000"
+    accent: "#D71921"
+    accent-foreground: "#FFFFFF"
+    muted: "#666666"
+    muted-foreground: "#999999"
+    destructive: "#D71921"
+    border: "#222222"
+    input: "#222222"
+    ring: "#FFFFFF"
+    # Sidebar
+    sidebar-background: "#111111"
+    sidebar-foreground: "#E8E8E8"
+    sidebar-primary: "#FFFFFF"
+    sidebar-primary-foreground: "#000000"
+    sidebar-accent: "#1A1A1A"
+    sidebar-accent-foreground: "#E8E8E8"
+    sidebar-border: "#222222"
+    sidebar-ring: "#FFFFFF"
+    # Extras
     success: "#4A9E5C"
     warning: "#D4A843"
     info: "#999999"
-    muted: "#666666"
 
   typography:
     font-family-primary: "Space Grotesk, DM Sans, system-ui, sans-serif"
@@ -32,7 +52,6 @@ tokens:
     border-radius-lg: "12px"
     border-radius-pill: "999px"
     border-width: "1px"
-    border-color: "#222222"
 
   elevation:
     shadow-sm: "none"
@@ -52,17 +71,23 @@ tokens:
 dark_mode:
   color:
     background: "#000000"
-    surface: "#111111"
-    on-background: "#E8E8E8"
-    border-color: "#222222"
+    foreground: "#E8E8E8"
+    card: "#111111"
+    card-foreground: "#E8E8E8"
     muted: "#666666"
+    muted-foreground: "#999999"
+    border: "#222222"
+    input: "#222222"
+    sidebar-background: "#111111"
+    sidebar-foreground: "#E8E8E8"
+    sidebar-border: "#222222"
 
 light_mode:
   color:
     background: "#F5F5F5"
-    surface: "#FFFFFF"
-    on-background: "#1A1A1A"
-    border-color: "#E8E8E8"
+    card: "#FFFFFF"
+    foreground: "#1A1A1A"
+    border: "#E8E8E8"
     muted: "#999999"
 
 intensity:

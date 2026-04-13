@@ -5,18 +5,38 @@ trend_ref: trends/flat-design.md
 
 tokens:
   color:
-    primary: "#2196F3"
-    secondary: "#4CAF50"
-    accent: "#FF9800"
+    # Core — shadcn/ui CSS vars
     background: "#FFFFFF"
-    surface: "#FAFAFA"
-    on-primary: "#FFFFFF"
-    on-background: "#212121"
-    error: "#F44336"
+    foreground: "#212121"
+    card: "#FAFAFA"
+    card-foreground: "#212121"
+    popover: "#FAFAFA"
+    popover-foreground: "#212121"
+    primary: "#2196F3"
+    primary-foreground: "#FFFFFF"
+    secondary: "#4CAF50"
+    secondary-foreground: "#FFFFFF"
+    accent: "#FF9800"
+    accent-foreground: "#FFFFFF"
+    muted: "#9E9E9E"
+    muted-foreground: "#616161"
+    destructive: "#F44336"
+    border: "transparent"
+    input: "transparent"
+    ring: "#2196F3"
+    # Sidebar
+    sidebar-background: "#FAFAFA"
+    sidebar-foreground: "#212121"
+    sidebar-primary: "#2196F3"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#F5F5F5"
+    sidebar-accent-foreground: "#212121"
+    sidebar-border: "transparent"
+    sidebar-ring: "#2196F3"
+    # Extras
     success: "#4CAF50"
     warning: "#FF9800"
     info: "#2196F3"
-    muted: "#9E9E9E"
 
   typography:
     font-family-primary: "Outfit, Open Sans, sans-serif"
@@ -31,7 +51,6 @@ tokens:
     border-radius-md: "8px"
     border-radius-lg: "12px"
     border-width: "0px"
-    border-color: "transparent"
 
   elevation:
     shadow-sm: "none"
@@ -51,8 +70,13 @@ tokens:
 dark_mode:
   color:
     background: "#212121"
-    surface: "#303030"
-    on-background: "#FAFAFA"
+    foreground: "#FAFAFA"
+    card: "#303030"
+    card-foreground: "#FAFAFA"
+    popover: "#303030"
+    popover-foreground: "#FAFAFA"
+    border: "transparent"
+    input: "transparent"
 
 intensity:
   variance: 3     # rigid grid, predictable layout, geometric purity

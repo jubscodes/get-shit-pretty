@@ -1,5 +1,7 @@
 # Design Token Standards
 
+> **GSP approach (v0.8.0+):** GSP presets use **shadcn/ui-native token names** directly — keys in `.yml` files map 1:1 to shadcn CSS variables (`background`, `foreground`, `primary`, `accent`, etc.). The W3C format below is background context on token standards in general; it does not reflect GSP's flat, shadcn-native schema. See `bin/theme-css.js` for how GSP converts `.yml` tokens to CSS.
+
 **Format:** W3C Design Tokens Community Group specification
 
 ---

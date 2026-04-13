@@ -4,18 +4,38 @@ tags: [soft-ui, neumorphic, 3d, embossed, tactile]
 
 tokens:
   color:
-    primary: "#6C63FF"
-    secondary: "#38B2AC"
-    accent: "#E0E5EC"
+    # Core — shadcn/ui CSS vars
     background: "#E0E5EC"
-    surface: "#E0E5EC"
-    on-primary: "#FFFFFF"
-    on-background: "#3D4852"
-    error: "#DC2626"
+    foreground: "#3D4852"
+    card: "#E0E5EC"
+    card-foreground: "#3D4852"
+    popover: "#E0E5EC"
+    popover-foreground: "#3D4852"
+    primary: "#6C63FF"
+    primary-foreground: "#FFFFFF"
+    secondary: "#38B2AC"
+    secondary-foreground: "#FFFFFF"
+    accent: "#E0E5EC"
+    accent-foreground: "#3D4852"
+    muted: "#8B95A5"
+    muted-foreground: "#6B7280"
+    destructive: "#DC2626"
+    border: "#C8D0DC"
+    input: "#C8D0DC"
+    ring: "#6C63FF"
+    # Sidebar
+    sidebar-background: "#D8DDE6"
+    sidebar-foreground: "#3D4852"
+    sidebar-primary: "#6C63FF"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#E0E5EC"
+    sidebar-accent-foreground: "#3D4852"
+    sidebar-border: "#C8D0DC"
+    sidebar-ring: "#6C63FF"
+    # Extras
     success: "#16A34A"
     warning: "#D97706"
     info: "#3B82F6"
-    muted: "#8B95A5"
 
   typography:
     font-family-primary: "Plus Jakarta Sans, DM Sans, sans-serif"
@@ -31,7 +51,6 @@ tokens:
     border-radius-lg: "32px"
     border-radius-xl: "48px"
     border-width: "0px"
-    border-color: "transparent"
 
   elevation:
     shadow-sm: "4px 4px 8px rgba(163,177,198,0.6), -4px -4px 8px rgba(255,255,255,0.5)"

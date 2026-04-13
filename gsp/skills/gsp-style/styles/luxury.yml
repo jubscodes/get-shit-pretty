@@ -4,18 +4,38 @@ tags: [premium, elegant, luxury, high-end, sophisticated]
 
 tokens:
   color:
-    primary: "#D4AF37"
-    secondary: "#B8860B"
-    accent: "#1A1A1A"
+    # Core — shadcn/ui CSS vars
     background: "#F9F8F6"
-    surface: "#EBE5DE"
-    on-primary: "#000000"
-    on-background: "#1A1A1A"
-    error: "#DC2626"
+    foreground: "#1A1A1A"
+    card: "#EBE5DE"
+    card-foreground: "#1A1A1A"
+    popover: "#EBE5DE"
+    popover-foreground: "#1A1A1A"
+    primary: "#D4AF37"
+    primary-foreground: "#000000"
+    secondary: "#B8860B"
+    secondary-foreground: "#000000"
+    accent: "#1A1A1A"
+    accent-foreground: "#FFFFFF"
+    muted: "#6C6863"
+    muted-foreground: "#9C9690"
+    destructive: "#DC2626"
+    border: "rgba(26,26,26,0.1)"
+    input: "rgba(26,26,26,0.1)"
+    ring: "#D4AF37"
+    # Sidebar
+    sidebar-background: "#EBE5DE"
+    sidebar-foreground: "#1A1A1A"
+    sidebar-primary: "#D4AF37"
+    sidebar-primary-foreground: "#000000"
+    sidebar-accent: "#F9F8F6"
+    sidebar-accent-foreground: "#1A1A1A"
+    sidebar-border: "rgba(26,26,26,0.1)"
+    sidebar-ring: "#D4AF37"
+    # Extras
     success: "#16A34A"
     warning: "#D97706"
     info: "#2563EB"
-    muted: "#6C6863"
 
   typography:
     font-family-primary: "Playfair Display, serif"
@@ -31,7 +51,6 @@ tokens:
     border-radius-md: "0px"
     border-radius-lg: "0px"
     border-width: "1px"
-    border-color: "rgba(26,26,26,0.1)"
 
   elevation:
     shadow-sm: "0 2px 12px rgba(0,0,0,0.08)"
@@ -54,9 +73,34 @@ tokens:
 
 dark_mode:
   color:
+    # Core — shadcn/ui CSS vars
     background: "#0A0A0A"
-    surface: "#1A1A1A"
-    on-background: "#F5F5F0"
+    foreground: "#F5F5F0"
+    card: "#1A1A1A"
+    card-foreground: "#F5F5F0"
+    popover: "#1A1A1A"
+    popover-foreground: "#F5F5F0"
+    primary: "#D4AF37"
+    primary-foreground: "#000000"
+    secondary: "#B8860B"
+    secondary-foreground: "#000000"
+    accent: "#F5F5F0"
+    accent-foreground: "#0A0A0A"
+    muted: "#2A2A2A"
+    muted-foreground: "#6C6863"
+    destructive: "#DC2626"
+    border: "rgba(245,245,240,0.1)"
+    input: "rgba(245,245,240,0.1)"
+    ring: "#D4AF37"
+    # Sidebar
+    sidebar-background: "#1A1A1A"
+    sidebar-foreground: "#F5F5F0"
+    sidebar-primary: "#D4AF37"
+    sidebar-primary-foreground: "#000000"
+    sidebar-accent: "#2A2A2A"
+    sidebar-accent-foreground: "#F5F5F0"
+    sidebar-border: "rgba(245,245,240,0.1)"
+    sidebar-ring: "#D4AF37"
 
 intensity:
   variance: 4     # asymmetric grids but architecturally balanced, offset columns

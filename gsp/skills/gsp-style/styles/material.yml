@@ -4,18 +4,38 @@ tags: [material, google, android, rounded, colorful]
 
 tokens:
   color:
-    primary: "#6750A4"
-    secondary: "#625B71"
-    accent: "#BB86FC"
+    # Core — shadcn/ui CSS vars
     background: "#FFFBFE"
-    surface: "#F3EDF7"
-    on-primary: "#FFFFFF"
-    on-background: "#1C1B1F"
-    error: "#B3261E"
+    foreground: "#1C1B1F"
+    card: "#F3EDF7"
+    card-foreground: "#1C1B1F"
+    popover: "#F3EDF7"
+    popover-foreground: "#1C1B1F"
+    primary: "#6750A4"
+    primary-foreground: "#FFFFFF"
+    secondary: "#625B71"
+    secondary-foreground: "#FFFFFF"
+    accent: "#BB86FC"
+    accent-foreground: "#000000"
+    muted: "#79747E"
+    muted-foreground: "#A9A4AE"
+    destructive: "#B3261E"
+    border: "#79747E"
+    input: "#79747E"
+    ring: "#6750A4"
+    # Sidebar
+    sidebar-background: "#F3EDF7"
+    sidebar-foreground: "#1C1B1F"
+    sidebar-primary: "#6750A4"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#EDE7F6"
+    sidebar-accent-foreground: "#1C1B1F"
+    sidebar-border: "#79747E"
+    sidebar-ring: "#6750A4"
+    # Extras
     success: "#16A34A"
     warning: "#F59E0B"
     info: "#3B82F6"
-    muted: "#79747E"
 
   typography:
     font-family-primary: "Roboto, system-ui, sans-serif"
@@ -31,7 +51,6 @@ tokens:
     border-radius-lg: "16px"
     border-radius-xl: "28px"
     border-width: "1px"
-    border-color: "#79747E"
 
   elevation:
     shadow-sm: "0 1px 2px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.15)"
@@ -50,9 +69,34 @@ tokens:
 
 dark_mode:
   color:
+    # Core — shadcn/ui CSS vars
     background: "#1C1B1F"
-    surface: "#2B2930"
-    on-background: "#E6E1E5"
+    foreground: "#E6E1E5"
+    card: "#2B2930"
+    card-foreground: "#E6E1E5"
+    popover: "#2B2930"
+    popover-foreground: "#E6E1E5"
+    primary: "#D0BCFF"
+    primary-foreground: "#381E72"
+    secondary: "#CCC2DC"
+    secondary-foreground: "#332D41"
+    accent: "#BB86FC"
+    accent-foreground: "#000000"
+    muted: "#3B383E"
+    muted-foreground: "#79747E"
+    destructive: "#F2B8B5"
+    border: "#49454F"
+    input: "#49454F"
+    ring: "#D0BCFF"
+    # Sidebar
+    sidebar-background: "#2B2930"
+    sidebar-foreground: "#E6E1E5"
+    sidebar-primary: "#D0BCFF"
+    sidebar-primary-foreground: "#381E72"
+    sidebar-accent: "#3B383E"
+    sidebar-accent-foreground: "#E6E1E5"
+    sidebar-border: "#49454F"
+    sidebar-ring: "#D0BCFF"
 
 intensity:
   variance: 4     # organic blur shapes and asymmetric elevation create interest, but grids stay structured

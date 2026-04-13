@@ -4,7 +4,26 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
-## [0.7.4] — 2026-04-12
+## [0.8.0] — 2026-04-13
+
+### Added
+- **`bin/theme-css.js`** — deterministic script converts any `.yml` preset to `:root`/`.dark` CSS blocks. Hex values → OKLCH (full color math). Handles alpha values, font stacks, and shadows verbatim. Usage: `node bin/theme-css.js preset.yml --stdout`
+- **`gsp-scaffold/shadcn-rules.md`** — Tier 1 shadcn knowledge: install, `globals.css` patterns for Tailwind v3/v4, token injection via `bin/theme-css.js`, component install, critical rules, dark mode setup (#108)
+- **`gsp-project-build/shadcn-composition.md`** — Tier 2 shadcn knowledge: `cn()`, semantic color tokens, `asChild`, `cva` variants, Card/Dialog/Form composition, sizing utilities, RSC patterns, icon imports, customization rules (#108)
+- **`gsp-project-build/flows/revision.md`** — extracted revision mode flow (#87)
+- **`gsp-project-build/flows/figma.md`** — extracted Figma fallback flow (#87)
+
+### Changed
+- **Breaking: shadcn-native token schema** — all 36 `.yml` presets migrated from GSP semantic naming (`on-primary`, `surface`, `error`) to shadcn/ui-native keys (`primary-foreground`, `card`, `destructive`). Token keys map 1:1 to shadcn CSS variables — no translation layer
+- **Sidebar tokens explicit in `.yml`** — all 36 presets have full `sidebar-background`, `sidebar-foreground`, `sidebar-primary`, `sidebar-primary-foreground`, `sidebar-accent`, `sidebar-accent-foreground`, `sidebar-border`, `sidebar-ring` tokens
+- **OKLCH color format** — presets use `oklch(L C H)` and `oklch(L C H / alpha)` for translucent values instead of hex/rgba. shadcn v2+ accepts OKLCH natively
+- **`gsp-brand-guidelines/token-mapping.md`** replaced with a redirect stub pointing to `bin/theme-css.js`
+- **`gsp-brand-guidelines/design-tokens.md`** — W3C background context note added; clarifies GSP uses flat shadcn-native schema, not W3C layered naming
+- **`gsp-project-build/SKILL.md`** — Step 2.6 now loads `shadcn-composition.md` instead of `token-mapping.md`; Steps 7 and 8 slimmed to redirect to extracted flow files (#87)
+- **`gsp-brand-refine/SKILL.md`** — cascade example updated from old W3C names (`color.brand.accent`, `color.semantic.link`) to flat shadcn names (`color.accent`, `color.ring`)
+- **`style-preset-schema.md`** — fully rewritten to document new shadcn-native schema
+
+
 
 ### Fixed
 - **Build: token-mapping.md now passed to foundations agent** — foundations agent was supposed to convert `.yml` hex tokens to shadcn HSL CSS variables but had no mapping spec; now loads `token-mapping.md` in Step 2.6 with explicit instructions for all 26+ shadcn variables, hex→HSL conversion, and dark mode

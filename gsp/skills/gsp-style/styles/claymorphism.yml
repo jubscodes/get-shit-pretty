@@ -5,18 +5,38 @@ trend_ref: trends/claymorphism.md
 
 tokens:
   color:
-    primary: "#7C3AED"
-    secondary: "#EC4899"
-    accent: "#0EA5E9"
+    # Core — shadcn/ui CSS vars
     background: "#F4F1FA"
-    surface: "rgba(255,255,255,0.60)"
-    on-primary: "#FFFFFF"
-    on-background: "#332F3A"
-    error: "#EF4444"
+    foreground: "#332F3A"
+    card: "oklch(100% 0 0 / 0.60)"
+    card-foreground: "#332F3A"
+    popover: "oklch(100% 0 0 / 0.60)"
+    popover-foreground: "#332F3A"
+    primary: "#7C3AED"
+    primary-foreground: "#FFFFFF"
+    secondary: "#EC4899"
+    secondary-foreground: "#FFFFFF"
+    accent: "#0EA5E9"
+    accent-foreground: "#FFFFFF"
+    muted: "#635F69"
+    muted-foreground: "#9E9AA8"
+    destructive: "#EF4444"
+    border: "transparent"
+    input: "transparent"
+    ring: "#7C3AED"
+    # Sidebar
+    sidebar-background: "oklch(100% 0 0 / 0.60)"
+    sidebar-foreground: "#332F3A"
+    sidebar-primary: "#7C3AED"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#EFEBF5"
+    sidebar-accent-foreground: "#332F3A"
+    sidebar-border: "transparent"
+    sidebar-ring: "#7C3AED"
+    # Extras
     success: "#22C55E"
     warning: "#F59E0B"
     info: "#0EA5E9"
-    muted: "#635F69"
 
   typography:
     font-family-primary: "Nunito, sans-serif"
@@ -32,7 +52,6 @@ tokens:
     border-radius-md: "32px"
     border-radius-lg: "48px"
     border-width: "0px"
-    border-color: "transparent"
 
   inset:
     pressed: "inset 10px 10px 20px #d9d4e3, inset -10px -10px 20px #fff"
@@ -62,8 +81,13 @@ tokens:
 dark_mode:
   color:
     background: "#1E1B2E"
-    surface: "rgba(50,45,70,0.60)"
-    on-background: "#E8E6F0"
+    foreground: "#E8E6F0"
+    card: "oklch(28% 0.03 290 / 0.60)"
+    card-foreground: "#E8E6F0"
+    popover: "oklch(28% 0.03 290 / 0.60)"
+    popover-foreground: "#E8E6F0"
+    border: "transparent"
+    input: "transparent"
 
 intensity:
   variance: 6     # bento grids with col-span mixing, overlapping badges, varied radii per nesting level

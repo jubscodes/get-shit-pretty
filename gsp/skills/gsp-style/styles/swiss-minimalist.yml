@@ -4,18 +4,38 @@ tags: [clean, grid, typographic, classic, professional]
 
 tokens:
   color:
-    primary: "#000000"
-    secondary: "#DC2626"
-    accent: "#2563EB"
+    # Core — shadcn/ui CSS vars
     background: "#FFFFFF"
-    surface: "#FAFAFA"
-    on-primary: "#FFFFFF"
-    on-background: "#111111"
-    error: "#DC2626"
+    foreground: "#111111"
+    card: "#FAFAFA"
+    card-foreground: "#111111"
+    popover: "#FAFAFA"
+    popover-foreground: "#111111"
+    primary: "#000000"
+    primary-foreground: "#FFFFFF"
+    secondary: "#DC2626"
+    secondary-foreground: "#FFFFFF"
+    accent: "#2563EB"
+    accent-foreground: "#FFFFFF"
+    muted: "#6B7280"
+    muted-foreground: "#4B5563"
+    destructive: "#DC2626"
+    border: "#E5E7EB"
+    input: "#E5E7EB"
+    ring: "#000000"
+    # Sidebar
+    sidebar-background: "#FAFAFA"
+    sidebar-foreground: "#111111"
+    sidebar-primary: "#000000"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#2563EB"
+    sidebar-accent-foreground: "#FFFFFF"
+    sidebar-border: "#E5E7EB"
+    sidebar-ring: "#000000"
+    # Extras
     success: "#16A34A"
     warning: "#CA8A04"
     info: "#2563EB"
-    muted: "#6B7280"
 
   typography:
     font-family-primary: "Helvetica Neue, Helvetica, Arial, sans-serif"
@@ -30,7 +50,6 @@ tokens:
     border-radius-md: "0px"
     border-radius-lg: "0px"
     border-width: "1px"
-    border-color: "#E5E7EB"
 
   elevation:
     shadow-sm: "none"
@@ -50,10 +69,16 @@ tokens:
 dark_mode:
   color:
     background: "#111111"
-    surface: "#1A1A1A"
-    on-background: "#F5F5F5"
-    border-color: "#333333"
+    foreground: "#F5F5F5"
+    card: "#1A1A1A"
+    card-foreground: "#F5F5F5"
     muted: "#9CA3AF"
+    muted-foreground: "#6B7280"
+    border: "#333333"
+    input: "#333333"
+    sidebar-background: "#1A1A1A"
+    sidebar-foreground: "#F5F5F5"
+    sidebar-border: "#333333"
 
 intensity:
   variance: 2     # strict grid law, asymmetric but mathematically precise

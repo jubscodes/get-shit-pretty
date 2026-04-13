@@ -4,18 +4,38 @@ tags: [saas, startup, modern, clean, gradient]
 
 tokens:
   color:
-    primary: "#0052FF"
-    secondary: "#4D7CFF"
-    accent: "#F1F5F9"
+    # Core — shadcn/ui CSS vars
     background: "#FFFFFF"
-    surface: "#F8FAFC"
-    on-primary: "#FFFFFF"
-    on-background: "#0F172A"
-    error: "#EF4444"
+    foreground: "#0F172A"
+    card: "#F8FAFC"
+    card-foreground: "#0F172A"
+    popover: "#F8FAFC"
+    popover-foreground: "#0F172A"
+    primary: "#0052FF"
+    primary-foreground: "#FFFFFF"
+    secondary: "#4D7CFF"
+    secondary-foreground: "#FFFFFF"
+    accent: "#F1F5F9"
+    accent-foreground: "#0F172A"
+    muted: "#64748B"
+    muted-foreground: "#94A3B8"
+    destructive: "#EF4444"
+    border: "#E2E8F0"
+    input: "#E2E8F0"
+    ring: "#0052FF"
+    # Sidebar
+    sidebar-background: "#F8FAFC"
+    sidebar-foreground: "#0F172A"
+    sidebar-primary: "#0052FF"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#F1F5F9"
+    sidebar-accent-foreground: "#0F172A"
+    sidebar-border: "#E2E8F0"
+    sidebar-ring: "#0052FF"
+    # Extras
     success: "#10B981"
     warning: "#F59E0B"
     info: "#0052FF"
-    muted: "#64748B"
 
   typography:
     font-family-primary: "Calistoga, serif"
@@ -31,7 +51,6 @@ tokens:
     border-radius-md: "12px"
     border-radius-lg: "9999px"
     border-width: "1px"
-    border-color: "#E2E8F0"
 
   gradient:
     signature: "linear-gradient(135deg, #0052FF, #4D7CFF)"
@@ -54,8 +73,16 @@ tokens:
 dark_mode:
   color:
     background: "#0F172A"
-    surface: "#1E293B"
-    on-background: "#F1F5F9"
+    foreground: "#F1F5F9"
+    card: "#1E293B"
+    card-foreground: "#F1F5F9"
+    muted: "#64748B"
+    muted-foreground: "#94A3B8"
+    border: "#334155"
+    input: "#334155"
+    sidebar-background: "#1E293B"
+    sidebar-foreground: "#F1F5F9"
+    sidebar-border: "#334155"
 
 intensity:
   variance: 4     # structured layouts with strategic asymmetry (hero 1.1fr/0.9fr), not chaotic

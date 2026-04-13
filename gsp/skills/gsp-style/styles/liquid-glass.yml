@@ -5,14 +5,35 @@ trend_ref: trends/liquid-glass.md
 
 tokens:
   color:
-    primary: "#007AFF"
-    secondary: "#5856D6"
-    accent: "#FF2D55"
+    # Core — shadcn/ui CSS vars
     background: "#F2F2F7"
-    surface: "rgba(255, 255, 255, 0.60)"
-    on-primary: "#FFFFFF"
-    on-background: "#1C1C1E"
-    error: "#FF3B30"
+    foreground: "#1C1C1E"
+    card: "oklch(100% 0 0 / 0.60)"
+    card-foreground: "#1C1C1E"
+    popover: "oklch(100% 0 0 / 0.60)"
+    popover-foreground: "#1C1C1E"
+    primary: "#007AFF"
+    primary-foreground: "#FFFFFF"
+    secondary: "#5856D6"
+    secondary-foreground: "#FFFFFF"
+    accent: "#FF2D55"
+    accent-foreground: "#FFFFFF"
+    muted: "#E5E5EA"
+    muted-foreground: "#8E8E93"
+    destructive: "#FF3B30"
+    border: "oklch(100% 0 0 / 0.80)"
+    input: "oklch(100% 0 0 / 0.80)"
+    ring: "#007AFF"
+    # Sidebar
+    sidebar-background: "oklch(100% 0 0 / 0.60)"
+    sidebar-foreground: "#1C1C1E"
+    sidebar-primary: "#007AFF"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#E5E5EA"
+    sidebar-accent-foreground: "#1C1C1E"
+    sidebar-border: "oklch(100% 0 0 / 0.80)"
+    sidebar-ring: "#007AFF"
+    # Extras
     success: "#34C759"
     warning: "#FF9500"
     info: "#5AC8FA"
@@ -30,7 +51,6 @@ tokens:
     border-radius-md: "16px"
     border-radius-lg: "24px"
     border-width: "0.5px"
-    border-color: "rgba(255, 255, 255, 0.80)"
 
   elevation:
     shadow-sm: "0 2px 8px rgba(0, 0, 0, 0.08)"
@@ -57,10 +77,34 @@ tokens:
 
 dark_mode:
   color:
+    # Core — shadcn/ui CSS vars
     background: "#000000"
-    surface: "rgba(255, 255, 255, 0.10)"
-    on-background: "#F5F5F7"
-    border-color: "rgba(255, 255, 255, 0.18)"
+    foreground: "#F5F5F7"
+    card: "oklch(100% 0 0 / 0.10)"
+    card-foreground: "#F5F5F7"
+    popover: "oklch(100% 0 0 / 0.10)"
+    popover-foreground: "#F5F5F7"
+    primary: "#007AFF"
+    primary-foreground: "#FFFFFF"
+    secondary: "#5856D6"
+    secondary-foreground: "#FFFFFF"
+    accent: "#FF2D55"
+    accent-foreground: "#FFFFFF"
+    muted: "#1C1C1E"
+    muted-foreground: "#8E8E93"
+    destructive: "#FF3B30"
+    border: "oklch(100% 0 0 / 0.18)"
+    input: "oklch(100% 0 0 / 0.18)"
+    ring: "#007AFF"
+    # Sidebar
+    sidebar-background: "oklch(100% 0 0 / 0.10)"
+    sidebar-foreground: "#F5F5F7"
+    sidebar-primary: "#007AFF"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#1C1C1E"
+    sidebar-accent-foreground: "#F5F5F7"
+    sidebar-border: "oklch(100% 0 0 / 0.18)"
+    sidebar-ring: "#007AFF"
 
 intensity:
   variance: 3     # clean Apple grid layouts, consistent spacing, restrained composition

@@ -5,18 +5,38 @@ trend_ref: trends/botanical.md
 
 tokens:
   color:
-    primary: "#166534"
-    secondary: "#5D7052"
-    accent: "#C27B66"
+    # Core — shadcn/ui CSS vars
     background: "#F9F8F4"
-    surface: "#F7FEE7"
-    on-primary: "#FFFFFF"
-    on-background: "#2D3A31"
-    error: "#DC2626"
+    foreground: "#2D3A31"
+    card: "#F7FEE7"
+    card-foreground: "#2D3A31"
+    popover: "#F7FEE7"
+    popover-foreground: "#2D3A31"
+    primary: "#166534"
+    primary-foreground: "#FFFFFF"
+    secondary: "#5D7052"
+    secondary-foreground: "#FFFFFF"
+    accent: "#C27B66"
+    accent-foreground: "#FFFFFF"
+    muted: "#8C9A84"
+    muted-foreground: "#4D5C48"
+    destructive: "#DC2626"
+    border: "rgba(22,101,52,0.15)"
+    input: "rgba(22,101,52,0.15)"
+    ring: "#166534"
+    # Sidebar
+    sidebar-background: "#F7FEE7"
+    sidebar-foreground: "#2D3A31"
+    sidebar-primary: "#166534"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#E8F5E9"
+    sidebar-accent-foreground: "#2D3A31"
+    sidebar-border: "rgba(22,101,52,0.15)"
+    sidebar-ring: "#166534"
+    # Extras
     success: "#16A34A"
     warning: "#CA8A04"
     info: "#2563EB"
-    muted: "#8C9A84"
 
   typography:
     font-family-primary: "Playfair Display, serif"
@@ -32,7 +52,6 @@ tokens:
     border-radius-md: "16px"
     border-radius-lg: "32px"
     border-width: "1px"
-    border-color: "rgba(22,101,52,0.15)"
 
   elevation:
     shadow-sm: "0 2px 4px rgba(22,101,52,0.1)"
@@ -56,8 +75,13 @@ tokens:
 dark_mode:
   color:
     background: "#1A2E1A"
-    surface: "#243524"
-    on-background: "#E2EDE2"
+    foreground: "#E2EDE2"
+    card: "#243524"
+    card-foreground: "#E2EDE2"
+    popover: "#243524"
+    popover-foreground: "#E2EDE2"
+    border: "rgba(22,101,52,0.25)"
+    input: "rgba(22,101,52,0.25)"
 
 intensity:
   variance: 4     # staggered card offsets, arch imagery, but structured overall

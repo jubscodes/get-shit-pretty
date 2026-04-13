@@ -26,7 +26,7 @@
 
 | File | Content |
 |------|---------|
-| `{brand-name}.yml` | **Single source of truth.** The brand's aesthetic in GSP preset format: tokens + intensity + patterns + constraints + effects + dark_mode. Inherits from `style_base` preset, overrides brand-specific values. The builder generates CSS variables from this at build time using `references/token-mapping.md`. |
+| `{brand-name}.yml` | **Single source of truth.** The brand's aesthetic in GSP preset format: tokens + intensity + patterns + constraints + effects + dark_mode. Inherits from `style_base` preset, overrides brand-specific values. Token names map 1:1 to shadcn/ui CSS vars. Run `node bin/theme-css.js {brand-name}.yml` to generate the `:root`/`.dark` CSS block. |
 | `STYLE.md` | **Agent contract.** The single document designer and builder agents consume. Rendered from the `.yml` + brand philosophy (from strategy) + bold bets (from identity's most distinctive choices) + implementation patterns (from preset `.md` companion). Follows `templates/phases/style.md` format. |
 | `guidelines.html` | **User-visible brand guide.** Self-contained HTML with embedded CSS. Shows the brand using its own tokens: color swatches, type scale in actual fonts, component previews, spacing/elevation vis, constraints. Open in browser. |
 
@@ -34,7 +34,7 @@
 
 Component output is library-aware:
 
-1. **`token-mapping.md`** (always) — brand tokens → component library theming API. Complete, copy-paste-ready config. See `references/token-mapping.md` for the CSS generation spec.
+1. **`token-mapping.md`** (always) — brand tokens → component library theming API. Complete, copy-paste-ready config. Generate the CSS block with `node bin/theme-css.js {brand-name}.yml` — outputs OKLCH `:root`/`.dark` with all shadcn vars.
 2. **Override specs** (selective) — one file per library component needing treatment beyond tokens. Singular kebab-case naming.
 3. **Custom component specs** (selective) — one file per brand-distinctive component with no library equivalent. Includes: states, anatomy, usage rules, accessibility spec, code hints.
 
