@@ -82,14 +82,13 @@ Show a clear before/after for each affected token:
 
   ─── Proposed Changes ─────────────────
 
-  color.brand.accent
+  color.accent
     before: #B8860B
     after:  #E8A317
     change: increased chroma
 
   Cascade:
-    color.semantic.link        → #E8A317
-    color.semantic.focus-ring  → #E8A317
+    color.ring  → #E8A317 (shares accent as focus ring)
 
   Contrast: accent on white 3.2:1 → 2.8:1 ⚠️ below AA
             accent on dark  8.4:1 → 9.2:1 ✓
@@ -133,8 +132,8 @@ Append to `{BRAND_PATH}/REFINE-LOG.md`:
 
 | Token | Before | After |
 |-------|--------|-------|
-| color.brand.accent | #B8860B | #E8A317 |
-| color.semantic.link | #B8860B | #E8A317 |
+| color.accent | #B8860B | #E8A317 |
+| color.ring | #B8860B | #E8A317 |
 ```
 
 Display summary:

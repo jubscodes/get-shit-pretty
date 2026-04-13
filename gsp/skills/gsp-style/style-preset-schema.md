@@ -2,6 +2,13 @@
 
 Template for brand-derived style preset files (`{brand-name}.yml`). All token values must trace to foundation chunks. See any preset in `styles/` for a complete example.
 
+Token names map 1:1 to shadcn/ui CSS variables — no translation layer. `bin/theme-css.js` reads this file and outputs a ready-to-paste `:root`/`.dark` block.
+
+**Value formats:**
+- Solid colors: `"#RRGGBB"` hex — theme-css.js converts to OKLCH
+- Alpha colors (translucent presets): `"oklch(L% C H / A)"` — passed through as-is
+- Shadows, borders, font stacks: raw CSS strings
+
 ```yaml
 name: {brand-slug}
 description: {one-line brand aesthetic summary}
@@ -10,18 +17,40 @@ source: brand  # marks this as brand-derived, not a GSP preset
 
 tokens:
   color:
-    primary: "{hex}"        # from identity/color-system.md
-    secondary: "{hex}"
-    accent: "{hex}"
-    background: "{hex}"
-    surface: "{hex}"
-    on-primary: "{hex}"
-    on-background: "{hex}"
-    error: "{hex}"
+    # Core — map directly to shadcn/ui :root CSS vars
+    background: "{hex}"           # --background
+    foreground: "{hex}"           # --foreground (primary text)
+    card: "{hex}"                 # --card (panel/card fill; use oklch/alpha for translucent)
+    card-foreground: "{hex}"      # --card-foreground
+    popover: "{hex}"              # --popover (usually same as card)
+    popover-foreground: "{hex}"   # --popover-foreground
+    primary: "{hex}"              # --primary
+    primary-foreground: "{hex}"   # --primary-foreground
+    secondary: "{hex}"            # --secondary
+    secondary-foreground: "{hex}" # --secondary-foreground
+    accent: "{hex}"               # --accent
+    accent-foreground: "{hex}"    # --accent-foreground
+    muted: "{hex}"                # --muted
+    muted-foreground: "{hex}"     # --muted-foreground
+    destructive: "{hex}"          # --destructive (replaces legacy error)
+    border: "{hex}"               # --border (absorbs legacy shape.border-color)
+    input: "{hex}"                # --input (usually same as border)
+    ring: "{hex}"                 # --ring (focus ring, usually same as primary)
+
+    # Sidebar — explicit for full design control
+    sidebar-background: "{hex}"            # --sidebar-background
+    sidebar-foreground: "{hex}"            # --sidebar-foreground
+    sidebar-primary: "{hex}"               # --sidebar-primary
+    sidebar-primary-foreground: "{hex}"    # --sidebar-primary-foreground
+    sidebar-accent: "{hex}"                # --sidebar-accent
+    sidebar-accent-foreground: "{hex}"     # --sidebar-accent-foreground
+    sidebar-border: "{hex}"                # --sidebar-border
+    sidebar-ring: "{hex}"                  # --sidebar-ring
+
+    # Extras — generate as custom properties (--success, --warning, --info)
     success: "{hex}"
     warning: "{hex}"
     info: "{hex}"
-    muted: "{hex}"
 
   typography:
     font-family-primary: "{font stack}"  # from identity/typography.md
@@ -32,11 +61,12 @@ tokens:
     line-height-base: {number}
 
   shape:
-    border-radius-sm: "{px}"  # from patterns/component specs
+    # border-radius-lg → --radius; sm/md used in pattern references
+    border-radius-sm: "{px}"
     border-radius-md: "{px}"
     border-radius-lg: "{px}"
     border-width: "{px}"
-    border-color: "{hex}"
+    # Note: border-color removed — use color.border above
 
   elevation:
     shadow-sm: "{value}"
@@ -55,11 +85,18 @@ tokens:
 
 dark_mode:
   color:
+    # Only list tokens that differ from light mode
     background: "{hex}"
-    surface: "{hex}"
-    on-background: "{hex}"
-    border-color: "{hex}"
+    foreground: "{hex}"
+    card: "{hex}"
+    card-foreground: "{hex}"
     muted: "{hex}"
+    muted-foreground: "{hex}"
+    border: "{hex}"
+    input: "{hex}"
+    sidebar-background: "{hex}"
+    sidebar-border: "{hex}"
+    # primary/accent/destructive only if they change in dark mode
 
 intensity:
   variance: {1-10}    # layout creativity — 1=strict grid, 10=experimental

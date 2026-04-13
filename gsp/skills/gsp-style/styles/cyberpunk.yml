@@ -4,14 +4,35 @@ tags: [dark, neon, expressive, futuristic, bold]
 
 tokens:
   color:
-    primary: "#00FFFF"
-    secondary: "#FF00FF"
-    accent: "#FFFF00"
+    # Core — shadcn/ui CSS vars
     background: "#0A0A0F"
-    surface: "#12121A"
-    on-primary: "#000000"
-    on-background: "#E0E0FF"
-    error: "#FF3366"
+    foreground: "#E0E0FF"
+    card: "#12121A"
+    card-foreground: "#E0E0FF"
+    popover: "#12121A"
+    popover-foreground: "#E0E0FF"
+    primary: "#00FFFF"
+    primary-foreground: "#000000"
+    secondary: "#FF00FF"
+    secondary-foreground: "#000000"
+    accent: "#FFFF00"
+    accent-foreground: "#000000"
+    muted: "#1A1A28"
+    muted-foreground: "#8080B0"
+    destructive: "#FF3366"
+    border: "rgba(0, 255, 255, 0.3)"
+    input: "rgba(0, 255, 255, 0.3)"
+    ring: "#00FFFF"
+    # Sidebar
+    sidebar-background: "#12121A"
+    sidebar-foreground: "#E0E0FF"
+    sidebar-primary: "#00FFFF"
+    sidebar-primary-foreground: "#000000"
+    sidebar-accent: "#1A1A28"
+    sidebar-accent-foreground: "#E0E0FF"
+    sidebar-border: "rgba(0, 255, 255, 0.3)"
+    sidebar-ring: "#00FFFF"
+    # Extras
     success: "#00FF88"
     warning: "#FFB800"
     info: "#00BFFF"
@@ -30,7 +51,6 @@ tokens:
     border-radius-md: "4px"
     border-radius-lg: "8px"
     border-width: "1px"
-    border-color: "rgba(0, 255, 255, 0.3)"
 
   elevation:
     shadow-sm: "0 0 8px rgba(0, 255, 255, 0.15)"
@@ -56,7 +76,13 @@ tokens:
 dark_mode:
   color:
     background: "#050508"
-    surface: "#0A0A12"
+    foreground: "#E0E0FF"
+    card: "#0A0A12"
+    card-foreground: "#E0E0FF"
+    popover: "#0A0A12"
+    popover-foreground: "#E0E0FF"
+    border: "rgba(0, 255, 255, 0.3)"
+    input: "rgba(0, 255, 255, 0.3)"
 
 intensity:
   variance: 8     # asymmetric HUD layouts, skewed grids, overlapping neon panels

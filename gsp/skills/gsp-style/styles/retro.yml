@@ -4,14 +4,35 @@ tags: [vintage, retro, nostalgic, 90s, windows95]
 
 tokens:
   color:
-    primary: "#0000FF"
-    secondary: "#FF0000"
-    accent: "#FFFF00"
+    # Core — shadcn/ui CSS vars
     background: "#C0C0C0"
-    surface: "#FFFFFF"
-    on-primary: "#FFFFFF"
-    on-background: "#000000"
-    error: "#FF0000"
+    foreground: "#000000"
+    card: "#FFFFFF"
+    card-foreground: "#000000"
+    popover: "#FFFFFF"
+    popover-foreground: "#000000"
+    primary: "#0000FF"
+    primary-foreground: "#FFFFFF"
+    secondary: "#FF0000"
+    secondary-foreground: "#FFFFFF"
+    accent: "#FFFF00"
+    accent-foreground: "#000000"
+    muted: "#808080"
+    muted-foreground: "#404040"
+    destructive: "#FF0000"
+    border: "#808080"
+    input: "#808080"
+    ring: "#0000FF"
+    # Sidebar
+    sidebar-background: "#FFFFFF"
+    sidebar-foreground: "#000000"
+    sidebar-primary: "#0000FF"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#C0C0C0"
+    sidebar-accent-foreground: "#000000"
+    sidebar-border: "#808080"
+    sidebar-ring: "#0000FF"
+    # Extras
     success: "#00FF00"
     warning: "#FFFF00"
     info: "#0000FF"
@@ -34,7 +55,6 @@ tokens:
     border-radius-md: "0px"
     border-radius-lg: "0px"
     border-width: "2px"
-    border-color: "#808080"
 
   bevel:
     outset: "border-color: #ffffff #808080 #808080 #ffffff"
@@ -58,8 +78,16 @@ tokens:
 dark_mode:
   color:
     background: "#000080"
-    surface: "#000000"
-    on-background: "#C0C0C0"
+    foreground: "#C0C0C0"
+    card: "#000000"
+    card-foreground: "#C0C0C0"
+    muted: "#404040"
+    muted-foreground: "#808080"
+    border: "#808080"
+    input: "#808080"
+    sidebar-background: "#000000"
+    sidebar-foreground: "#C0C0C0"
+    sidebar-border: "#808080"
 
 intensity:
   variance: 8     # chaotic layouts, clashing colors, deliberate visual excess

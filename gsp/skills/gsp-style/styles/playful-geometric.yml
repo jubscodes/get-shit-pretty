@@ -4,14 +4,35 @@ tags: [geometric, playful, fun, colorful, bouncy]
 
 tokens:
   color:
-    primary: "#3B82F6"
-    secondary: "#F472B6"
-    accent: "#8B5CF6"
+    # Core — shadcn/ui CSS vars
     background: "#FFFDF5"
-    surface: "#FFFFFF"
-    on-primary: "#FFFFFF"
-    on-background: "#1E293B"
-    error: "#EF4444"
+    foreground: "#1E293B"
+    card: "#FFFFFF"
+    card-foreground: "#1E293B"
+    popover: "#FFFFFF"
+    popover-foreground: "#1E293B"
+    primary: "#3B82F6"
+    primary-foreground: "#FFFFFF"
+    secondary: "#F472B6"
+    secondary-foreground: "#FFFFFF"
+    accent: "#8B5CF6"
+    accent-foreground: "#FFFFFF"
+    muted: "#CBD5E1"
+    muted-foreground: "#64748B"
+    destructive: "#EF4444"
+    border: "#1E293B"
+    input: "#1E293B"
+    ring: "#3B82F6"
+    # Sidebar
+    sidebar-background: "#FFFFFF"
+    sidebar-foreground: "#1E293B"
+    sidebar-primary: "#3B82F6"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#8B5CF6"
+    sidebar-accent-foreground: "#FFFFFF"
+    sidebar-border: "#1E293B"
+    sidebar-ring: "#3B82F6"
+    # Extras
     success: "#34D399"
     warning: "#FBBF24"
     info: "#3B82F6"
@@ -37,7 +58,6 @@ tokens:
     border-radius-md: "16px"
     border-radius-lg: "9999px"
     border-width: "2px"
-    border-color: "#1E293B"
 
   elevation:
     shadow-sm: "4px 4px 0px #1E293B"
@@ -57,8 +77,16 @@ tokens:
 dark_mode:
   color:
     background: "#1E293B"
-    surface: "#334155"
-    on-background: "#F8FAFC"
+    foreground: "#F8FAFC"
+    card: "#334155"
+    card-foreground: "#F8FAFC"
+    muted: "#475569"
+    muted-foreground: "#94A3B8"
+    border: "#F8FAFC"
+    input: "#F8FAFC"
+    sidebar-background: "#334155"
+    sidebar-foreground: "#F8FAFC"
+    sidebar-border: "#F8FAFC"
 
 intensity:
   variance: 7     # Memphis shapes, confetti decoration, blob radii, rotated elements
@@ -137,7 +165,7 @@ effects:
     button-primary: "pop-lift — translate(-2px, -2px), shadow extends to 6px 6px"
     button-secondary: "candy-fill — background floods with surprise color (amber/yellow)"
     link: "squiggly underline SVG appears, color shifts to {color.accent}"
-    badge: "wiggle-jiggle — rotate oscillates +-3deg"
+    badge: "wiggle-jiggle — rotation oscillates +-3deg"
   active:
     button: "sticker-press — translate(2px, 2px), shadow shrinks to 2px 2px"
   focus:

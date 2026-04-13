@@ -4,18 +4,38 @@ tags: [developer, monospace, dark, minimal, technical]
 
 tokens:
   color:
-    primary: "#22C55E"
-    secondary: "#3B82F6"
-    accent: "#F59E0B"
+    # Core — shadcn/ui CSS vars
     background: "#0D1117"
-    surface: "#161B22"
-    on-primary: "#000000"
-    on-background: "#C9D1D9"
-    error: "#F85149"
+    foreground: "#C9D1D9"
+    card: "#161B22"
+    card-foreground: "#C9D1D9"
+    popover: "#161B22"
+    popover-foreground: "#C9D1D9"
+    primary: "#22C55E"
+    primary-foreground: "#000000"
+    secondary: "#3B82F6"
+    secondary-foreground: "#000000"
+    accent: "#F59E0B"
+    accent-foreground: "#000000"
+    muted: "#8B949E"
+    muted-foreground: "#6E7681"
+    destructive: "#F85149"
+    border: "#30363D"
+    input: "#30363D"
+    ring: "#22C55E"
+    # Sidebar
+    sidebar-background: "#161B22"
+    sidebar-foreground: "#C9D1D9"
+    sidebar-primary: "#22C55E"
+    sidebar-primary-foreground: "#000000"
+    sidebar-accent: "#21262D"
+    sidebar-accent-foreground: "#C9D1D9"
+    sidebar-border: "#30363D"
+    sidebar-ring: "#22C55E"
+    # Extras
     success: "#3FB950"
     warning: "#D29922"
     info: "#58A6FF"
-    muted: "#8B949E"
 
   syntax:
     keyword: "#FF7B72"
@@ -38,7 +58,6 @@ tokens:
     border-radius-md: "6px"
     border-radius-lg: "8px"
     border-width: "1px"
-    border-color: "#30363D"
 
   elevation:
     shadow-sm: "0 1px 3px rgba(0, 0, 0, 0.3)"
@@ -58,7 +77,16 @@ tokens:
 dark_mode:
   color:
     background: "#010409"
-    surface: "#0D1117"
+    foreground: "#C9D1D9"
+    card: "#0D1117"
+    card-foreground: "#C9D1D9"
+    muted: "#8B949E"
+    muted-foreground: "#6E7681"
+    border: "#21262D"
+    input: "#21262D"
+    sidebar-background: "#0D1117"
+    sidebar-foreground: "#C9D1D9"
+    sidebar-border: "#21262D"
 
 intensity:
   variance: 3     # rigid character grid, tmux-like splits, uniform pane structure

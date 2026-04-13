@@ -5,18 +5,38 @@ trend_ref: trends/industrial.md
 
 tokens:
   color:
-    primary: "#FF4757"
-    secondary: "#F59E0B"
-    accent: "#DC2626"
+    # Core — shadcn/ui CSS vars
     background: "#E0E5EC"
-    surface: "#F0F2F5"
-    on-primary: "#FFFFFF"
-    on-background: "#2D3436"
-    error: "#DC2626"
+    foreground: "#2D3436"
+    card: "#F0F2F5"
+    card-foreground: "#2D3436"
+    popover: "#F0F2F5"
+    popover-foreground: "#2D3436"
+    primary: "#FF4757"
+    primary-foreground: "#FFFFFF"
+    secondary: "#F59E0B"
+    secondary-foreground: "#FFFFFF"
+    accent: "#DC2626"
+    accent-foreground: "#FFFFFF"
+    muted: "#78716C"
+    muted-foreground: "#A8A29E"
+    destructive: "#DC2626"
+    border: "#D6D3D1"
+    input: "#D6D3D1"
+    ring: "#FF4757"
+    # Sidebar
+    sidebar-background: "#F0F2F5"
+    sidebar-foreground: "#2D3436"
+    sidebar-primary: "#FF4757"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#E0E5EC"
+    sidebar-accent-foreground: "#2D3436"
+    sidebar-border: "#D6D3D1"
+    sidebar-ring: "#FF4757"
+    # Extras
     success: "#16A34A"
     warning: "#F59E0B"
     info: "#2563EB"
-    muted: "#78716C"
 
   typography:
     font-family-primary: "Inter, sans-serif"
@@ -32,7 +52,6 @@ tokens:
     border-radius-md: "2px"
     border-radius-lg: "4px"
     border-width: "2px"
-    border-color: "#D6D3D1"
 
   elevation:
     shadow-sm: "4px 4px 8px rgba(163,177,198,0.6), -4px -4px 8px rgba(255,255,255,0.5)"
@@ -55,9 +74,34 @@ tokens:
 
 dark_mode:
   color:
+    # Core — shadcn/ui CSS vars
     background: "#2D3436"
-    surface: "#3D4446"
-    on-background: "#DFE6E9"
+    foreground: "#DFE6E9"
+    card: "#3D4446"
+    card-foreground: "#DFE6E9"
+    popover: "#3D4446"
+    popover-foreground: "#DFE6E9"
+    primary: "#FF4757"
+    primary-foreground: "#FFFFFF"
+    secondary: "#F59E0B"
+    secondary-foreground: "#FFFFFF"
+    accent: "#DC2626"
+    accent-foreground: "#FFFFFF"
+    muted: "#4A5568"
+    muted-foreground: "#78716C"
+    destructive: "#DC2626"
+    border: "#4A5568"
+    input: "#4A5568"
+    ring: "#FF4757"
+    # Sidebar
+    sidebar-background: "#3D4446"
+    sidebar-foreground: "#DFE6E9"
+    sidebar-primary: "#FF4757"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#4A5568"
+    sidebar-accent-foreground: "#DFE6E9"
+    sidebar-border: "#4A5568"
+    sidebar-ring: "#FF4757"
 
 intensity:
   variance: 5     # asymmetric hero splits, slight testimonial rotation, but grid-mounted precision

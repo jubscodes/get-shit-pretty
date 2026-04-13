@@ -4,18 +4,38 @@ tags: [natural, flowing, organic, wabi-sabi, curved]
 
 tokens:
   color:
-    primary: "#5D7052"
-    secondary: "#C18C5D"
-    accent: "#E6DCCD"
+    # Core — shadcn/ui CSS vars
     background: "#FDFCF8"
-    surface: "#F0EBE5"
-    on-primary: "#FFFFFF"
-    on-background: "#2C2C24"
-    error: "#DC2626"
+    foreground: "#2C2C24"
+    card: "#F0EBE5"
+    card-foreground: "#2C2C24"
+    popover: "#F0EBE5"
+    popover-foreground: "#2C2C24"
+    primary: "#5D7052"
+    primary-foreground: "#FFFFFF"
+    secondary: "#C18C5D"
+    secondary-foreground: "#FFFFFF"
+    accent: "#E6DCCD"
+    accent-foreground: "#2C2C24"
+    muted: "#6B7280"
+    muted-foreground: "#4B5563"
+    destructive: "#DC2626"
+    border: "rgba(93,112,82,0.15)"
+    input: "rgba(93,112,82,0.15)"
+    ring: "#5D7052"
+    # Sidebar
+    sidebar-background: "#F0EBE5"
+    sidebar-foreground: "#2C2C24"
+    sidebar-primary: "#5D7052"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#E6DCCD"
+    sidebar-accent-foreground: "#2C2C24"
+    sidebar-border: "rgba(93,112,82,0.15)"
+    sidebar-ring: "#5D7052"
+    # Extras
     success: "#059669"
     warning: "#D97706"
     info: "#2563EB"
-    muted: "#6B7280"
 
   typography:
     font-family-primary: "Fraunces, serif"
@@ -31,7 +51,6 @@ tokens:
     border-radius-md: "24px"
     border-radius-lg: "9999px"
     border-width: "1px"
-    border-color: "rgba(93,112,82,0.15)"
 
   blob:
     border-radius: "60% 40% 30% 70% / 60% 30% 70% 40%"
@@ -58,8 +77,16 @@ tokens:
 dark_mode:
   color:
     background: "#1E1E18"
-    surface: "#2C2C24"
-    on-background: "#E6DCCD"
+    foreground: "#E6DCCD"
+    card: "#2C2C24"
+    card-foreground: "#E6DCCD"
+    muted: "#4B5563"
+    muted-foreground: "#6B7280"
+    border: "rgba(230,220,205,0.12)"
+    input: "rgba(230,220,205,0.12)"
+    sidebar-background: "#2C2C24"
+    sidebar-foreground: "#E6DCCD"
+    sidebar-border: "rgba(230,220,205,0.12)"
 
 intensity:
   variance: 7

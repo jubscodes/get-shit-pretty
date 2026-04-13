@@ -5,14 +5,35 @@ trend_ref: trends/art-deco.md
 
 tokens:
   color:
-    primary: "#D4AF37"
-    secondary: "#1E3D59"
-    accent: "#F2F0E4"
+    # Core — shadcn/ui CSS vars
     background: "#0A0A0A"
-    surface: "#141414"
-    on-primary: "#000000"
-    on-background: "#F2F0E4"
-    error: "#DC2626"
+    foreground: "#F2F0E4"
+    card: "#141414"
+    card-foreground: "#F2F0E4"
+    popover: "#141414"
+    popover-foreground: "#F2F0E4"
+    primary: "#D4AF37"
+    primary-foreground: "#000000"
+    secondary: "#1E3D59"
+    secondary-foreground: "#F2F0E4"
+    accent: "#F2F0E4"
+    accent-foreground: "#000000"
+    muted: "#1F1F1F"
+    muted-foreground: "#A8A090"
+    destructive: "#DC2626"
+    border: "rgba(212, 175, 55, 0.3)"
+    input: "rgba(212, 175, 55, 0.3)"
+    ring: "#D4AF37"
+    # Sidebar
+    sidebar-background: "#141414"
+    sidebar-foreground: "#F2F0E4"
+    sidebar-primary: "#D4AF37"
+    sidebar-primary-foreground: "#000000"
+    sidebar-accent: "#1F1F1F"
+    sidebar-accent-foreground: "#F2F0E4"
+    sidebar-border: "rgba(212, 175, 55, 0.3)"
+    sidebar-ring: "#D4AF37"
+    # Extras
     success: "#16A34A"
     warning: "#F59E0B"
     info: "#3B82F6"
@@ -31,7 +52,6 @@ tokens:
     border-radius-md: "2px"
     border-radius-lg: "6px"
     border-width: "1px"
-    border-color: "rgba(212, 175, 55, 0.3)"
 
   elevation:
     shadow-sm: "0 0 10px rgba(212,175,55,0.1)"
@@ -55,7 +75,13 @@ tokens:
 dark_mode:
   color:
     background: "#050505"
-    surface: "#0A0A0A"
+    foreground: "#F2F0E4"
+    card: "#0A0A0A"
+    card-foreground: "#F2F0E4"
+    popover: "#0A0A0A"
+    popover-foreground: "#F2F0E4"
+    border: "rgba(212, 175, 55, 0.3)"
+    input: "rgba(212, 175, 55, 0.3)"
 
 intensity:
   variance: 3     # bilateral symmetry, centered axes, mathematical precision

@@ -4,14 +4,35 @@ tags: [bold, expressive, abundant, colorful, maximalist]
 
 tokens:
   color:
-    primary: "#FF3AF2"
-    secondary: "#7B2FFF"
-    accent: "#00F5D4"
+    # Core — shadcn/ui CSS vars
     background: "#0D0D1A"
-    surface: "#1A1A2E"
-    on-primary: "#000000"
-    on-background: "#FFFFFF"
-    error: "#FF6B6B"
+    foreground: "#FFFFFF"
+    card: "#1A1A2E"
+    card-foreground: "#FFFFFF"
+    popover: "#1A1A2E"
+    popover-foreground: "#FFFFFF"
+    primary: "#FF3AF2"
+    primary-foreground: "#000000"
+    secondary: "#7B2FFF"
+    secondary-foreground: "#000000"
+    accent: "#00F5D4"
+    accent-foreground: "#000000"
+    muted: "#2D1B4E"
+    muted-foreground: "#9B8EC4"
+    destructive: "#FF6B6B"
+    border: "#FF3AF2"
+    input: "#FF3AF2"
+    ring: "#FF3AF2"
+    # Sidebar
+    sidebar-background: "#1A1A2E"
+    sidebar-foreground: "#FFFFFF"
+    sidebar-primary: "#FF3AF2"
+    sidebar-primary-foreground: "#000000"
+    sidebar-accent: "#2D1B4E"
+    sidebar-accent-foreground: "#FFFFFF"
+    sidebar-border: "#FF3AF2"
+    sidebar-ring: "#FF3AF2"
+    # Extras
     success: "#00F5D4"
     warning: "#FFE600"
     info: "#00BFFF"
@@ -37,7 +58,6 @@ tokens:
     border-radius-md: "12px"
     border-radius-lg: "9999px"
     border-width: "4px"
-    border-color: "#FF3AF2"
 
   elevation:
     shadow-sm: "4px 4px 0px rgba(236,72,153,0.3)"

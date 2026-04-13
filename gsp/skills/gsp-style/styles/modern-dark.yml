@@ -4,18 +4,38 @@ tags: [modern, dark, cinematic, linear, vercel]
 
 tokens:
   color:
-    primary: "#5E6AD2"
-    secondary: "#EC4899"
-    accent: "#06B6D4"
+    # Core — shadcn/ui CSS vars
     background: "#050506"
-    surface: "rgba(255,255,255,0.05)"
-    on-primary: "#FFFFFF"
-    on-background: "#FAFAFA"
-    error: "#EF4444"
+    foreground: "#FAFAFA"
+    card: "oklch(100% 0 0 / 0.05)"
+    card-foreground: "#FAFAFA"
+    popover: "oklch(100% 0 0 / 0.05)"
+    popover-foreground: "#FAFAFA"
+    primary: "#5E6AD2"
+    primary-foreground: "#FFFFFF"
+    secondary: "#EC4899"
+    secondary-foreground: "#FFFFFF"
+    accent: "#06B6D4"
+    accent-foreground: "#000000"
+    muted: "#A1A1AA"
+    muted-foreground: "#71717A"
+    destructive: "#EF4444"
+    border: "rgba(255,255,255,0.06)"
+    input: "rgba(255,255,255,0.06)"
+    ring: "#5E6AD2"
+    # Sidebar
+    sidebar-background: "oklch(100% 0 0 / 0.05)"
+    sidebar-foreground: "#FAFAFA"
+    sidebar-primary: "#5E6AD2"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "rgba(255,255,255,0.08)"
+    sidebar-accent-foreground: "#FAFAFA"
+    sidebar-border: "rgba(255,255,255,0.06)"
+    sidebar-ring: "#5E6AD2"
+    # Extras
     success: "#22C55E"
     warning: "#F59E0B"
     info: "#3B82F6"
-    muted: "#A1A1AA"
 
   typography:
     font-family-primary: "Inter, Geist Sans, system-ui, sans-serif"
@@ -30,7 +50,6 @@ tokens:
     border-radius-md: "16px"
     border-radius-lg: "24px"
     border-width: "1px"
-    border-color: "rgba(255,255,255,0.06)"
 
   elevation:
     shadow-sm: "0 0 0 1px rgba(255,255,255,0.06), 0 2px 20px rgba(0,0,0,0.4)"

@@ -4,18 +4,38 @@ tags: [web3, crypto, blockchain, defi, dark]
 
 tokens:
   color:
-    primary: "#F7931A"
-    secondary: "#EA580C"
-    accent: "#FFD600"
+    # Core — shadcn/ui CSS vars
     background: "#030304"
-    surface: "#0F1115"
-    on-primary: "#000000"
-    on-background: "#FFFFFF"
-    error: "#EF4444"
+    foreground: "#FFFFFF"
+    card: "#0F1115"
+    card-foreground: "#FFFFFF"
+    popover: "#0F1115"
+    popover-foreground: "#FFFFFF"
+    primary: "#F7931A"
+    primary-foreground: "#000000"
+    secondary: "#EA580C"
+    secondary-foreground: "#000000"
+    accent: "#FFD600"
+    accent-foreground: "#000000"
+    muted: "#94A3B8"
+    muted-foreground: "#64748B"
+    destructive: "#EF4444"
+    border: "rgba(247,147,26,0.3)"
+    input: "rgba(247,147,26,0.3)"
+    ring: "#F7931A"
+    # Sidebar
+    sidebar-background: "#0F1115"
+    sidebar-foreground: "#FFFFFF"
+    sidebar-primary: "#F7931A"
+    sidebar-primary-foreground: "#000000"
+    sidebar-accent: "#FFD600"
+    sidebar-accent-foreground: "#000000"
+    sidebar-border: "rgba(247,147,26,0.3)"
+    sidebar-ring: "#F7931A"
+    # Extras
     success: "#10B981"
     warning: "#F7931A"
     info: "#3B82F6"
-    muted: "#94A3B8"
 
   typography:
     font-family-primary: "Space Grotesk, sans-serif"
@@ -31,7 +51,6 @@ tokens:
     border-radius-md: "8px"
     border-radius-lg: "9999px"
     border-width: "1px"
-    border-color: "rgba(247,147,26,0.3)"
 
   glass:
     backdrop-blur: "12px"
@@ -58,8 +77,16 @@ tokens:
 dark_mode:
   color:
     background: "#030304"
-    surface: "#0F1115"
-    on-background: "#FFFFFF"
+    foreground: "#FFFFFF"
+    card: "#0F1115"
+    card-foreground: "#FFFFFF"
+    muted: "#94A3B8"
+    muted-foreground: "#64748B"
+    border: "rgba(247,147,26,0.3)"
+    input: "rgba(247,147,26,0.3)"
+    sidebar-background: "#0F1115"
+    sidebar-foreground: "#FFFFFF"
+    sidebar-border: "rgba(247,147,26,0.3)"
 
 intensity:
   variance: 5     # asymmetric pricing scale, corner border accents, but grid-disciplined overall

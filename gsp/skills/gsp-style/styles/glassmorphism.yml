@@ -5,14 +5,35 @@ trend_ref: trends/glassmorphism.md
 
 tokens:
   color:
-    primary: "#6366F1"
-    secondary: "#8B5CF6"
-    accent: "#EC4899"
+    # Core — shadcn/ui CSS vars
     background: "#0F172A"
-    surface: "rgba(255, 255, 255, 0.12)"
-    on-primary: "#FFFFFF"
-    on-background: "#F8FAFC"
-    error: "#EF4444"
+    foreground: "#F8FAFC"
+    card: "oklch(100% 0 0 / 0.12)"
+    card-foreground: "#F8FAFC"
+    popover: "oklch(100% 0 0 / 0.12)"
+    popover-foreground: "#F8FAFC"
+    primary: "#6366F1"
+    primary-foreground: "#FFFFFF"
+    secondary: "#8B5CF6"
+    secondary-foreground: "#FFFFFF"
+    accent: "#EC4899"
+    accent-foreground: "#FFFFFF"
+    muted: "oklch(100% 0 0 / 0.08)"
+    muted-foreground: "#94A3B8"
+    destructive: "#EF4444"
+    border: "oklch(100% 0 0 / 0.20)"
+    input: "oklch(100% 0 0 / 0.20)"
+    ring: "#6366F1"
+    # Sidebar
+    sidebar-background: "oklch(100% 0 0 / 0.08)"
+    sidebar-foreground: "#F8FAFC"
+    sidebar-primary: "#6366F1"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "oklch(100% 0 0 / 0.12)"
+    sidebar-accent-foreground: "#F8FAFC"
+    sidebar-border: "oklch(100% 0 0 / 0.20)"
+    sidebar-ring: "#6366F1"
+    # Extras
     success: "#22C55E"
     warning: "#F59E0B"
     info: "#3B82F6"
@@ -30,7 +51,6 @@ tokens:
     border-radius-md: "16px"
     border-radius-lg: "24px"
     border-width: "1px"
-    border-color: "rgba(255, 255, 255, 0.20)"
 
   elevation:
     shadow-sm: "0 4px 16px rgba(31, 38, 135, 0.15)"
@@ -57,8 +77,13 @@ tokens:
 dark_mode:
   color:
     background: "#020617"
-    surface: "rgba(255, 255, 255, 0.08)"
-    on-background: "#E2E8F0"
+    foreground: "#E2E8F0"
+    card: "oklch(100% 0 0 / 0.08)"
+    card-foreground: "#E2E8F0"
+    popover: "oklch(100% 0 0 / 0.08)"
+    popover-foreground: "#E2E8F0"
+    border: "oklch(100% 0 0 / 0.15)"
+    input: "oklch(100% 0 0 / 0.15)"
 
 intensity:
   variance: 5

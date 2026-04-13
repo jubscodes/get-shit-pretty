@@ -4,18 +4,38 @@ tags: [hand-drawn, sketch, artistic, doodle, whimsical]
 
 tokens:
   color:
-    primary: "#2D3748"
-    secondary: "#2D5DA1"
-    accent: "#FF4D4D"
+    # Core — shadcn/ui CSS vars
     background: "#FDFBF7"
-    surface: "#FFFDF7"
-    on-primary: "#FFFFFF"
-    on-background: "#2D2D2D"
-    error: "#FF4D4D"
+    foreground: "#2D2D2D"
+    card: "#FFFDF7"
+    card-foreground: "#2D2D2D"
+    popover: "#FFFDF7"
+    popover-foreground: "#2D2D2D"
+    primary: "#2D3748"
+    primary-foreground: "#FFFFFF"
+    secondary: "#2D5DA1"
+    secondary-foreground: "#FFFFFF"
+    accent: "#FF4D4D"
+    accent-foreground: "#FFFFFF"
+    muted: "#718096"
+    muted-foreground: "#4A5568"
+    destructive: "#FF4D4D"
+    border: "#2D3748"
+    input: "#2D3748"
+    ring: "#2D3748"
+    # Sidebar
+    sidebar-background: "#FFFDF7"
+    sidebar-foreground: "#2D2D2D"
+    sidebar-primary: "#2D3748"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#FF4D4D"
+    sidebar-accent-foreground: "#FFFFFF"
+    sidebar-border: "#2D3748"
+    sidebar-ring: "#2D3748"
+    # Extras
     success: "#48BB78"
     warning: "#ED8936"
     info: "#2D5DA1"
-    muted: "#718096"
 
   typography:
     font-family-primary: "Kalam, cursive"
@@ -31,7 +51,6 @@ tokens:
     border-radius-md: "8px 12px 10px 14px"
     border-radius-lg: "12px 16px 14px 18px"
     border-width: "2px"
-    border-color: "#2D3748"
 
   elevation:
     shadow-sm: "2px 2px 0px #2D3748"
@@ -51,8 +70,16 @@ tokens:
 dark_mode:
   color:
     background: "#1A1A2E"
-    surface: "#2D2D48"
-    on-background: "#FDFBF7"
+    foreground: "#FDFBF7"
+    card: "#2D2D48"
+    card-foreground: "#FDFBF7"
+    muted: "#4A5568"
+    muted-foreground: "#718096"
+    border: "#FDFBF7"
+    input: "#FDFBF7"
+    sidebar-background: "#2D2D48"
+    sidebar-foreground: "#FDFBF7"
+    sidebar-border: "#FDFBF7"
 
 intensity:
   variance: 8     # wobbly borders, random rotations, asymmetric radii, tape/tack decorations

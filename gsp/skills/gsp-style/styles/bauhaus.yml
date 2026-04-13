@@ -5,14 +5,35 @@ trend_ref: trends/bauhaus.md
 
 tokens:
   color:
-    primary: "#D02020"
-    secondary: "#1040C0"
-    accent: "#F0C020"
+    # Core — shadcn/ui CSS vars
     background: "#FFFFFF"
-    surface: "#F0F0F0"
-    on-primary: "#FFFFFF"
-    on-background: "#000000"
-    error: "#DC2626"
+    foreground: "#000000"
+    card: "#F0F0F0"
+    card-foreground: "#000000"
+    popover: "#F0F0F0"
+    popover-foreground: "#000000"
+    primary: "#D02020"
+    primary-foreground: "#FFFFFF"
+    secondary: "#1040C0"
+    secondary-foreground: "#FFFFFF"
+    accent: "#F0C020"
+    accent-foreground: "#000000"
+    muted: "#E0E0E0"
+    muted-foreground: "#555555"
+    destructive: "#DC2626"
+    border: "#000000"
+    input: "#000000"
+    ring: "#D02020"
+    # Sidebar
+    sidebar-background: "#F0F0F0"
+    sidebar-foreground: "#000000"
+    sidebar-primary: "#D02020"
+    sidebar-primary-foreground: "#FFFFFF"
+    sidebar-accent: "#E0E0E0"
+    sidebar-accent-foreground: "#000000"
+    sidebar-border: "#000000"
+    sidebar-ring: "#D02020"
+    # Extras
     success: "#16A34A"
     warning: "#F0C020"
     info: "#1040C0"
@@ -30,7 +51,6 @@ tokens:
     border-radius-md: "0px"
     border-radius-lg: "9999px"
     border-width: "4px"
-    border-color: "#000000"
 
   elevation:
     shadow-sm: "4px 4px 0px 0px #000000"
@@ -50,8 +70,13 @@ tokens:
 dark_mode:
   color:
     background: "#1A1A1A"
-    surface: "#2A2A2A"
-    on-background: "#F0F0F0"
+    foreground: "#F0F0F0"
+    card: "#2A2A2A"
+    card-foreground: "#F0F0F0"
+    popover: "#2A2A2A"
+    popover-foreground: "#F0F0F0"
+    border: "#F0F0F0"
+    input: "#F0F0F0"
 
 intensity:
   variance: 7     # asymmetric color-blocked sections, overlapping geometric shapes, broken grids

@@ -4,18 +4,38 @@ tags: [minimal, dark, atmospheric, amber, layered]
 
 tokens:
   color:
-    primary: "#F59E0B"
-    secondary: "#A1A1AA"
-    accent: "#FFFFFF"
+    # Core — shadcn/ui CSS vars
     background: "#0A0A0F"
-    surface: "#12121A"
-    on-primary: "#000000"
-    on-background: "#FAFAFA"
-    error: "#EF4444"
+    foreground: "#FAFAFA"
+    card: "#12121A"
+    card-foreground: "#FAFAFA"
+    popover: "#12121A"
+    popover-foreground: "#FAFAFA"
+    primary: "#F59E0B"
+    primary-foreground: "#000000"
+    secondary: "#A1A1AA"
+    secondary-foreground: "#000000"
+    accent: "#FFFFFF"
+    accent-foreground: "#000000"
+    muted: "#71717A"
+    muted-foreground: "#A1A1AA"
+    destructive: "#EF4444"
+    border: "rgba(255,255,255,0.06)"
+    input: "rgba(255,255,255,0.06)"
+    ring: "#F59E0B"
+    # Sidebar
+    sidebar-background: "#12121A"
+    sidebar-foreground: "#FAFAFA"
+    sidebar-primary: "#F59E0B"
+    sidebar-primary-foreground: "#000000"
+    sidebar-accent: "#1A1A24"
+    sidebar-accent-foreground: "#FAFAFA"
+    sidebar-border: "rgba(255,255,255,0.06)"
+    sidebar-ring: "#F59E0B"
+    # Extras
     success: "#22C55E"
     warning: "#F59E0B"
     info: "#3B82F6"
-    muted: "#71717A"
 
   typography:
     font-family-primary: "Space Grotesk, Inter, sans-serif"
@@ -30,7 +50,6 @@ tokens:
     border-radius-md: "12px"
     border-radius-lg: "16px"
     border-width: "1px"
-    border-color: "rgba(255,255,255,0.06)"
 
   elevation:
     shadow-sm: "0 1px 2px rgba(0,0,0,0.2)"
