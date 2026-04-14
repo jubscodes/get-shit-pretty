@@ -261,7 +261,41 @@ Check if `~/.claude/skills/` contains `gsp-*` directories when running from a lo
 - No matches → PASS
 - Matches found → FAIL: "Found {N} stale GSP skills in ~/.claude/skills/. Fix: run `npx get-shit-pretty --claude --local` to reinstall (the installer cleans stale globals automatically), or manually remove: `rm -rf ~/.claude/skills/gsp-*`"
 
-### Cross-Instance Checks
+### Stack Compliance Checks (shadcn targets)
+
+Only run these checks when `.design/system/STACK.md` exists and at least one project has `implementation_target: shadcn`.
+
+**Check S1: Alias drift**
+
+Run `npx shadcn@latest info --json` and extract `aliases.components`. Compare to `## Key Paths → Components` in STACK.md.
+
+If mismatch → FAIL: "shadcn alias drift — STACK.md declares `{declared}` but live config has `{live}`. Imports will break. Fix by updating `components.json` or `STACK.md`."
+
+**Check S2: Tailwind version drift**
+
+Run `node -e "console.log(require('tailwindcss/package.json').version)"`. Compare major version to `## Tech Stack → Styling` in STACK.md.
+
+If major version differs → FAIL: "Tailwind version drift — STACK.md declares `{declared}` but `{live}` is installed. Run `/gsp-scaffold` to realign or update STACK.md."
+
+**Check S3: Icon library drift**
+
+Read `components.json` → `iconLibrary`. Compare to icon library recorded in STACK.md (if present).
+
+If mismatch → WARN: "Icon library drift — STACK.md declares `{declared}` but `components.json` says `{live}`. Agents may import from the wrong package."
+
+**Check S4: Token presence in globals.css**
+
+Find the global CSS file (from `shadcn info --json` → `tailwindCssFile`, or glob for `globals.css`). Check it contains `--background`, `--foreground`, `--primary` CSS custom properties.
+
+If missing → WARN: "CSS custom properties not found in `{file}`. Token integration may be incomplete. Run `/gsp-project-build` foundations phase to regenerate."
+
+**Check S5: Tailwind v4 source scoping (if Tailwind v4)**
+
+If Tailwind v4 detected, check `globals.css` for `@import "tailwindcss"`. If present without `source(...)` modifier, and the repo contains non-source directories with Tailwind class names (like `.design/`) → WARN: "Tailwind v4 source not scoped. Add `source(\"../\")` to avoid scanning `.design/` spec files."
+
+All S checks pass → single PASS line: "S1-S5. Stack compliance .......... PASS"
+
+
 
 **Check X1: Multiple projects, same brand**
 If multiple projects reference the same brand, and brand has changed since any project consumed it → WARN with list of affected projects.
@@ -314,7 +348,14 @@ Overall Health: {SCORE}/100 {emoji}
   ✅ I4. VERSION file ............ PASS
   ✅ I5. No duplicate skills ..... PASS
 
-─── Cross-Instance ────────────────────
+  ─── Stack Compliance (shadcn) ────────
+  ✅ S1. Alias ....................... PASS
+  ✅ S2. Tailwind version ........... PASS
+  ✅ S3. Icon library ............... PASS
+  ✅ S4. CSS custom properties ....... PASS
+  ✅ S5. Source scoping .............. PASS
+
+  ─── Cross-Instance ────────────────────
   ✅ X1. Brand Consistency ...... PASS
 
 ─── Issues Found ──────────────────────

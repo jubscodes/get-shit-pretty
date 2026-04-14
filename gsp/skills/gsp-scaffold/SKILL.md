@@ -43,11 +43,43 @@ Read `{PROJECT_PATH}/config.json` to get:
 
 If `implementation_target` is `figma` or `skip`, log "⚠️ No scaffold needed for target: {target}" and exit.
 
-## Step 2: Read stack state
+## Step 2: Read stack state + compliance gate
 
 Read `.design/system/STACK.md` if it exists — check what's already set up.
 
-If STACK.md indicates the stack is already initialized (has framework, CSS, component library entries), log existing state and skip to Step 4 (component installs).
+### If STACK.md exists (existing or returning project)
+
+This workspace has a declared global stack. Enforce compliance before touching anything.
+
+1. **Read the live stack** from `components.json` (if present) and `package.json`:
+   - `npx shadcn@latest info --json` (if shadcn target) → captures `aliases`, `tailwindVersion`, `style`, `base`, `iconLibrary`
+   - `node -e "console.log(require('tailwindcss/package.json').version)"` → actual Tailwind version
+
+2. **Compare against STACK.md** — flag any of these divergences:
+
+   | What to check | STACK.md field | Live source |
+   |---|---|---|
+   | Framework | `## Tech Stack → Framework` | `package.json` dependencies |
+   | Tailwind version | `## Tech Stack → Styling` | Installed `tailwindcss` version |
+   | shadcn alias | `## Key Paths → Components` | `shadcn info` → `aliases.components` |
+   | shadcn style | (if recorded) | `shadcn info` → `style` |
+   | Icon library | (if recorded) | `shadcn info` → `iconLibrary` |
+
+3. **Gate on divergence:**
+   - If any divergence found, surface it clearly:
+     ```
+     ⚠️  Stack compliance — divergence detected
+
+       STACK.md declares:   aliases.components = @/components/ui
+       Live codebase has:   aliases.components = ~/components/ui
+
+       Proceeding will write files to the wrong paths.
+     ```
+   - Use `AskUserQuestion`: "Stack divergence detected. Proceed anyway (may break imports), or stop to fix STACK.md first?"
+   - **Stop** → exit; user fixes `STACK.md` and re-runs
+   - **Proceed anyway** → log divergence in scaffold log, continue with live values (not STACK.md)
+
+4. If STACK.md indicates the stack is already initialized (has framework, CSS, component library entries) **and no divergence found**, log existing state and skip to Step 4 (component installs).
 
 ## Step 3: Initialize stack
 

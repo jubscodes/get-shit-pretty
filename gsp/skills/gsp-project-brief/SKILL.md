@@ -55,6 +55,10 @@ Read:
 
 Read `.design/system/STACK.md` and `.design/system/COMPONENTS.md` (if exist) — existing tech stack, components, architecture.
 
+**Stack inheritance (existing codebases):** If `STACK.md` exists and the project `config.json` has empty or generic values for `tech_stack`, `implementation_target`, or `codebase_type`, inherit them from `STACK.md` directly — do not ask the user questions the stack already answers. Update `config.json` with the inherited values before proceeding.
+
+The global stack is the compliance baseline. Every project in this workspace must target it. If the user's brief describes a different stack than what `STACK.md` declares (e.g., "I want to use Radix directly" when `STACK.md` says `shadcn/ui`), surface the conflict: "⚠️ Your brief mentions {X}, but the workspace stack is {Y} per STACK.md. Proceed with the workspace stack, or update STACK.md first?"
+
 Read `.design/CHANGELOG.md` — quick history of what prior projects built.
 For projects with overlapping scope, read their `codebase/MANIFEST.md` for detail.
 Glob `.design/projects/*/STATE.md` — detect active sibling projects.

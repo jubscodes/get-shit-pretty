@@ -51,6 +51,8 @@ If `package.json` exists, read it to extract:
 
 Quick glob for component count: `src/components/**/*` or `components/**/*`.
 
+Also read `.design/system/STACK.md` if it exists — this is the **global stack declaration** for the workspace. When present, use it as the authoritative source for framework, styling, component library, and architecture. Surface it in the codebase summary box so every new project starts knowing the declared stack.
+
 Also scan for brand-relevant assets:
 - Logo files: glob for `**/logo*.{svg,png}`, `**/icon*.{svg,png}` in public/assets directories
 - Font files: glob for `**/*.{woff,woff2,ttf,otf}` in public/fonts or similar
@@ -80,8 +82,11 @@ If codebase was detected, show a summary box:
   │  components    47 detected              │
   │  assets        logo.svg, 2 font files   │
   │  type          existing codebase        │
+  │  stack         declared (STACK.md ✓)   │
   └──────────────────────────────────────────┘
 ```
+
+Show `stack: declared (STACK.md ✓)` when `.design/system/STACK.md` exists — this signals to the user that every new project will inherit the workspace stack. If STACK.md is missing for an existing codebase, show `stack: undeclared — run /gsp-design-system`.
 
 Use `AskUserQuestion` with:
 - **New brand** — "Create a brand identity from scratch"
