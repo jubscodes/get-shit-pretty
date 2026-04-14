@@ -1,6 +1,6 @@
 ---
 name: gsp-project-critique
-description: Critique your designs + accessibility audit (creative phase — benefits from capable models)
+description: Critique designs + accessibility audit (creative phase — benefits from capable models) — use when: review the designs, critique this, check accessibility, what's wrong with, give feedback on
 user-invocable: true
 context: fork
 allowed-tools:
@@ -25,6 +25,8 @@ Critique design quality and audit accessibility compliance.
 
 <process>
 ## Step 0: Resolve project and brand
+
+If `.design/projects/` does not exist: output "No GSP project found. Run `/gsp-start` to begin." and stop.
 
 Resolve project from `.design/projects/` (one → use it, multiple → ask). Set `PROJECT_PATH`.
 

@@ -1,6 +1,6 @@
 ---
 name: gsp-project-review
-description: QA review — validate implementation against designs
+description: QA review — validate implementation against designs — use when: review the build, QA this, does it match the designs, check what was built, verify implementation
 user-invocable: true
 context: fork
 allowed-tools:
@@ -31,6 +31,8 @@ QA validate the codebase implementation against design intent.
 
 <process>
 ## Step 0: Resolve project and brand
+
+If `.design/projects/` does not exist: output "No GSP project found. Run `/gsp-start` to begin." and stop.
 
 Resolve project from `.design/projects/` (one → use it, multiple → ask). Set `PROJECT_PATH`.
 

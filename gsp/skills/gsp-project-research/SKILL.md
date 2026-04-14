@@ -1,6 +1,6 @@
 ---
 name: gsp-project-research
-description: Research UX patterns and technical approaches
+description: Research UX patterns and technical approaches — use when: research this, look up how X works, find patterns for, what's the best approach for
 user-invocable: true
 allowed-tools:
   - Read
@@ -34,6 +34,8 @@ Deep research into UX patterns, competitor experiences, and technical approaches
 
 <process>
 ## Step 0: Resolve project and brand
+
+If `.design/projects/` does not exist: output "No GSP project found. Run `/gsp-start` to begin." and stop.
 
 Resolve project from `.design/projects/` (one → use it, multiple → ask). Set `PROJECT_PATH`.
 
