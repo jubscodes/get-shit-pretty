@@ -1,6 +1,6 @@
 ---
 name: gsp-brand-brief
-description: Define your brand — who, why, and what it should feel like
+description: Define your brand — who, why, and what it should feel like — use when: create a brand, define our brand identity, who are we, what's our brand
 user-invocable: true
 allowed-tools:
   - Read
@@ -126,4 +126,29 @@ Use `AskUserQuestion` — always offer Continue / Stop here / What happens next:
 - **What happens next?** — "Explain the research phase" → explain what brand-research does (market landscape, competitive audit, trend analysis, mood board direction) and how it uses the brief
 
 If `e2e: true`, mention that after the full branding diamond completes, it will auto-transition to project setup.
+
+## Step 7: e2e transition (only when `e2e: true` and branding diamond is complete)
+
+After all four brand phases complete (brand-research → brand-strategy → brand-identity → brand-guidelines), scaffold the project directory before invoking `/gsp-project-brief`:
+
+1. Derive `{project-slug}` from the brand name: lowercase, spaces and underscores replaced with hyphens.
+
+2. Create the project directory:
+```bash
+mkdir -p .design/projects/{project-slug}/
+```
+
+3. Read templates at write time from `${CLAUDE_SKILL_DIR}/../../templates/projects/` and write:
+   - `.design/projects/{project-slug}/config.json` from `config.json` template — set `project.name` (title-cased from project-slug) and `project.created` (ISO date)
+   - `.design/projects/{project-slug}/STATE.md` from `state.md` template — fill in project name and brand name
+
+4. Write `.design/projects/{project-slug}/brand.ref` containing the brand directory name (e.g. `{brand-name}`), so the project knows which brand it belongs to.
+
+5. Display:
+```
+  brand complete — {brand-name}
+  now let's scope your project.
+```
+
+6. Invoke `/gsp-project-brief` via Skill tool, passing `{project-slug}` so Step 0 resolves the existing directory rather than prompting for one.
 </process>
