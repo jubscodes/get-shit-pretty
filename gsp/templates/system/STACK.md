@@ -1,4 +1,5 @@
 # Stack
+> App: {app_path} | Repo type: {single | monorepo}
 > Design System Analysis | Generated: {DATE}
 
 ## Classification

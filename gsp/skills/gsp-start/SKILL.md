@@ -1,6 +1,6 @@
 ---
 name: gsp-start
-description: Start here — picks up where you left off
+description: Start the GSP pipeline — use when starting a new feature, I want to build X, help me design, let's work on, or kicking off any new work
 user-invocable: true
 allowed-tools:
   - Read
@@ -39,7 +39,7 @@ Scan `.design/` for existing brands and projects:
 - Check `.design/branding/` for brand directories (each has a `config.json` with `project_type: "brand"`)
 - Check `.design/projects/` for project directories (each has a `config.json` with `project_type: "design"`)
 - Check for legacy flat `.design/config.json` at root (pre-0.4.0 structure)
-- For each brand/project found, read its `config.json` to get phase statuses
+- For each brand/project found, read its `config.json` for project metadata (name, created, preferences) and read its `STATE.md` for phase progress (the phase table with pending/complete/in-progress/needs-revision statuses)
 
 ### Step 1b: Quick codebase check (inline — no agents)
 
@@ -50,6 +50,13 @@ If `package.json` exists, read it to extract:
 - **Classification:** greenfield (no custom code), boilerplate (scaffolded), or existing (real code)
 
 Quick glob for component count: `src/components/**/*` or `components/**/*`.
+
+**Monorepo detection:** After reading root `package.json`, glob for `apps/*/package.json` and `packages/*/package.json`. If any are found:
+- Set `REPO_TYPE = monorepo`
+- Read each discovered package.json to extract app name + primary framework dependency
+- Build an app list: `[(apps/web, Next.js), (apps/mobile, Expo), ...]`
+
+If no nested package.json files found: set `REPO_TYPE = single`.
 
 Also read `.design/system/STACK.md` if it exists — this is the **global stack declaration** for the workspace. When present, use it as the authoritative source for framework, styling, component library, and architecture. Surface it in the codebase summary box so every new project starts knowing the declared stack.
 
@@ -82,9 +89,13 @@ If codebase was detected, show a summary box:
   │  components    47 detected              │
   │  assets        logo.svg, 2 font files   │
   │  type          existing codebase        │
+  │  repo type     monorepo (3 apps detected)│
+  │  apps          web · mobile · docs      │
   │  stack         declared (STACK.md ✓)   │
   └──────────────────────────────────────────┘
 ```
+
+For single-app repos, show `repo type: single app` and omit the `apps` row.
 
 Show `stack: declared (STACK.md ✓)` when `.design/system/STACK.md` exists — this signals to the user that every new project will inherit the workspace stack. If STACK.md is missing for an existing codebase, show `stack: undeclared — run /gsp-design-system`.
 

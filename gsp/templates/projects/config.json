@@ -12,11 +12,14 @@
     "implementation_target": "code",
     "codebase_type": "greenfield",
     "design_scope": "full",
-    "style_preset": ""
+    "style_preset": "",
+    "repo_type": "single",
+    "app_path": ""
   },
   "git": {
     "branch": "",
-    "pr": ""
+    "pr": "",
+    "issue": ""
   },
   "gsp_version": "0.7.2"
 }

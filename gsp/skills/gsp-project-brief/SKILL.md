@@ -1,6 +1,6 @@
 ---
 name: gsp-project-brief
-description: Scope what you're building
+description: Scope a feature or flow — use when: scope this, define what we're building, plan the project, what should we build, write a brief
 user-invocable: true
 allowed-tools:
   - Read
@@ -31,6 +31,8 @@ Scope the project and plan adaptations from the brand system.
 <process>
 ## Step 0: Resolve project and brand
 
+If `.design/projects/` does not exist: output "No GSP project found. Run `/gsp-start` to begin." and stop.
+
 Resolve project from `.design/projects/` (one → use it, multiple → ask). Set `PROJECT_PATH`.
 
 Read `{PROJECT_PATH}/brand.ref` → set `BRAND_PATH`. If brand.ref doesn't exist, tell the user to run `/gsp-start`.
@@ -49,7 +51,9 @@ Also read the brand `.yml` preset from `{BRAND_PATH}/patterns/`.
 
 Read:
 - `{PROJECT_PATH}/BRIEF.md` — what we're building, platforms, tech stack
-- `{PROJECT_PATH}/config.json` — get `implementation_target`, `design_scope`, `codebase_type`
+- `{PROJECT_PATH}/config.json` — get `implementation_target`, `design_scope`, `codebase_type`, `app_path`, `repo_type`
+
+After reading config, check if `app_path` is empty. If empty AND (`repo_type` is `monorepo` OR multiple `package.json` files are found at `apps/*/package.json` or `packages/*/package.json`), set flag `NEEDS_APP_SELECTION = true`.
 
 ### Codebase context
 
@@ -63,6 +67,25 @@ Read `.design/CHANGELOG.md` — quick history of what prior projects built.
 For projects with overlapping scope, read their `codebase/MANIFEST.md` for detail.
 Glob `.design/projects/*/STATE.md` — detect active sibling projects.
 
+## Step 1.3: App targeting
+
+Run when `NEEDS_APP_SELECTION = true`.
+
+1. Glob for `apps/*/package.json` and `packages/*/package.json` to find all app packages.
+2. Read each package.json to extract `name` and the primary framework dependency (Next.js, Vite, React Native, etc.).
+3. Build an app list, e.g.:
+   ```
+   apps/web        → my-app-web     (Next.js)
+   apps/mobile     → my-app-mobile  (Expo / React Native)
+   packages/ui     → my-app-ui      (Vite)
+   ```
+4. Use `AskUserQuestion`: "Which app does this project target?" with one option per detected app (showing path + framework) plus **Whole repo (no specific app)**.
+5. Based on the user's choice:
+   - If an app was selected: set `app_path` to the chosen path (e.g. `apps/web`) and `repo_type` to `monorepo`
+   - If "Whole repo" was selected: set `app_path` to `""` and `repo_type` to `monorepo`
+6. Write the updated `app_path` and `repo_type` back to `{PROJECT_PATH}/config.json`.
+7. Derive `APP_NAME` = last segment of `app_path` (e.g. `apps/web` → `web`, empty → `root`). Note that the per-app stack file will live at `.design/system/stacks/{APP_NAME}.md`.
+
 ## Step 1.5: Scope check
 
 **If `design_scope` is `tokens`:**
@@ -73,10 +96,10 @@ Glob `.design/projects/*/STATE.md` — detect active sibling projects.
 
 ## Step 1.7: Issue framing
 
-Suggest to the user:
-"Consider framing this project as a bounded issue (or set of issues) and a PR. Smaller scope = higher quality. What's the tightest version of this that ships?"
-
-If the project scope feels large, suggest breaking it into multiple bounded issues — each one a focused deliverable that can be reviewed independently.
+Ask the user (via `AskUserQuestion`): "Is this project linked to a GitHub issue?"
+- **Yes — paste the issue URL** → read the issue number from the URL, write `git.issue` to `{PROJECT_PATH}/config.json` and populate the `| Issue |` row in STATE.md. Also read the issue title/body via `gh issue view {number} --json title,body,labels` and use that content to pre-populate scope context (saves the user from re-describing what the issue already states).
+- **No — describe it** → continue with manual brief as before
+- **Skip** → continue without issue link
 
 ## Step 2: Scope the project
 

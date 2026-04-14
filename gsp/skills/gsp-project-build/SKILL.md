@@ -1,6 +1,6 @@
 ---
 name: gsp-project-build
-description: Translate designs to code (technical phase — benefits from capable models)
+description: Translate designs to code (technical phase — benefits from capable models) — use when: build this, implement, code this up, build me a X, add a X to the app, make the X page
 user-invocable: true
 allowed-tools:
   - Read
@@ -70,6 +70,8 @@ Implement designs as production-ready code in the codebase via phased pipeline w
 <process>
 ## Step 0: Resolve project and brand
 
+If `.design/projects/` does not exist: output "No GSP project found. Run `/gsp-start` to begin." and stop.
+
 Resolve project from `.design/projects/` (one → use it, multiple → ask). Set `PROJECT_PATH`.
 
 Read `{PROJECT_PATH}/brand.ref` → set `BRAND_PATH`.
@@ -83,7 +85,9 @@ Exception: if `design_scope` is `tokens` in config.json, skip this check (tokens
 
 ## Step 1: Load config and check state
 
-Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`, `codebase_type`.
+Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`, `codebase_type`, `app_path`.
+
+Set `APP_PATH` = value of `app_path`. If empty, default to `.` (repo root).
 
 ### Branch check
 
@@ -149,10 +153,11 @@ Spawn `gsp-project-builder` agent with **execution_mode: foundations**.
 | `{BRAND_PATH}/patterns/{brand-name}.yml` | Token values only — used with token-mapping.md to generate CSS variables. Do NOT re-read patterns/constraints/effects from here — those are in STYLE.md. |
 | `{BRAND_PATH}/patterns/STYLE.md` | Design law — philosophy, patterns, constraints, effects, bold bets, implementation hints (if exists; fall back to `{brand-name}.md`) |
 | `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations for target |
-| `.design/system/STACK.md` | Stack state |
+| `.design/system/STACK.md` | Stack state (or `.design/system/stacks/{APP_NAME}.md` for monorepos) |
 | `.design/system/CONVENTIONS.md` | Codebase conventions (if exists) |
 | `.design/system/COMPONENTS.md` | Existing components (if exists) |
-| `{PROJECT_PATH}/config.json` | Tech stack, target |
+| `{PROJECT_PATH}/config.json` | Tech stack, target, `app_path` |
+| `APP_PATH = {APP_PATH}` | Working directory — all file writes and build commands run here |
 | Build output template (from execution_context) | Build log structure |
 | Token mapping ref (loaded in Step 2.6) | shadcn component composition rules, semantic token usage, `cn()`, `cva`, RSC patterns |
 | Visual effects, block patterns refs (loaded in Step 2.6) | Design patterns + CSS recipes |
@@ -178,14 +183,14 @@ Spawn `gsp-project-builder` agent with **execution_mode: foundations**.
 
 ### Checkpoint: Compile check
 
-After the foundations agent completes, run the build command:
+After the foundations agent completes, run the build command in `APP_PATH`:
 
 | Stack | Build command |
 |-------|--------------|
-| Next.js | `npx next build` |
-| Vite | `npx vite build` |
-| TypeScript only | `npx tsc --noEmit` |
-| Generic | `npm run build` |
+| Next.js | `cd {APP_PATH} && npx next build` |
+| Vite | `cd {APP_PATH} && npx vite build` |
+| TypeScript only | `cd {APP_PATH} && npx tsc --noEmit` |
+| Generic | `cd {APP_PATH} && npm run build` |
 
 **Pass:** Continue to preview verification, then Step 4.
 **Fail:** Log the error. Do NOT re-spawn the agent. Surface the error to the user and ask how to proceed.
