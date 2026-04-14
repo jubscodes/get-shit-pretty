@@ -24,7 +24,7 @@ tokens:
     input: "rgba(255,255,255,0.06)"
     ring: "#5E6AD2"
     # Sidebar
-    sidebar-background: "oklch(100% 0 0 / 0.05)"
+    sidebar: "oklch(100% 0 0 / 0.05)"
     sidebar-foreground: "#FAFAFA"
     sidebar-primary: "#5E6AD2"
     sidebar-primary-foreground: "#FFFFFF"
@@ -36,6 +36,12 @@ tokens:
     success: "#22C55E"
     warning: "#F59E0B"
     info: "#3B82F6"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#818CF8"  # periwinkle (primary brightened)
+    chart-2: "#F472B6"  # hot pink (secondary brightened)
+    chart-3: "#22D3EE"  # cyan (accent brightened)
+    chart-4: "#4ADE80"  # neon green
+    chart-5: "#FB923C"  # orange
 
   typography:
     font-family-primary: "Inter, Geist Sans, system-ui, sans-serif"

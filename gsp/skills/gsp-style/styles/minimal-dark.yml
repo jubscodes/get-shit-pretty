@@ -24,7 +24,7 @@ tokens:
     input: "rgba(255,255,255,0.06)"
     ring: "#F59E0B"
     # Sidebar
-    sidebar-background: "#12121A"
+    sidebar: "#12121A"
     sidebar-foreground: "#FAFAFA"
     sidebar-primary: "#F59E0B"
     sidebar-primary-foreground: "#000000"
@@ -36,6 +36,12 @@ tokens:
     success: "#22C55E"
     warning: "#F59E0B"
     info: "#3B82F6"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#F59E0B"  # warm amber (primary)
+    chart-2: "#3B82F6"  # deep blue
+    chart-3: "#22C55E"  # muted green
+    chart-4: "#E879F9"  # soft fuchsia
+    chart-5: "#FB923C"  # copper orange
 
   typography:
     font-family-primary: "Space Grotesk, Inter, sans-serif"

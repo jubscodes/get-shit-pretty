@@ -38,7 +38,7 @@ tokens:
     ring: "{hex}"                 # --ring (focus ring, usually same as primary)
 
     # Sidebar — explicit for full design control
-    sidebar-background: "{hex}"            # --sidebar-background
+    sidebar: "{hex}"                       # --sidebar (shadcn uses --sidebar, not --sidebar-background)
     sidebar-foreground: "{hex}"            # --sidebar-foreground
     sidebar-primary: "{hex}"               # --sidebar-primary
     sidebar-primary-foreground: "{hex}"    # --sidebar-primary-foreground
@@ -46,6 +46,13 @@ tokens:
     sidebar-accent-foreground: "{hex}"     # --sidebar-accent-foreground
     sidebar-border: "{hex}"                # --sidebar-border
     sidebar-ring: "{hex}"                  # --sidebar-ring
+
+    # Chart — 5 intentional data-viz colors (distinct, accessible at small sizes)
+    chart-1: "{hex}"   # --chart-1
+    chart-2: "{hex}"   # --chart-2
+    chart-3: "{hex}"   # --chart-3
+    chart-4: "{hex}"   # --chart-4
+    chart-5: "{hex}"   # --chart-5
 
     # Extras — generate as custom properties (--success, --warning, --info)
     success: "{hex}"
@@ -94,8 +101,9 @@ dark_mode:
     muted-foreground: "{hex}"
     border: "{hex}"
     input: "{hex}"
-    sidebar-background: "{hex}"
+    sidebar: "{hex}"
     sidebar-border: "{hex}"
+    # chart-1 through chart-5 only if they change in dark mode
     # primary/accent/destructive only if they change in dark mode
 
 intensity:

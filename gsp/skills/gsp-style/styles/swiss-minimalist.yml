@@ -24,7 +24,7 @@ tokens:
     input: "#E5E7EB"
     ring: "#000000"
     # Sidebar
-    sidebar-background: "#FAFAFA"
+    sidebar: "#FAFAFA"
     sidebar-foreground: "#111111"
     sidebar-primary: "#000000"
     sidebar-primary-foreground: "#FFFFFF"
@@ -36,6 +36,12 @@ tokens:
     success: "#16A34A"
     warning: "#CA8A04"
     info: "#2563EB"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#000000"  # Swiss black (primary)
+    chart-2: "#DC2626"  # Helvetica red (secondary)
+    chart-3: "#2563EB"  # grid blue (accent)
+    chart-4: "#16A34A"  # functional green
+    chart-5: "#CA8A04"  # warm ochre
 
   typography:
     font-family-primary: "Helvetica Neue, Helvetica, Arial, sans-serif"
@@ -76,7 +82,7 @@ dark_mode:
     muted-foreground: "#6B7280"
     border: "#333333"
     input: "#333333"
-    sidebar-background: "#1A1A1A"
+    sidebar: "#1A1A1A"
     sidebar-foreground: "#F5F5F5"
     sidebar-border: "#333333"
 

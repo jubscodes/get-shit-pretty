@@ -25,7 +25,7 @@ tokens:
     input: "oklch(100% 0 0 / 0.20)"
     ring: "#6366F1"
     # Sidebar
-    sidebar-background: "oklch(100% 0 0 / 0.08)"
+    sidebar: "oklch(100% 0 0 / 0.08)"
     sidebar-foreground: "#F8FAFC"
     sidebar-primary: "#6366F1"
     sidebar-primary-foreground: "#FFFFFF"
@@ -37,6 +37,12 @@ tokens:
     success: "#22C55E"
     warning: "#F59E0B"
     info: "#3B82F6"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#818CF8"  # frosted indigo (primary brightened)
+    chart-2: "#A78BFA"  # frosted violet (secondary brightened)
+    chart-3: "#F472B6"  # frosted pink (accent brightened)
+    chart-4: "#34D399"  # frosted emerald
+    chart-5: "#60A5FA"  # frosted blue
 
   typography:
     font-family-primary: "Inter, sans-serif"

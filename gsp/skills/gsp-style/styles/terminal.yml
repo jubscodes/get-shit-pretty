@@ -24,7 +24,7 @@ tokens:
     input: "#30363D"
     ring: "#22C55E"
     # Sidebar
-    sidebar-background: "#161B22"
+    sidebar: "#161B22"
     sidebar-foreground: "#C9D1D9"
     sidebar-primary: "#22C55E"
     sidebar-primary-foreground: "#000000"
@@ -36,6 +36,12 @@ tokens:
     success: "#3FB950"
     warning: "#D29922"
     info: "#58A6FF"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#22C55E"  # terminal green (primary)
+    chart-2: "#58A6FF"  # terminal blue
+    chart-3: "#D29922"  # terminal amber
+    chart-4: "#FF7B72"  # syntax keyword red
+    chart-5: "#D2A8FF"  # syntax function purple
 
   syntax:
     keyword: "#FF7B72"
@@ -84,7 +90,7 @@ dark_mode:
     muted-foreground: "#6E7681"
     border: "#21262D"
     input: "#21262D"
-    sidebar-background: "#0D1117"
+    sidebar: "#0D1117"
     sidebar-foreground: "#C9D1D9"
     sidebar-border: "#21262D"
 

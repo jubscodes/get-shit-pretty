@@ -25,7 +25,7 @@ tokens:
     input: "oklch(100% 0 0 / 0.80)"
     ring: "#007AFF"
     # Sidebar
-    sidebar-background: "oklch(100% 0 0 / 0.60)"
+    sidebar: "oklch(100% 0 0 / 0.60)"
     sidebar-foreground: "#1C1C1E"
     sidebar-primary: "#007AFF"
     sidebar-primary-foreground: "#FFFFFF"
@@ -37,6 +37,12 @@ tokens:
     success: "#34C759"
     warning: "#FF9500"
     info: "#5AC8FA"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#007AFF"  # iOS blue (primary)
+    chart-2: "#FF2D55"  # iOS red (accent)
+    chart-3: "#34C759"  # iOS green (success)
+    chart-4: "#FF9500"  # iOS orange (warning)
+    chart-5: "#5856D6"  # iOS purple (secondary)
 
   typography:
     font-family-primary: "SF Pro Display, -apple-system, system-ui, sans-serif"
@@ -97,7 +103,7 @@ dark_mode:
     input: "oklch(100% 0 0 / 0.18)"
     ring: "#007AFF"
     # Sidebar
-    sidebar-background: "oklch(100% 0 0 / 0.10)"
+    sidebar: "oklch(100% 0 0 / 0.10)"
     sidebar-foreground: "#F5F5F7"
     sidebar-primary: "#007AFF"
     sidebar-primary-foreground: "#FFFFFF"

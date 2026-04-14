@@ -25,7 +25,7 @@ tokens:
     input: "#000000"
     ring: "#D02020"
     # Sidebar
-    sidebar-background: "#F0F0F0"
+    sidebar: "#F0F0F0"
     sidebar-foreground: "#000000"
     sidebar-primary: "#D02020"
     sidebar-primary-foreground: "#FFFFFF"
@@ -37,6 +37,12 @@ tokens:
     success: "#16A34A"
     warning: "#F0C020"
     info: "#1040C0"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#D02020"  # Bauhaus red (primary)
+    chart-2: "#1040C0"  # Bauhaus blue (secondary)
+    chart-3: "#E8B000"  # Bauhaus yellow (shifted deeper)
+    chart-4: "#16A34A"  # constructivist green
+    chart-5: "#6B21A8"  # modernist violet
 
   typography:
     font-family-primary: "Outfit, sans-serif"

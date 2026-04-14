@@ -25,7 +25,7 @@ tokens:
     input: "#CBD5E1"
     ring: "#4F46E5"
     # Sidebar
-    sidebar-background: "#FFFFFF"
+    sidebar: "#FFFFFF"
     sidebar-foreground: "#0F172A"
     sidebar-primary: "#4F46E5"
     sidebar-primary-foreground: "#FFFFFF"
@@ -37,6 +37,12 @@ tokens:
     success: "#10B981"
     warning: "#F59E0B"
     info: "#3B82F6"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#4F46E5"  # indigo (primary)
+    chart-2: "#0EA5E9"  # sky blue (accent)
+    chart-3: "#10B981"  # emerald (success)
+    chart-4: "#F59E0B"  # amber (warning)
+    chart-5: "#EF4444"  # signal red
 
   typography:
     font-family-primary: "Plus Jakarta Sans, Inter, sans-serif"

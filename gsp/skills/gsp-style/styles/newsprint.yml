@@ -24,7 +24,7 @@ tokens:
     input: "#D4D4D4"
     ring: "#1A1A1A"
     # Sidebar
-    sidebar-background: "#FFFFFF"
+    sidebar: "#FFFFFF"
     sidebar-foreground: "#1A1A1A"
     sidebar-primary: "#1A1A1A"
     sidebar-primary-foreground: "#FFFFFF"
@@ -36,6 +36,12 @@ tokens:
     success: "#16A34A"
     warning: "#D97706"
     info: "#2563EB"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#1A1A1A"  # newspaper black (primary)
+    chart-2: "#DC2626"  # editorial red (accent)
+    chart-3: "#2563EB"  # wire blue
+    chart-4: "#16A34A"  # bulletin green
+    chart-5: "#D97706"  # byline amber
 
   typography:
     font-family-primary: "Playfair Display, serif"

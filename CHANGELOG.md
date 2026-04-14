@@ -4,7 +4,32 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
-## [0.8.0] — 2026-04-13
+## [0.8.1] — 2026-04-13
+
+### Fixed
+- **P0: `sidebar` token name** — all 36 preset YAMLs and `style-preset-schema.md` renamed `sidebar-background` → `sidebar` to match shadcn's actual CSS variable (`--sidebar`). The old key resolved to undefined — entire sidebar color system was silently broken
+- **P1: Radius formula** — `shadcn-rules.md` `@theme inline` now uses proportional multipliers (`* 0.6`, `* 0.8`, `* 1.4`) instead of fixed-px offsets (`- 4px`, `- 2px`, `+ 4px`). Old formula produced negative radii for small base values (e.g. `0.5rem - 4px = -3.84px`)
+- **P1: Missing radius steps** — added `--radius-2xl` (`* 1.8`), `--radius-3xl` (`* 2.2`), `--radius-4xl` (`* 2.6`) to match shadcn's canonical `@theme inline` block
+- **P1: Chart vars in `.dark`** — `bin/theme-css.js` now emits `chart-1` through `chart-5` in both `:root` and `.dark` blocks. Previously chart vars were only emitted in `:root`
+- **P2: `@layer base` reset missing** — `shadcn-rules.md` v4 template now includes the canonical `@layer base` block (`border-border`, `outline-ring/50`, `bg-background text-foreground`)
+- **P2: Typography not wired** — `bin/theme-css.js` `main()` now passes `tokens.typography` to `generateBlock()`, emitting `--font-sans`, `--font-mono`, `--font-display`, `--font-secondary` CSS vars in `:root`
+- **P2: Stale HSL instruction** — `gsp-project-builder.md` foundations mode now instructs using `bin/theme-css.js` for OKLCH output instead of "convert hex to HSL space-separated channels"
+- **`@import "tw-animate-css"` → `@import "shadcn/tailwind.css"`** — the old import referenced a separate npm package; `shadcn/tailwind.css` ships with the shadcn CLI and requires no additional install
+- **No-op font vars removed from `@theme inline`** — removed `--font-sans: var(--font-sans)` circular self-references; font vars in `@theme inline` must be literal values (e.g. `"Inter", sans-serif`), not `var()` references to themselves
+- **cursor:pointer restored** — Tailwind v4 changed `button` default cursor to `default`; added `button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }` to the `@layer base` template
+- **Token injection order** — `shadcn-rules.md` now instructs running `shadcn add` before writing brand tokens; reversed order risked shadcn appending its own `cssVars` after custom OKLCH values
+- **`init -d` scope clarified** — documented that `-d` forces Next.js + nova preset; added `-t {framework}` flag for Vite/React Router/Remix targets
+
+### Added
+- **Google Fonts pattern** — `shadcn-rules.md` now includes `@import url(...)` pattern and `@theme inline` font alias wiring for Google Fonts integration
+- **Explicit `chart:` section in schema** — `style-preset-schema.md` now documents `chart-1` through `chart-5` as first-class tokens (not derived at emit time)
+- **Chart colors in all 36 presets** — every preset YAML now has 5 intentional data-viz colors designed to be distinct and accessible at small sizes, aesthetically matched to each preset's character
+- **Community registry install pattern** — `shadcn-rules.md` documents `npx shadcn@latest add @registry/item`, `--diff` preview flag, and `registryDependencies` auto-resolution
+- **Chart rules in builder** — `gsp-project-builder.md` now documents: no `hsl()` wrapper on color tokens (use `var(--chart-1)` directly), mandatory explicit height on `<ChartContainer>`, `accessibilityLayer` prop, and `layout` prop placement
+- **New Form Field API** — builder methodology documents the current `<Field>/<Controller>` pattern alongside backward-compat note for projects with the old `<FormField>/<FormItem>` API
+- **Sidebar width pattern** — builder notes the correct `--sidebar-width` inline CSS prop on `<SidebarProvider>`
+
+
 
 ### Added
 - **`bin/theme-css.js`** — deterministic script converts any `.yml` preset to `:root`/`.dark` CSS blocks. Hex values → OKLCH (full color math). Handles alpha values, font stacks, and shadows verbatim. Usage: `node bin/theme-css.js preset.yml --stdout`

@@ -24,7 +24,7 @@ tokens:
     input: "#424242"
     ring: "#FF3D00"
     # Sidebar
-    sidebar-background: "#1A1A1A"
+    sidebar: "#1A1A1A"
     sidebar-foreground: "#FAFAFA"
     sidebar-primary: "#FF3D00"
     sidebar-primary-foreground: "#000000"
@@ -36,6 +36,12 @@ tokens:
     success: "#00E676"
     warning: "#FFEA00"
     info: "#3B82F6"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#FF3D00"  # kinetic orange-red (primary)
+    chart-2: "#FFEA00"  # kinetic yellow (secondary)
+    chart-3: "#00E676"  # kinetic green (accent)
+    chart-4: "#29B6F6"  # kinetic sky blue
+    chart-5: "#E040FB"  # kinetic purple
 
   typography:
     font-family-primary: "Space Grotesk, Inter, sans-serif"

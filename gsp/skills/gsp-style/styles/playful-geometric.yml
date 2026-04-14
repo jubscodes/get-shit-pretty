@@ -24,7 +24,7 @@ tokens:
     input: "#1E293B"
     ring: "#3B82F6"
     # Sidebar
-    sidebar-background: "#FFFFFF"
+    sidebar: "#FFFFFF"
     sidebar-foreground: "#1E293B"
     sidebar-primary: "#3B82F6"
     sidebar-primary-foreground: "#FFFFFF"
@@ -36,6 +36,12 @@ tokens:
     success: "#34D399"
     warning: "#FBBF24"
     info: "#3B82F6"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#3B82F6"  # confetti blue (primary)
+    chart-2: "#F472B6"  # confetti pink (secondary)
+    chart-3: "#8B5CF6"  # confetti violet (accent)
+    chart-4: "#FBBF24"  # confetti amber
+    chart-5: "#34D399"  # confetti mint
 
   color-rotate:
     blue: "#3B82F6"
@@ -84,7 +90,7 @@ dark_mode:
     muted-foreground: "#94A3B8"
     border: "#F8FAFC"
     input: "#F8FAFC"
-    sidebar-background: "#334155"
+    sidebar: "#334155"
     sidebar-foreground: "#F8FAFC"
     sidebar-border: "#F8FAFC"
 

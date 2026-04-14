@@ -24,7 +24,7 @@ tokens:
     input: "#E8E6E0"
     ring: "#DA7756"
     # Sidebar
-    sidebar-background: "#F2F0EB"
+    sidebar: "#F2F0EB"
     sidebar-foreground: "#383838"
     sidebar-primary: "#DA7756"
     sidebar-primary-foreground: "#FFFFFF"
@@ -36,6 +36,12 @@ tokens:
     success: "#16A34A"
     warning: "#D97706"
     info: "#2563EB"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#DA7756"  # terracotta (primary)
+    chart-2: "#2563EB"  # ink blue
+    chart-3: "#16A34A"  # manuscript green
+    chart-4: "#D97706"  # parchment amber
+    chart-5: "#7C3AED"  # marginalia violet
 
   typography:
     font-family-primary: "Merriweather, Tiempos, serif"

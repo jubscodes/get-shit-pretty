@@ -188,8 +188,9 @@ const CORE_VARS = [
   'border', 'input', 'ring',
 ];
 
+// NOTE: 'sidebar' (not 'sidebar-background') matches shadcn's CSS var --sidebar
 const SIDEBAR_VARS = [
-  'sidebar-background', 'sidebar-foreground',
+  'sidebar', 'sidebar-foreground',
   'sidebar-primary', 'sidebar-primary-foreground',
   'sidebar-accent', 'sidebar-accent-foreground',
   'sidebar-border', 'sidebar-ring',
@@ -206,7 +207,7 @@ const SHAPE_VARS = {
 // CSS block generator
 // ---------------------------------------------------------------------------
 
-function generateBlock(colorObj, shapeObj, selector) {
+function generateBlock(colorObj, shapeObj, typographyObj, selector) {
   if (!colorObj) return '';
   const lines = [];
 
@@ -224,14 +225,15 @@ function generateBlock(colorObj, shapeObj, selector) {
     }
   }
 
-  // Chart vars (derive from palette)
-  if (selector === ':root' && colorObj.primary) {
+  // Chart vars — emit in both :root and .dark (dark falls back to light values if not set)
+  {
+    // For :root use light palette; for .dark use dark overrides falling back to light
     const chartColors = [
-      colorObj.primary,
-      colorObj.secondary,
-      colorObj.accent,
-      colorObj.info || colorObj.primary,
-      colorObj.success || colorObj.primary,
+      colorObj['chart-1'] || colorObj.primary,
+      colorObj['chart-2'] || colorObj.secondary,
+      colorObj['chart-3'] || colorObj.accent,
+      colorObj['chart-4'] || colorObj.info || colorObj.primary,
+      colorObj['chart-5'] || colorObj.success || colorObj.secondary || colorObj.primary,
     ];
     chartColors.forEach((c, i) => {
       if (c) lines.push(`  --chart-${i + 1}: ${formatValue(c)};`);
@@ -243,6 +245,21 @@ function generateBlock(colorObj, shapeObj, selector) {
     const lg = shapeObj['border-radius-lg'];
     if (lg !== undefined) {
       lines.push(`  --radius: ${lg};`);
+    }
+  }
+
+  // Typography → font CSS vars (only in :root)
+  if (selector === ':root' && typographyObj) {
+    const fontMappings = [
+      ['font-family-primary', '--font-sans'],
+      ['font-family-mono',    '--font-mono'],
+      ['font-family-display', '--font-display'],
+      ['font-family-secondary', '--font-secondary'],
+    ];
+    for (const [ymlKey, cssVar] of fontMappings) {
+      if (typographyObj[ymlKey] !== undefined) {
+        lines.push(`  ${cssVar}: ${typographyObj[ymlKey]};`);
+      }
     }
   }
 
@@ -285,9 +302,10 @@ function main() {
   const colorLight = (preset.tokens && preset.tokens.color) || {};
   const colorDark = (preset.dark_mode && preset.dark_mode.color) || {};
   const shape = (preset.tokens && preset.tokens.shape) || {};
+  const typography = (preset.tokens && preset.tokens.typography) || null;
 
-  const rootBlock = generateBlock(colorLight, shape, ':root');
-  const darkBlock = generateBlock(colorDark, null, '.dark');
+  const rootBlock = generateBlock(colorLight, shape, typography, ':root');
+  const darkBlock = generateBlock(colorDark, null, null, '.dark');
 
   const presetName = preset.name || path.basename(inputPath, '.yml');
   const presetDesc = preset.description || '';

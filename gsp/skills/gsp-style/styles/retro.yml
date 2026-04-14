@@ -24,7 +24,7 @@ tokens:
     input: "#808080"
     ring: "#0000FF"
     # Sidebar
-    sidebar-background: "#FFFFFF"
+    sidebar: "#FFFFFF"
     sidebar-foreground: "#000000"
     sidebar-primary: "#0000FF"
     sidebar-primary-foreground: "#FFFFFF"
@@ -36,6 +36,12 @@ tokens:
     success: "#00FF00"
     warning: "#FFFF00"
     info: "#0000FF"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#0000FF"  # Web-safe blue (primary)
+    chart-2: "#FF0000"  # Web-safe red (secondary)
+    chart-3: "#008000"  # Web-safe green
+    chart-4: "#800080"  # Web-safe purple
+    chart-5: "#FF8000"  # Web-safe orange
 
   system:
     titlebar: "#000080"
@@ -85,7 +91,7 @@ dark_mode:
     muted-foreground: "#808080"
     border: "#808080"
     input: "#808080"
-    sidebar-background: "#000000"
+    sidebar: "#000000"
     sidebar-foreground: "#C0C0C0"
     sidebar-border: "#808080"
 

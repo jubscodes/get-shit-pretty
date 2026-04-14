@@ -25,7 +25,7 @@ tokens:
     input: "transparent"
     ring: "#7C3AED"
     # Sidebar
-    sidebar-background: "oklch(100% 0 0 / 0.60)"
+    sidebar: "oklch(100% 0 0 / 0.60)"
     sidebar-foreground: "#332F3A"
     sidebar-primary: "#7C3AED"
     sidebar-primary-foreground: "#FFFFFF"
@@ -37,6 +37,12 @@ tokens:
     success: "#22C55E"
     warning: "#F59E0B"
     info: "#0EA5E9"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#7C3AED"  # clay violet (primary)
+    chart-2: "#EC4899"  # bubblegum pink (secondary)
+    chart-3: "#0EA5E9"  # sky blue (accent)
+    chart-4: "#22C55E"  # mint green
+    chart-5: "#F59E0B"  # candy amber
 
   typography:
     font-family-primary: "Nunito, sans-serif"

@@ -25,7 +25,7 @@ tokens:
     input: "rgba(22,101,52,0.15)"
     ring: "#166534"
     # Sidebar
-    sidebar-background: "#F7FEE7"
+    sidebar: "#F7FEE7"
     sidebar-foreground: "#2D3A31"
     sidebar-primary: "#166534"
     sidebar-primary-foreground: "#FFFFFF"
@@ -37,6 +37,12 @@ tokens:
     success: "#16A34A"
     warning: "#CA8A04"
     info: "#2563EB"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#166534"  # deep forest green (primary)
+    chart-2: "#C27B66"  # terracotta clay (accent)
+    chart-3: "#CA8A04"  # harvest gold
+    chart-4: "#2563EB"  # botanical blue
+    chart-5: "#8B5E3C"  # rich bark brown
 
   typography:
     font-family-primary: "Playfair Display, serif"

@@ -25,7 +25,7 @@ tokens:
     input: "#E0E0E0"
     ring: "#0F6CBD"
     # Sidebar
-    sidebar-background: "#FFFFFF"
+    sidebar: "#FFFFFF"
     sidebar-foreground: "#242424"
     sidebar-primary: "#0F6CBD"
     sidebar-primary-foreground: "#FFFFFF"
@@ -37,6 +37,12 @@ tokens:
     success: "#0E7A0D"
     warning: "#F7630C"
     info: "#0F6CBD"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#0F6CBD"  # Fluent blue (primary)
+    chart-2: "#0E7A0D"  # Fluent green (success)
+    chart-3: "#F7630C"  # Fluent orange (warning)
+    chart-4: "#881798"  # Fluent purple
+    chart-5: "#038387"  # Fluent teal
 
   typography:
     font-family-primary: "Segoe UI Variable, Segoe UI, system-ui, sans-serif"

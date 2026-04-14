@@ -25,7 +25,7 @@ tokens:
     input: "#D6D3D1"
     ring: "#FF4757"
     # Sidebar
-    sidebar-background: "#F0F2F5"
+    sidebar: "#F0F2F5"
     sidebar-foreground: "#2D3436"
     sidebar-primary: "#FF4757"
     sidebar-primary-foreground: "#FFFFFF"
@@ -37,6 +37,12 @@ tokens:
     success: "#16A34A"
     warning: "#F59E0B"
     info: "#2563EB"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#FF4757"  # hazard red (primary)
+    chart-2: "#F59E0B"  # caution amber (secondary)
+    chart-3: "#2563EB"  # blueprint blue
+    chart-4: "#16A34A"  # safety green
+    chart-5: "#475569"  # industrial slate
 
   typography:
     font-family-primary: "Inter, sans-serif"
@@ -94,7 +100,7 @@ dark_mode:
     input: "#4A5568"
     ring: "#FF4757"
     # Sidebar
-    sidebar-background: "#3D4446"
+    sidebar: "#3D4446"
     sidebar-foreground: "#DFE6E9"
     sidebar-primary: "#FF4757"
     sidebar-primary-foreground: "#FFFFFF"
