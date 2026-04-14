@@ -1,6 +1,6 @@
 ---
 name: gsp-brand-strategy
-description: Define positioning, voice, and messaging (creative phase — benefits from capable models)
+description: Define positioning, voice, and messaging (creative phase — benefits from capable models) — use when: define our positioning, brand strategy, what's our voice, how do we talk to customers
 user-invocable: true
 allowed-tools:
   - Read

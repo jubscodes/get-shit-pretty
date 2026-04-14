@@ -1,6 +1,6 @@
 ---
 name: gsp-brand-refine
-description: Targeted brand adjustments mid-project — tweak colors, typography, or spacing without re-running the full branding diamond
+description: Adjust brand mid-project — use when: tweak the colors, change the font, adjust spacing, the brand feels off, refine the brand
 user-invocable: true
 allowed-tools:
   - Read

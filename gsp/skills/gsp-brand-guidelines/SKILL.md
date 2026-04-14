@@ -1,6 +1,6 @@
 ---
 name: gsp-brand-guidelines
-description: Operationalize your brand — assemble tokens, STYLE.md, component mapping, and guidelines (technical phase — benefits from capable models)
+description: Build design system tokens and STYLE.md (technical phase — benefits from capable models) — use when: create the design system, generate tokens, finalize brand guidelines, build the component system
 user-invocable: true
 allowed-tools:
   - Read

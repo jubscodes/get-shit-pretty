@@ -1,6 +1,6 @@
 ---
 name: gsp-brand-research
-description: Research your market and competitors
+description: Research market and competitors — use when: research competitors, who else is doing this, market analysis, what do competitors look like
 user-invocable: true
 allowed-tools:
   - Read

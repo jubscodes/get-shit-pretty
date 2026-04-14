@@ -1,6 +1,6 @@
 ---
 name: gsp-design-system
-description: Scan and document the existing design system state
+description: Scan and document the existing design system — use when: scan the codebase, document what components exist, what's already built, inventory the design system
 user-invocable: true
 allowed-tools:
   - Read
