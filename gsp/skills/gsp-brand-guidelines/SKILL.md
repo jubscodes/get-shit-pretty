@@ -113,6 +113,7 @@ Redesign the system from the ground up, informed by what exists.
 Read these files and hold their content for inlining into the agent prompt:
 - `${CLAUDE_SKILL_DIR}/../../templates/phases/patterns.md` — patterns output template
 - `${CLAUDE_SKILL_DIR}/design-tokens.md` — design tokens reference
+- `${CLAUDE_SKILL_DIR}/guidelines-structure.md` — guidelines.html structure spec (shadcn tokens, sections, primitive classes)
 - `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-engineer.md` — agent methodology
 
 Spawn the `gsp-brand-engineer` agent. **Inline all content** — the agent should not need to read input files.
@@ -120,11 +121,12 @@ Spawn the `gsp-brand-engineer` agent. **Inline all content** — the agent shoul
 Pass in the agent prompt:
 - **Content of** all identity chunks + palettes.json (loaded in Step 1)
 - **Content of** strategy chunks: voice-and-tone.md, archetype.md, positioning.md (loaded in Step 1)
-- **Content of** BRIEF.md (loaded in Step 1)
+- **Content of** BRIEF.md (loaded in Step 1) — explicitly pass the `brand_heartbeat` field as a named input so the agent uses it in the hero headline if no manifesto line exists yet
 - **Content of** style base preset `.yml` + `.md` (loaded in Step 1) — `.yml` as structural scaffold, `.md` as philosophy + implementation content for STYLE.md
 - **Agent methodology** (loaded above)
 - **Content of** patterns output template (loaded above)
 - **Content of** design tokens reference (loaded above)
+- **Content of** guidelines structure spec (loaded above) — follow this exactly for `guidelines.html`
 - The `system_strategy` and `tech_stack` values
 - **Output path:** `{BRAND_PATH}/patterns/`
 
@@ -136,55 +138,75 @@ Pass in the agent prompt:
 >
 > Do NOT produce component artifacts yet (token-mapping, overrides, custom specs). Those come after the user reviews the visual output.
 
-## Step 3.5: Visual review
+## Step 3.5: Coherence check
 
-Tell the user: "Open `{BRAND_PATH}/patterns/guidelines.html` in your browser — this is your brand in one page."
+Read the generated `{BRAND_PATH}/patterns/{brand-name}.yml` and `{BRAND_PATH}/patterns/guidelines.html`. Read `brand_heartbeat` and archetype from `{BRAND_PATH}/BRIEF.md` and `{BRAND_PATH}/strategy/archetype.md`. Do the work of critique before showing the user anything — the pipeline catches coherence gaps, not the user.
 
-Present a compact summary:
+**Archetype gate first.** The intensity dials are only meaningful against the archetype. Before scoring dials, answer the archetype's signature question:
+- **Jester** — what specific rule is being broken in the visual system? If nothing is broken, the brand is not Jester enough regardless of what the dials say.
+- **Rebel** — what visual convention is explicitly rejected?
+- **Creator** — what is distinctively crafted that couldn't come from a default template?
+- **Sage** — is the restraint active (every reduction is intentional) or passive (just plain)?
+- **Explorer** — where is the sense of movement, discovery, or possibility?
+- (Apply equivalent for all archetypes)
+
+If the archetype's signature tension isn't present in the output, that is the primary tension — flag it before evaluating dials.
+
+**Intensity dial scoring (secondary):**
+Read token values from the `.yml` and infer what they express visually. A variance dial of 8/10 with `radius.lg: 4px`, standard shadows, and default button shapes is a coherence gap — the tokens are conservative regardless of the declared number. Score each dial as: declared N/10 → expressed N/10 (inferred from token values and HTML patterns).
+
+Surface the top 2 tensions — specific and actionable. Not "could be bolder" but "border-radius is 4px across all components — that reads as variance 3/10. The declared dial is 8/10. Intentional restraint or a miss?"
+
+**Present the coherence check, then the summary:**
 
 ```
-  {brand-name} guidelines
-  ═══════════════════════════════════════
+  {brand-name}  ·  {archetype}  ·  {brand_heartbeat}
+  ═══════════════════════════════════════════════════
 
-    .yml preset
-      colors:     {primary}, {secondary}, {accent}
-      typography: {primary font}, {secondary font}
-      intensity:  variance {N}/10, motion {N}/10, density {N}/10
+    intensity dials vs. output
+      variance   declared {N}/10  →  reads {N}/10  {✓ or ⚠}
+      motion     declared {N}/10  →  reads {N}/10  {✓ or ⚠}
+      density    declared {N}/10  →  reads {N}/10  {✓ or ⚠}
 
-    STYLE.md
-      patterns:   {N} components defined
-      constraints: {N} never, {N} always rules
-      effects:    {interaction vocabulary list}
-      bold bets:  {1-line summary of boldest bet}
+    tensions
+      1. {specific gap — e.g. "border-radius (4px) undershoots variance 8/10 target"}
+      2. {specific gap — e.g. "button style is conventional — no Jester rule broken"}
 
-    → open guidelines.html in your browser to preview
+    bold bets
+      {1-line summary of the most distinctive choice made}
+
+    → open guidelines.html in your browser
 
   ─────────────────────────────────────
 ```
 
-Use `AskUserQuestion`:
-- **Looks good** — "The brand looks right, build components"
-- **Adjust tokens** — "I want to tweak colors, typography, or spacing"
-- **Adjust patterns** — "I want to change component rules or constraints"
-- **Adjust intensity** — "More/less creative, more/less motion, more/less density"
+If all dials are coherent (no ⚠), skip the tensions block and present directly.
 
-If adjustments needed, use `/gsp-brand-refine` with the feedback to surgically update the `.yml`, regenerate `STYLE.md`, and regenerate `guidelines.html`. Then re-present.
+Use `AskUserQuestion`:
+- **Looks right** — "Coherent — build components"
+- **Push [tension 1]** — pre-fill with the specific gap so the user can confirm or redirect
+- **Push [tension 2]** — same
+- **Adjust something else** — "I want to change colors / type / patterns"
+
+If refinement needed → invoke `/gsp-brand-refine` with the specific tension as the brief. After it completes, re-read the updated `.yml` and `guidelines.html` and re-run the coherence check from the top. Only proceed to Step 3.75 when the archetype tension is present and dials are coherent.
 
 ## Step 3.75: Perspective check
 
-Load persona profiles from `{BRAND_PATH}/BRIEF.md` and present stakeholder reactions:
+Load persona profiles and the `brand_heartbeat` from `{BRAND_PATH}/BRIEF.md`. Present stakeholder reactions framed around the compass:
 
-"Stress-testing the brand visuals:
+```
+  stress-testing against: "{brand_heartbeat}"
 
- {primary persona name}: {would this visual language feel trustworthy and appropriate?}
- Skeptic: {are the constraints too restrictive or too loose? Is the intensity calibrated right?}
- {top competitor}: {is the brand visually differentiated?}"
+  {primary persona name}: {does this visual language make them feel that sentence?}
+  Skeptic: {does the intensity feel calibrated — or is it playing it safe?}
+  {top competitor}: {is the brand visually distinct enough to own this feeling?}
+```
 
 Use `AskUserQuestion`:
-- **Lock it in** — "The brand is solid, build components"
-- **Adjust** — "One of these concerns resonates — I want to change something"
+- **Lock it in** — "The brand earns that feeling — build components"
+- **Adjust** — "One of these concerns resonates"
 
-If adjust → use `/gsp-brand-refine` with the concern, then re-present. If confirmed → proceed to components.
+If adjust → invoke `/gsp-brand-refine` with the concern, re-present. If confirmed → proceed to components.
 
 ## Step 4: Spawn brand engineer — Pass 2: Components
 
@@ -212,6 +234,24 @@ Update `{BRAND_PATH}/STATE.md`:
 - Record completion date
 - Set Prettiness Level to 100%
 
+Write/update `.design/CLAUDE.md` — Claude's persistent project context. If the file doesn't exist, read `${CLAUDE_SKILL_DIR}/../../templates/design-claude.md` and use it as the starting content. If it exists, append or update the entry for this brand (don't duplicate).
+
+```markdown
+# Design Context
+> Auto-maintained by GSP. Tells Claude what has been built and where.
+
+## Brands
+
+### {brand-name} · complete · {DATE}
+- Heartbeat: "{brand_heartbeat}"
+- Brief:      .design/branding/{brand-name}/BRIEF.md
+- Style:      .design/branding/{brand-name}/patterns/STYLE.md
+- Tokens:     .design/branding/{brand-name}/patterns/{brand-name}.yml
+- Guidelines: .design/branding/{brand-name}/patterns/guidelines.html
+```
+
+Keep it minimal — just what Claude needs to orient itself in a new session without scanning the filesystem.
+
 ## Step 5: Phase transition output
 
 Invoke `/gsp-phase-transition` with phase `guidelines` and output directory `{BRAND_PATH}/patterns/`.
@@ -224,6 +264,7 @@ Also display a brand summary after the standard transition — this is the final
 
 ```
   brand complete — {brand-name}
+  "{brand_heartbeat}"
 
     discover       {key finding}
     strategy       {archetype}, {positioning}, {top voice attributes}
@@ -232,4 +273,6 @@ Also display a brand summary after the standard transition — this is the final
 
     open: {BRAND_PATH}/patterns/guidelines.html
 ```
+
+The `brand_heartbeat` line at the top closes the narrative — the emotional compass written in the brief is the first thing the user said about this brand, and the last thing they see when it's done.
 </process>

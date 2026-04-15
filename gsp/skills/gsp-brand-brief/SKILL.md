@@ -86,15 +86,28 @@ Before presenting personality options, **internally synthesize** promise (what s
     - Note: this is a high-level direction only. Brand strategy phase will deepen this into archetype + voice — don't over-refine here.
 8. What should the brand NEVER feel like? (use `AskUserQuestion` with 2-3 anti-directions inferred from their personality pick, plus open-ended option)
 9. Brands admired or styles to avoid? (open-ended `AskUserQuestion`)
+10. Visual direction — raw aesthetic feeling. Use `AskUserQuestion` (open-ended):
+    > "What should it look and feel like visually? You can share image or website links, describe a mood ('editorial and dark', 'warm brutalist', 'cinematographic with beautiful stills'), drop adjective clusters ('rounded, clean, airy'), or even describe a scene or texture. The weirder and more specific the better — this is what prevents a bland brand."
+    - Synthesize the answer into a `visual_direction` block in the brief: mood words, reference aesthetics, texture/atmosphere descriptors, any specific anti-patterns (e.g., "never stock-photo corporate"). This block directly informs color, typography, and imagery choices downstream.
 
 ## Step 4: Constraints & confirmation
 
-10. Any non-negotiables or constraints? (timeline, budget, must-haves) — open-ended `AskUserQuestion`
-11. State your understanding back: "Here's what I'm hearing: [summary]." Use `AskUserQuestion`:
+11. Any non-negotiables or constraints? (timeline, budget, must-haves) — open-ended `AskUserQuestion`
+12. State your understanding back — but lead with *feeling*, not facts. Format:
+
+    > "Here's what I'm hearing: [2-sentence factual summary].
+    > The feeling this brand should leave: **[emotional compass — one evocative sentence capturing the brand's energy, not its category]**."
+
+    The emotional compass is the hardest line to write and the most important. It should make the user feel something when they read it. Not "a fintech tool that simplifies investing" but "the brand that makes financial confidence feel earned, not given." Synthesize it from the personality direction, the persona aspiration, the brand POV, and the visual direction. It should be specific enough to be wrong — vague sentences aren't compasses.
+
+    Use `AskUserQuestion`:
     - **Looks good** — "That's accurate, let's go"
-    - **Adjust something** — "I want to change or add something"
+    - **Adjust the feeling** — "The compass is off — let me reframe it"
+    - **Adjust something else** — "Facts are right but I want to change something"
 
 If "Adjust" — ask what to change, update your understanding, re-confirm. Don't re-ask everything.
+
+Write the confirmed emotional compass into `BRIEF.md` as `brand_heartbeat`.
 
 ## Step 5: Write artifacts
 

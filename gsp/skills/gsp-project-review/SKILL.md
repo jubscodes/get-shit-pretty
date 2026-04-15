@@ -135,6 +135,13 @@ Update `{PROJECT_PATH}/STATE.md`:
 - If Pass or Conditional Pass: Set Prettiness Level to 100%
 - Update `## Screen Build Status` table — set Review Status per screen based on acceptance-report.md findings
 
+If Pass or Conditional Pass, write/update `.design/CLAUDE.md` — append or update the entry for this project (don't duplicate):
+
+```markdown
+### {project-name} · complete · {DATE}
+brand: {brand-name} · .design/projects/{project-name}/
+```
+
 ### QA loop — if Fail
 
 If verdict is **Fail**:
