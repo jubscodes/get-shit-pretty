@@ -55,7 +55,7 @@ The filesystem is the integration layer — skills produce artifacts to `.design
 | Directory | Contents |
 |-----------|----------|
 | `gsp/skills/` | 34 skills — each is a `gsp-<name>/SKILL.md` directory with optional `domains/` and `references/` siblings |
-| `gsp/agents/` | 11 subagents (`gsp-{name}.md`) |
+| `gsp/agents/` | 12 subagents (`gsp-{name}.md`) |
 | `gsp/hooks/` | Hooks (`hooks.json`) |
 | `gsp/prompts/` | Reserved (agent methodology lives in skill `methodology/` directories) |
 | `gsp/templates/` | Project/brand config, state, brief, roadmap templates |
