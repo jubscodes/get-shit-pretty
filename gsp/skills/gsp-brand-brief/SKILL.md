@@ -107,8 +107,6 @@ Before presenting personality options, **internally synthesize** promise (what s
 
 If "Adjust" — ask what to change, update your understanding, re-confirm. Don't re-ask everything.
 
-Write the confirmed emotional compass into `BRIEF.md` as `brand_heartbeat`.
-
 ## Step 5: Write artifacts and register brand
 
 Read templates at write time from `${CLAUDE_SKILL_DIR}/../../templates/branding/` and write:
@@ -116,6 +114,7 @@ Read templates at write time from `${CLAUDE_SKILL_DIR}/../../templates/branding/
 1. `.design/branding/{name}/BRIEF.md` from `brief.md` template
    - Populate all sections from conversation answers
    - Synthesize brand promise, POV, and personality (these are inferred, not asked directly)
+   - Write the confirmed emotional compass as `brand_heartbeat` in the Emotional Compass section
    - Set `brand_mode` to `new`
    - Set evolve-only sections (Existing Brand State, Evolution Scope) to "N/A — new brand"
 

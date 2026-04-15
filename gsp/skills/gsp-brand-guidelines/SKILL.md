@@ -140,7 +140,7 @@ Pass in the agent prompt:
 
 ## Step 3.5: Coherence check
 
-Read the generated `{BRAND_PATH}/patterns/{brand-name}.yml` and `{BRAND_PATH}/patterns/guidelines.html`. Read `brand_heartbeat` and archetype from `{BRAND_PATH}/BRIEF.md` and `{BRAND_PATH}/strategy/archetype.md`. Do the work of critique before showing the user anything — the pipeline catches coherence gaps, not the user.
+Read the generated `{BRAND_PATH}/patterns/{brand-name}.yml` and `{BRAND_PATH}/patterns/guidelines.html`. Use `brand_heartbeat` and archetype already loaded in Step 1 context. Do the work of critique before showing the user anything — the pipeline catches coherence gaps, not the user.
 
 **Archetype gate first.** The intensity dials are only meaningful against the archetype. Before scoring dials, answer the archetype's signature question:
 - **Jester** — what specific rule is being broken in the visual system? If nothing is broken, the brand is not Jester enough regardless of what the dials say.
@@ -263,6 +263,4 @@ Also display a brand summary after the standard transition — this is the final
 
     open: {BRAND_PATH}/patterns/guidelines.html
 ```
-
-The `brand_heartbeat` line at the top closes the narrative — the emotional compass written in the brief is the first thing the user said about this brand, and the last thing they see when it's done.
 </process>
