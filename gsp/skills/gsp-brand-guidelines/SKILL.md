@@ -234,23 +234,13 @@ Update `{BRAND_PATH}/STATE.md`:
 - Record completion date
 - Set Prettiness Level to 100%
 
-Write/update `.design/CLAUDE.md` — Claude's persistent project context. If the file doesn't exist, read `${CLAUDE_SKILL_DIR}/../../templates/design-claude.md` and use it as the starting content. If it exists, append or update the entry for this brand (don't duplicate).
+Update `.design/CLAUDE.md` — replace the existing `### {brand-name}` entry (written by gsp-brand-brief when started) with the completed entry:
 
 ```markdown
-# Design Context
-> Auto-maintained by GSP. Tells Claude what has been built and where.
-
-## Brands
-
 ### {brand-name} · complete · {DATE}
-- Heartbeat: "{brand_heartbeat}"
-- Brief:      .design/branding/{brand-name}/BRIEF.md
-- Style:      .design/branding/{brand-name}/patterns/STYLE.md
-- Tokens:     .design/branding/{brand-name}/patterns/{brand-name}.yml
-- Guidelines: .design/branding/{brand-name}/patterns/guidelines.html
+"{brand_heartbeat}"
+.design/branding/{brand-name}/patterns/ — guidelines.html · STYLE.md · {brand-name}.yml
 ```
-
-Keep it minimal — just what Claude needs to orient itself in a new session without scanning the filesystem.
 
 ## Step 5: Phase transition output
 

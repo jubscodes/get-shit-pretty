@@ -109,7 +109,7 @@ If "Adjust" — ask what to change, update your understanding, re-confirm. Don't
 
 Write the confirmed emotional compass into `BRIEF.md` as `brand_heartbeat`.
 
-## Step 5: Write artifacts
+## Step 5: Write artifacts and register brand
 
 Read templates at write time from `${CLAUDE_SKILL_DIR}/../../templates/branding/` and write:
 
@@ -129,6 +129,14 @@ Read templates at write time from `${CLAUDE_SKILL_DIR}/../../templates/branding/
    - Set `e2e` flag from Step 1
 
 4. `.design/branding/{name}/ROADMAP.md` from `roadmap.md` template
+
+5. Write/update `.design/CLAUDE.md` — register the brand as started. If the file doesn't exist, read `${CLAUDE_SKILL_DIR}/../../templates/design-claude.md` first. Append under `## Brands`:
+
+```markdown
+### {brand-name} · in progress · {DATE}
+"{brand_heartbeat}"
+next: gsp-brand-research · .design/branding/{brand-name}/
+```
 
 ## Step 6: Route
 

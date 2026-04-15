@@ -184,6 +184,13 @@ Update `{PROJECT_PATH}/STATE.md`:
 - Set Phase 1 (Brief) status to `complete`
 - Record completion date
 
+Write/update `.design/CLAUDE.md` — register the project as started. If the file doesn't exist, read the template from `${CLAUDE_SKILL_DIR}/../../templates/design-claude.md` first. Append under `## Projects`:
+
+```markdown
+### {project-name} · in progress · {DATE}
+brand: {brand-name} · next: gsp-project-research · .design/projects/{project-name}/
+```
+
 ## Step 5: Phase transition output
 
 Invoke `/gsp-phase-transition` with phase `brief` and output directory `{PROJECT_PATH}/brief/`.
