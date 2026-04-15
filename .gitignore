@@ -11,6 +11,9 @@ node_modules/
 # Local dev notes
 .planning/
 
+# Brand/project test runs (local only)
+.design/
+
 # Worktrees
 .worktrees/
 

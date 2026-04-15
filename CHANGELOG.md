@@ -47,8 +47,9 @@ All notable changes to get-shit-pretty are documented here.
 - **Chart rules in builder** — `gsp-project-builder.md` now documents: no `hsl()` wrapper on color tokens (use `var(--chart-1)` directly), mandatory explicit height on `<ChartContainer>`, `accessibilityLayer` prop, and `layout` prop placement
 - **New Form Field API** — builder methodology documents the current `<Field>/<Controller>` pattern alongside backward-compat note for projects with the old `<FormField>/<FormItem>` API
 - **Sidebar width pattern** — builder notes the correct `--sidebar-width` inline CSS prop on `<SidebarProvider>`
+- **Global stack compliance** — `gsp-start` propagates tech stack detection through the full project lifecycle; all build, design, and review skills inherit and gate on the detected stack
 
-
+## [0.8.0] — 2026-04-13
 
 ### Added
 - **`bin/theme-css.js`** — deterministic script converts any `.yml` preset to `:root`/`.dark` CSS blocks. Hex values → OKLCH (full color math). Handles alpha values, font stacks, and shadows verbatim. Usage: `node bin/theme-css.js preset.yml --stdout`
