@@ -24,7 +24,7 @@ tokens:
     input: "rgba(255, 113, 206, 0.3)"
     ring: "#FF71CE"
     # Sidebar
-    sidebar-background: "#2D1B4E"
+    sidebar: "#2D1B4E"
     sidebar-foreground: "#E8D5FF"
     sidebar-primary: "#FF71CE"
     sidebar-primary-foreground: "#FFFFFF"
@@ -36,6 +36,12 @@ tokens:
     success: "#05FFA1"
     warning: "#FFE66D"
     info: "#01CDFE"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#FF71CE"  # vaporwave pink (primary)
+    chart-2: "#01CDFE"  # vaporwave cyan (secondary)
+    chart-3: "#B967FF"  # vaporwave purple (accent)
+    chart-4: "#05FFA1"  # vaporwave mint (success)
+    chart-5: "#FFE66D"  # vaporwave yellow
 
   typography:
     font-family-primary: "Space Grotesk, sans-serif"
@@ -82,7 +88,7 @@ dark_mode:
     muted-foreground: "#A78BCA"
     border: "rgba(255, 113, 206, 0.2)"
     input: "rgba(255, 113, 206, 0.2)"
-    sidebar-background: "#1A0533"
+    sidebar: "#1A0533"
     sidebar-foreground: "#E8D5FF"
     sidebar-border: "rgba(255, 113, 206, 0.2)"
 

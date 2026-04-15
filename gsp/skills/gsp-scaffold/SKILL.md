@@ -1,6 +1,6 @@
 ---
 name: gsp-scaffold
-description: Deterministic stack setup — install deps, create configs, verify build compiles
+description: Set up the tech stack — install deps, configs, verify build — use when: set up the stack, install shadcn, init the project, scaffold, set up Tailwind
 user-invocable: true
 allowed-tools:
   - Read
@@ -40,20 +40,57 @@ Read `{PROJECT_PATH}/config.json` to get:
 - `preferences.implementation_target` (shadcn, rn-reusables, existing, code)
 - `preferences.tech_stack` (Next.js + Tailwind + shadcn/ui, etc.)
 - `preferences.codebase_type` (greenfield, existing)
+- `preferences.app_path` (relative path from repo root to the target app, e.g. `apps/web`)
+- `preferences.repo_type` (`single` or `monorepo`)
+
+Set `APP_PATH` = value of `app_path`. If empty, default to `.` (repo root).
+Derive `APP_NAME` = last segment of `APP_PATH` (e.g. `apps/web` → `web`, `.` → `root`).
 
 If `implementation_target` is `figma` or `skip`, log "⚠️ No scaffold needed for target: {target}" and exit.
 
-## Step 2: Read stack state
+## Step 2: Read stack state + compliance gate
 
-Read `.design/system/STACK.md` if it exists — check what's already set up.
+Read `.design/system/stacks/{APP_NAME}.md` if it exists — this is the per-app stack file for monorepos. Fall back to `.design/system/STACK.md` for legacy single-app setups (or when `APP_NAME` is `root` and the legacy file exists).
 
-If STACK.md indicates the stack is already initialized (has framework, CSS, component library entries), log existing state and skip to Step 4 (component installs).
+### If stack file exists (existing or returning project)
+
+This workspace has a declared stack for this app. Enforce compliance before touching anything.
+
+1. **Read the live stack** from `components.json` (if present) and `package.json` inside `APP_PATH`:
+   - `cd {APP_PATH} && npx shadcn@latest info --json` (if shadcn target) → captures `aliases`, `tailwindVersion`, `style`, `base`, `iconLibrary`
+   - `cd {APP_PATH} && node -e "console.log(require('tailwindcss/package.json').version)"` → actual Tailwind version
+
+2. **Compare against STACK.md** — flag any of these divergences:
+
+   | What to check | STACK.md field | Live source |
+   |---|---|---|
+   | Framework | `## Tech Stack → Framework` | `package.json` dependencies |
+   | Tailwind version | `## Tech Stack → Styling` | Installed `tailwindcss` version |
+   | shadcn alias | `## Key Paths → Components` | `shadcn info` → `aliases.components` |
+   | shadcn style | (if recorded) | `shadcn info` → `style` |
+   | Icon library | (if recorded) | `shadcn info` → `iconLibrary` |
+
+3. **Gate on divergence:**
+   - If any divergence found, surface it clearly:
+     ```
+     ⚠️  Stack compliance — divergence detected
+
+       STACK.md declares:   aliases.components = @/components/ui
+       Live codebase has:   aliases.components = ~/components/ui
+
+       Proceeding will write files to the wrong paths.
+     ```
+   - Use `AskUserQuestion`: "Stack divergence detected. Proceed anyway (may break imports), or stop to fix STACK.md first?"
+   - **Stop** → exit; user fixes `STACK.md` and re-runs
+   - **Proceed anyway** → log divergence in scaffold log, continue with live values (not STACK.md)
+
+4. If the stack file indicates the stack is already initialized (has framework, CSS, component library entries) **and no divergence found**, log existing state and skip to Step 4 (component installs).
 
 ## Step 3: Initialize stack
 
 Based on `tech_stack` and `implementation_target`, run the appropriate setup.
 
-**Important:** Always check if config files already exist before overwriting. Only create what's missing.
+**Important:** All shell commands in this step run in the `APP_PATH` working directory (`cd {APP_PATH} && ...`). Always check if config files already exist before overwriting. Only create what's missing.
 
 ### Next.js + shadcn (greenfield)
 
@@ -165,14 +202,14 @@ Run additional dependency installs (`npm install ...`) separately from component
 
 ## Step 5: Verify build
 
-Clear any build cache first (`rm -rf .next` for Next.js), then run the build command:
+Clear any build cache first (`cd {APP_PATH} && rm -rf .next` for Next.js), then run the build command in `APP_PATH`:
 
 | Stack | Build command |
 |-------|--------------|
-| Next.js | `npx next build` |
-| Vite | `npx vite build` |
-| TypeScript only | `npx tsc --noEmit` |
-| Generic | `npm run build` |
+| Next.js | `cd {APP_PATH} && npx next build` |
+| Vite | `cd {APP_PATH} && npx vite build` |
+| TypeScript only | `cd {APP_PATH} && npx tsc --noEmit` |
+| Generic | `cd {APP_PATH} && npm run build` |
 
 - **Success:** Log "Build compiles cleanly"
 - **Failure:** Log the error output. Attempt to fix common issues:
@@ -186,7 +223,7 @@ Clear any build cache first (`rm -rf .next` for Next.js), then run the build com
 
 ## Step 5.5: Capture project context (shadcn targets)
 
-If `implementation_target` is `shadcn`, run `npx shadcn@latest info --json` and capture the output. This provides:
+If `implementation_target` is `shadcn`, run `cd {APP_PATH} && npx shadcn@latest info --json` and capture the output. This provides:
 - `aliases` — the actual alias prefix for imports (`@/`, `~/`)
 - `tailwindVersion` — `"v4"` (uses `@theme inline`) vs `"v3"` (uses `tailwind.config.js`)
 - `tailwindCssFile` — the global CSS file where custom properties go
@@ -206,7 +243,7 @@ Write `{PROJECT_PATH}/build/SCAFFOLD-LOG.md`:
 ```markdown
 # Scaffold Log
 
-> Phase: build (scaffold) | Project: {name} | Generated: {DATE}
+> Phase: build (scaffold) | Project: {name} | App: {APP_PATH} | Generated: {DATE}
 
 ## Stack
 

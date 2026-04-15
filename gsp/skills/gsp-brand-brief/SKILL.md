@@ -1,6 +1,6 @@
 ---
 name: gsp-brand-brief
-description: Define your brand — who, why, and what it should feel like
+description: Define your brand — who, why, and what it should feel like — use when: create a brand, define our brand identity, who are we, what's our brand
 user-invocable: true
 allowed-tools:
   - Read
@@ -86,23 +86,35 @@ Before presenting personality options, **internally synthesize** promise (what s
     - Note: this is a high-level direction only. Brand strategy phase will deepen this into archetype + voice — don't over-refine here.
 8. What should the brand NEVER feel like? (use `AskUserQuestion` with 2-3 anti-directions inferred from their personality pick, plus open-ended option)
 9. Brands admired or styles to avoid? (open-ended `AskUserQuestion`)
+10. Visual direction — raw aesthetic feeling. Use `AskUserQuestion` (open-ended):
+    > "What should it look and feel like visually? You can share image or website links, describe a mood ('editorial and dark', 'warm brutalist', 'cinematographic with beautiful stills'), drop adjective clusters ('rounded, clean, airy'), or even describe a scene or texture. The weirder and more specific the better — this is what prevents a bland brand."
+    - Synthesize the answer into a `visual_direction` block in the brief: mood words, reference aesthetics, texture/atmosphere descriptors, any specific anti-patterns (e.g., "never stock-photo corporate"). This block directly informs color, typography, and imagery choices downstream.
 
 ## Step 4: Constraints & confirmation
 
-10. Any non-negotiables or constraints? (timeline, budget, must-haves) — open-ended `AskUserQuestion`
-11. State your understanding back: "Here's what I'm hearing: [summary]." Use `AskUserQuestion`:
+11. Any non-negotiables or constraints? (timeline, budget, must-haves) — open-ended `AskUserQuestion`
+12. State your understanding back — but lead with *feeling*, not facts. Format:
+
+    > "Here's what I'm hearing: [2-sentence factual summary].
+    > The feeling this brand should leave: **[emotional compass — one evocative sentence capturing the brand's energy, not its category]**."
+
+    The emotional compass is the hardest line to write and the most important. It should make the user feel something when they read it. Not "a fintech tool that simplifies investing" but "the brand that makes financial confidence feel earned, not given." Synthesize it from the personality direction, the persona aspiration, the brand POV, and the visual direction. It should be specific enough to be wrong — vague sentences aren't compasses.
+
+    Use `AskUserQuestion`:
     - **Looks good** — "That's accurate, let's go"
-    - **Adjust something** — "I want to change or add something"
+    - **Adjust the feeling** — "The compass is off — let me reframe it"
+    - **Adjust something else** — "Facts are right but I want to change something"
 
 If "Adjust" — ask what to change, update your understanding, re-confirm. Don't re-ask everything.
 
-## Step 5: Write artifacts
+## Step 5: Write artifacts and register brand
 
 Read templates at write time from `${CLAUDE_SKILL_DIR}/../../templates/branding/` and write:
 
 1. `.design/branding/{name}/BRIEF.md` from `brief.md` template
    - Populate all sections from conversation answers
    - Synthesize brand promise, POV, and personality (these are inferred, not asked directly)
+   - Write the confirmed emotional compass as `brand_heartbeat` in the Emotional Compass section
    - Set `brand_mode` to `new`
    - Set evolve-only sections (Existing Brand State, Evolution Scope) to "N/A — new brand"
 
@@ -117,6 +129,14 @@ Read templates at write time from `${CLAUDE_SKILL_DIR}/../../templates/branding/
 
 4. `.design/branding/{name}/ROADMAP.md` from `roadmap.md` template
 
+5. Write/update `.design/CLAUDE.md` — register the brand as started. If the file doesn't exist, read `${CLAUDE_SKILL_DIR}/../../templates/design-claude.md` first. Append under `## Brands`:
+
+```markdown
+### {brand-name} · in progress · {DATE}
+"{brand_heartbeat}"
+next: gsp-brand-research · .design/branding/{brand-name}/
+```
+
 ## Step 6: Route
 
 Use `AskUserQuestion` — always offer Continue / Stop here / What happens next:
@@ -126,4 +146,29 @@ Use `AskUserQuestion` — always offer Continue / Stop here / What happens next:
 - **What happens next?** — "Explain the research phase" → explain what brand-research does (market landscape, competitive audit, trend analysis, mood board direction) and how it uses the brief
 
 If `e2e: true`, mention that after the full branding diamond completes, it will auto-transition to project setup.
+
+## Step 7: e2e transition (only when `e2e: true` and branding diamond is complete)
+
+After all four brand phases complete (brand-research → brand-strategy → brand-identity → brand-guidelines), scaffold the project directory before invoking `/gsp-project-brief`:
+
+1. Derive `{project-slug}` from the brand name: lowercase, spaces and underscores replaced with hyphens.
+
+2. Create the project directory:
+```bash
+mkdir -p .design/projects/{project-slug}/
+```
+
+3. Read templates at write time from `${CLAUDE_SKILL_DIR}/../../templates/projects/` and write:
+   - `.design/projects/{project-slug}/config.json` from `config.json` template — set `project.name` (title-cased from project-slug) and `project.created` (ISO date)
+   - `.design/projects/{project-slug}/STATE.md` from `state.md` template — fill in project name and brand name
+
+4. Write `.design/projects/{project-slug}/brand.ref` containing the brand directory name (e.g. `{brand-name}`), so the project knows which brand it belongs to.
+
+5. Display:
+```
+  brand complete — {brand-name}
+  now let's scope your project.
+```
+
+6. Invoke `/gsp-project-brief` via Skill tool, passing `{project-slug}` so Step 0 resolves the existing directory rather than prompting for one.
 </process>

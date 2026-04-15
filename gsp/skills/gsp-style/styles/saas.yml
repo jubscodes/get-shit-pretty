@@ -24,7 +24,7 @@ tokens:
     input: "#E2E8F0"
     ring: "#0052FF"
     # Sidebar
-    sidebar-background: "#F8FAFC"
+    sidebar: "#F8FAFC"
     sidebar-foreground: "#0F172A"
     sidebar-primary: "#0052FF"
     sidebar-primary-foreground: "#FFFFFF"
@@ -36,6 +36,12 @@ tokens:
     success: "#10B981"
     warning: "#F59E0B"
     info: "#0052FF"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#0052FF"  # electric blue (primary)
+    chart-2: "#10B981"  # emerald (success)
+    chart-3: "#F59E0B"  # amber (warning)
+    chart-4: "#8B5CF6"  # growth violet
+    chart-5: "#EF4444"  # churn red
 
   typography:
     font-family-primary: "Calistoga, serif"
@@ -80,7 +86,7 @@ dark_mode:
     muted-foreground: "#94A3B8"
     border: "#334155"
     input: "#334155"
-    sidebar-background: "#1E293B"
+    sidebar: "#1E293B"
     sidebar-foreground: "#F1F5F9"
     sidebar-border: "#334155"
 

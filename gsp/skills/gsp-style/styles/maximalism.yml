@@ -24,7 +24,7 @@ tokens:
     input: "#FF3AF2"
     ring: "#FF3AF2"
     # Sidebar
-    sidebar-background: "#1A1A2E"
+    sidebar: "#1A1A2E"
     sidebar-foreground: "#FFFFFF"
     sidebar-primary: "#FF3AF2"
     sidebar-primary-foreground: "#000000"
@@ -36,6 +36,12 @@ tokens:
     success: "#00F5D4"
     warning: "#FFE600"
     info: "#00BFFF"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#FF3AF2"  # electric magenta (primary)
+    chart-2: "#00F5D4"  # acid cyan (accent)
+    chart-3: "#FFE600"  # neon yellow (warning)
+    chart-4: "#7B2FFF"  # deep purple (secondary)
+    chart-5: "#FF6B35"  # screaming orange
 
   color-rotate:
     magenta: "#FF3AF2"

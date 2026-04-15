@@ -25,7 +25,7 @@ tokens:
     input: "transparent"
     ring: "#2196F3"
     # Sidebar
-    sidebar-background: "#FAFAFA"
+    sidebar: "#FAFAFA"
     sidebar-foreground: "#212121"
     sidebar-primary: "#2196F3"
     sidebar-primary-foreground: "#FFFFFF"
@@ -37,6 +37,12 @@ tokens:
     success: "#4CAF50"
     warning: "#FF9800"
     info: "#2196F3"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#2196F3"  # flat blue (primary)
+    chart-2: "#4CAF50"  # flat green (secondary)
+    chart-3: "#FF9800"  # flat orange (accent)
+    chart-4: "#9C27B0"  # flat purple
+    chart-5: "#F44336"  # flat red
 
   typography:
     font-family-primary: "Outfit, Open Sans, sans-serif"

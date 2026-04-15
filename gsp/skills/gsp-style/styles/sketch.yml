@@ -24,7 +24,7 @@ tokens:
     input: "#2D3748"
     ring: "#2D3748"
     # Sidebar
-    sidebar-background: "#FFFDF7"
+    sidebar: "#FFFDF7"
     sidebar-foreground: "#2D2D2D"
     sidebar-primary: "#2D3748"
     sidebar-primary-foreground: "#FFFFFF"
@@ -36,6 +36,12 @@ tokens:
     success: "#48BB78"
     warning: "#ED8936"
     info: "#2D5DA1"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#2D3748"  # pencil dark (primary)
+    chart-2: "#FF4D4D"  # correction red (accent)
+    chart-3: "#2D5DA1"  # ink blue (secondary)
+    chart-4: "#48BB78"  # watercolor green
+    chart-5: "#ED8936"  # watercolor orange
 
   typography:
     font-family-primary: "Kalam, cursive"
@@ -77,7 +83,7 @@ dark_mode:
     muted-foreground: "#718096"
     border: "#FDFBF7"
     input: "#FDFBF7"
-    sidebar-background: "#2D2D48"
+    sidebar: "#2D2D48"
     sidebar-foreground: "#FDFBF7"
     sidebar-border: "#FDFBF7"
 

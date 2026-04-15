@@ -1,6 +1,6 @@
 ---
 name: gsp-brand-guidelines
-description: Operationalize your brand — assemble tokens, STYLE.md, component mapping, and guidelines (technical phase — benefits from capable models)
+description: Build design system tokens and STYLE.md (technical phase — benefits from capable models) — use when: create the design system, generate tokens, finalize brand guidelines, build the component system
 user-invocable: true
 allowed-tools:
   - Read
@@ -113,6 +113,7 @@ Redesign the system from the ground up, informed by what exists.
 Read these files and hold their content for inlining into the agent prompt:
 - `${CLAUDE_SKILL_DIR}/../../templates/phases/patterns.md` — patterns output template
 - `${CLAUDE_SKILL_DIR}/design-tokens.md` — design tokens reference
+- `${CLAUDE_SKILL_DIR}/guidelines-structure.md` — guidelines.html structure spec (shadcn tokens, sections, primitive classes)
 - `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-engineer.md` — agent methodology
 
 Spawn the `gsp-brand-engineer` agent. **Inline all content** — the agent should not need to read input files.
@@ -120,11 +121,12 @@ Spawn the `gsp-brand-engineer` agent. **Inline all content** — the agent shoul
 Pass in the agent prompt:
 - **Content of** all identity chunks + palettes.json (loaded in Step 1)
 - **Content of** strategy chunks: voice-and-tone.md, archetype.md, positioning.md (loaded in Step 1)
-- **Content of** BRIEF.md (loaded in Step 1)
+- **Content of** BRIEF.md (loaded in Step 1) — explicitly pass the `brand_heartbeat` field as a named input so the agent uses it in the hero headline if no manifesto line exists yet
 - **Content of** style base preset `.yml` + `.md` (loaded in Step 1) — `.yml` as structural scaffold, `.md` as philosophy + implementation content for STYLE.md
 - **Agent methodology** (loaded above)
 - **Content of** patterns output template (loaded above)
 - **Content of** design tokens reference (loaded above)
+- **Content of** guidelines structure spec (loaded above) — follow this exactly for `guidelines.html`
 - The `system_strategy` and `tech_stack` values
 - **Output path:** `{BRAND_PATH}/patterns/`
 
@@ -136,55 +138,64 @@ Pass in the agent prompt:
 >
 > Do NOT produce component artifacts yet (token-mapping, overrides, custom specs). Those come after the user reviews the visual output.
 
-## Step 3.5: Visual review
+## Step 3.5: Coherence check
 
-Tell the user: "Open `{BRAND_PATH}/patterns/guidelines.html` in your browser — this is your brand in one page."
+Spawn the `gsp-brand-coherence` agent with a fresh context. Load the methodology and inline all inputs — the agent should not need to read files.
 
-Present a compact summary:
+### Load
+Read these and hold for inlining:
+- `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-coherence.md` — agent methodology
+- `{BRAND_PATH}/patterns/{brand-name}.yml` — generated preset
+- `{BRAND_PATH}/patterns/guidelines.html` — generated visual guide
+
+Extract from Step 1 context:
+- `archetype` — from archetype.md
+- `brand_heartbeat` — from BRIEF.md
+
+### Spawn `gsp-brand-coherence`
+
+Pass inline:
+- **Agent methodology** (loaded above)
+- **Content of** `{brand-name}.yml`
+- **Content of** `guidelines.html`
+- `archetype` and `brand_heartbeat`
+
+The agent returns a structured coherence report. No back-and-forth — one response.
+
+### Present the report
+
+Display the agent's report, then add:
 
 ```
-  {brand-name} guidelines
-  ═══════════════════════════════════════
-
-    .yml preset
-      colors:     {primary}, {secondary}, {accent}
-      typography: {primary font}, {secondary font}
-      intensity:  variance {N}/10, motion {N}/10, density {N}/10
-
-    STYLE.md
-      patterns:   {N} components defined
-      constraints: {N} never, {N} always rules
-      effects:    {interaction vocabulary list}
-      bold bets:  {1-line summary of boldest bet}
-
-    → open guidelines.html in your browser to preview
-
+  → open guidelines.html in your browser
   ─────────────────────────────────────
 ```
 
 Use `AskUserQuestion`:
-- **Looks good** — "The brand looks right, build components"
-- **Adjust tokens** — "I want to tweak colors, typography, or spacing"
-- **Adjust patterns** — "I want to change component rules or constraints"
-- **Adjust intensity** — "More/less creative, more/less motion, more/less density"
+- **Looks right** — "Coherent — build components"
+- **Push [tension 1]** — pre-fill with the specific gap from the report
+- **Push [tension 2]** — same
+- **Adjust something else** — "I want to change colors / type / patterns"
 
-If adjustments needed, use `/gsp-brand-refine` with the feedback to surgically update the `.yml`, regenerate `STYLE.md`, and regenerate `guidelines.html`. Then re-present.
+If refinement needed → invoke `/gsp-brand-refine` with the specific tension. After it completes, re-spawn `gsp-brand-coherence` with the updated `.yml` and `guidelines.html`. Only proceed to Step 3.75 when the archetype tension is present and dials are coherent.
 
 ## Step 3.75: Perspective check
 
-Load persona profiles from `{BRAND_PATH}/BRIEF.md` and present stakeholder reactions:
+Load persona profiles and the `brand_heartbeat` from `{BRAND_PATH}/BRIEF.md`. Present stakeholder reactions framed around the compass:
 
-"Stress-testing the brand visuals:
+```
+  stress-testing against: "{brand_heartbeat}"
 
- {primary persona name}: {would this visual language feel trustworthy and appropriate?}
- Skeptic: {are the constraints too restrictive or too loose? Is the intensity calibrated right?}
- {top competitor}: {is the brand visually differentiated?}"
+  {primary persona name}: {does this visual language make them feel that sentence?}
+  Skeptic: {does the intensity feel calibrated — or is it playing it safe?}
+  {top competitor}: {is the brand visually distinct enough to own this feeling?}
+```
 
 Use `AskUserQuestion`:
-- **Lock it in** — "The brand is solid, build components"
-- **Adjust** — "One of these concerns resonates — I want to change something"
+- **Lock it in** — "The brand earns that feeling — build components"
+- **Adjust** — "One of these concerns resonates"
 
-If adjust → use `/gsp-brand-refine` with the concern, then re-present. If confirmed → proceed to components.
+If adjust → invoke `/gsp-brand-refine` with the concern, re-present. If confirmed → proceed to components.
 
 ## Step 4: Spawn brand engineer — Pass 2: Components
 
@@ -212,6 +223,14 @@ Update `{BRAND_PATH}/STATE.md`:
 - Record completion date
 - Set Prettiness Level to 100%
 
+Update `.design/CLAUDE.md` — replace the existing `### {brand-name}` entry (written by gsp-brand-brief when started) with the completed entry:
+
+```markdown
+### {brand-name} · complete · {DATE}
+"{brand_heartbeat}"
+.design/branding/{brand-name}/patterns/ — guidelines.html · STYLE.md · {brand-name}.yml
+```
+
 ## Step 5: Phase transition output
 
 Invoke `/gsp-phase-transition` with phase `guidelines` and output directory `{BRAND_PATH}/patterns/`.
@@ -224,6 +243,7 @@ Also display a brand summary after the standard transition — this is the final
 
 ```
   brand complete — {brand-name}
+  "{brand_heartbeat}"
 
     discover       {key finding}
     strategy       {archetype}, {positioning}, {top voice attributes}

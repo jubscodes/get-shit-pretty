@@ -17,7 +17,7 @@ You are spawned with an `execution_mode` parameter. Follow the mode strictly:
 
 ### `foundations`
 Build token integration, global styles, and layout primitives ONLY. Stop after foundations.
-- Design tokens → CSS variables / Tailwind config. Use the **token-mapping.md** reference to map `.yml` values to the correct format per target. For shadcn: convert hex to HSL space-separated channels (e.g., `#1E40AF` → `221 72% 40%`), write ALL variables in `:root` and `.dark` scopes (background, foreground, card, popover, primary, secondary, muted, accent, destructive, border, input, ring, sidebar-*, chart-1 through chart-5, --radius). Write only **global tokens**: brand colors, font families, spacing scale, base radius, base shadows. Do NOT write screen-specific tokens yet.
+- Design tokens → CSS variables / Tailwind config. Run `node bin/theme-css.js <preset.yml> --stdout` to generate a ready-to-paste `:root` and `.dark` block in OKLCH format. If `bin/theme-css.js` is unavailable, convert hex to OKLCH manually. Write ALL variables in `:root` and `.dark` scopes (background, foreground, card, popover, primary, secondary, muted, accent, destructive, border, input, ring, sidebar-*, chart-1 through chart-5, --radius). Write only **global tokens**: brand colors, font families, spacing scale, base radius, base shadows. Do NOT write screen-specific tokens yet.
 - Global CSS (resets, base styles, dark mode)
 - Layout components (root layout, nav shell, footer shell)
 - Shared utilities (cn helper, theme provider)
@@ -125,18 +125,71 @@ These rules are always enforced for shadcn targets. They reflect the official sh
 - Use full Card composition (`CardHeader`/`CardTitle`/`CardDescription`/`CardContent`/`CardFooter`)
 - `TabsTrigger` must be inside `TabsList`
 - `Avatar` always needs `AvatarFallback`
-- Use `Alert` for callouts, `Badge` for status, `Skeleton` for loading, `Separator` for dividers, `sonner` for toast
+- Use `Alert` for callouts, `Badge` for status, `Skeleton` for loading, `Separator` for dividers, `Empty` for empty states, `sonner` for toast
+- `Button` has no `isPending`/`isLoading` prop — compose with `<Spinner data-icon="inline-start" />` + `disabled`
+
+**Forms:**
+- Use `FieldGroup` + `Field` for form layout — never raw `div` with `space-y-*` or `grid gap-*`
+- Option sets (2–7 choices) use `ToggleGroup` + `ToggleGroupItem` — not a loop of `Button` with manual active state
+- Buttons inside inputs use `InputGroup` + `InputGroupAddon` — not `relative` positioning with `absolute` button
+- Use `InputGroupInput` / `InputGroupTextarea` inside `InputGroup` — not raw `Input`/`Textarea`
+- Group related checkboxes/radios with `FieldSet` + `FieldLegend` — not `div` with a heading
+- Field validation: `data-invalid` on `Field`, `aria-invalid` on the control; `data-disabled` on `Field`, `disabled` on the control
+
+**base vs radix API (check `base` from `npx shadcn@latest info`):**
+- Custom triggers: `asChild` (radix) vs `render` prop (base)
+- Button as link: `<Button asChild><a>` (radix) vs `<Button render={<a />} nativeButton={false}>` (base)
+- `ToggleGroup`: radix uses `type="single"/"multiple"` + string `defaultValue`; base uses no `type` + array `defaultValue`
+- `Slider`: radix always uses array (`defaultValue={[50]}`); base uses plain number for single thumb
+- `Select`: base requires `items` prop on root; radix uses inline JSX only
 
 **Icons:**
-- Icons in `Button` use `data-icon` attribute (`data-icon="inline-start"` or `data-icon="inline-end"`)
+- Icons in `Button` use `data-icon` attribute (`data-icon="inline-start"` or `data-icon="inline-end"`) — do NOT add `mr-2`/`ml-2` margin; the component handles spacing via CSS
 - No sizing classes on icons inside components — components handle icon sizing via CSS
 
 **CLI awareness:**
 - Install components via `npx shadcn@latest add {name}` — never copy/paste from GitHub
-- Use `npx shadcn@latest search` to find components before building custom ones
+- Use `npx shadcn@latest search {name}` to find components before building custom ones
+- Use `npx shadcn@latest docs {name}` to get live docs and example URLs before implementing or debugging a component
+- Use `npx shadcn@latest add {name} --dry-run` to preview all affected files before writing
+- Use `npx shadcn@latest add {name} --diff {file}` to preview a specific file's changes before overwriting
 - After installing components from registries, verify imports match the project's alias config
+- After installing from community registries, check added non-UI files for hardcoded `@/components/ui/...` paths — rewrite to match the project's actual aliases
+
+**Charts (Recharts v3):**
+- Color references: `fill="var(--chart-1)"` or `fill="var(--color-chart-1)"` — **no `hsl()` wrapper** (tokens are OKLCH, not HSL channels)
+- `<ChartContainer>` **requires** an explicit height — add `className="min-h-[200px]"` or `aspect-video`; no implicit height is set
+- Add `accessibilityLayer` prop to chart root elements (`<BarChart accessibilityLayer>`)
+- The `layout` prop belongs on the parent chart (`<BarChart layout="vertical">`), not on `<Bar>`
+
+**Forms (React Hook Form + Field API):**
+- New projects use the `<Field>/<Controller>` API — not `<FormField>/<FormItem>/<FormControl>/<FormMessage>`:
+  ```jsx
+  <Controller
+    name="email"
+    control={form.control}
+    render={({ field, fieldState }) => (
+      <Field data-invalid={fieldState.invalid}>
+        <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+        <Input {...field} id={field.name} aria-invalid={fieldState.invalid} />
+        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+      </Field>
+    )}
+  />
+  ```
+- Components: `Field`, `FieldLabel`, `FieldDescription`, `FieldError`, `FieldGroup`, `FieldSet`, `FieldLegend`
+- If the existing project has the old `form.tsx` (with `FormField`/`FormItem`), match its pattern — do not mix APIs
+
+**Sidebar:**
+- Set custom sidebar width via inline CSS prop on `<SidebarProvider>`:
+  ```jsx
+  <SidebarProvider style={{ "--sidebar-width": "20rem" } as React.CSSProperties}>
+  ```
+- Do not override `--sidebar-width` in `globals.css` — it belongs on the provider instance
 
 Full reference: `references/anti-patterns.md` (available via Read for the complete list with fixes).
+
+**Theming reference:** when building or fixing themes, read `${CLAUDE_SKILL_DIR}/../../gsp-scaffold/shadcn-theming.md` — full token table, dark mode setup, common theming bugs and fixes.
 
 ## Visual Quality Checklist
 

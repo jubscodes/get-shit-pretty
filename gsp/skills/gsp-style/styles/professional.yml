@@ -24,7 +24,7 @@ tokens:
     input: "#E2E8F0"
     ring: "#1E40AF"
     # Sidebar
-    sidebar-background: "#F8FAFC"
+    sidebar: "#F8FAFC"
     sidebar-foreground: "#0F172A"
     sidebar-primary: "#1E40AF"
     sidebar-primary-foreground: "#FFFFFF"
@@ -36,6 +36,12 @@ tokens:
     success: "#16A34A"
     warning: "#D97706"
     info: "#2563EB"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#1E40AF"  # navy blue (primary)
+    chart-2: "#0EA5E9"  # sky blue (accent)
+    chart-3: "#16A34A"  # business green
+    chart-4: "#D97706"  # muted amber
+    chart-5: "#6B7280"  # steel gray
 
   typography:
     font-family-primary: "Inter, system-ui, sans-serif"
@@ -76,7 +82,7 @@ dark_mode:
     muted-foreground: "#94A3B8"
     border: "#334155"
     input: "#334155"
-    sidebar-background: "#1E293B"
+    sidebar: "#1E293B"
     sidebar-foreground: "#F1F5F9"
     sidebar-border: "#334155"
 

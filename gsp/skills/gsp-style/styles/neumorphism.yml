@@ -24,7 +24,7 @@ tokens:
     input: "#C8D0DC"
     ring: "#6C63FF"
     # Sidebar
-    sidebar-background: "#D8DDE6"
+    sidebar: "#D8DDE6"
     sidebar-foreground: "#3D4852"
     sidebar-primary: "#6C63FF"
     sidebar-primary-foreground: "#FFFFFF"
@@ -36,6 +36,12 @@ tokens:
     success: "#16A34A"
     warning: "#D97706"
     info: "#3B82F6"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#6C63FF"  # soft violet (primary)
+    chart-2: "#38B2AC"  # soft teal (secondary)
+    chart-3: "#D97706"  # warm amber
+    chart-4: "#16A34A"  # muted green
+    chart-5: "#F472B6"  # blush pink
 
   typography:
     font-family-primary: "Plus Jakarta Sans, DM Sans, sans-serif"

@@ -25,7 +25,7 @@
 |-------|-------|
 | Branch | — |
 | PR | — |
-| Issues | — |
+| Issue | — |
 
 ## Screen Build Status
 <!-- Populated during build phase — tracks per-screen implementation -->

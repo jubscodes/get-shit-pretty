@@ -25,7 +25,7 @@ tokens:
     input: "#262626"
     ring: "#FF3D00"
     # Sidebar
-    sidebar-background: "#171717"
+    sidebar: "#171717"
     sidebar-foreground: "#FAFAFA"
     sidebar-primary: "#FF3D00"
     sidebar-primary-foreground: "#000000"
@@ -37,6 +37,12 @@ tokens:
     success: "#22C55E"
     warning: "#F59E0B"
     info: "#3B82F6"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#FF3D00"  # vermillion (primary)
+    chart-2: "#22C55E"  # electric green
+    chart-3: "#3B82F6"  # vivid blue
+    chart-4: "#F59E0B"  # amber signal
+    chart-5: "#E879F9"  # hot pink
 
   typography:
     font-family-primary: "Inter Tight, Inter, sans-serif"

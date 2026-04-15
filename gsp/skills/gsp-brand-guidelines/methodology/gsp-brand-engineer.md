@@ -9,8 +9,8 @@ The identity phase produced: logo directions, color system (with OKLCH palettes)
 <inputs>
 - Identity chunks: color-system.md, typography.md, logo-directions.md, imagery-style.md (all enriched by domain skills)
 - Identity palettes.json (OKLCH scales)
-- BRIEF.md
-- Strategy chunks: voice-and-tone.md, archetype.md, positioning.md
+- BRIEF.md — including `brand_heartbeat` (the emotional compass sentence confirmed in the brief phase)
+- Strategy chunks: voice-and-tone.md, archetype.md, positioning.md — `manifesto_line` from positioning.md is the hero headline; fall back to `brand_heartbeat` if not present
 - system_strategy and tech_stack from config.json
 - `.design/system/STACK.md`, `COMPONENTS.md`, `TOKENS.md` (if exist)
 - style_base from config.json + preset `.yml` (if set) — the starting scaffold
@@ -42,7 +42,15 @@ The identity phase produced: logo directions, color system (with OKLCH palettes)
 
 4. **Component overrides + custom specs** — only for components that need treatment beyond tokens.
 
-5. **`guidelines.html`** — self-contained visual brand guide. This is the primary artifact users see. Single HTML file with embedded CSS, no external dependencies. Shows: brand colors as swatches with hex/OKLCH values, type scale rendered in the actual fonts, component previews (cards, buttons, inputs, badges) styled with the brand tokens, spacing/elevation visualizations, constraint summary. Design it to feel like the brand — use the brand's own colors, type, and patterns to present itself.
+5. **`guidelines.html`** — the visual conference of the entire brand pipeline. Every phase distilled into one self-rendering document: personas (discover), positioning + voice (strategy), color + type + visual elements + logo (identity), components (patterns). Follow the structure spec passed in the prompt exactly. The file IS the brand — it renders itself using the brand's own tokens, type, and primitives. Key requirements:
+   - `:root` uses shadcn-native CSS variable names (from spec) — a dev can paste these directly into `globals.css`
+   - Define only the primitive classes the brand actually uses — don't add `.frosted-glass` to a brand that has no glass aesthetic
+   - Hero is always required; all other sections are conditional — include only what the brand actually has. Sections in order when present: Hero (metric strip) → Logo → Positioning → Color → Typography → Visual Elements → Components → Personas → Voice → Custom Components
+   - Hero must feel alive: use a CSS animated gradient atmosphere (or embed a video link if one was referenced in the brief), frosted glass nav, large typographic headline in brand voice, 3-4 KPIs from the brief in the metric strip
+   - Voice section renders brand rules as `.never-list` / `.always-list` components
+   - Mobile responsive via a single `@media (max-width: 768px)` block
+   - No external dependencies except Google Fonts `@import`
+   - The brand's aesthetic sets the tone: dark brand → dark doc; light brand → light doc; match intensity.variance
 
 ## Inheritance from style_base
 
@@ -88,7 +96,7 @@ Write operational artifacts to the brand's guidelines directory (path provided b
 
 - **`{brand-name}.yml`** — Single source of truth. Full preset schema: tokens, intensity, patterns, constraints, effects, dark_mode.
 - **`STYLE.md`** — Agent-readable contract rendered from `.yml` + philosophy + bold bets. Follows `templates/phases/style.md`.
-- **`guidelines.html`** — Self-contained visual brand guide. Single HTML file with embedded CSS — no external deps. Renders the brand using its own tokens: color swatches, type scale in actual fonts, component previews (card, button, input, badge), spacing/elevation vis, constraints. This is what the user sees.
+- **`guidelines.html`** — Self-rendering visual brand guide. Single HTML file with embedded CSS — no external deps except Google Fonts. `:root` uses shadcn-native CSS var names. Section order: Navigation (sidebar) → Hero (manifesto line as headline) → Logo → Positioning → Color → Typography → Visual Elements → Components → Personas → Voice → any brand-specific additions. Define only the primitive classes the brand actually uses. This is what the user sees — make it feel like the brand.
 
 ### Components
 

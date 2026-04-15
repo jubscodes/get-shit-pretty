@@ -4,6 +4,51 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+## [0.8.2] — 2026-04-15
+
+### Added
+- **`gsp-brand-coherence` subagent** — dedicated coherence auditor spawned by `gsp-brand-guidelines` after Pass 1. Scores intensity dials (declared vs expressed), runs an archetype gate (12 archetypes, each with a signature tension), surfaces the top 2 gaps as pre-filled options for the user. Runs in a clean context window — no context poisoning from the heaviest phase in the pipeline
+- **Emotional compass (`brand_heartbeat`)** — confirmed at the end of brand-brief, threads through all downstream phases: hero headline, coherence check header, perspective check framing, brand complete message
+- **Visual direction question in brand-brief** — Q10 collects raw aesthetic feel before confirmation: image links, adjective clusters, mood descriptions. Synthesized into a `visual_direction` block in BRIEF.md
+- **`.design/CLAUDE.md` auto-maintenance** — lightweight context file written by `gsp-brand-brief` (brand started), `gsp-brand-guidelines` (brand complete), `gsp-project-brief` (project started), and `gsp-project-review` (project complete). Gives Claude immediate orientation in new sessions without filesystem scanning
+- **Left sidebar table of contents for `guidelines.html`** — fixed nav with anchor links to all sections, `.toc-link` styling from brand tokens, and a small inline scroll listener for active-state tracking
+- **Self-rendering `guidelines.html` spec** — `guidelines-structure.md` defines the full structure contract: shadcn `:root` token names, primitive classes derived from brand identity, baseline section order with conditional additions, live typography scale, persona cards, voice rules
+- **Coherence check → perspective check flow** — after coherence, a perspective check stress-tests the visual language against the brand heartbeat from primary persona, skeptic, and top competitor viewpoints before proceeding to components
+- **Monorepo / multi-stack support** — `gsp-start` detects monorepo layouts and routes to the correct sub-package
+- **Empty workspace guard** — all pipeline skills check for an initialized workspace before proceeding
+- **E2E project directory creation** — `gsp-brand-brief` Step 7 creates the full `.design/branding/{brand}/` directory structure on confirmation
+
+### Changed
+- **`guidelines.html` is the "visual conference"** — framed as the distillation of all four branding diamond phases (discover → strategy → identity → patterns). Every element derived from pipeline outputs, no defaults
+- **Coherence check extracted from inline to subagent** — avoids context poisoning; each refinement loop re-spawns a fresh `gsp-brand-coherence` agent with only `.yml`, `guidelines.html`, `archetype`, and `brand_heartbeat`
+- **Skill trigger descriptions rewritten** — all pipeline skills use explicit trigger-language in their `description:` field for reliable auto-pickup
+
+## [0.8.1] — 2026-04-13
+
+### Fixed
+- **P0: `sidebar` token name** — all 36 preset YAMLs and `style-preset-schema.md` renamed `sidebar-background` → `sidebar` to match shadcn's actual CSS variable (`--sidebar`). The old key resolved to undefined — entire sidebar color system was silently broken
+- **P1: Radius formula** — `shadcn-rules.md` `@theme inline` now uses proportional multipliers (`* 0.6`, `* 0.8`, `* 1.4`) instead of fixed-px offsets (`- 4px`, `- 2px`, `+ 4px`). Old formula produced negative radii for small base values (e.g. `0.5rem - 4px = -3.84px`)
+- **P1: Missing radius steps** — added `--radius-2xl` (`* 1.8`), `--radius-3xl` (`* 2.2`), `--radius-4xl` (`* 2.6`) to match shadcn's canonical `@theme inline` block
+- **P1: Chart vars in `.dark`** — `bin/theme-css.js` now emits `chart-1` through `chart-5` in both `:root` and `.dark` blocks. Previously chart vars were only emitted in `:root`
+- **P2: `@layer base` reset missing** — `shadcn-rules.md` v4 template now includes the canonical `@layer base` block (`border-border`, `outline-ring/50`, `bg-background text-foreground`)
+- **P2: Typography not wired** — `bin/theme-css.js` `main()` now passes `tokens.typography` to `generateBlock()`, emitting `--font-sans`, `--font-mono`, `--font-display`, `--font-secondary` CSS vars in `:root`
+- **P2: Stale HSL instruction** — `gsp-project-builder.md` foundations mode now instructs using `bin/theme-css.js` for OKLCH output instead of "convert hex to HSL space-separated channels"
+- **`@import "tw-animate-css"` → `@import "shadcn/tailwind.css"`** — the old import referenced a separate npm package; `shadcn/tailwind.css` ships with the shadcn CLI and requires no additional install
+- **No-op font vars removed from `@theme inline`** — removed `--font-sans: var(--font-sans)` circular self-references; font vars in `@theme inline` must be literal values (e.g. `"Inter", sans-serif`), not `var()` references to themselves
+- **cursor:pointer restored** — Tailwind v4 changed `button` default cursor to `default`; added `button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }` to the `@layer base` template
+- **Token injection order** — `shadcn-rules.md` now instructs running `shadcn add` before writing brand tokens; reversed order risked shadcn appending its own `cssVars` after custom OKLCH values
+- **`init -d` scope clarified** — documented that `-d` forces Next.js + nova preset; added `-t {framework}` flag for Vite/React Router/Remix targets
+
+### Added
+- **Google Fonts pattern** — `shadcn-rules.md` now includes `@import url(...)` pattern and `@theme inline` font alias wiring for Google Fonts integration
+- **Explicit `chart:` section in schema** — `style-preset-schema.md` now documents `chart-1` through `chart-5` as first-class tokens (not derived at emit time)
+- **Chart colors in all 36 presets** — every preset YAML now has 5 intentional data-viz colors designed to be distinct and accessible at small sizes, aesthetically matched to each preset's character
+- **Community registry install pattern** — `shadcn-rules.md` documents `npx shadcn@latest add @registry/item`, `--diff` preview flag, and `registryDependencies` auto-resolution
+- **Chart rules in builder** — `gsp-project-builder.md` now documents: no `hsl()` wrapper on color tokens (use `var(--chart-1)` directly), mandatory explicit height on `<ChartContainer>`, `accessibilityLayer` prop, and `layout` prop placement
+- **New Form Field API** — builder methodology documents the current `<Field>/<Controller>` pattern alongside backward-compat note for projects with the old `<FormField>/<FormItem>` API
+- **Sidebar width pattern** — builder notes the correct `--sidebar-width` inline CSS prop on `<SidebarProvider>`
+- **Global stack compliance** — `gsp-start` propagates tech stack detection through the full project lifecycle; all build, design, and review skills inherit and gate on the detected stack
+
 ## [0.8.0] — 2026-04-13
 
 ### Added

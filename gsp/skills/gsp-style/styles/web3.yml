@@ -24,7 +24,7 @@ tokens:
     input: "rgba(247,147,26,0.3)"
     ring: "#F7931A"
     # Sidebar
-    sidebar-background: "#0F1115"
+    sidebar: "#0F1115"
     sidebar-foreground: "#FFFFFF"
     sidebar-primary: "#F7931A"
     sidebar-primary-foreground: "#000000"
@@ -36,6 +36,12 @@ tokens:
     success: "#10B981"
     warning: "#F7931A"
     info: "#3B82F6"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#F7931A"  # Bitcoin orange (primary)
+    chart-2: "#3B82F6"  # blockchain blue
+    chart-3: "#10B981"  # DeFi green (success)
+    chart-4: "#FFD600"  # gold accent
+    chart-5: "#A855F7"  # Ethereum purple
 
   typography:
     font-family-primary: "Space Grotesk, sans-serif"
@@ -84,7 +90,7 @@ dark_mode:
     muted-foreground: "#64748B"
     border: "rgba(247,147,26,0.3)"
     input: "rgba(247,147,26,0.3)"
-    sidebar-background: "#0F1115"
+    sidebar: "#0F1115"
     sidebar-foreground: "#FFFFFF"
     sidebar-border: "rgba(247,147,26,0.3)"
 

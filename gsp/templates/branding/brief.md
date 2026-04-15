@@ -55,6 +55,9 @@
 
 ## Brand Essence
 
+### Emotional Compass
+- **brand_heartbeat:** {one evocative sentence — the feeling this brand leaves, specific enough to be wrong}
+
 ### Promise
 - **Core promise:** {whenever someone interacts with this brand, they should feel X}
 - **Functional promise:** {what it delivers — saves time, reduces complexity, etc.}
@@ -76,6 +79,12 @@
 - **Direct competitors:** {COMPETITORS}
 - **What sets you apart?** {DIFFERENTIATORS}
 - **Brands admired:** {BRANDS}
+
+## Visual Direction
+- **Mood / aesthetic:** {raw descriptors — e.g. "cinematographic, dark, expensive" / "clean, airy, typographic" / "warm brutalist"}
+- **Reference links:** {image URLs, websites, or brand references that capture the feeling}
+- **Texture / atmosphere:** {grain, glass, gradients, flat, photography, illustration, etc.}
+- **Anti-patterns:** {what it should NEVER look like visually}
 
 ## Inspiration
 - **Styles liked:** {STYLES}

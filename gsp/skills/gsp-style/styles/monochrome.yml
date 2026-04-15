@@ -24,7 +24,7 @@ tokens:
     input: "#000000"
     ring: "#000000"
     # Sidebar
-    sidebar-background: "#F5F5F5"
+    sidebar: "#F5F5F5"
     sidebar-foreground: "#000000"
     sidebar-primary: "#000000"
     sidebar-primary-foreground: "#FFFFFF"
@@ -36,6 +36,12 @@ tokens:
     success: "#000000"
     warning: "#000000"
     info: "#000000"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#000000"  # black
+    chart-2: "#333333"  # charcoal
+    chart-3: "#666666"  # mid gray
+    chart-4: "#999999"  # light gray
+    chart-5: "#CCCCCC"  # pale gray
 
   typography:
     font-family-primary: "Playfair Display, serif"
@@ -96,7 +102,7 @@ dark_mode:
     input: "#FFFFFF"
     ring: "#FFFFFF"
     # Sidebar
-    sidebar-background: "#0A0A0A"
+    sidebar: "#0A0A0A"
     sidebar-foreground: "#FFFFFF"
     sidebar-primary: "#FFFFFF"
     sidebar-primary-foreground: "#000000"

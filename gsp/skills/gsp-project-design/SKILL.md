@@ -1,6 +1,6 @@
 ---
 name: gsp-project-design
-description: Design screens and interaction flows (creative phase — benefits from capable models)
+description: Design screens and interaction flows (creative phase — benefits from capable models) — use when: design this, mock up, create wireframes, how should X look, lay out the UI for
 user-invocable: true
 context: fork
 allowed-tools:
@@ -31,6 +31,8 @@ Design core UI/UX screens and interaction flows.
 
 <process>
 ## Step 0: Resolve project and brand
+
+If `.design/projects/` does not exist: output "No GSP project found. Run `/gsp-start` to begin." and stop.
 
 Resolve project from `.design/projects/` (one → use it, multiple → ask). Set `PROJECT_PATH`.
 

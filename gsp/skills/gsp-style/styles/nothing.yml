@@ -24,7 +24,7 @@ tokens:
     input: "#222222"
     ring: "#FFFFFF"
     # Sidebar
-    sidebar-background: "#111111"
+    sidebar: "#111111"
     sidebar-foreground: "#E8E8E8"
     sidebar-primary: "#FFFFFF"
     sidebar-primary-foreground: "#000000"
@@ -36,6 +36,12 @@ tokens:
     success: "#4A9E5C"
     warning: "#D4A843"
     info: "#999999"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#D71921"  # Nothing red (accent)
+    chart-2: "#E8E8E8"  # foreground white
+    chart-3: "#4A9E5C"  # signal green
+    chart-4: "#D4A843"  # signal amber
+    chart-5: "#5A9FD4"  # signal blue
 
   typography:
     font-family-primary: "Space Grotesk, DM Sans, system-ui, sans-serif"
@@ -78,7 +84,7 @@ dark_mode:
     muted-foreground: "#999999"
     border: "#222222"
     input: "#222222"
-    sidebar-background: "#111111"
+    sidebar: "#111111"
     sidebar-foreground: "#E8E8E8"
     sidebar-border: "#222222"
 

@@ -24,7 +24,7 @@ tokens:
     input: "rgba(26,26,26,0.1)"
     ring: "#D4AF37"
     # Sidebar
-    sidebar-background: "#EBE5DE"
+    sidebar: "#EBE5DE"
     sidebar-foreground: "#1A1A1A"
     sidebar-primary: "#D4AF37"
     sidebar-primary-foreground: "#000000"
@@ -36,6 +36,12 @@ tokens:
     success: "#16A34A"
     warning: "#D97706"
     info: "#2563EB"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#C9A440"  # deep gold (primary shifted)
+    chart-2: "#1A1A1A"  # onyx (accent)
+    chart-3: "#2563EB"  # sapphire blue
+    chart-4: "#16A34A"  # malachite green
+    chart-5: "#9F1239"  # burgundy red
 
   typography:
     font-family-primary: "Playfair Display, serif"
@@ -93,7 +99,7 @@ dark_mode:
     input: "rgba(245,245,240,0.1)"
     ring: "#D4AF37"
     # Sidebar
-    sidebar-background: "#1A1A1A"
+    sidebar: "#1A1A1A"
     sidebar-foreground: "#F5F5F0"
     sidebar-primary: "#D4AF37"
     sidebar-primary-foreground: "#000000"

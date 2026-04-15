@@ -278,6 +278,182 @@ graph LR
     CX -.-> ST
 ```
 
+## Skill anatomy
+
+Every skill directory follows one of four profiles depending on how much domain knowledge it owns and whether it spawns an agent.
+
+### Profile 1 — Thin router (no siblings)
+
+Owns no domain knowledge. Logic is fully self-contained in `SKILL.md`. Detects context, routes to another skill or prints output inline.
+
+```
+gsp-start/
+└── SKILL.md
+```
+
+Examples: `gsp-start`, `gsp-doctor`, `gsp-progress`, `gsp-help`, `gsp-phase-transition`, `gsp-add-reference`, `gsp-update`, `gsp-pretty`, `gsp-design-system`, `gsp-brand-refine`, `gsp-project-brief`, `gsp-brand-brief`
+
+### Profile 2 — Inline skill with references (no agent)
+
+Runs deterministically inline. Has sibling files the skill reads on demand — rules, theming guides, technique specs.
+
+```
+gsp-scaffold/
+├── SKILL.md
+├── shadcn-rules.md
+└── shadcn-theming.md
+```
+
+Examples: `gsp-scaffold`, `gsp-art`, `gsp-brand-sync`
+
+### Profile 3 — Pipeline skill with methodology (spawns one agent)
+
+Orchestrates one agent. Methodology lives as a sibling file — never inside the agent stub. May also have reference files the skill passes to the agent.
+
+```
+gsp-project-research/
+├── SKILL.md
+└── methodology/
+    └── gsp-project-researcher.md
+```
+
+```
+gsp-brand-strategy/
+├── SKILL.md
+├── brand-archetypes.md        ← reference passed to agent
+├── brand-prism.md
+├── positioning-frameworks.md
+├── voice-tone.md
+└── methodology/
+    └── gsp-brand-strategist.md
+```
+
+Examples: `gsp-brand-research`, `gsp-brand-strategy`, `gsp-brand-identity`, `gsp-brand-guidelines`, `gsp-brand-audit`, `gsp-project-research`, `gsp-project-design`, `gsp-project-critique`, `gsp-project-review`, `gsp-accessibility-audit`
+
+### Profile 4 — Expertise skill (domains/ + references/)
+
+Owns a knowledge domain. Serves the full pipeline — not just one phase. Has two consumption patterns: passive (another skill reads its sibling files directly) and active (another skill invokes it with a flag like `--enrich`).
+
+```
+gsp-color/
+├── SKILL.md
+├── chunk-format.md
+├── domains/
+│   ├── palette.md       ← OKLCH generation spec
+│   └── system.md        ← full color system direction
+└── references/
+    └── color-composition.md
+```
+
+Uses `domains/` for owned specifications and `references/` for external material it synthesizes. Other skills read these via cross-skill paths (see below).
+
+Examples: `gsp-color`, `gsp-typography`, `gsp-visuals`
+
+### Profile 5 — Style library (large flat collection)
+
+Owns a library of presets or patterns too large for any single domain file. Organized with an `INDEX.yml` and per-item `.yml` + `.md` pairs. The skill reads index first, then loads specific items on demand.
+
+```
+gsp-style/
+├── SKILL.md
+├── style-preset-schema.md
+├── chunk-format.md
+├── styles/
+│   ├── INDEX.yml
+│   └── {35 × preset.yml + preset.md}
+└── techniques/
+    ├── aurora-gradients.md
+    ├── bento-grid.md
+    ├── dark-mode-oled.md
+    └── micro-interactions.md
+```
+
+Examples: `gsp-style`
+
+### Pipeline skill with flows (multi-mode)
+
+Some pipeline skills handle multiple distinct execution modes that are too large to inline. These go in a `flows/` subdirectory.
+
+```
+gsp-project-build/
+├── SKILL.md
+├── flows/
+│   ├── figma.md        ← full instructions for figma-target mode
+│   └── revision.md     ← full instructions for revision mode
+└── methodology/
+    └── gsp-project-builder.md
+```
+
+The main `SKILL.md` routes to the right flow file and reads it inline.
+
+## Cross-skill file reads
+
+Skills read domain knowledge from other skills via relative paths. This is the integration layer — no duplication, zero session-start cost.
+
+**Pattern:**
+```
+${CLAUDE_SKILL_DIR}/../gsp-{other-skill}/{file}.md
+```
+
+**Examples in use:**
+
+| Consumer | File read | From skill |
+|----------|-----------|------------|
+| `gsp-project-build` | `../gsp-project-design/block-patterns.md` | `gsp-project-design` |
+| `gsp-brand-identity` | `../gsp-color/domains/palette.md` | `gsp-color` |
+| `gsp-brand-guidelines` | `../gsp-typography/domains/system.md` | `gsp-typography` |
+
+**Rule:** if two or more skills need the same file, it lives in the primary owner's directory. Secondary consumers read via cross-skill path. Never duplicate domain content.
+
+## chunk-format.md
+
+Several skill directories contain a `chunk-format.md` sibling. This is a **local spec** that defines how that skill formats its output chunks — header line structure, section names, required/optional fields. It is read by the skill (or its agent) at write time.
+
+| Skill | chunk-format.md purpose |
+|-------|------------------------|
+| `gsp-color` | Format for color palette chunks |
+| `gsp-typography` | Format for type system chunks |
+| `gsp-visuals` | Format for visual direction chunks |
+| `gsp-icons` | Format for icon system chunks |
+| `gsp-logo` | Format for logo direction chunks |
+| `gsp-style` | Format for style preset output chunks |
+| `gsp-brand-audit` | Format for brand audit chunks |
+| `gsp-brand-sync` | Format for sync report chunks |
+
+Skills that don't produce chunks (thin routers, utility skills) don't need one.
+
+## Skill relationship map
+
+```
+Expertise skills (own domain knowledge)
+  gsp-color ──────────────┐
+  gsp-typography ──────────┼──► read by: brand-identity, brand-guidelines, project-build
+  gsp-visuals ─────────────┘
+
+Style library
+  gsp-style ──────────────────► invoked by: gsp-start (quick flow), gsp-brand-refine
+
+Scaffold (composable, no agent)
+  gsp-scaffold ───────────────► invoked by: gsp-project-build (Phase 1)
+
+Branding diamond
+  brand-brief → brand-research → brand-strategy → brand-identity → brand-guidelines
+                    ↑
+              brand-audit (optional pre-step)
+              brand-refine (mid-project adjustment)
+              brand-sync (post-ship alignment)
+
+Project diamond
+  project-brief → project-research → project-design → project-critique → project-build → project-review
+                                                                               ↑
+                                                                         scaffold (Phase 1)
+
+Accessibility
+  gsp-accessibility ──────────────► thin expertise router (contrast checks, WCAG)
+  gsp-accessibility-audit ────────► full audit pipeline, spawns gsp-accessibility-auditor
+  (gsp-project-critique invokes gsp-accessibility-auditor as secondary agent)
+```
+
 ## Glossary
 
 ### Components
@@ -326,11 +502,17 @@ graph LR
 
 ### Skill categories
 
-**Pipeline skill** — Spawns agents, produces chunks, updates STATE.md. Has `model:` + `effort:` in frontmatter. Examples: `project-design`, `brand-strategy`, `project-build`.
+See **Skill anatomy** above for the full five-profile breakdown. Short reference:
 
-**Composable skill** — Runs inline (no agent), deterministic, writes to a predictable path. Used standalone or as a building block consumed by pipeline phases. Examples: `palette` (OKLCH colors), `typescale` (type scale), `style` (tokens from presets), `scaffold` (stack setup).
+**Thin router** — No siblings. Self-contained logic, no agent. Examples: `gsp-start`, `gsp-doctor`, `gsp-project-brief`.
 
-**Utility skill** — Entry points, diagnostics, navigation. Needs conversation context — never forked. Examples: `start` (entry point), `progress` (status display), `doctor` (health check), `help` (command reference).
+**Inline skill** — Sibling reference files, no agent. Deterministic. Examples: `gsp-scaffold`, `gsp-art`.
+
+**Pipeline skill** — Spawns one or more agents. Has `methodology/` sibling. Examples: `gsp-project-design`, `gsp-brand-strategy`, `gsp-project-build`.
+
+**Expertise skill** — Owns a knowledge domain. Has `domains/` + `references/` siblings. Serves the full pipeline. Examples: `gsp-color`, `gsp-typography`, `gsp-visuals`.
+
+**Style library** — Large preset collection with `INDEX.yml`. Example: `gsp-style`.
 
 ### Frontmatter fields
 

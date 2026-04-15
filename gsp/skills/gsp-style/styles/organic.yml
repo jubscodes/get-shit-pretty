@@ -24,7 +24,7 @@ tokens:
     input: "rgba(93,112,82,0.15)"
     ring: "#5D7052"
     # Sidebar
-    sidebar-background: "#F0EBE5"
+    sidebar: "#F0EBE5"
     sidebar-foreground: "#2C2C24"
     sidebar-primary: "#5D7052"
     sidebar-primary-foreground: "#FFFFFF"
@@ -36,6 +36,12 @@ tokens:
     success: "#059669"
     warning: "#D97706"
     info: "#2563EB"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#5D7052"  # moss green (primary)
+    chart-2: "#C18C5D"  # warm clay (secondary)
+    chart-3: "#D97706"  # harvest amber
+    chart-4: "#2563EB"  # woad blue
+    chart-5: "#9A3B3B"  # dried rose
 
   typography:
     font-family-primary: "Fraunces, serif"
@@ -84,7 +90,7 @@ dark_mode:
     muted-foreground: "#6B7280"
     border: "rgba(230,220,205,0.12)"
     input: "rgba(230,220,205,0.12)"
-    sidebar-background: "#2C2C24"
+    sidebar: "#2C2C24"
     sidebar-foreground: "#E6DCCD"
     sidebar-border: "rgba(230,220,205,0.12)"
 

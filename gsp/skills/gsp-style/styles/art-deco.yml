@@ -25,7 +25,7 @@ tokens:
     input: "rgba(212, 175, 55, 0.3)"
     ring: "#D4AF37"
     # Sidebar
-    sidebar-background: "#141414"
+    sidebar: "#141414"
     sidebar-foreground: "#F2F0E4"
     sidebar-primary: "#D4AF37"
     sidebar-primary-foreground: "#000000"
@@ -37,6 +37,12 @@ tokens:
     success: "#16A34A"
     warning: "#F59E0B"
     info: "#3B82F6"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#D4AF37"  # radiant gold (primary)
+    chart-2: "#6BAED6"  # dusty cerulean (secondary shifted)
+    chart-3: "#FF6B35"  # burnished copper
+    chart-4: "#A8D5A2"  # art nouveau sage
+    chart-5: "#C084FC"  # amethyst
 
   typography:
     font-family-primary: "Josefin Sans, sans-serif"

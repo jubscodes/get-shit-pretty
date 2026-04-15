@@ -1,6 +1,6 @@
 ---
 name: gsp-progress
-description: How pretty are we?
+description: Show pipeline progress dashboard — use when: where are we, what's done, show progress, how far along, what phase are we on
 user-invocable: true
 allowed-tools:
   - Read

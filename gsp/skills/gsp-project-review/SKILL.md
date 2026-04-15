@@ -1,6 +1,6 @@
 ---
 name: gsp-project-review
-description: QA review — validate implementation against designs
+description: QA review — validate implementation against designs — use when: review the build, QA this, does it match the designs, check what was built, verify implementation
 user-invocable: true
 context: fork
 allowed-tools:
@@ -31,6 +31,8 @@ QA validate the codebase implementation against design intent.
 
 <process>
 ## Step 0: Resolve project and brand
+
+If `.design/projects/` does not exist: output "No GSP project found. Run `/gsp-start` to begin." and stop.
 
 Resolve project from `.design/projects/` (one → use it, multiple → ask). Set `PROJECT_PATH`.
 
@@ -132,6 +134,13 @@ Update `{PROJECT_PATH}/STATE.md`:
 - Record completion date
 - If Pass or Conditional Pass: Set Prettiness Level to 100%
 - Update `## Screen Build Status` table — set Review Status per screen based on acceptance-report.md findings
+
+If Pass or Conditional Pass, update `.design/CLAUDE.md` — replace the existing `### {project-name}` entry (written by gsp-project-brief when started) with the completed entry:
+
+```markdown
+### {project-name} · complete · {DATE}
+brand: {brand-name} · .design/projects/{project-name}/
+```
 
 ### QA loop — if Fail
 

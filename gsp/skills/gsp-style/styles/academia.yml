@@ -25,7 +25,7 @@ tokens:
     input: "#D6D3D1"
     ring: "#7C2D12"
     # Sidebar
-    sidebar-background: "#F5F5F4"
+    sidebar: "#F5F5F4"
     sidebar-foreground: "#1C1917"
     sidebar-primary: "#7C2D12"
     sidebar-primary-foreground: "#FFFFFF"
@@ -37,6 +37,12 @@ tokens:
     success: "#16A34A"
     warning: "#D97706"
     info: "#2563EB"
+    # Chart — data-viz colors (distinct, accessible at small sizes)
+    chart-1: "#7C2D12"  # crimson mahogany (primary)
+    chart-2: "#C9A962"  # burnished brass (accent)
+    chart-3: "#2563EB"  # ink blue (info)
+    chart-4: "#16A34A"  # library green (success)
+    chart-5: "#92400E"  # dark amber (secondary)
 
   typography:
     font-family-primary: "EB Garamond, Georgia, serif"
@@ -97,7 +103,7 @@ dark_mode:
     input: "#44403C"
     ring: "#7C2D12"
     # Sidebar
-    sidebar-background: "#251E19"
+    sidebar: "#251E19"
     sidebar-foreground: "#E8DFD4"
     sidebar-primary: "#7C2D12"
     sidebar-primary-foreground: "#FFFFFF"
