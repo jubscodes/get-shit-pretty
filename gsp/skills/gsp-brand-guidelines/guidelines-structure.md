@@ -68,14 +68,39 @@ section         /* section spacing — density derived from brand intensity */
 The template defines a baseline section order. Follow it. If the brand warrants additional sections beyond this list — imagery style, motion principles, iconography, spatial system, co-branding rules, etc. — add them where they fit. Number sections sequentially. Each section gets an `id` for sidebar navigation.
 
 ### Navigation — always
-Fixed left sidebar. Links to every section in the doc. Brand-derived styling — font, color, spacing, active state, all from the pipeline. Hidden on mobile.
+Fixed left sidebar. Table of contents linking to every section. Brand-derived styling — font, color, spacing, all from the pipeline. Hidden on mobile.
+
+**Section ID convention:** every section in the doc must have an `id` attribute that the nav links to:
 
 ```html
-<nav style="position: fixed; left: 0; top: 0; height: 100vh; width: 160px; z-index: 50;
-            display: flex; flex-direction: column; justify-content: center; padding: 0 24px; gap: 20px;">
+<!-- nav -->
+<nav id="toc" style="position: fixed; left: 0; top: 0; height: 100vh; width: 180px; z-index: 50;
+                     overflow-y: auto; display: flex; flex-direction: column;
+                     justify-content: center; padding: 0 28px; gap: 8px;
+                     border-right: 1px solid var(--border); background: var(--background);">
+  <a href="#hero"         class="toc-link">Brand</a>
+  <a href="#logo"         class="toc-link">Logo</a>
+  <a href="#positioning"  class="toc-link">Positioning</a>
+  <a href="#color"        class="toc-link">Color</a>
+  <a href="#typography"   class="toc-link">Typography</a>
+  <a href="#visuals"      class="toc-link">Visual Elements</a>
+  <a href="#components"   class="toc-link">Components</a>
+  <a href="#personas"     class="toc-link">Personas</a>
+  <a href="#voice"        class="toc-link">Voice</a>
+  <!-- add entries for any brand-specific sections -->
 </nav>
-<main style="margin-left: 160px;">
+
+<!-- main content offset -->
+<main style="margin-left: 180px;">
+
+  <section id="hero">...</section>
+  <section id="logo">...</section>
+  <!-- each section id matches its toc-link href -->
+
+</main>
 ```
+
+`.toc-link` styling: use the brand's body font, `--muted-foreground` at rest, `--foreground` on hover, no underline. Active state via a 10-line scroll listener that adds `.active` (accent color) to the link whose section is in view — include this JS inline at the bottom of `<body>`. Keep it small.
 
 ### Hero — always
 Defined entirely by the brand. Visual direction, archetype, and identity outputs determine the background, typography scale, layout density, and supporting content. No default treatment.
