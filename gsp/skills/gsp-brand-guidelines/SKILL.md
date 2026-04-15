@@ -140,55 +140,44 @@ Pass in the agent prompt:
 
 ## Step 3.5: Coherence check
 
-Read the generated `{BRAND_PATH}/patterns/{brand-name}.yml` and `{BRAND_PATH}/patterns/guidelines.html`. Use `brand_heartbeat` and archetype already loaded in Step 1 context. Do the work of critique before showing the user anything — the pipeline catches coherence gaps, not the user.
+Spawn the `gsp-brand-coherence` agent with a fresh context. Load the methodology and inline all inputs — the agent should not need to read files.
 
-**Archetype gate first.** The intensity dials are only meaningful against the archetype. Before scoring dials, answer the archetype's signature question:
-- **Jester** — what specific rule is being broken in the visual system? If nothing is broken, the brand is not Jester enough regardless of what the dials say.
-- **Rebel** — what visual convention is explicitly rejected?
-- **Creator** — what is distinctively crafted that couldn't come from a default template?
-- **Sage** — is the restraint active (every reduction is intentional) or passive (just plain)?
-- **Explorer** — where is the sense of movement, discovery, or possibility?
-- (Apply equivalent for all archetypes)
+### Load
+Read these and hold for inlining:
+- `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-coherence.md` — agent methodology
+- `{BRAND_PATH}/patterns/{brand-name}.yml` — generated preset
+- `{BRAND_PATH}/patterns/guidelines.html` — generated visual guide
 
-If the archetype's signature tension isn't present in the output, that is the primary tension — flag it before evaluating dials.
+Extract from Step 1 context:
+- `archetype` — from archetype.md
+- `brand_heartbeat` — from BRIEF.md
 
-**Intensity dial scoring (secondary):**
-Read token values from the `.yml` and infer what they express visually. A variance dial of 8/10 with `radius.lg: 4px`, standard shadows, and default button shapes is a coherence gap — the tokens are conservative regardless of the declared number. Score each dial as: declared N/10 → expressed N/10 (inferred from token values and HTML patterns).
+### Spawn `gsp-brand-coherence`
 
-Surface the top 2 tensions — specific and actionable. Not "could be bolder" but "border-radius is 4px across all components — that reads as variance 3/10. The declared dial is 8/10. Intentional restraint or a miss?"
+Pass inline:
+- **Agent methodology** (loaded above)
+- **Content of** `{brand-name}.yml`
+- **Content of** `guidelines.html`
+- `archetype` and `brand_heartbeat`
 
-**Present the coherence check, then the summary:**
+The agent returns a structured coherence report. No back-and-forth — one response.
+
+### Present the report
+
+Display the agent's report, then add:
 
 ```
-  {brand-name}  ·  {archetype}  ·  {brand_heartbeat}
-  ═══════════════════════════════════════════════════
-
-    intensity dials vs. output
-      variance   declared {N}/10  →  reads {N}/10  {✓ or ⚠}
-      motion     declared {N}/10  →  reads {N}/10  {✓ or ⚠}
-      density    declared {N}/10  →  reads {N}/10  {✓ or ⚠}
-
-    tensions
-      1. {specific gap — e.g. "border-radius (4px) undershoots variance 8/10 target"}
-      2. {specific gap — e.g. "button style is conventional — no Jester rule broken"}
-
-    bold bets
-      {1-line summary of the most distinctive choice made}
-
-    → open guidelines.html in your browser
-
+  → open guidelines.html in your browser
   ─────────────────────────────────────
 ```
 
-If all dials are coherent (no ⚠), skip the tensions block and present directly.
-
 Use `AskUserQuestion`:
 - **Looks right** — "Coherent — build components"
-- **Push [tension 1]** — pre-fill with the specific gap so the user can confirm or redirect
+- **Push [tension 1]** — pre-fill with the specific gap from the report
 - **Push [tension 2]** — same
 - **Adjust something else** — "I want to change colors / type / patterns"
 
-If refinement needed → invoke `/gsp-brand-refine` with the specific tension as the brief. After it completes, re-read the updated `.yml` and `guidelines.html` and re-run the coherence check from the top. Only proceed to Step 3.75 when the archetype tension is present and dials are coherent.
+If refinement needed → invoke `/gsp-brand-refine` with the specific tension. After it completes, re-spawn `gsp-brand-coherence` with the updated `.yml` and `guidelines.html`. Only proceed to Step 3.75 when the archetype tension is present and dials are coherent.
 
 ## Step 3.75: Perspective check
 

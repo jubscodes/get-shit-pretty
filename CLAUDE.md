@@ -85,8 +85,8 @@ Cross-references between skills use `gsp-` prefixed paths: `${CLAUDE_SKILL_DIR}/
 
 | Runtime | Skills location | Agents | Bundle location |
 |---------|-----------------|--------|-----------------|
-| Claude Code | `.claude/skills/` | `.claude/agents/` (11) | `.claude/{prompts,templates}/` |
-| OpenCode | `.opencode/skills/` | `.opencode/agents/` (11) | `.opencode/{prompts,templates}/` |
+| Claude Code | `.claude/skills/` | `.claude/agents/` (12) | `.claude/{prompts,templates}/` |
+| OpenCode | `.opencode/skills/` | `.opencode/agents/` (12) | `.opencode/{prompts,templates}/` |
 | Gemini CLI | `.gemini/skills/` | `.gemini/agents/` (11, experimental) | `.gemini/{prompts,templates}/` |
 | Codex CLI | **`.agents/skills/`** (not `.codex/`) | **None** (not supported) | `.codex/{prompts,templates}/` |
 
@@ -145,7 +145,7 @@ Understanding what loads when is critical for keeping sessions lean. These costs
 
 **Implications for GSP:**
 - **`gsp/references/` is empty — all references live in skill directories.** Domain knowledge is colocated with the expertise skill that owns it. Pipeline skills read from expertise skills via cross-skill paths. Nothing installs to `.claude/references/`.
-- **Agent stubs are lean, methodology lives in skills.** Agent `.md` files contain only frontmatter (tools, model, hooks) + a one-line body. Full methodology lives in `gsp/skills/{skill}/methodology/gsp-{agent}.md` and is read by the skill at spawn time. This keeps session-start cost minimal (~130 lines for 11 agents vs ~1,500 for full definitions).
+- **Agent stubs are lean, methodology lives in skills.** Agent `.md` files contain only frontmatter (tools, model, hooks) + a one-line body. Full methodology lives in `gsp/skills/{skill}/methodology/gsp-{agent}.md` and is read by the skill at spawn time. This keeps session-start cost minimal (~130 lines for 12 agents vs ~1,500 for full definitions).
 - **Skill sibling files are free until used.** A skill directory with 74 `.yml` presets costs zero at session start. Use this for reference material, examples, methodology, and templates that the skill reads on demand.
 - **Cross-skill references use relative paths:** `${CLAUDE_SKILL_DIR}/../gsp-other-skill/ref.md` — this reads the file on demand with zero session-start cost.
 
