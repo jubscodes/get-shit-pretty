@@ -1050,6 +1050,29 @@ if should_run unit; then
   else
     fail "U2 Installer integration tests" "see output above"
   fi
+
+  # U3: theme-css.js --registry produces valid registry-item.json
+  TMPOUT=$(mktemp /tmp/gsp-registry-test-XXXXXX.json)
+  if node bin/theme-css.js gsp/skills/gsp-style/styles/saas.yml --registry --output "$TMPOUT" >/dev/null 2>&1; then
+    if node -e "
+      const j = require('$TMPOUT');
+      const ok =
+        j.\$schema === 'https://ui.shadcn.com/schema/registry-item.json' &&
+        j.type === 'registry:theme' &&
+        typeof j.name === 'string' &&
+        j.cssVars && j.cssVars.light && j.cssVars.dark &&
+        typeof j.cssVars.light.background === 'string' &&
+        j.cssVars.light.background.startsWith('oklch(');
+      process.exit(ok ? 0 : 1);
+    " 2>/dev/null; then
+      pass "U3 theme-css --registry produces valid registry-item.json"
+    else
+      fail "U3 theme-css --registry shape" "missing required fields or wrong types in $TMPOUT"
+    fi
+  else
+    fail "U3 theme-css --registry exit" "node bin/theme-css.js --registry failed"
+  fi
+  rm -f "$TMPOUT"
 fi
 
 # ── TB: Token Budget ───────────────────────────────────
