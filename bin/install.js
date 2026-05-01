@@ -1817,8 +1817,8 @@ function promptRuntime(callback) {
 
 function promptLocation(runtimes) {
   if (!process.stdin.isTTY) {
-    console.log(`  ${yellow}Non-interactive terminal detected, defaulting to global install${reset}\n`);
-    installAllRuntimes(runtimes, true, false);
+    console.log(`  ${yellow}Non-interactive terminal detected, defaulting to local (project) install${reset}\n`);
+    installAllRuntimes(runtimes, false, false);
     return;
   }
 
@@ -1898,8 +1898,8 @@ if (require.main === module) {
     installAllRuntimes(['claude'], hasGlobal, false);
   } else {
     if (!process.stdin.isTTY) {
-      console.log(`  ${yellow}Non-interactive terminal detected, defaulting to Claude Code global install${reset}\n`);
-      installAllRuntimes(['claude'], true, false);
+      console.log(`  ${yellow}Non-interactive terminal detected, defaulting to Claude Code local (project) install${reset}\n`);
+      installAllRuntimes(['claude'], false, false);
     } else {
       promptRuntime((runtimes) => {
         promptLocation(runtimes);
