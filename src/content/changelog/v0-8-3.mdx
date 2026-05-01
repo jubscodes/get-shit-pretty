@@ -1,0 +1,23 @@
+---
+title: "v0.8.3 -- Install command & non-interactive default"
+date: "2026-05-01T10:00:00"
+excerpt: "Recommended install command flips from npx to pnpm dlx (with bunx alongside), and non-interactive installer runs now default to local instead of global."
+tags: ["install", "developer-experience"]
+slug: "v0-8-3"
+---
+
+## New recommended install command
+
+```bash
+pnpm dlx get-shit-pretty
+# or with bun
+bunx get-shit-pretty
+```
+
+Recommended across the README, the installer's `--help` output, the website's copy-button widget, and the `gsp-update` / `gsp-doctor` skills. Nothing about the published npm package itself changed — `npx get-shit-pretty` continues to work for anyone who still uses it. The recommendation is what moved.
+
+## Non-interactive installer defaults to local
+
+If you run the installer in a non-TTY shell — CI, a piped script, an AI tool spawning the command — it now installs into the current project (`./.claude/`) instead of the user's global config (`~/.claude/`). The "Non-interactive terminal detected" line confirms the new default at runtime.
+
+Interactive runs still prompt for the location and are unchanged. CI scripts that relied on the previous behavior need to pass `--global` explicitly.
