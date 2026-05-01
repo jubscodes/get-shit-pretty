@@ -39,7 +39,9 @@ Record which runtime(s) and install type (local/global) were found.
 
 If no VERSION file exists anywhere, tell the user GSP doesn't appear to be installed and suggest:
 ```
-npx get-shit-pretty
+pnpm dlx get-shit-pretty
+# or with bun
+bunx get-shit-pretty
 ```
 Then stop.
 
@@ -103,14 +105,15 @@ Build the installer command based on what was detected in Step 1:
 **Scope flag:** `--local` if local install was detected, `--global` if global.
 
 ```bash
-npx get-shit-pretty@latest {runtime-flag} {scope-flag}
+pnpm dlx get-shit-pretty@latest {runtime-flag} {scope-flag}
+# or: bunx get-shit-pretty@latest {runtime-flag} {scope-flag}
 ```
 
 Examples:
-- Local Claude: `npx get-shit-pretty@latest --claude --local`
-- Global Claude: `npx get-shit-pretty@latest --claude --global`
-- Global OpenCode: `npx get-shit-pretty@latest --opencode --global`
-- Multiple runtimes: `npx get-shit-pretty@latest --all --global`
+- Local Claude: `pnpm dlx get-shit-pretty@latest --claude --local`
+- Global Claude: `pnpm dlx get-shit-pretty@latest --claude --global`
+- Global OpenCode: `pnpm dlx get-shit-pretty@latest --opencode --global`
+- Multiple runtimes: `pnpm dlx get-shit-pretty@latest --all --global`
 
 Show the output to the user.
 

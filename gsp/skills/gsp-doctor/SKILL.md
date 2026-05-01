@@ -245,12 +245,12 @@ Glob for all SKILL.md files in the skills directory (`{runtime-dir}/skills/*/SKI
 **Check I2: Skill directories are complete (not just SKILL.md)**
 For each gsp-* skill directory, check if `SKILL.md` references sibling files via `${CLAUDE_SKILL_DIR}/` paths (e.g. `styles/INDEX.yml`). If it does, verify those files/dirs exist in the installed skill directory.
 - All referenced siblings present → PASS
-- Missing siblings → FAIL: "Skill {name} references {path} but it's missing. Re-run the installer: `npx get-shit-pretty`"
+- Missing siblings → FAIL: "Skill {name} references {path} but it's missing. Re-run the installer: `pnpm dlx get-shit-pretty` (or `bunx get-shit-pretty`)"
 
 **Check I3: Bundle directories accessible**
 Check that the runtime bundle directories exist (`{runtime-dir}/templates/`, `{runtime-dir}/references/`). Skills reference these via `${CLAUDE_SKILL_DIR}/../../`.
 - All present → PASS
-- Missing → FAIL: "Bundle directory {dir} missing. Re-run the installer: `npx get-shit-pretty`"
+- Missing → FAIL: "Bundle directory {dir} missing. Re-run the installer: `pnpm dlx get-shit-pretty` (or `bunx get-shit-pretty`)"
 
 **Check I4: VERSION file present**
 Check `{runtime-dir}/VERSION` exists and contains a valid semver string.
@@ -262,7 +262,7 @@ Check `{runtime-dir}/VERSION` exists and contains a valid semver string.
 Check if `~/.claude/skills/` contains `gsp-*` directories when running from a local install. These cause duplicates between global and local.
 - Run: `ls ~/.claude/skills/ | grep '^gsp-'`
 - No matches → PASS
-- Matches found → FAIL: "Found {N} stale GSP skills in ~/.claude/skills/. Fix: run `npx get-shit-pretty --claude --local` to reinstall (the installer cleans stale globals automatically), or manually remove: `rm -rf ~/.claude/skills/gsp-*`"
+- Matches found → FAIL: "Found {N} stale GSP skills in ~/.claude/skills/. Fix: run `pnpm dlx get-shit-pretty --claude --local` (or `bunx get-shit-pretty --claude --local`) to reinstall (the installer cleans stale globals automatically), or manually remove: `rm -rf ~/.claude/skills/gsp-*`"
 
 ### Stack Compliance Checks (shadcn targets)
 

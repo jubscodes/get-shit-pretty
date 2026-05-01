@@ -5,7 +5,7 @@ import { Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
-const INSTALL_COMMAND = "npx get-shit-pretty";
+const INSTALL_COMMAND = "pnpm dlx get-shit-pretty";
 
 export function InstallCommand({ className, command }: { className?: string; command?: string }) {
   const [copied, setCopied] = useState(false);
