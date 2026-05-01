@@ -4,6 +4,12 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+## [0.8.3] — 2026-05-01
+
+### Changed
+- **Recommended install command is now `pnpm dlx get-shit-pretty`** with `bunx get-shit-pretty` shown alongside as an alternative. Updated across README, `bin/install.js` help output, `install.sh`, `CLAUDE.md`, the website install widget, and the `get-shit-pretty` / `gsp-update` / `gsp-doctor` skills. The package on the npm registry is unchanged — `npx get-shit-pretty` continues to work; we just no longer recommend it
+- **Non-interactive installer default flipped from global → local** — running the installer in a non-TTY shell (CI, piped scripts, AI-tool spawns) now installs into `./.claude/` instead of `~/.claude/`. Interactive runs are unchanged. The "Non-interactive terminal detected" message updates to reflect the new default. CI scripts that relied on the previous behavior need to pass `--global` explicitly
+
 ## [0.8.2] — 2026-04-15
 
 ### Added
