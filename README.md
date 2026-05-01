@@ -12,7 +12,9 @@
 <br>
 
 ```bash
-npx get-shit-pretty
+pnpm dlx get-shit-pretty
+# or with bun
+bunx get-shit-pretty
 ```
 
 **Works on Mac, Windows, and Linux.**
@@ -50,8 +52,9 @@ Both disciplines. Same pipeline. Same environment. The missing half of the bridg
 ## Quick Start
 
 ```bash
-# 1. Install
-npx get-shit-pretty
+# 1. Install (pnpm or bun)
+pnpm dlx get-shit-pretty
+# bunx get-shit-pretty
 
 # 2. Define your brand — or skip with a style preset
 /gsp-brand-brief                    # guided brand definition
@@ -418,7 +421,9 @@ GSP works across all major AI coding tools. The installer converts Claude Code's
 ## Install
 
 ```bash
-npx get-shit-pretty
+pnpm dlx get-shit-pretty
+# or with bun
+bunx get-shit-pretty
 ```
 
 The installer prompts you to choose:
@@ -430,21 +435,23 @@ The installer prompts you to choose:
 
 ```bash
 # Claude Code
-npx get-shit-pretty --claude --global
-npx get-shit-pretty --claude --local
+pnpm dlx get-shit-pretty --claude --global
+pnpm dlx get-shit-pretty --claude --local
 
 # OpenCode
-npx get-shit-pretty --opencode --global
+pnpm dlx get-shit-pretty --opencode --global
 
 # Gemini CLI
-npx get-shit-pretty --gemini --global
+pnpm dlx get-shit-pretty --gemini --global
 
 # Codex CLI
-npx get-shit-pretty --codex --global
+pnpm dlx get-shit-pretty --codex --global
 
 # All runtimes
-npx get-shit-pretty --all --global
+pnpm dlx get-shit-pretty --all --global
 ```
+
+> Substitute `bunx` for `pnpm dlx` if you prefer bun.
 
 </details>
 
@@ -452,10 +459,10 @@ npx get-shit-pretty --all --global
 <summary><strong>Uninstall</strong></summary>
 
 ```bash
-npx get-shit-pretty --claude --global --uninstall
-npx get-shit-pretty --opencode --global --uninstall
-npx get-shit-pretty --gemini --global --uninstall
-npx get-shit-pretty --codex --global --uninstall
+pnpm dlx get-shit-pretty --claude --global --uninstall
+pnpm dlx get-shit-pretty --opencode --global --uninstall
+pnpm dlx get-shit-pretty --gemini --global --uninstall
+pnpm dlx get-shit-pretty --codex --global --uninstall
 ```
 
 </details>

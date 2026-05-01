@@ -204,7 +204,7 @@ console.log(banner);
 
 // Help
 if (hasHelp) {
-  console.log(`  ${yellow}Usage:${reset} npx get-shit-pretty [options]\n
+  console.log(`  ${yellow}Usage:${reset} pnpm dlx get-shit-pretty [options]   ${dim}# or: bunx get-shit-pretty [options]${reset}\n
   ${yellow}Options:${reset}
     ${cyan}-g, --global${reset}              Install globally (to config directory)
     ${cyan}-l, --local${reset}               Install locally (to current directory)
@@ -221,19 +221,19 @@ if (hasHelp) {
 
   ${yellow}Examples:${reset}
     ${dim}# Interactive install (prompts for runtime and location)${reset}
-    npx get-shit-pretty
+    pnpm dlx get-shit-pretty
 
     ${dim}# Install for Claude Code globally${reset}
-    npx get-shit-pretty --claude --global
+    pnpm dlx get-shit-pretty --claude --global
 
     ${dim}# Install for all runtimes globally${reset}
-    npx get-shit-pretty --all --global
+    pnpm dlx get-shit-pretty --all --global
 
     ${dim}# Install to current project only${reset}
-    npx get-shit-pretty --claude --local
+    pnpm dlx get-shit-pretty --claude --local
 
     ${dim}# Uninstall GSP from Claude Code globally${reset}
-    npx get-shit-pretty --claude --global --uninstall
+    pnpm dlx get-shit-pretty --claude --global --uninstall
 `);
   process.exit(0);
 }

@@ -204,7 +204,7 @@ The `files` field in package.json controls what's included: `.mcp.json`, `bin`, 
 
 ### Dependencies rule
 
-The npm package must have **zero production dependencies**. The installer (`bin/install.js`) and scripts use only Node.js builtins. All deps (Next.js, React, shadcn, MDX, etc.) are for the local website (`src/`) and must stay in `devDependencies`. Never add a package to `dependencies` — it would be pulled in by every `npx get-shit-pretty` user for no reason.
+The npm package must have **zero production dependencies**. The installer (`bin/install.js`) and scripts use only Node.js builtins. All deps (Next.js, React, shadcn, MDX, etc.) are for the local website (`src/`) and must stay in `devDependencies`. Never add a package to `dependencies` — it would be pulled in by every `pnpm dlx get-shit-pretty` (or `bunx`) user for no reason.
 
 ## Dev tools
 

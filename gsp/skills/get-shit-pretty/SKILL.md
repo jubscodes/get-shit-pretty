@@ -11,7 +11,9 @@ Design engineering system for AI coding tools. Brand identity + design projects,
 ## Install
 
 ```bash
-npx get-shit-pretty
+pnpm dlx get-shit-pretty
+# or with bun
+bunx get-shit-pretty
 ```
 
 Pick your runtime (Claude Code, OpenCode, Gemini CLI, or Codex CLI), choose global or local install, and you're set.
