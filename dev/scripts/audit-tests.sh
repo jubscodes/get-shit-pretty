@@ -1073,6 +1073,27 @@ if should_run unit; then
     fail "U3 theme-css --registry exit" "node bin/theme-css.js --registry failed"
   fi
   rm -f "$TMPOUT"
+
+  # U4: serve-preset.js serves the file and exits on SIGTERM
+  TMPJSON=$(mktemp).json
+  echo '{"$schema":"https://ui.shadcn.com/schema/registry-item.json","name":"smoke","type":"registry:theme","cssVars":{"light":{},"dark":{}}}' > "$TMPJSON"
+  node bin/serve-preset.js "$TMPJSON" > /tmp/gsp-serve-url-$$.txt 2>/dev/null &
+  SERVER_PID=$!
+  for i in 1 2 3 4 5; do sleep 0.2; [ -s /tmp/gsp-serve-url-$$.txt ] && break; done
+  URL=$(head -1 /tmp/gsp-serve-url-$$.txt 2>/dev/null)
+  if [[ -n "$URL" && "$URL" == http* ]]; then
+    BODY=$(curl -fsS "$URL" 2>/dev/null)
+    if echo "$BODY" | grep -q '"name":"smoke"'; then
+      pass "U4 serve-preset.js serves JSON over HTTP"
+    else
+      fail "U4 serve-preset response" "URL=$URL body did not contain expected marker"
+    fi
+  else
+    fail "U4 serve-preset URL" "no http URL printed (got: '$URL')"
+  fi
+  kill "$SERVER_PID" 2>/dev/null
+  wait "$SERVER_PID" 2>/dev/null
+  rm -f "$TMPJSON" /tmp/gsp-serve-url-$$.txt
 fi
 
 # ── TB: Token Budget ───────────────────────────────────
