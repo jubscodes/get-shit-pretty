@@ -236,6 +236,37 @@ node -e "JSON.parse(require('fs').readFileSync('{BRAND_PATH}/patterns/{brand-nam
 
 If either command fails, surface the error and stop — the brand pipeline is incomplete without this artifact.
 
+## Step 4.8: Offer to apply theme to codebase
+
+Detect installable target. Read project config (`.design/projects/*/config.json`) and look for `preferences.app_path`:
+
+- If no project config exists, or `app_path` is empty/missing → skip this step. Output a one-line note: `Apply later with /gsp-brand-apply {brand-name}`. Continue to Step 4.5.
+- If `app_path` exists, check `{app_path}/components.json`:
+  - If missing → skip (no shadcn project to install into). Same one-line note.
+  - If present → continue.
+
+Detect currently-installed brand (informational):
+- Resolve the CSS path from `{app_path}/components.json` → `.tailwind.css` (a relative path).
+- Read `{app_path}/{cssPath}` if it exists.
+- Look for OKLCH `:root` declarations.
+- Compare `--background` light value against other `.design/branding/*/patterns/*.theme.json` files in the workspace.
+- Set `CURRENT={matched-brand-name}` or `CURRENT="shadcn defaults"` or `CURRENT="(none)"`.
+
+Use `AskUserQuestion`:
+- Question: "Apply **{brand-name}** to `{app_path}`? Currently installed: **{CURRENT}**. This replaces cssVars in the CSS file; components stay as-is."
+- Options:
+  - A: "Apply now"
+  - B: "Skip — I'll apply later"
+  - C: "Apply to a different project"
+
+On A: output `Run /gsp-brand-apply {brand-name}` as the next step the user should take.
+
+On B: output `Skipped. Apply later with /gsp-brand-apply {brand-name}.`
+
+On C: use `AskUserQuestion` to ask for the target path. Then output `Run /gsp-brand-apply {brand-name} --target {chosen-path}` as the next step.
+
+Continue to Step 4.5 regardless of choice.
+
 ## Step 4.5: Update state
 
 Update `{BRAND_PATH}/STATE.md`:
