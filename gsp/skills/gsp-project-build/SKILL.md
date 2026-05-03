@@ -142,6 +142,30 @@ Hold their content for inlining into agent prompts in Steps 3, 4.5, 5, 7, and 8.
 
 > **Note:** Anti-patterns are distilled into the `gsp-project-builder` agent prompt. Full ref remains on disk for edge-case agent lookup.
 
+## Step 2.7: Theme apply gate
+
+Verify brand tokens are installed in the codebase before spawning foundations. Foundations no longer pastes tokens — `/gsp-brand-apply` is the install primitive.
+
+1. If `{APP_PATH}/components.json` does not exist, skip this gate silently — the target is non-shadcn (scaffold's failure gate at end of Step 2 already covers a broken shadcn scaffold).
+2. Resolve the CSS path: read `{APP_PATH}/components.json` and extract the value at `.tailwind.css` (a relative path from `APP_PATH`).
+3. Open `{APP_PATH}/{cssPath}`. Verify:
+   - Contains `oklch(`
+   - Has both `:root {` and `.dark {` blocks
+   - Declares `--background`, `--foreground`, `--primary`, `--radius`
+   - **If** `{BRAND_PATH}/patterns/{brand-name}.theme.json` exists: contains the brand's signature `cssVars.light.background` value from that file (this distinguishes the applied brand from shadcn's nova defaults). If `{brand-name}.theme.json` does NOT exist (older brand from before Task 4 landed), skip the brand-signature check and rely on the structural checks only — log `⚠ Brand theme.json not found — skipping brand-signature check.`
+
+If any required check fails, brand tokens are not applied (or the wrong brand is applied). Use `AskUserQuestion`:
+- Question: "Brand tokens for **{brand-name}** not detected in `{APP_PATH}/{cssPath}`. Run `/gsp-brand-apply {brand-name}` now?"
+- Options:
+  - A: "Yes — I'll run /gsp-brand-apply {brand-name}, then re-run /gsp-project-build"
+  - B: "No, abort the build"
+
+On A: output `Next: run /gsp-brand-apply {brand-name}, then re-invoke /gsp-project-build` and exit this skill. The build does not auto-continue — the apply runs out-of-band and you re-invoke when ready.
+
+On B: stop the build phase. Output: `Build aborted — apply brand tokens with /gsp-brand-apply {brand-name} and re-run /gsp-project-build.`
+
+If all checks pass, log `✓ Brand tokens verified` and continue to Step 3.
+
 ## Step 3: Phase 2 — FOUNDATIONS
 
 Spawn `gsp-project-builder` agent with **execution_mode: foundations**.
@@ -169,8 +193,8 @@ Spawn `gsp-project-builder` agent with **execution_mode: foundations**.
 >
 > Build token integration, global styles, and layout primitives ONLY.
 >
-> 1. Integrate design tokens into the codebase: run `node bin/theme-css.js {brand-name}.yml --stdout` and paste the OKLCH `:root`/`.dark` output into `globals.css`. For shadcn targets, follow the `@theme inline` pattern from `shadcn-rules.md`. Map ALL variables — background, foreground, card, popover, primary, secondary, muted, accent, destructive, border, input, ring, sidebar-*, chart-1 through chart-5, and --radius.
-> 2. Create global CSS (resets, base styles, font imports, dark mode setup)
+> 1. **Verify** brand tokens are already installed in `globals.css`. The orchestrator gates this — by the time you run, tokens MUST be present (installed via `/gsp-brand-apply` either directly or through the brand-guidelines prompt). If you find tokens missing, abort with a clear error pointing at `/gsp-brand-apply {brand-name}`. Do NOT manually paste tokens.
+> 2. Add base styles, dark mode setup, and any font imports that `apply` did not handle. (Note: `cssVars.theme.font-sans` may set the CSS variable but not generate the `next/font/google` import in `layout.tsx`. If the import is missing, add it. If present, leave it alone.)
 > 3. Create root layout with nav shell and footer shell (structure only — no page content)
 > 4. Create shared utilities (cn helper, theme provider if needed)
 > 5. Apply the STYLE.md bold bets and effects vocabulary — create CSS utilities or Tailwind extensions for the brand's signature effects. Validate against constraints (never/always rules are non-negotiable).
