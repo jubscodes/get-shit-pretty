@@ -21,7 +21,7 @@ This skill modifies **`{brand-name}.yml`** — the single source of truth for br
 Accept natural language feedback about brand visuals, identify which `.yml` values are affected, apply targeted changes, and regenerate `STYLE.md` if it exists.
 
 **Input:** Natural language feedback (e.g., "accent is too muted", "make buttons rounder", "more motion")
-**Output:** Updated `{brand-name}.yml` + regenerated `STYLE.md` (if exists) + `REFINE-LOG.md`
+**Output:** Updated `{brand-name}.yml` + regenerated `STYLE.md` (if exists) + `{brand-name}.theme.json` (regenerated) + `REFINE-LOG.md`
 **Agent:** None — inline skill, surgical edits
 </objective>
 
@@ -123,7 +123,38 @@ Apply confirmed changes:
 1. **`{brand-name}.yml`** — edit values in place with `Edit`. Preserve structure.
 2. **`STYLE.md`** — if it exists, regenerate the affected sections (Patterns tables, Constraints lists, Effects tables, or Intensity dials) to reflect the `.yml` changes. Read the template from `${CLAUDE_SKILL_DIR}/../../templates/phases/style.md` for format reference.
 
-## Step 4: Log and finish
+## Step 4: Regenerate theme.json and offer to apply
+
+After updating `{brand-name}.yml` and (if applicable) regenerating `STYLE.md`, regenerate the shadcn registry artifact:
+
+```bash
+node ${CLAUDE_SKILL_DIR}/../../../bin/theme-css.js \
+  {BRAND_PATH}/patterns/{brand-name}.yml \
+  --registry \
+  --output {BRAND_PATH}/patterns/{brand-name}.theme.json
+```
+
+Verify the file is valid JSON:
+
+```bash
+node -e "JSON.parse(require('fs').readFileSync('{BRAND_PATH}/patterns/{brand-name}.theme.json', 'utf8'))" \
+  && echo "✓ theme.json refreshed"
+```
+
+If a project config exists (`.design/projects/*/config.json` with a non-empty `app_path`) AND `{app_path}/components.json` exists (a shadcn target), use `AskUserQuestion`:
+
+- Question: "Theme refreshed. Apply changes to `{app_path}` now?"
+- Options:
+  - A: "Yes — apply now"
+  - B: "Skip — apply later"
+
+On A: output `Run /gsp-brand-apply {brand-name}` as the next user step.
+
+On B: output `Refreshed. Apply later with /gsp-brand-apply {brand-name}.`
+
+If no shadcn target is detected, skip the prompt and output a passive note: `Theme refreshed. No shadcn target detected — apply later with /gsp-brand-apply {brand-name} once a shadcn project is set up.`
+
+## Step 5: Log and finish
 
 Append to `{BRAND_PATH}/REFINE-LOG.md`:
 
