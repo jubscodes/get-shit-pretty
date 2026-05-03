@@ -94,11 +94,11 @@ Key fields from the JSON:
 }
 
 :root {
-  /* Insert OKLCH custom properties from bin/theme-css.js output here */
+  /* Brand tokens installed here by /gsp-brand-apply (runs `shadcn apply --only theme`) */
 }
 
 .dark {
-  /* Insert .dark overrides from bin/theme-css.js output here */
+  /* Dark-mode overrides installed here by /gsp-brand-apply */
 }
 
 @layer base {
@@ -136,7 +136,7 @@ Then set font vars with literal values in `@theme inline` (not `var()` self-refe
 }
 ```
 
-`bin/theme-css.js` emits `--font-sans` / `--font-mono` / `--font-display` from the preset's `typography` block — paste those values (not the var declarations) into `@theme inline`.
+`bin/theme-css.js` emits `--font-sans` / `--font-mono` / `--font-display` from the preset's `typography` block. These values are wired into `@theme inline` when the theme is installed via `/gsp-brand-apply`.
 
 ### Tailwind v3
 
@@ -159,7 +159,7 @@ Then set font vars with literal values in `@theme inline` (not `var()` self-refe
 
 ## Token injection
 
-**Order matters** — run component installs first, then overwrite tokens. This prevents `shadcn add` from appending its own `cssVars` after your custom OKLCH values.
+**Order matters** — run component installs first, then apply the brand theme. This prevents `shadcn add` from appending its own `cssVars` after your custom OKLCH values.
 
 **Step 1 — Install all components first:**
 
@@ -167,13 +167,9 @@ Then set font vars with literal values in `@theme inline` (not `var()` self-refe
 npx shadcn@latest add button card dialog popover select tooltip ...
 ```
 
-**Step 2 — Generate and inject brand tokens:**
+**Step 2 — Apply the brand theme:**
 
-```bash
-node bin/theme-css.js .design/branding/{brand}/patterns/{brand}.yml --stdout
-```
-
-Paste the `:root { }` and `.dark { }` output into `globals.css`, replacing any `:root`/`.dark` blocks the shadcn CLI wrote. The `@theme inline` block stays untouched — it only contains `var()` aliases and radius/font values, not actual color values.
+Brand tokens are installed via `/gsp-brand-apply`, which runs `shadcn apply --only theme` against the `{brand}.theme.json` registry artifact produced by `gsp-brand-guidelines`. This replaces any `:root`/`.dark` blocks the shadcn CLI wrote with OKLCH brand values. The `@theme inline` block stays untouched — it only contains `var()` aliases and radius/font values, not actual color values.
 
 **Format:** OKLCH (`oklch(L C H)`). shadcn/ui v2+ accepts OKLCH natively. No `hsl()` wrapper needed.
 
@@ -413,7 +409,7 @@ For full API differences with code examples, read `${CLAUDE_SKILL_DIR}/../../gsp
 3. **Tailwind v4 source scoping** — if the repo has non-source files with CSS class names (`.design/`, `gsp/`), add `source("../")` to the `@import "tailwindcss"` line to limit scanning
 4. **Import alias consistency** — all generated code must use the alias from `shadcn info` (`@/` or `~/`), never relative paths to component files
 5. **Never hardcode colors** — use `bg-primary`, `text-muted-foreground`, `border-border`, etc. — never `bg-blue-500`
-6. **Install components before writing tokens** — run `shadcn add` first; then overwrite `:root`/`.dark` with `bin/theme-css.js` output. Reversing this order risks shadcn appending its own vars after yours
+6. **Install components before applying the brand theme** — run `shadcn add` first; then install the brand theme via `/gsp-brand-apply`. Reversing this order risks shadcn appending its own vars after yours
 
 ---
 
