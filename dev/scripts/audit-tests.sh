@@ -310,6 +310,31 @@ if should_run contracts; then
   else
     fail "C12 Forked skills with AskUserQuestion" "${C12_BAD[*]}"
   fi
+
+  # C13: Every brand .yml in the workspace has a sibling .theme.json
+  # Skipped in fresh checkouts that have no brand artifacts.
+  YML_COUNT=0
+  MISSING=()
+  while IFS= read -r yml; do
+    YML_COUNT=$((YML_COUNT + 1))
+    THEME="${yml%.yml}.theme.json"
+    [ -f "$THEME" ] || MISSING+=("$yml")
+  done < <(find .design/branding -path '*/patterns/*.yml' -type f 2>/dev/null)
+  if [ "$YML_COUNT" -eq 0 ]; then
+    pass "C13 Brand .theme.json sibling check (no brand artifacts present, skipped)"
+  elif [ "${#MISSING[@]}" -eq 0 ]; then
+    pass "C13 Brand .theme.json sibling check ($YML_COUNT brand(s) covered)"
+  else
+    fail "C13 Brand .theme.json sibling check" "missing for: ${MISSING[*]}"
+  fi
+
+  # C14: gsp-scaffold no longer references theme-css.js
+  # Theme installation moved to gsp-brand-apply; scaffold should be brand-agnostic.
+  if grep -qE "theme-css\.js" gsp/skills/gsp-scaffold/SKILL.md 2>/dev/null; then
+    fail "C14 Scaffold theme-css separation" "gsp-scaffold/SKILL.md still references theme-css.js — theme install belongs to gsp-brand-apply now"
+  else
+    pass "C14 Scaffold theme-css separation"
+  fi
 fi
 
 # ── I: Installer Checks ─────────────────────────────
