@@ -20,7 +20,7 @@ Identity made the creative decisions. This phase makes them work in code.
 Operationalize brand identity into project-ready artifacts and complete the branding diamond.
 
 **Input:** Brand identity (enriched by domain skills) + strategy + BRIEF.md
-**Output:** `{brand}/patterns/` ({brand-name}.yml, STYLE.md, guidelines.html, components/, INDEX.md)
+**Output:** `{brand}/patterns/` ({brand-name}.yml, {brand-name}.theme.json, STYLE.md, guidelines.html, components/, INDEX.md)
 **Agent:** `gsp-brand-engineer`
 </objective>
 
@@ -216,6 +216,26 @@ Spawn the `gsp-brand-engineer` agent with (reuse **Agent methodology** loaded in
 >
 > The `.yml` and `STYLE.md` are confirmed — do not modify them. Focus on mapping tokens to the detected component library and specifying overrides.
 
+## Step 4.75: Emit shadcn theme registry artifact
+
+Generate `{brand-name}.theme.json` (registry:theme) alongside the existing patterns. This is the artifact `/gsp-brand-apply` installs into shadcn codebases.
+
+```bash
+node ${CLAUDE_SKILL_DIR}/../../../bin/theme-css.js \
+  {BRAND_PATH}/patterns/{brand-name}.yml \
+  --registry \
+  --output {BRAND_PATH}/patterns/{brand-name}.theme.json
+```
+
+Verify the file was written and contains valid JSON:
+
+```bash
+node -e "JSON.parse(require('fs').readFileSync('{BRAND_PATH}/patterns/{brand-name}.theme.json', 'utf8'))" \
+  && echo "✓ theme.json emitted"
+```
+
+If either command fails, surface the error and stop — the brand pipeline is incomplete without this artifact.
+
 ## Step 4.5: Update state
 
 Update `{BRAND_PATH}/STATE.md`:
@@ -228,7 +248,7 @@ Update `.design/CLAUDE.md` — replace the existing `### {brand-name}` entry (wr
 ```markdown
 ### {brand-name} · complete · {DATE}
 "{brand_heartbeat}"
-.design/branding/{brand-name}/patterns/ — guidelines.html · STYLE.md · {brand-name}.yml
+.design/branding/{brand-name}/patterns/ — guidelines.html · STYLE.md · {brand-name}.yml · {brand-name}.theme.json
 ```
 
 ## Step 5: Phase transition output
