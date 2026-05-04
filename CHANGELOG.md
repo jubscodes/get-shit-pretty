@@ -17,6 +17,10 @@ All notable changes to get-shit-pretty are documented here.
 ### Fixed
 - Eliminated rework where `shadcn init` writes nova defaults to `globals.css` and `layout.tsx`, only for the foundations agent to overwrite both with brand values
 
+### Known limitations
+- **`/gsp-brand-apply` modifies more than the CSS file.** `shadcn apply --only theme` (verified empirically against shadcn 4.6.0) bumps dependency versions in `package.json` (`shadcn` itself, `@base-ui/react`, etc.), regenerates `package-lock.json`, and rewrites `components.json`. There's no upstream flag to suppress this. The skill detects pending uncommitted work in those files and refuses to proceed without consent, and surfaces a "Review" line in the success output if they were modified. See [#156](https://github.com/jubscodes/get-shit-pretty/issues/156)
+- **`/gsp-brand-apply` flattens `var(--*)` indirection** in cssVars. Custom design systems that map shadcn semantic tokens to upstream tokens (e.g. `--background: var(--brand-bg);`) get the indirection replaced with literal OKLCH values. The skill detects this pattern and prompts before proceeding. Greenfield projects skip the prompt silently. See [#157](https://github.com/jubscodes/get-shit-pretty/issues/157)
+
 ## [0.8.3] — 2026-05-01
 
 ### Changed

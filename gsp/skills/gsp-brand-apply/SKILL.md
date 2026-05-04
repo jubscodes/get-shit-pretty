@@ -46,6 +46,27 @@ Set `THEME_JSON={BRAND_PATH}/patterns/{BRAND}.theme.json`.
 
 If `THEME_JSON` does not exist → error: "Brand '{BRAND}' has no theme.json. Run `/gsp-brand-guidelines {BRAND}` to generate it." Stop.
 
+## Step 0.5: Pre-flight — preserve user work
+
+`shadcn apply --only theme` is not strictly cssVars-only. Its preflight may also bump dependency versions in `package.json` (notably `shadcn` itself and `@base-ui/react`), regenerate `package-lock.json`, and rewrite `components.json`. We don't suppress this — there's no upstream flag (see issue tracker) — but we refuse to run when those files have uncommitted work, so the user can review the dep changes via `git diff` afterward.
+
+If `{TARGET}` is inside a git repository, run:
+
+```bash
+git -C {TARGET} diff --quiet -- package.json package-lock.json components.json 2>/dev/null
+```
+
+If the exit code is non-zero (uncommitted changes exist in any of those three files), use `AskUserQuestion`:
+
+- Question: "`{TARGET}` has uncommitted changes in `package.json`, `package-lock.json`, or `components.json`. `shadcn apply` may modify these (preflight bumps versions). Continue anyway?"
+- Options:
+  - A: "Cancel — I'll commit/stash first"
+  - B: "Proceed anyway — I accept potential conflicts with my pending work"
+
+If A → exit cleanly. If B → continue.
+
+If `{TARGET}` is not a git repo, skip this check silently — there's nothing to compare against.
+
 ## Step 1: Resolve target
 
 Parse `--target` flag if present.
@@ -167,14 +188,25 @@ Append to `{BRAND_PATH}/STATE.md` under a `## Apply log` section. If the file or
 
 ## Step 9: Output
 
+After apply, check whether `package.json`, `package-lock.json`, or `components.json` were modified by shadcn's preflight:
+
+```bash
+cd {TARGET} && git diff --name-only -- package.json package-lock.json components.json 2>/dev/null
+```
+
+If the output is non-empty, list those files in the success block under a "Review" line so the user knows to inspect them. If empty (or the target is not a git repo), omit the Review line.
+
 ```
   ◆ brand applied — {BRAND} → {TARGET}
 
-    {cssPath} updated (cssVars only)
-    Components: untouched
-
+    {cssPath} updated
     Re-apply: /gsp-brand-apply {BRAND}
     Refine:   /gsp-brand-refine
+
+    [if dep files changed]
+    Review:   git diff {file1} {file2} ...
+              (shadcn preflight may have bumped dep versions —
+               commit or revert as you prefer)
 
   ──────────────────────────────
 ```
