@@ -8,6 +8,9 @@ node_modules/
 .gemini/
 .opencode/
 
+# Plugin distribution (symlinks to source — local dev only)
+plugin/
+
 # Local dev notes
 .planning/
 
