@@ -310,6 +310,31 @@ if should_run contracts; then
   else
     fail "C12 Forked skills with AskUserQuestion" "${C12_BAD[*]}"
   fi
+
+  # C13: Every brand .yml in the workspace has a sibling .theme.json
+  # Skipped in fresh checkouts that have no brand artifacts.
+  YML_COUNT=0
+  MISSING=()
+  while IFS= read -r yml; do
+    YML_COUNT=$((YML_COUNT + 1))
+    THEME="${yml%.yml}.theme.json"
+    [ -f "$THEME" ] || MISSING+=("$yml")
+  done < <(find .design/branding -path '*/patterns/*.yml' -type f 2>/dev/null)
+  if [ "$YML_COUNT" -eq 0 ]; then
+    pass "C13 Brand .theme.json sibling check (no brand artifacts present, skipped)"
+  elif [ "${#MISSING[@]}" -eq 0 ]; then
+    pass "C13 Brand .theme.json sibling check ($YML_COUNT brand(s) covered)"
+  else
+    fail "C13 Brand .theme.json sibling check" "missing for: ${MISSING[*]}"
+  fi
+
+  # C14: gsp-scaffold no longer references theme-css.js
+  # Theme installation moved to gsp-brand-apply; scaffold should be brand-agnostic.
+  if grep -qE "theme-css\.js" gsp/skills/gsp-scaffold/SKILL.md 2>/dev/null; then
+    fail "C14 Scaffold theme-css separation" "gsp-scaffold/SKILL.md still references theme-css.js — theme install belongs to gsp-brand-apply now"
+  else
+    pass "C14 Scaffold theme-css separation"
+  fi
 fi
 
 # ── I: Installer Checks ─────────────────────────────
@@ -1050,6 +1075,50 @@ if should_run unit; then
   else
     fail "U2 Installer integration tests" "see output above"
   fi
+
+  # U3: theme-css.js --registry produces valid registry-item.json
+  TMPOUT=$(mktemp /tmp/gsp-registry-test-XXXXXX.json)
+  if node bin/theme-css.js gsp/skills/gsp-style/styles/saas.yml --registry --output "$TMPOUT" >/dev/null 2>&1; then
+    if node -e "
+      const j = require('$TMPOUT');
+      const ok =
+        j.\$schema === 'https://ui.shadcn.com/schema/registry-item.json' &&
+        j.type === 'registry:theme' &&
+        typeof j.name === 'string' &&
+        j.cssVars && j.cssVars.light && j.cssVars.dark &&
+        typeof j.cssVars.light.background === 'string' &&
+        j.cssVars.light.background.startsWith('oklch(');
+      process.exit(ok ? 0 : 1);
+    " 2>/dev/null; then
+      pass "U3 theme-css --registry produces valid registry-item.json"
+    else
+      fail "U3 theme-css --registry shape" "missing required fields or wrong types in $TMPOUT"
+    fi
+  else
+    fail "U3 theme-css --registry exit" "node bin/theme-css.js --registry failed"
+  fi
+  rm -f "$TMPOUT"
+
+  # U4: serve-preset.js serves the file and exits on SIGTERM
+  TMPJSON=$(mktemp).json
+  echo '{"$schema":"https://ui.shadcn.com/schema/registry-item.json","name":"smoke","type":"registry:theme","cssVars":{"light":{},"dark":{}}}' > "$TMPJSON"
+  node bin/serve-preset.js "$TMPJSON" > /tmp/gsp-serve-url-$$.txt 2>/dev/null &
+  SERVER_PID=$!
+  for i in 1 2 3 4 5; do sleep 0.2; [ -s /tmp/gsp-serve-url-$$.txt ] && break; done
+  URL=$(head -1 /tmp/gsp-serve-url-$$.txt 2>/dev/null)
+  if [[ -n "$URL" && "$URL" == http* ]]; then
+    BODY=$(curl -fsS "$URL" 2>/dev/null)
+    if echo "$BODY" | grep -q '"name":"smoke"'; then
+      pass "U4 serve-preset.js serves JSON over HTTP"
+    else
+      fail "U4 serve-preset response" "URL=$URL body did not contain expected marker"
+    fi
+  else
+    fail "U4 serve-preset URL" "no http URL printed (got: '$URL')"
+  fi
+  kill "$SERVER_PID" 2>/dev/null
+  wait "$SERVER_PID" 2>/dev/null
+  rm -f "$TMPJSON" /tmp/gsp-serve-url-$$.txt
 fi
 
 # ── TB: Token Budget ───────────────────────────────────

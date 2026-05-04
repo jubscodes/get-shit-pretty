@@ -4,6 +4,23 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+### Added
+- **`/gsp-brand-apply` skill** — universal theme-install primitive that runs `shadcn apply --only theme` against a `{brand}.theme.json` registry artifact. Multi-brand-safe: prompts before overwriting an existing brand theme
+- **`bin/theme-css.js --registry` flag** — emits the brand as a shadcn `registry:theme` registry-item.json, consumed by `/gsp-brand-apply`
+- **`bin/serve-preset.js`** — ephemeral localhost HTTP server used by `/gsp-brand-apply` to satisfy shadcn CLI's HTTP-only `--preset` URL fetch
+
+### Changed
+- **`gsp-brand-guidelines`** now emits `{brand}.theme.json` alongside the `.yml` preset, and prompts to install it via `/gsp-brand-apply` (never auto-installs over an existing brand)
+- **`gsp-brand-refine`** regenerates `.theme.json` on each pass and prompts to install the refresh via `/gsp-brand-apply`
+- **`gsp-project-build` foundations agent** no longer pastes tokens into `globals.css`; the orchestrator gates on tokens-applied between scaffold and foundations
+
+### Fixed
+- Eliminated rework where `shadcn init` writes nova defaults to `globals.css` and `layout.tsx`, only for the foundations agent to overwrite both with brand values
+
+### Known limitations
+- **`/gsp-brand-apply` modifies more than the CSS file.** `shadcn apply --only theme` (verified empirically against shadcn 4.6.0) bumps dependency versions in `package.json` (`shadcn` itself, `@base-ui/react`, etc.), regenerates `package-lock.json`, and rewrites `components.json`. There's no upstream flag to suppress this. The skill detects pending uncommitted work in those files and refuses to proceed without consent, and surfaces a "Review" line in the success output if they were modified. See [#156](https://github.com/jubscodes/get-shit-pretty/issues/156)
+- **`/gsp-brand-apply` flattens `var(--*)` indirection** in cssVars. Custom design systems that map shadcn semantic tokens to upstream tokens (e.g. `--background: var(--brand-bg);`) get the indirection replaced with literal OKLCH values. The skill detects this pattern and prompts before proceeding. Greenfield projects skip the prompt silently. See [#157](https://github.com/jubscodes/get-shit-pretty/issues/157)
+
 ## [0.8.3] — 2026-05-01
 
 ### Changed

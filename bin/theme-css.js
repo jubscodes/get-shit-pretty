@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 /**
- * theme-css.js — GSP deterministic token-to-CSS generator
+ * theme-css.js — GSP deterministic token generator
  *
- * Reads a GSP style preset `.yml` file and outputs a shadcn/ui-compatible
- * CSS variables block for `:root` and `.dark`.
+ * Reads a GSP style preset `.yml` file and emits either a shadcn-compatible
+ * CSS variables block (`:root` and `.dark`) or a `registry:theme`
+ * registry-item.json artifact for use with `shadcn apply --only theme`.
  *
  * Usage:
- *   node bin/theme-css.js <path-to-preset.yml>
- *   node bin/theme-css.js <path-to-preset.yml> --output globals.css
- *   node bin/theme-css.js <path-to-preset.yml> --stdout
+ *   node bin/theme-css.js <preset.yml>                                # CSS to stdout
+ *   node bin/theme-css.js <preset.yml> --output globals.css           # CSS to file
+ *   node bin/theme-css.js <preset.yml> --stdout                       # CSS to stdout (explicit)
+ *   node bin/theme-css.js <preset.yml> --registry --output theme.json # registry-item.json
  *
  * Token → CSS var mapping is 1:1. No derivation, no LLM guesswork.
  * Hex values are converted to OKLCH. Alpha values (oklch with /) pass through.
@@ -275,14 +277,112 @@ function generateBlock(colorObj, shapeObj, typographyObj, selector) {
 }
 
 // ---------------------------------------------------------------------------
+// Registry-item.json builder
+// ---------------------------------------------------------------------------
+
+/**
+ * Walk a flat color object (e.g. preset.tokens.color) and convert every value
+ * through formatValue, returning a flat key→value map for cssVars.
+ * Keys are the same as in the YAML (background, primary, etc.) — NOT prefixed
+ * with "--" because shadcn's registry-item.json schema uses bare names.
+ */
+// Note: unlike generateBlock (CSS path), this does NOT synthesize chart-1..5
+// from primary/secondary/etc. when not explicitly defined in the YAML. All
+// current GSP presets define all five chart vars explicitly, so the paths
+// stay symmetric in practice; if a future preset omits chart vars, add the
+// fallback logic here too.
+function colorObjToCssVars(colorObj) {
+  if (!colorObj) return {};
+  const out = {};
+  // Walk all known CSS var groups: core, sidebar, chart, extras
+  const allKeys = [...CORE_VARS, ...SIDEBAR_VARS, ...EXTRA_VARS];
+  for (const key of allKeys) {
+    if (colorObj[key] !== undefined) {
+      out[key] = formatValue(colorObj[key]);
+    }
+  }
+  // Chart vars
+  const chartSources = [
+    colorObj['chart-1'],
+    colorObj['chart-2'],
+    colorObj['chart-3'],
+    colorObj['chart-4'],
+    colorObj['chart-5'],
+  ];
+  chartSources.forEach((c, i) => {
+    if (c !== undefined) {
+      out[`chart-${i + 1}`] = formatValue(c);
+    }
+  });
+  return out;
+}
+
+/**
+ * Build a shadcn registry-item.json object from a parsed preset.
+ */
+function buildRegistryItem(preset, inputPath) {
+  const name = preset.name || path.basename(inputPath, '.yml');
+  const title = preset.title || name.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const description = preset.description || '';
+
+  const colorLight = (preset.tokens && preset.tokens.color) || {};
+  const colorDark = (preset.dark_mode && preset.dark_mode.color) || {};
+  const shape = (preset.tokens && preset.tokens.shape) || {};
+  const typography = (preset.tokens && preset.tokens.typography) || {};
+
+  // Build cssVars.theme from typography font mappings
+  const theme = {};
+  const fontMappings = [
+    ['font-family-primary', 'font-sans'],
+    ['font-family-mono', 'font-mono'],
+    ['font-family-display', 'font-display'],
+    ['font-family-secondary', 'font-secondary'],
+  ];
+  for (const [ymlKey, cssKey] of fontMappings) {
+    if (typography[ymlKey] !== undefined) {
+      theme[cssKey] = typography[ymlKey];
+    }
+  }
+
+  // Build cssVars.light — colors + radius
+  const light = colorObjToCssVars(colorLight);
+  const lg = shape['border-radius-lg'];
+  if (lg !== undefined) {
+    light['radius'] = String(lg);
+  }
+
+  // Build cssVars.dark — dark_mode color overrides
+  const dark = colorObjToCssVars(colorDark);
+
+  const registryItem = {
+    $schema: 'https://ui.shadcn.com/schema/registry-item.json',
+    name,
+    type: 'registry:theme',
+    title,
+    cssVars: {
+      ...(Object.keys(theme).length ? { theme } : {}),
+      light,
+      dark,
+    },
+  };
+
+  if (description) {
+    registryItem.description = description;
+  }
+
+  return registryItem;
+}
+
+// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
 function main() {
   const args = process.argv.slice(2);
   if (!args.length || args.includes('--help') || args.includes('-h')) {
-    console.log(`Usage: node bin/theme-css.js <preset.yml> [--output <file>] [--stdout]`);
+    console.log(`Usage: node bin/theme-css.js <preset.yml> [--output <file>] [--stdout] [--registry]`);
     console.log(`       node bin/theme-css.js gsp/skills/gsp-style/styles/saas.yml`);
+    console.log(`       node bin/theme-css.js gsp/skills/gsp-style/styles/saas.yml --registry --output saas.theme.json`);
     process.exit(0);
   }
 
@@ -295,9 +395,22 @@ function main() {
   const outputIdx = args.indexOf('--output');
   const outputPath = outputIdx !== -1 ? path.resolve(args[outputIdx + 1]) : null;
   const toStdout = args.includes('--stdout') || !outputPath;
+  const asRegistry = args.includes('--registry');
 
   const raw = fs.readFileSync(inputPath, 'utf8');
   const preset = parseYaml(raw);
+
+  if (asRegistry) {
+    const registryItem = buildRegistryItem(preset, inputPath);
+    const output = JSON.stringify(registryItem, null, 2);
+    if (toStdout) {
+      process.stdout.write(output + '\n');
+    } else {
+      fs.writeFileSync(outputPath, output + '\n', 'utf8');
+      console.log(`Written to ${outputPath}`);
+    }
+    return;
+  }
 
   const colorLight = (preset.tokens && preset.tokens.color) || {};
   const colorDark = (preset.dark_mode && preset.dark_mode.color) || {};
