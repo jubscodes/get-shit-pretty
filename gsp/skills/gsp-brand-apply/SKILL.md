@@ -70,6 +70,23 @@ Resolve the CSS path: read `{TARGET}/components.json` and extract the value at `
 
 This is informational only — surfaced in the confirmation message in Step 3.
 
+## Step 2.5: Detect custom token indirection
+
+Scan the cssVars sections of `{TARGET}/{cssPath}` (`:root` and `.dark` blocks) for declarations of the form `--<name>: var(--<other>);` — these are custom indirection layers (e.g. `--background: var(--brand-bg);`).
+
+`shadcn apply --only theme` will REPLACE those `var()` references with literal OKLCH values from the theme.json. The custom indirection is lost — the upstream tokens (e.g. `--brand-bg`) remain defined elsewhere in the file, but the shadcn cssVars no longer reference them.
+
+If any `var(--*)` declarations are found in the cssVars blocks, use `AskUserQuestion`:
+- Question: "`{cssPath}` has **{N} cssVar(s) using `var(--*)` indirection** (e.g. `{first-example}`). `shadcn apply` will replace these with literal OKLCH values, breaking the indirection layer. Continue?"
+- Options:
+  - A: "Yes, replace with literal values"
+  - B: "No, cancel — preserve the indirection"
+
+If B → append `- {ISO-8601 timestamp}: apply cancelled — would have broken indirection in {cssPath}` to `{BRAND_PATH}/STATE.md` under `## Apply log`. Output "Apply cancelled — preserve your indirection layer manually if needed." Exit cleanly.
+If A → continue.
+
+If no `var(--*)` indirection is found, skip this confirmation silently.
+
 ## Step 3: Confirm (when overwriting a different installed brand)
 
 If `CURRENT` is a recognized brand name AND it differs from `BRAND`:
