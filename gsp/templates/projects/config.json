@@ -14,7 +14,8 @@
     "design_scope": "full",
     "style_preset": "",
     "repo_type": "single",
-    "app_path": ""
+    "app_path": "",
+    "icon_library": "lucide"
   },
   "git": {
     "branch": "",

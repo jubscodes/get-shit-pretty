@@ -29,7 +29,6 @@ Compare a project's shipped state against its source brand across all dimensions
 </objective>
 
 <execution_context>
-@${CLAUDE_SKILL_DIR}/../gsp-brand-guidelines/design-tokens.md
 @${CLAUDE_SKILL_DIR}/chunk-format.md
 </execution_context>
 

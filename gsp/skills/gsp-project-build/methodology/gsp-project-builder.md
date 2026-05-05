@@ -197,7 +197,7 @@ Every screen must pass these before marking complete. When `STYLE.md` is provide
 
 1. **Background treatment** — never plain white/dark. Subtle gradient, texture, or decorative element.
 2. **State polish** — hover/focus/active/pressed feel deliberate (shadow shifts, subtle scale, translateY) not just color swaps
-3. **Icon consistency** — one icon family, one stroke weight throughout
+3. **Icon consistency** — import from `preferences.icon_library` only (project config — defaults to `lucide`); one icon family, one stroke weight throughout. No mixing libraries within a screen
 4. **Image direction** — imagery style (photo/illustration/CSS-only) matches brand character
 5. **Responsive craft** — mobile is a designed experience, not just "it fits"
 
