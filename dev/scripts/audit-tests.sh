@@ -623,6 +623,67 @@ if should_run installer; then
   fi
   rm -rf "$TMPINSTALL"
 
+  # I21: Cross-skill paths in pipeline skill bodies + methodology must use ${CLAUDE_SKILL_DIR}/ prefix
+  # Catches the drift fixed in PR #200 (#188) — bare `skills/...` and `references/...` paths
+  # don't resolve at agent runtime regardless of cwd. Allowlist: documentation comments
+  # in `<context>` blocks (descriptive prose, not paths agents will execute).
+  I21_BAD=()
+  for f in gsp/skills/gsp-*/SKILL.md gsp/skills/gsp-*/methodology/*.md; do
+    [[ -f "$f" ]] || continue
+    # Find lines with bare `skills/gsp-` or `references/` paths that aren't preceded by ${CLAUDE_SKILL_DIR}/
+    # Skip lines inside <context> blocks (descriptive) and lines with `dev/skills/` (dev-skill refs)
+    while IFS=: read -r ln content; do
+      # Skip if line has ${CLAUDE_SKILL_DIR} earlier in the same line
+      [[ "$content" == *'${CLAUDE_SKILL_DIR}'* ]] && continue
+      # Skip descriptive prose
+      [[ "$content" == *'Source layout reference'* ]] && continue
+      [[ "$content" == *'gsp/skills/'* ]] && continue
+      [[ "$content" == *'`skills/`'* ]] && continue
+      # Skip project-output references (project's references/ dir, not skill cross-refs)
+      [[ "$content" == *'project'*'references/'* ]] && continue
+      [[ "$content" == *'{project}/references'* ]] && continue
+      [[ "$content" == *'reference material in '* ]] && continue
+      # Real bad refs (must point at a file, not just a dir)
+      I21_BAD+=("$f:$ln")
+    done < <(grep -nE '`(skills/gsp-[a-z\-]+/[^`]+\.md|references/[^`]+\.md)`' "$f" 2>/dev/null)
+  done
+  if [[ ${#I21_BAD[@]} -eq 0 ]]; then
+    pass "I21 Cross-skill paths use \${CLAUDE_SKILL_DIR}/ prefix"
+  else
+    warn "I21 Bare cross-skill paths found" "${I21_BAD[*]:0:5}"
+  fi
+
+  # I22: Domain duplication heuristic — pipeline skills shouldn't redeclare expertise rules
+  # Soft check: flag pipeline skill bodies that contain dense color/typography/a11y prose
+  # (signals like "Inter/Roboto", "off-black not #000", "prefers-reduced-motion" inline)
+  # without nearby cross-skill references to the canonical owner.
+  # Informational warning; humans verify drift candidates.
+  I22_CANDIDATES=()
+  PIPELINE_SKILLS=(gsp-brand-research gsp-brand-strategy gsp-brand-identity gsp-brand-guidelines gsp-project-brief gsp-project-research gsp-project-design gsp-project-critique gsp-project-build gsp-project-review)
+  for skill in "${PIPELINE_SKILLS[@]}"; do
+    for f in gsp/skills/$skill/SKILL.md gsp/skills/$skill/methodology/*.md; do
+      [[ -f "$f" ]] || continue
+      # Heuristic markers — concrete domain rules typically owned by expertise
+      DOMAIN_HITS=$(grep -cE 'Inter/Roboto|off-black not #000|prefers-reduced-motion|tabular-nums|tint shadows|text-wrap: balance' "$f" 2>/dev/null || echo 0)
+      DOMAIN_HITS=${DOMAIN_HITS//[!0-9]/}
+      [[ -z "$DOMAIN_HITS" ]] && DOMAIN_HITS=0
+      if [[ "$DOMAIN_HITS" -ge 3 ]]; then
+        # Check if file references the canonical owners
+        EXPERTISE_REFS=$(grep -cE 'gsp-color|gsp-typography|gsp-accessibility|gsp-visuals' "$f" 2>/dev/null || echo 0)
+        EXPERTISE_REFS=${EXPERTISE_REFS//[!0-9]/}
+        [[ -z "$EXPERTISE_REFS" ]] && EXPERTISE_REFS=0
+        if [[ "$EXPERTISE_REFS" -lt 2 ]]; then
+          I22_CANDIDATES+=("$f ($DOMAIN_HITS domain markers, $EXPERTISE_REFS expertise refs)")
+        fi
+      fi
+    done
+  done
+  if [[ ${#I22_CANDIDATES[@]} -eq 0 ]]; then
+    pass "I22 No obvious domain-rule duplication in pipeline skills"
+  else
+    warn "I22 Domain duplication candidates" "${I22_CANDIDATES[*]:0:3}"
+  fi
+
 fi
 
 # ── R: Runtime Compatibility ────────────────────────

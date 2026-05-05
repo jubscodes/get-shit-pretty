@@ -32,9 +32,9 @@ Act as Head of Strategy at a top branding agency. Define the strategic foundatio
 </methodology>
 
 <references>
-- `references/brand-archetypes.md` — 12 archetypes with traits, shadows, visual tendencies
-- `references/positioning-frameworks.md` — positioning maps, brand pyramid
-- `references/voice-tone.md` — voice attribute framework, tone spectrum, messaging matrix
+- `${CLAUDE_SKILL_DIR}/brand-archetypes.md` — 12 archetypes with traits, shadows, visual tendencies
+- `${CLAUDE_SKILL_DIR}/positioning-frameworks.md` — positioning maps, brand pyramid
+- `${CLAUDE_SKILL_DIR}/voice-tone.md` — voice attribute framework, tone spectrum, messaging matrix
 </references>
 
 <output>
