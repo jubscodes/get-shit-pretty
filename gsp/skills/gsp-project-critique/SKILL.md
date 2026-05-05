@@ -69,10 +69,12 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 Read these reference files and hold their content for inlining into agent prompts in Step 2:
 - `${CLAUDE_SKILL_DIR}/../gsp-accessibility-audit/wcag-checklist.md`
 - `${CLAUDE_SKILL_DIR}/../gsp-color/references/color-composition.md`
+- `${CLAUDE_SKILL_DIR}/../gsp-typography/domains/scale.md` — type-scale verification rules
+- `${CLAUDE_SKILL_DIR}/../gsp-visuals/domains/imagery.md` — imagery vocabulary for critique
 - `${CLAUDE_SKILL_DIR}/../gsp-accessibility-audit/methodology/gsp-accessibility-auditor.md`
 - `${CLAUDE_SKILL_DIR}/../../templates/phases/critique.md` — critique output template
 
-> **Note:** Nielsen's heuristics, visual taste, and anti-patterns are distilled into the `gsp-project-critic` agent prompt. Full refs remain on disk for edge-case agent lookup.
+> **Note:** Nielsen's heuristics, visual taste, and anti-patterns are distilled into the `gsp-project-critic` agent prompt. anti-patterns.md is a critic-owned consolidated checklist; canonical sources are gsp-typography, gsp-color, gsp-visuals — update those when fixing drift, not the consolidated checklist alone.
 
 ## Step 1.9: Load agent methodology
 
@@ -92,6 +94,8 @@ Read `${CLAUDE_SKILL_DIR}/methodology/gsp-project-critic.md`. Include the full c
 - **Content of** research recommendations.md (loaded in Step 1)
 - **Content of** BRIEF.md
 - **Content of** color composition reference (loaded in Step 1.8)
+- **Content of** typography scale reference (loaded in Step 1.8)
+- **Content of** imagery vocabulary reference (loaded in Step 1.8)
 - **Content of** critique output template (loaded in Step 1.8)
 - `references_path`: `${CLAUDE_SKILL_DIR}/` — for supplementary Read access to visual-taste.md, anti-patterns.md
 - Output path: `{PROJECT_PATH}/critique/`

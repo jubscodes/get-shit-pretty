@@ -57,6 +57,16 @@ Read `{BRAND_PATH}/patterns/INDEX.md`. If it exists, load foundation chunks (to 
 
 Read `{BRAND_PATH}/discover/INDEX.md`. If it exists, load `competitive-audit.md` and `trend-analysis.md` (to avoid duplicating brand-level research).
 
+### Brand strategy voice (for content-strategy chunk)
+
+Read `{BRAND_PATH}/strategy/voice-and-tone.md` and `{BRAND_PATH}/strategy/messaging.md` (if exists). The content-strategy chunk derives microcopy/tone direction from brand strategy — never invent voice in isolation.
+
+### Expertise references (load on demand for chunks below)
+
+The researcher's chunks should consult the canonical owners rather than re-deriving rules:
+- `accessibility-patterns.md` — read `${CLAUDE_SKILL_DIR}/../gsp-accessibility/SKILL.md` for WCAG criteria framing; do not duplicate WCAG specifics
+- `technical-research.md` — read `${CLAUDE_SKILL_DIR}/../gsp-style/styles/INDEX.yml` to align stack-specific token wiring with available presets
+
 ### Custom references
 
 If `{PROJECT_PATH}/references/INDEX.md` exists, load relevant references (competitor screenshots, brand guidelines, design specs). Pass to the researcher agent for context.
@@ -79,6 +89,8 @@ Read:
 
 If competitor URLs or reference sites are mentioned in BRIEF.md or `{PROJECT_PATH}/references/`, use `WebFetch` with `run_in_background: true` to pre-fetch them. This warms content for the researcher agent.
 
+**Caps:** max 5 competitor URLs per project, max 3 doc URLs per technical area. Pre-fetched content is inlined into the agent prompt — the agent does not run open-ended WebSearch during execution.
+
 ## Step 2: Spawn project researcher
 
 ### Load agent methodology
@@ -90,6 +102,7 @@ Pass in the agent prompt:
 - **Content of** brief scope chunks: scope.md, target-adaptations.md (loaded in Step 1)
 - **Content of** brand patterns foundation chunks (loaded in Step 1)
 - **Content of** brand discovery chunks: competitive-audit.md, trend-analysis.md (loaded in Step 1)
+- **Content of** brand strategy: voice-and-tone.md, messaging.md (loaded in Step 1) — drives content-strategy chunk; never invent voice
 - **Content of** custom references (loaded in Step 1)
 - **Content of** BRIEF.md (loaded in Step 1)
 - Any pre-fetched reference content (from Step 1.75)

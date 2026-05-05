@@ -22,11 +22,12 @@ Cross-reference these against design specs to validate the implementation.
 3. **Run `git diff`** — see what actually changed, catch anything BUILD-LOG.md missed
 4. **Screen coverage** — compare designed screens against implemented screens in the codebase
 5. **Component coverage** — compare designed components against implemented components
-6. **Token audit** — Grep codebase for hardcoded color values, magic numbers, missing token references
-7. **Accessibility compliance** — Grep for ARIA attributes, check keyboard handlers, verify focus management
+6. **Token audit** — defer to canonical token rules at `${CLAUDE_SKILL_DIR}/../gsp-color/domains/system.md`; verify against `${CLAUDE_SKILL_DIR}/../gsp-style/style-preset-schema.md` for preset adherence. Flag hardcoded values, magic numbers, missing token references
+7. **Accessibility compliance** — invoke `/gsp-accessibility-audit --code` (via the orchestrator) instead of inline ARIA/keyboard Grep heuristics. Reference `${CLAUDE_SKILL_DIR}/../gsp-accessibility-audit/wcag-checklist.md` for code-mode criteria
 8. **Responsive verification** — confirm breakpoint behavior matches design intent
-9. **Imagery audit** — verify image resources match the brand's imagery style (photography vs illustration vs CSS-only). Check for generic gray placeholders or mismatched imagery types
-10. **Design fidelity** — overall assessment of how faithfully the build represents the design
+9. **Imagery audit** — verify image resources match brand's imagery style; consult `${CLAUDE_SKILL_DIR}/../gsp-visuals/domains/imagery.md` for canonical vocabulary. Check for generic gray placeholders or mismatched imagery types
+10. **Typography verification** — verify type scale + pairing against `${CLAUDE_SKILL_DIR}/../gsp-typography/domains/scale.md` and `pairing.md`
+11. **Design fidelity** — overall assessment of how faithfully the build represents the design
 
 ## Quality Standards
 - Issues must reference actual codebase file paths and line numbers (not `.design/build/` paths)
