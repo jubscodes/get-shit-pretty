@@ -4,6 +4,11 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+## [0.9.1] — 2026-05-05
+
+### Fixed
+- **Global installs were broken in 0.9.0.** `/gsp-brand-apply` and `/gsp-brand-refine` referenced `bin/serve-preset.js` and `bin/theme-css.js` via `${CLAUDE_SKILL_DIR}/../../../bin/...`, which on a clean install escaped `.claude/` and resolved into the user's home directory. Local dev hid the bug because `.claude/skills/*` is symlinked to `gsp/skills/*`, so the path traversal landed back on the source `bin/` by accident. Scripts are now colocated inside their owning skill (`gsp-brand-apply/bin/serve-preset.js`, `gsp-brand-guidelines/bin/theme-css.js`) and reference paths point to `${CLAUDE_SKILL_DIR}/bin/...` (or cross-skill via `${CLAUDE_SKILL_DIR}/../gsp-brand-guidelines/bin/...` from `gsp-brand-refine`). New audit test `I20` simulates copy-mode install and asserts scripts ship to the SKILL.md-expected paths ([#159](https://github.com/jubscodes/get-shit-pretty/pull/159))
+
 ## [0.9.0] — 2026-05-04
 
 ### Added
