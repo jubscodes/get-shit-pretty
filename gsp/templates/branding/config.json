@@ -1,5 +1,5 @@
 {
-  "version": "0.9.1",
+  "version": "0.10.0",
   "project_type": "brand",
   "brand": {
     "name": "",
@@ -18,5 +18,5 @@
     "style_preset": "",
     "style_base": []
   },
-  "gsp_version": "0.9.1"
+  "gsp_version": "0.10.0"
 }

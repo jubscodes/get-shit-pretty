@@ -1,0 +1,56 @@
+---
+title: "v0.10.0 -- Expertise integration + WCAG gating"
+date: "2026-05-05T18:00:00"
+excerpt: "Pipeline skills stop duplicating domain knowledge — they now read from expertise skills (color, typography, accessibility, icons, visuals). Brand-guidelines hard-gates on WCAG 2.2 AA before finalizing a design system."
+tags: ["architecture", "accessibility", "performance"]
+slug: "v0-10-0"
+---
+
+## The architecture shift
+
+GSP has had two layers of skills since v0.7 — **expertise skills** (knowledge owners like `gsp-color`, `gsp-typography`, `gsp-accessibility`) and **pipeline skills** (orchestrators like `brand-strategy`, `project-build`). The contract was clean on paper: pipeline skills should read or invoke expertise skills, never duplicate their domain content. In practice, color rules lived in three places, typography rules in four, accessibility scattered across half the pipeline. Drift was a matter of time.
+
+This release closes the gap. Brand-strategy, brand-identity, brand-guidelines, project-design, project-critique, project-build, and project-review all stop carrying their own copies of expertise content. They read from the expertise skills directly via `${CLAUDE_SKILL_DIR}/../gsp-{name}/`. One source of truth per domain, exactly what the architecture promised.
+
+## WCAG validation goes from passive to active
+
+`gsp-accessibility` used to be a reference skill — pipeline skills could read its WCAG rules but nothing enforced compliance. Now `gsp-accessibility --validate` actively scores token sets against WCAG 2.2 AA contrast thresholds and returns a verdict.
+
+`gsp-brand-guidelines` invokes it as a hard gate. A design system that would ship inaccessible token combinations (foreground/background pairs failing 4.5:1, primary/primary-foreground failing 3:1) is blocked before finalization, with the failing pairs surfaced for review.
+
+This is the first time accessibility is enforced in the pipeline rather than just documented.
+
+## `gsp-icons` consolidation
+
+Icon library config used to live in both `gsp-icons` and `gsp-visuals`. Container rules, sizing scales, and SVG direction split between the two with no clear ownership. `gsp-icons` is now the single owner — `gsp-visuals` reads from it.
+
+## 6 path bugs fixed
+
+The v0.9.1 colocation refactor moved scripts into their owning skills but missed updating several `${CLAUDE_SKILL_DIR}/../...` references. Six pipeline skills couldn't find templates and references on clean installs. All fixed, plus new audit-test linters to prevent the same class of bug from regressing.
+
+## Perf push continues
+
+The token budget umbrella (#83) is still chipping at red-zone skills:
+
+- `gsp-project-build` body trimmed 538L → 450L via 4 sibling extractions
+- `gsp-project-critic` methodology trimmed to 89L
+- Methodology trims across all double-dispatch agents (`gsp-project-builder`, `gsp-project-designer`, `gsp-project-reviewer`)
+- Pass-through token refs dropped from execution_context blocks
+
+`gsp-brand-strategy` exited the red zone entirely (1323 → 715) earlier in the v0.7.x cycle. This release moves project-build closer to the same exit.
+
+## New dev tool: `gspdev-eval-changes`
+
+Internal quality eval for skill changes. Spawns parallel evaluator agents that score against a fixed 8-dimension rubric (change intent + skill intent coherence + 6 preservation dimensions). Run before merging non-trivial trims and refactors so silent regressions get caught at PR time, not in production.
+
+This is what caught the missing "balance criticism with recognition" bullet that got accidentally dropped in the project-critic methodology trim — restored in [#186](https://github.com/jubscodes/get-shit-pretty/pull/186).
+
+## Pipeline mental model after this release
+
+| Layer | Owns | Examples |
+|---|---|---|
+| Expertise | Domain knowledge | `gsp-color`, `gsp-typography`, `gsp-accessibility`, `gsp-icons`, `gsp-visuals` |
+| Pipeline | Workflow + orchestration | `gsp-brand-guidelines`, `gsp-project-build` |
+| Dev | Repo health + quality | `gspdev-audit`, `gspdev-eval-changes`, `gspdev-housekeeping` |
+
+The architecture diagram on paper now matches the architecture in code.
