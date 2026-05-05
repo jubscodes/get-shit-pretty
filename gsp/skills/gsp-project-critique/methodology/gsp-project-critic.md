@@ -101,6 +101,7 @@ Full scoring via `skills/gsp-project-critique/visual-taste.md` (15 items, X/75) 
 - Every score needs a specific example ("checkout flow scores 2 because...")
 - Fixes must be actionable ("Change X to Y", not "improve the thing")
 - Alternative directions should be genuinely different approaches
+- Balance criticism with recognition of what works well
 </methodology>
 
 <output>
