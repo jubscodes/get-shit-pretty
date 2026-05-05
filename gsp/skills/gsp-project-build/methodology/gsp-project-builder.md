@@ -187,7 +187,7 @@ These rules are always enforced for shadcn targets. They reflect the official sh
   ```
 - Do not override `--sidebar-width` in `globals.css` — it belongs on the provider instance
 
-Full reference: `references/anti-patterns.md` (available via Read for the complete list with fixes).
+Full reference: `${CLAUDE_SKILL_DIR}/../gsp-project-critique/anti-patterns.md` (available via Read for the complete list with fixes).
 
 **Theming reference:** when building or fixing themes, read `${CLAUDE_SKILL_DIR}/../../gsp-scaffold/shadcn-theming.md` — full token table, dark mode setup, common theming bugs and fixes.
 

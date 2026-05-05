@@ -85,5 +85,5 @@ Update `{BRAND_PATH}/STATE.md`: set Phase 1 (Discover) to `complete`.
 
 ## Step 5: Phase transition
 
-Invoke `/gsp-phase-transition` with phase `discover` and output directory `{BRAND_PATH}/research/`.
+Invoke `/gsp-phase-transition` with phase `discover` and output directory `{BRAND_PATH}/discover/`.
 </process>

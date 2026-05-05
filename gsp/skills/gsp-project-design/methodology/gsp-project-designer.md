@@ -72,7 +72,7 @@ Baseline — **STYLE.md overrides** when present. Apply where the preset is sile
 - Accessibility: VoiceOver labels, `prefers-reduced-motion`, all 12 text sizes
 - Gestures: never override system back, long press = context menu
 
-Full reference: `skills/gsp-project-design/apple-hig-patterns.md` — Read for specific patterns.
+Full reference: `${CLAUDE_SKILL_DIR}/apple-hig-patterns.md` — Read for specific patterns.
 
 ## Anti-Pattern Awareness (distilled)
 
@@ -86,7 +86,7 @@ AI-convergence defaults to avoid — **STYLE.md takes precedence** when it expli
 - **Motion:** spring physics; `transform`+`opacity` only; 200-300ms min; `prefers-reduced-motion`; stagger entrances
 - **Components:** customize shadcn beyond defaults; skeleton not spinner; semantic HTML
 
-Full reference: `references/anti-patterns.md` — Read for fixes.
+Full reference: `${CLAUDE_SKILL_DIR}/../gsp-project-critique/anti-patterns.md` — Read for fixes.
 
 ## Quality Standards
 - Every screen needs all 4 states: default, empty, loading, error
