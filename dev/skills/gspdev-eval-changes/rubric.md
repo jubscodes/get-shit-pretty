@@ -1,8 +1,30 @@
 # Skill change evaluation rubric
 
-Six dimensions. Each scored **PASS / CONCERNS / FAIL**. Score against the AFTER file using BEFORE and the parent SKILL.md as context.
+Seven dimensions. Each scored **PASS / CONCERNS / FAIL**. Score against the AFTER file using BEFORE and the parent SKILL.md as context.
 
-## 1. Role + execution mode preservation
+**Order matters.** Intent achievement (Dimension 1) is scored FIRST — if the change didn't land its stated goal, the rest of the rubric is moot. Preservation dimensions (2-7) only matter if the intent was achieved.
+
+## 1. Intent achievement
+
+Did the change land its stated goal?
+
+The orchestrator passes the change's stated intent (from commit message, PR description, or user input) to every evaluator. Examples of intent:
+
+- "Trim file by 30-40%" → check actual delta vs target
+- "Extract X to a sibling for reuse" → check sibling is created correctly and referenced from AFTER
+- "Make agent more deterministic about Y" → check the new rule/cue actually constrains Y better than BEFORE
+- "Fix bug where agent does Z" → check the AFTER would no longer reproduce Z given the same input
+
+Score:
+- **PASS** — intent achieved cleanly; no obvious gap between goal and result
+- **CONCERNS** — intent partially achieved; specific gap (e.g., trim claimed -30%, actual -8%; or extraction left dangling references)
+- **FAIL** — intent not achieved or change works against the stated goal
+
+**Concerns flag:** delta below target, extraction incomplete, new rule still permits the bad behavior, side-effect changes that weren't part of the intent.
+
+If intent is unclear or absent: report "Intent not provided — skipping Dimension 1, scoring 2-7 as defensive eval only."
+
+## 2. Role + execution mode preservation
 
 Does the agent still know what it is and when to apply different modes?
 
@@ -12,7 +34,7 @@ Does the agent still know what it is and when to apply different modes?
 
 **Concerns flag:** mode disambiguation softened, role drift, lost handling for an input the parent skill still passes.
 
-## 2. Methodology completeness
+## 3. Methodology completeness
 
 Every numbered step / decision point / phase still present?
 
@@ -22,7 +44,7 @@ Every numbered step / decision point / phase still present?
 
 **Concerns flag:** a step removed, a conditional collapsed, an input/output left implicit.
 
-## 3. Constraints + rules preservation
+## 4. Constraints + rules preservation
 
 Are binding rules still binding?
 
@@ -33,7 +55,7 @@ Are binding rules still binding?
 
 **Concerns flag:** a constraint dropped, severity softened (must → should), validation gate weakened.
 
-## 4. Output specification clarity
+## 5. Output specification clarity
 
 Can the agent still produce the expected deliverables without ambiguity?
 
@@ -45,7 +67,7 @@ Can the agent still produce the expected deliverables without ambiguity?
 
 **Concerns flag:** a deliverable's structure became implicit, a path got vague, schema dropped without recoverable description.
 
-## 5. Distilled references actionable
+## 6. Distilled references actionable
 
 Compressed reference lists (HIG, anti-patterns, scoring rubrics) still cue the right behavior?
 
@@ -56,7 +78,7 @@ Compressed reference lists (HIG, anti-patterns, scoring rubrics) still cue the r
 
 **Concerns flag:** asymmetric removal (kept fail cues, lost success cues), example removal that leaves a category unanchored, a pointer to a renamed/moved file.
 
-## 6. Quality standards preservation
+## 7. Quality standards preservation
 
 Explicit must-haves still present?
 
@@ -70,9 +92,9 @@ Explicit must-haves still present?
 
 ## Verdict definitions
 
-- **PASS** — All 6 dimensions PASS. The change is a net improvement; merge with confidence.
+- **PASS** — All 7 dimensions PASS (or 6 PASS with Dimension 1 skipped due to no intent provided). The change is a net improvement; merge with confidence.
 - **CONCERNS** — One or more dimensions flagged but with surgical restoration possible. Specify the exact text to restore (typically a single bullet, sentence, or rubric anchor). Recommendation: apply restoration, then merge.
-- **FAIL** — Substantive content lost that can't be quickly restored. Revert the affected section before merging. Note: FAIL is rare — most "concerns" are restorable with a 1-2 line change.
+- **FAIL** — Either Dimension 1 is FAIL (intent not achieved), OR substantive content lost that can't be quickly restored. Revert the affected section before merging. Note: FAIL is rare for Dimensions 2-7 — most "concerns" are restorable with a 1-2 line change. Dimension 1 FAIL means redesigning the change itself.
 
 ## Findings format
 
