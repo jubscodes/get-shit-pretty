@@ -45,7 +45,7 @@ Score each heuristic 1-5. Total X/50. This is the core quality bar. Walk real us
 
 Heuristics: (1) Visibility of system status (2) System ↔ real-world match (3) User control + freedom (4) Consistency + standards (5) Error prevention (6) Recognition over recall (7) Flexibility + efficiency (8) Aesthetic + minimalist (9) Error recovery (10) Help + documentation.
 
-For each: Score 1 if the heuristic fails (no feedback, jargon, no undo, inconsistent, no constraints, hidden context, rigid path, cluttered, vague errors, no help). Score 5 if it's well-handled.
+For each: Score 1 if the heuristic fails (no feedback, jargon, no undo, inconsistent, no constraints, hidden context, rigid path, cluttered, vague errors, no help). Score 5 if well-handled (clear feedback, plain language, undo/cancel, consistency, smart defaults, visible context, accelerators, focused content, recoverable errors, contextual help).
 
 ### 4. Accessibility
 
