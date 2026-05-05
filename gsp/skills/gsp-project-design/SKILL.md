@@ -113,7 +113,7 @@ When `implementation_target` is not `figma`:
 
 ## Step 2.5: Load design references
 
-Read these reference files (relative to skill dir `${CLAUDE_SKILL_DIR}/../../references/`):
+Read these reference files (relative to skill dir `${CLAUDE_SKILL_DIR}/`):
 - `block-patterns.md`
 
 Hold their content for inlining into the agent prompt in Step 3.
