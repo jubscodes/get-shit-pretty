@@ -137,10 +137,9 @@ Read these reference files:
 - `${CLAUDE_SKILL_DIR}/visual-effects.md`
 - `${CLAUDE_SKILL_DIR}/../gsp-project-design/block-patterns.md`
 - `${CLAUDE_SKILL_DIR}/shadcn-composition.md`
+- `${CLAUDE_SKILL_DIR}/agent-rules.md` — common spawn guardrails (universal + per-mode)
 
 Hold their content for inlining into agent prompts in Steps 3, 4.5, 5, 7, and 8.
-
-> **Note:** Anti-patterns are distilled into the `gsp-project-builder` agent prompt. Full ref remains on disk for edge-case agent lookup.
 
 ## Step 2.7: Theme apply gate
 
@@ -190,20 +189,16 @@ Spawn `gsp-project-builder` agent with **execution_mode: foundations**.
 ### Agent instructions:
 
 > execution_mode: foundations
+> Build token integration, global styles, layout primitives, theme provider/utilities ONLY.
 >
-> Build token integration, global styles, and layout primitives ONLY.
+> Foundation-specific actions:
+> 1. Add base styles + dark mode setup + font imports that `apply` did not handle (`cssVars.theme.font-sans` may set the CSS var without the `next/font/google` import — add it if missing)
+> 2. Create root layout with nav + footer shells (structure only)
+> 3. Create shared utilities (cn helper, theme provider)
+> 4. Apply STYLE.md bold bets + effects as CSS utilities / Tailwind extensions; validate against never/always constraints
+> 5. For shadcn targets: semantic tokens (`bg-primary`), never raw values (`bg-blue-500`); `gap-*` not `space-y-*`; `size-*` when w/h equal
 >
-> 1. **Verify** brand tokens are already installed in `globals.css`. The orchestrator gates this — by the time you run, tokens MUST be present (installed via `/gsp-brand-apply` either directly or through the brand-guidelines prompt). If you find tokens missing, abort with a clear error pointing at `/gsp-brand-apply {brand-name}`. Do NOT manually paste tokens.
-> 2. Add base styles, dark mode setup, and any font imports that `apply` did not handle. (Note: `cssVars.theme.font-sans` may set the CSS variable but not generate the `next/font/google` import in `layout.tsx`. If the import is missing, add it. If present, leave it alone.)
-> 3. Create root layout with nav shell and footer shell (structure only — no page content)
-> 4. Create shared utilities (cn helper, theme provider if needed)
-> 5. Apply the STYLE.md bold bets and effects vocabulary — create CSS utilities or Tailwind extensions for the brand's signature effects. Validate against constraints (never/always rules are non-negotiable).
-> 6. For shadcn targets: use semantic color tokens (`bg-primary`, `text-muted-foreground`) — never raw color values like `bg-blue-500`. Use `gap-*` not `space-y-*`. Use `size-*` when width and height are equal.
-> 7. Do NOT build individual screens or page content
-> 8. Write code directly to the codebase, not to `.design/`
-> 9. Leave changes unstaged
->
-> After completing foundations, write `{PROJECT_PATH}/build/logs/foundations.md` with what was done (foundations section). Do NOT write to BUILD-LOG.md directly — the orchestrator merges logs after each phase.
+> See `agent-rules.md` (loaded in Step 2.6) for universal + per-mode guardrails (write to codebase, leave unstaged, log to `build/logs/foundations.md`, no BUILD-LOG.md direct write).
 
 ### Checkpoint: Compile check
 
@@ -258,54 +253,13 @@ Use `AskUserQuestion`: "Foundations look good? Continue building components, or 
 
 ### Brand feedback loop
 
-If the user requests adjustments during foundation review:
-
-1. Apply the changes to the project codebase first (directly or via a quick builder re-run)
-2. Ask: "Should this change also update the brand system? (Other projects using this brand would inherit it)"
-3. If yes, spawn a background `gsp-brand-engineer` agent to update brand patterns:
-   - Pass: the specific changes made (what tokens/values changed, old → new)
-   - Pass: `{BRAND_PATH}/patterns/{brand-name}.yml` and relevant identity chunks
-   - Agent updates the `.yml` preset, foundation chunks, and STYLE.md if applicable
-   - Agent writes to `{BRAND_PATH}/` — the brand source of truth
-   - Run synchronously (do NOT use `run_in_background`) — Step 4.5 reads the brand `.yml` from disk, so the updated values must be committed before components begin
-4. Wait for brand sync to complete, then continue to Step 4.5
+Read `${CLAUDE_SKILL_DIR}/brand-feedback.md` for the full procedure. Key constraint: the `gsp-brand-engineer` re-sync runs synchronously before Step 4.5 begins.
 
 ## Step 4.5: Phase 4 — COMPONENTS
 
-### Build component manifest
+### Build component manifest + classify + partition
 
-Read ALL design chunks from `{PROJECT_PATH}/design/` — every `screen-{NN}-{name}.md`. Also read:
-- `{PROJECT_PATH}/brief/scope.md` (feature map)
-- `{PROJECT_PATH}/brief/target-adaptations.md` (component adaptations)
-- `{BRAND_PATH}/patterns/components/token-mapping.md` (if exists)
-
-Extract every component referenced across all screens. Deduplicate. Build a manifest:
-
-```
-COMPONENT_MANIFEST = [
-  { name: "Button", source: "shadcn", classification: "library-default", screens: [01, 03, 05] },
-  { name: "Card", source: "shadcn", classification: "library-customize", screens: [01, 02, 04], overrides: "custom radius + shadow from STYLE.md" },
-  { name: "PricingTier", source: "custom", classification: "custom", screens: [03] },
-  ...
-]
-```
-
-### Classify each component
-
-| Category | Criteria | Action |
-|----------|----------|--------|
-| `library-default` | Exists in target library, no brand overrides needed | Install as-is |
-| `library-customize` | Exists in target library, STYLE.md or token-mapping requires overrides | Install then customize |
-| `custom` | No library match, or design requires bespoke component | Build from scratch |
-| `existing` | Already in codebase (from scaffold or prior project) | Skip — already available |
-
-### Partition into agent groups
-
-Group components to minimize conflicts:
-1. No two agents install the same library component
-2. Group related variants together (Card + CardHeader + CardContent + CardFooter → same agent)
-3. Balance work across agents (aim for 3-6 components per agent)
-4. If total components ≤ 5, use a single agent (no need to parallelize)
+Read `${CLAUDE_SKILL_DIR}/component-classification.md` for the manifest schema, classification table (`library-default` / `library-customize` / `custom` / `existing`), and partitioning rules (≤5 → single agent; group related variants; 3-6 components per agent).
 
 ### Resume check
 
@@ -348,18 +302,9 @@ Agent instructions template:
 > implementation_target: {target}
 > components: [{partition list with classifications}]
 >
-> Install, customize, or create the assigned components.
-> 1. For library-default: install via CLI, verify import works
-> 2. For library-customize: install via CLI, then apply brand overrides (STYLE.md constraints, token values)
-> 3. For custom: create from scratch following brand patterns and STYLE.md
-> 4. Read foundations from codebase (tokens, utilities already exist)
-> 5. Do NOT modify foundation files (global CSS, layout, tokens, theme provider)
-> 6. Do NOT build screens or page content
-> 7. Write code directly to the codebase
-> 8. Leave changes unstaged
+> Install, customize, or create the assigned components per their classification (library-default → install as-is; library-customize → install + STYLE.md overrides; custom → create from scratch).
 >
-> After completing components, write `{PROJECT_PATH}/build/logs/component-{partition-name}.md` — list components installed/customized/created, files written, and any issues. Do NOT write to BUILD-LOG.md directly.
-> Also write `{PROJECT_PATH}/build/status/component-{partition-name}.json` with `{"status": "complete", "components": [{list}], "timestamp": "{ISO}"}`.
+> See `agent-rules.md` (loaded in Step 2.6) for guardrails (read foundations from codebase, do not modify foundation files, log to `build/logs/component-{partition-name}.md`, write `build/status/component-{partition-name}.json` for resume support).
 
 ### Checkpoint: Compile check
 
@@ -421,19 +366,14 @@ Agent instructions per screen:
 > execution_mode: screen
 > screen: {name} ({NN})
 >
-> Build the {name} screen. Foundations and components are already in the codebase.
+> Build the {name} screen. Foundations + components are already in the codebase.
 >
-> 1. Read the existing layout, tokens, utilities, and components from the codebase
-> 2. Create the route page and screen-specific components
-> 3. Wire imports to existing foundation and component files
-> 4. Do NOT modify foundation files (global CSS, layout, tokens, theme provider)
-> 5. Do NOT modify shared component files (they were built in the components phase)
-> 6. Write code directly to the codebase, not to `.design/`
-> 7. Leave changes unstaged
-> 8. The brand's visual effects were implemented as utilities during foundations — use those utilities/classes
+> 1. Read existing layout, tokens, utilities, components from the codebase
+> 2. Create the route page + screen-specific components
+> 3. Wire imports to existing foundation + component files
+> 4. The brand's visual effects exist as utilities/classes from foundations — use them, don't redefine
 >
-> After completing this screen, write `{PROJECT_PATH}/build/logs/screen-{NN}-{name}.md` — list files written, components used, and any issues. Do NOT write to BUILD-LOG.md directly.
-> Also write `{PROJECT_PATH}/build/status/screen-{NN}-{name}.json` with `{"status": "complete", "screen": "{name}", "files": [{list}], "timestamp": "{ISO}"}`.
+> See `agent-rules.md` (loaded in Step 2.6) for guardrails (no modifying foundations or shared components, log to `build/logs/screen-{NN}-{name}.md`, write `build/status/screen-{NN}-{name}.json` for resume support).
 
 ### Checkpoint: Compile check
 
@@ -452,35 +392,7 @@ Update `{PROJECT_PATH}/STATE.md` `## Screen Build Status` table — set complete
 
 ## Step 5.5: Extraction review (lightweight)
 
-Components were built in Phase 4, so most reuse is already handled. This is a quick sanity check.
-
-### Automated scan
-
-Run these checks on the built codebase:
-
-1. **Hardcoded values** — Grep for hardcoded hex colors, rgb(), pixel values that should be tokens. Flag any that don't reference CSS variables or Tailwind tokens.
-2. **Duplicated patterns** — Use Grep to find identical `className` strings (>3 classes) appearing in 2+ screen files. These are patterns the components phase missed.
-
-### Surface findings
-
-If issues found, present to user:
-
-```
-  ◆ post-build scan
-
-    Found {N} hardcoded values and {M} duplicated patterns.
-    {list if any}
-
-  ──────────────────────────────
-```
-
-If no issues: "Post-build scan clean — no hardcoded values or duplicated patterns found."
-
-Use `AskUserQuestion` only if issues were found: "Fix these, or continue to finalize?"
-- **Fix** → apply changes inline (mechanical refactors, no agent needed)
-- **Continue** → proceed to Step 6
-
-If hardcoded values map to missing brand tokens, suggest: "These token gaps may also exist in the brand. Consider running `/gsp-brand-refine` after build completes."
+Read `${CLAUDE_SKILL_DIR}/extraction-review.md` for the full procedure. Quick post-build sanity check: hardcoded values + duplicated patterns. If issues found, AskUserQuestion (Fix inline / Continue to Step 6).
 
 ## Step 6: Finalize
 
