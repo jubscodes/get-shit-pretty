@@ -112,7 +112,7 @@ Redesign the system from the ground up, informed by what exists.
 ### Load references and agent methodology
 Read these files and hold their content for inlining into the agent prompt:
 - `${CLAUDE_SKILL_DIR}/../../templates/phases/patterns.md` — patterns output template
-- `${CLAUDE_SKILL_DIR}/design-tokens.md` — design tokens reference
+- `${CLAUDE_SKILL_DIR}/../gsp-style/style-preset-schema.md` — canonical `.yml` schema (shadcn-flat, 1:1 CSS var mapping)
 - `${CLAUDE_SKILL_DIR}/guidelines-structure.md` — guidelines.html structure spec (shadcn tokens, sections, primitive classes)
 - `${CLAUDE_SKILL_DIR}/methodology/gsp-brand-engineer.md` — agent methodology
 
@@ -125,7 +125,7 @@ Pass in the agent prompt:
 - **Content of** style base preset `.yml` + `.md` (loaded in Step 1) — `.yml` as structural scaffold, `.md` as philosophy + implementation content for STYLE.md
 - **Agent methodology** (loaded above)
 - **Content of** patterns output template (loaded above)
-- **Content of** design tokens reference (loaded above)
+- **Content of** style preset schema (loaded above) — the engineer assembles `{brand-name}.yml` matching this exact shape
 - **Content of** guidelines structure spec (loaded above) — follow this exactly for `guidelines.html`
 - The `system_strategy` and `tech_stack` values
 - **Output path:** `{BRAND_PATH}/patterns/`

@@ -51,9 +51,14 @@ Also read the brand `.yml` preset from `{BRAND_PATH}/patterns/`.
 
 Read:
 - `{PROJECT_PATH}/BRIEF.md` — what we're building, platforms, tech stack
-- `{PROJECT_PATH}/config.json` — get `implementation_target`, `design_scope`, `codebase_type`, `app_path`, `repo_type`
+- `{PROJECT_PATH}/config.json` — get `implementation_target`, `design_scope`, `codebase_type`, `app_path`, `repo_type`, `accessibility_level`, `style_preset`
 
 After reading config, check if `app_path` is empty. If empty AND (`repo_type` is `monorepo` OR multiple `package.json` files are found at `apps/*/package.json` or `packages/*/package.json`), set flag `NEEDS_APP_SELECTION = true`.
+
+**Expertise pointers:**
+- `accessibility_level` (AA vs AAA) carries scope implications for contrast-sensitive components — see `${CLAUDE_SKILL_DIR}/../gsp-accessibility/SKILL.md` for level interpretation when reasoning about adaptations
+- `style_preset` (when set) drives style-preset-specific component conventions — see `${CLAUDE_SKILL_DIR}/../gsp-style/styles/{preset}.md` for the preset's patterns + constraints + effects vocabulary that adaptation reasoning should respect
+- When writing token overrides in `target-adaptations.md`, consult `${CLAUDE_SKILL_DIR}/../gsp-color/domains/palette.md` for OKLCH/contrast considerations and `${CLAUDE_SKILL_DIR}/../gsp-typography/domains/scale.md` for type-scale ratios
 
 ### Codebase context
 

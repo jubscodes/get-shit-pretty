@@ -89,7 +89,7 @@ Spawn the `gsp-brand-creative-director` agent. **Inline all content** — the ag
 
 Pass in the agent prompt:
 - **Content of** BRIEF.md (loaded in Step 1)
-- **Content of** strategy chunks: archetype.md, positioning.md, brand-platform.md, voice-and-tone.md (loaded in Step 1)
+- **Content of** strategy chunks: archetype.md, positioning.md, brand-platform.md, voice-and-tone.md, messaging.md (all 5 loaded in Step 1; older brands without messaging.md proceed without it). Tagline directions and core message in `messaging.md` materially shape logo concept rationale and typography voice — do not skip it.
 - **Content of** discover/mood-board-direction.md (loaded in Step 1)
 - **Content of** style base preset `.yml` + `.md` (when loaded in Step 1) — `.yml` as structural scaffold, `.md` as design philosophy and signature techniques
 - **Content of** audit/brand-inventory.md (when loaded in Step 2)

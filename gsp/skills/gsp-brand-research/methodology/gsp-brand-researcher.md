@@ -31,6 +31,15 @@ Act as a senior design researcher. Analyze the market landscape and competitive 
 - Competitor map must use real competitors from BRIEF.md
 - Mood board specs must be actionable (hex values, typeface names)
 - Recommendations must be specific to this brand's personas, not generic
+
+## Downstream expertise context (for mood-board direction)
+
+Stay opinionated but don't over-commit on technical specifics — downstream phases will refine via expertise skills:
+- Hex color picks → `gsp-color` will re-express as OKLCH and validate WCAG contrast in identity phase
+- Typeface picks → `gsp-typography` will pair, scale, and verify rhythm
+- Imagery style direction → `gsp-visuals/domains/imagery.md` owns the canonical imagery vocabulary; align mood-board language with it where possible
+
+This is forward awareness only — research output stays in research's lane.
 </methodology>
 
 <output>
