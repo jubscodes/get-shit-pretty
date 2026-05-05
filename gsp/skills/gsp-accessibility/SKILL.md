@@ -46,6 +46,7 @@ Read `$ARGUMENTS` to determine the mode:
 |-------|------|--------|
 | `--check #FG #BG` | Quick contrast check | Display only |
 | `--tokens` | Token-only: contrast pairs, sizing, spacing | `critique/accessibility-token-audit.md` |
+| `--validate <yml-path>` | Pre-emit gate: validate a brand `.yml` for WCAG compliance | Exit 0 (pass) / exit 1 (fail) — failures to stdout, no file writes |
 | (no args) | Mode picker | Prompt user |
 
 Additional flag: `--level AAA` overrides conformance level (default: AA).
@@ -70,6 +71,10 @@ If args contain `--check`, extract the two hex color values and skip to Step 3.
 ### Token audit mode (`--tokens`)
 
 Skip to Step 4.
+
+### Validate mode (`--validate <yml-path>`)
+
+Skip to Step 4.5.
 
 ## Step 3: Quick check mode (`--check #FG #BG`)
 
@@ -204,6 +209,51 @@ Display result and use `AskUserQuestion`:
 - **Run full design audit** — "run `/gsp-accessibility-audit` for full WCAG design audit"
 - **Run code audit** — "run `/gsp-accessibility-audit --code` to check the codebase"
 - **Done** — "that's all for now"
+
+## Step 4.5: Validate mode (`--validate <yml-path>`)
+
+Pre-emit gate for `gsp-brand-guidelines` (and any caller that needs a yes/no contrast verdict on a brand `.yml` without project context).
+
+**Differs from `--tokens`:** no project resolution, no file writes, returns exit code instead of writing a chunk. Use when you need a hard PASS/FAIL gate before downstream emission.
+
+### Inputs
+
+- `<yml-path>` — absolute or relative path to a brand `.yml` preset (e.g. `.design/branding/{brand}/patterns/{brand-name}.yml`)
+- `--level AA|AAA` — optional conformance override (default: AA)
+
+### Checks (subset of `--tokens`, contrast-only)
+
+Reuse the contrast logic from Step 4 (sections 4.1, 4.2, 4.3):
+
+1. **Contrast pairs** — every semantic foreground/background pair from the `.yml`. Flag failures: normal text < 4.5:1 (AA) or < 7:1 (AAA), large text < 3:1 (AA) or < 4.5:1 (AAA), non-text < 3:1
+2. **Interactive states** — hover/active/focus/disabled pairs. Disabled states still need 3:1 non-text contrast
+3. **Focus ring** — `--ring` token vs adjacent backgrounds, ≥ 3:1
+4. **Dark mode** — if `dark_mode.color` exists, re-verify all pairs
+
+Skip the `--tokens` extras (touch targets, typography minimums) — those are not contrast gates.
+
+### Output
+
+**On pass** — print one line to stdout, exit 0:
+
+```
+✓ /gsp-accessibility --validate {yml-name} — N pairs checked, all WCAG 2.2 {level} compliant
+```
+
+**On fail** — print failing pairs + exit 1:
+
+```
+✗ /gsp-accessibility --validate {yml-name} — {M} contrast failure(s) (WCAG 2.2 {level})
+
+  Failures:
+    {token-pair}      ratio {N.N}:1   required {required}:1   ({use-case})
+    {token-pair}      ratio {N.N}:1   required {required}:1   ({use-case})
+    ...
+
+  Fix via: /gsp-brand-refine "{token-name} contrast"
+```
+
+**No file writes.** This mode is a callable gate — output goes to stdout, exit code carries the verdict. Stop here; no AskUserQuestion routing.
 
 ## Step 5: Update STATE.md
 

@@ -216,6 +216,15 @@ Spawn the `gsp-brand-engineer` agent with (reuse **Agent methodology** loaded in
 >
 > The `.yml` and `STYLE.md` are confirmed — do not modify them. Focus on mapping tokens to the detected component library and specifying overrides.
 
+## Step 4.7: WCAG validation gate
+
+Before emitting `theme.json` (the artifact that installs into real codebases), validate the assembled `.yml` against WCAG 2.2 AA contrast requirements. Inaccessible token pairs must not ship to production.
+
+Invoke `/gsp-accessibility --validate {BRAND_PATH}/patterns/{brand-name}.yml` (use `--level AAA` if `accessibility_level` in the project config is set to AAA).
+
+- **Pass (exit 0):** continue to Step 4.75
+- **Fail (exit 1):** STOP. The skill prints failing token pairs + the recommended fix path. Surface the failures to the user with: `Theme emission blocked — {N} contrast failure(s). Run /gsp-brand-refine to fix the failing pairs, then re-run /gsp-brand-guidelines.` Do NOT emit theme.json. The pipeline is incomplete until validation passes
+
 ## Step 4.75: Emit shadcn theme registry artifact
 
 Generate `{brand-name}.theme.json` (registry:theme) alongside the existing patterns. This is the artifact `/gsp-brand-apply` installs into shadcn codebases.
