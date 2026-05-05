@@ -13,7 +13,7 @@ allowed-tools:
 <context>
 The universal theme-install primitive. Reads a `{brand}.theme.json` (registry:theme) artifact and installs it into a shadcn codebase via `shadcn apply --only theme`. Surgical — only cssVars (and optionally fonts) change; components are untouched.
 
-Spawns an ephemeral localhost HTTP server (`bin/serve-preset.js`) because shadcn CLI's `--preset` flag accepts HTTP URLs only (`file://` and bare paths are rejected).
+Spawns an ephemeral localhost HTTP server (`serve-preset.js`, colocated in this skill's `bin/`) because shadcn CLI's `--preset` flag accepts HTTP URLs only (`file://` and bare paths are rejected).
 
 Called explicitly by the user, or invoked by `/gsp-brand-guidelines` (after generation, with consent) and `/gsp-brand-refine` (after token regen).
 </context>
@@ -129,7 +129,7 @@ If `CURRENT` is unrecognized or fresh, skip this confirmation and proceed silent
 
 ```bash
 # Step 4: spawn preset server, capture URL
-node ${CLAUDE_SKILL_DIR}/../../../bin/serve-preset.js {THEME_JSON} > /tmp/preset-server-url-$$.txt 2>/dev/null &
+node ${CLAUDE_SKILL_DIR}/bin/serve-preset.js {THEME_JSON} > /tmp/preset-server-url-$$.txt 2>/dev/null &
 SERVER_PID=$!
 # Wait up to 2s for the URL to be written
 for i in 1 2 3 4 5 6 7 8 9 10; do sleep 0.2; [ -s /tmp/preset-server-url-$$.txt ] && break; done
@@ -140,7 +140,7 @@ rm -f /tmp/preset-server-url-$$.txt
 if [[ -z "$PRESET_URL" || "$PRESET_URL" != http* ]]; then
   kill "$SERVER_PID" 2>/dev/null
   wait "$SERVER_PID" 2>/dev/null
-  echo "ERROR: preset server failed to start — bin/serve-preset.js executable? Node available?"
+  echo "ERROR: preset server failed to start — serve-preset.js executable? Node available?"
   exit 1
 fi
 

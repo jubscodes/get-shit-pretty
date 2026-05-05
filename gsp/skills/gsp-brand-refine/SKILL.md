@@ -128,7 +128,7 @@ Apply confirmed changes:
 After updating `{brand-name}.yml` and (if applicable) regenerating `STYLE.md`, regenerate the shadcn registry artifact:
 
 ```bash
-node ${CLAUDE_SKILL_DIR}/../../../bin/theme-css.js \
+node ${CLAUDE_SKILL_DIR}/../gsp-brand-guidelines/bin/theme-css.js \
   {BRAND_PATH}/patterns/{brand-name}.yml \
   --registry \
   --output {BRAND_PATH}/patterns/{brand-name}.theme.json

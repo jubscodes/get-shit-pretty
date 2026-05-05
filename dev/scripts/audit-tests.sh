@@ -596,6 +596,33 @@ if should_run installer; then
     fail "I19 Missing model/effort stripping" "All 3 skill converters must strip model: and effort:"
   fi
 
+  # I20: bin/ scripts referenced by SKILL.md must ship to the installed location.
+  # Guards the v0.9.0 publish blocker: when scripts lived at <repo>/bin/, paths like
+  # ${CLAUDE_SKILL_DIR}/../../../bin/foo.js resolved correctly in the symlinked source repo
+  # but escaped .claude/ entirely on a clean install. Test simulates a copy-mode install
+  # and asserts the scripts land where each SKILL.md expects them.
+  TMPINSTALL=$(mktemp -d /tmp/gsp-install-i20-XXXXXX)
+  I20_MISSING=()
+  if node -e "require('./bin/install.js').copyClaudeSkills('gsp/skills', '$TMPINSTALL/skills', '$TMPINSTALL/')" >/dev/null 2>&1; then
+    # gsp-brand-apply: ${CLAUDE_SKILL_DIR}/bin/serve-preset.js
+    [[ -f "$TMPINSTALL/skills/gsp-brand-apply/bin/serve-preset.js" ]] \
+      || I20_MISSING+=("gsp-brand-apply/bin/serve-preset.js")
+    # gsp-brand-guidelines: ${CLAUDE_SKILL_DIR}/bin/theme-css.js
+    [[ -f "$TMPINSTALL/skills/gsp-brand-guidelines/bin/theme-css.js" ]] \
+      || I20_MISSING+=("gsp-brand-guidelines/bin/theme-css.js")
+    # gsp-brand-refine cross-skill: ${CLAUDE_SKILL_DIR}/../gsp-brand-guidelines/bin/theme-css.js
+    [[ -f "$TMPINSTALL/skills/gsp-brand-refine/../gsp-brand-guidelines/bin/theme-css.js" ]] \
+      || I20_MISSING+=("gsp-brand-refine cross-skill → gsp-brand-guidelines/bin/theme-css.js")
+    if [[ ${#I20_MISSING[@]} -eq 0 ]]; then
+      pass "I20 Bin scripts ship to installed skill paths (copy mode)"
+    else
+      fail "I20 Missing bin scripts at install location" "${I20_MISSING[*]}"
+    fi
+  else
+    fail "I20 copyClaudeSkills sim failed" "could not simulate install"
+  fi
+  rm -rf "$TMPINSTALL"
+
 fi
 
 # ── R: Runtime Compatibility ────────────────────────
@@ -1078,7 +1105,8 @@ if should_run unit; then
 
   # U3: theme-css.js --registry produces valid registry-item.json
   TMPOUT=$(mktemp /tmp/gsp-registry-test-XXXXXX.json)
-  if node bin/theme-css.js gsp/skills/gsp-style/styles/saas.yml --registry --output "$TMPOUT" >/dev/null 2>&1; then
+  THEME_CSS=gsp/skills/gsp-brand-guidelines/bin/theme-css.js
+  if node "$THEME_CSS" gsp/skills/gsp-style/styles/saas.yml --registry --output "$TMPOUT" >/dev/null 2>&1; then
     if node -e "
       const j = require('$TMPOUT');
       const ok =
@@ -1095,14 +1123,15 @@ if should_run unit; then
       fail "U3 theme-css --registry shape" "missing required fields or wrong types in $TMPOUT"
     fi
   else
-    fail "U3 theme-css --registry exit" "node bin/theme-css.js --registry failed"
+    fail "U3 theme-css --registry exit" "node $THEME_CSS --registry failed"
   fi
   rm -f "$TMPOUT"
 
   # U4: serve-preset.js serves the file and exits on SIGTERM
   TMPJSON=$(mktemp).json
   echo '{"$schema":"https://ui.shadcn.com/schema/registry-item.json","name":"smoke","type":"registry:theme","cssVars":{"light":{},"dark":{}}}' > "$TMPJSON"
-  node bin/serve-preset.js "$TMPJSON" > /tmp/gsp-serve-url-$$.txt 2>/dev/null &
+  SERVE_PRESET=gsp/skills/gsp-brand-apply/bin/serve-preset.js
+  node "$SERVE_PRESET" "$TMPJSON" > /tmp/gsp-serve-url-$$.txt 2>/dev/null &
   SERVER_PID=$!
   for i in 1 2 3 4 5; do sleep 0.2; [ -s /tmp/gsp-serve-url-$$.txt ] && break; done
   URL=$(head -1 /tmp/gsp-serve-url-$$.txt 2>/dev/null)

@@ -221,7 +221,7 @@ Spawn the `gsp-brand-engineer` agent with (reuse **Agent methodology** loaded in
 Generate `{brand-name}.theme.json` (registry:theme) alongside the existing patterns. This is the artifact `/gsp-brand-apply` installs into shadcn codebases.
 
 ```bash
-node ${CLAUDE_SKILL_DIR}/../../../bin/theme-css.js \
+node ${CLAUDE_SKILL_DIR}/bin/theme-css.js \
   {BRAND_PATH}/patterns/{brand-name}.yml \
   --registry \
   --output {BRAND_PATH}/patterns/{brand-name}.theme.json

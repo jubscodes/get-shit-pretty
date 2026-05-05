@@ -2,8 +2,8 @@
 /**
  * serve-preset.js — ephemeral HTTP server for shadcn --preset URL fetch.
  *
- * Usage:
- *   node bin/serve-preset.js <path-to-registry-item.json>
+ * Usage (from repo root):
+ *   node gsp/skills/gsp-brand-apply/bin/serve-preset.js <path-to-registry-item.json>
  *
  * Behavior:
  *   - Listens on a random free port on 127.0.0.1.
@@ -24,7 +24,7 @@ const TIMEOUT_MS = 60_000;
 function main() {
   const filePath = process.argv[2];
   if (!filePath) {
-    console.error('Usage: node bin/serve-preset.js <path-to-json>');
+    console.error('Usage: node gsp/skills/gsp-brand-apply/bin/serve-preset.js <path-to-json>');
     process.exit(1);
   }
   const abs = path.resolve(filePath);

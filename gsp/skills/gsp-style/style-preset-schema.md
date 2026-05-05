@@ -2,7 +2,7 @@
 
 Template for brand-derived style preset files (`{brand-name}.yml`). All token values must trace to foundation chunks. See any preset in `styles/` for a complete example.
 
-Token names map 1:1 to shadcn/ui CSS variables — no translation layer. `bin/theme-css.js` reads this file and outputs a ready-to-paste `:root`/`.dark` block.
+Token names map 1:1 to shadcn/ui CSS variables — no translation layer. `theme-css.js` (in `gsp-brand-guidelines/bin/`) reads this file and outputs a ready-to-paste `:root`/`.dark` block.
 
 **Value formats:**
 - Solid colors: `"#RRGGBB"` hex — theme-css.js converts to OKLCH

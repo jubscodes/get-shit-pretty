@@ -136,7 +136,7 @@ Then set font vars with literal values in `@theme inline` (not `var()` self-refe
 }
 ```
 
-`bin/theme-css.js` emits `--font-sans` / `--font-mono` / `--font-display` from the preset's `typography` block. These values are wired into `@theme inline` when the theme is installed via `/gsp-brand-apply`.
+`theme-css.js` emits `--font-sans` / `--font-mono` / `--font-display` from the preset's `typography` block. These values are wired into `@theme inline` when the theme is installed via `/gsp-brand-apply`.
 
 ### Tailwind v3
 

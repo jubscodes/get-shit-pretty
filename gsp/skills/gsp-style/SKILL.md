@@ -127,7 +127,7 @@ Copy the preset `.yml` to the output path as the brand's style source:
 
 If a `.yml` already exists at the output path, use `AskUserQuestion`: "A style preset already exists — overwrite?" with options **Overwrite** and **Cancel**. If cancelled, skip and proceed.
 
-The `.yml` IS the token source of truth — no separate `tokens.json` needed. Token names in `.yml` map 1:1 to shadcn/ui CSS variable names. Run `node bin/theme-css.js {preset-name}.yml` to generate a ready-to-paste `:root`/`.dark` CSS block.
+The `.yml` IS the token source of truth — no separate `tokens.json` needed. Token names in `.yml` map 1:1 to shadcn/ui CSS variable names. Run `node gsp/skills/gsp-brand-guidelines/bin/theme-css.js {preset-name}.yml` to generate a ready-to-paste `:root`/`.dark` CSS block.
 
 ## Step 7: Write STYLE.md
 
