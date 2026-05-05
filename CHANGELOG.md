@@ -4,6 +4,26 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+## [0.10.0] — 2026-05-05
+
+### Added
+- **`gsp-accessibility --validate` mode** — actively scores token sets against WCAG 2.2 AA contrast thresholds, replacing the prior passive reference-only role. Brand-guidelines now gates on this validation before finalizing the design system, blocking releases that would ship inaccessible token combinations ([#208](https://github.com/jubscodes/get-shit-pretty/pull/208), [#191](https://github.com/jubscodes/get-shit-pretty/issues/191))
+- **`gspdev-eval-changes` dev skill** — quality eval for skill/agent/methodology changes. Spawns parallel evaluator agents that score against a fixed 8-dimension rubric (change intent + skill intent coherence + 6 preservation dimensions). Run before merging non-trivial trims and refactors ([#184](https://github.com/jubscodes/get-shit-pretty/pull/184))
+
+### Changed
+- **Expertise integration across the brand pipeline.** `brand-strategy`, `brand-identity`, and `brand-guidelines` now read domain knowledge from `gsp-color`, `gsp-typography`, `gsp-visuals`, and `gsp-accessibility` instead of duplicating it. Brand-guidelines invokes `gsp-accessibility --validate` as a hard gate ([#201](https://github.com/jubscodes/get-shit-pretty/pull/201) covering [#189](https://github.com/jubscodes/get-shit-pretty/issues/189), [#190](https://github.com/jubscodes/get-shit-pretty/issues/190), [#198](https://github.com/jubscodes/get-shit-pretty/issues/198))
+- **Expertise integration across the project pipeline.** `project-design`, `project-critique`, `project-build`, and `project-review` now delegate to expertise skills for color/typography/a11y/icons/visuals knowledge. No more duplicated domain content in pipeline skills ([#202](https://github.com/jubscodes/get-shit-pretty/pull/202) covering [#194-#197](https://github.com/jubscodes/get-shit-pretty/issues/194), [#204](https://github.com/jubscodes/get-shit-pretty/pull/204) covering [#193](https://github.com/jubscodes/get-shit-pretty/issues/193))
+- **`gsp-icons` becomes the single owner of icon-library knowledge.** Resolves long-standing duplication between `gsp-icons` and `gsp-visuals` — icon library config, sizing, container rules, and SVG direction now live in one place ([#203](https://github.com/jubscodes/get-shit-pretty/pull/203) covering [#192](https://github.com/jubscodes/get-shit-pretty/issues/192))
+
+### Fixed
+- **6 cross-skill path bugs across pipeline skills.** Several `${CLAUDE_SKILL_DIR}/../...` references resolved to wrong paths after the v0.9.1 colocation refactor — pipeline skills couldn't find templates and references on clean installs. New audit-test linters added to prevent regression of this class of bug ([#200](https://github.com/jubscodes/get-shit-pretty/pull/200) covering [#188](https://github.com/jubscodes/get-shit-pretty/issues/188), [#206](https://github.com/jubscodes/get-shit-pretty/pull/206) covering [#199](https://github.com/jubscodes/get-shit-pretty/issues/199))
+
+### Performance
+- **`gsp-project-build` body trim 538L → 450L** via 4 sibling extractions. Heaviest skill in the pipeline (1801 token weight) chipped down toward the red-zone threshold ([#207](https://github.com/jubscodes/get-shit-pretty/pull/207) covering [#205](https://github.com/jubscodes/get-shit-pretty/issues/205))
+- **`gsp-project-critic` methodology trimmed to 89L.** Reduces context cost for the project-critique fork ([#187](https://github.com/jubscodes/get-shit-pretty/pull/187) covering [#185](https://github.com/jubscodes/get-shit-pretty/issues/185))
+- **Methodology trims for double-dispatch agents** — across `gsp-project-builder`, `gsp-project-designer`, `gsp-project-reviewer`. Cuts spawn-time context for the heaviest agent paths ([#183](https://github.com/jubscodes/get-shit-pretty/pull/183) covering [#85](https://github.com/jubscodes/get-shit-pretty/issues/85))
+- **Quick wins** — icon library config consolidation + drop pass-through token refs from execution_context blocks ([#180](https://github.com/jubscodes/get-shit-pretty/pull/180))
+
 ## [0.9.1] — 2026-05-05
 
 ### Fixed
