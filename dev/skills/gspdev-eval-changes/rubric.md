@@ -1,19 +1,27 @@
 # Skill change evaluation rubric
 
-Seven dimensions. Each scored **PASS / CONCERNS / FAIL**. Score against the AFTER file using BEFORE and the parent SKILL.md as context.
+Eight dimensions. Each scored **PASS / CONCERNS / FAIL / N/A**. Score against the AFTER file using BEFORE (if any) and the parent SKILL.md as context.
 
-**Order matters.** Intent achievement (Dimension 1) is scored FIRST — if the change didn't land its stated goal, the rest of the rubric is moot. Preservation dimensions (2-7) only matter if the intent was achieved.
+**Applies to any change** — additions, modifications, refactors, trims, rewrites.
 
-## 1. Intent achievement
+**For new files** (no BEFORE): score Dimensions 1-2 only. Mark Dimensions 3-8 as N/A — there's no prior state to regress against.
+
+**Order matters.** Intent dimensions (1 + 2) are scored FIRST — they answer "is this change worth shipping at all?" Preservation dimensions (3-8) only matter if both intents are coherent.
+
+Two distinct intents:
+- **Change intent** (Dimension 1) — what THIS PR/commit was trying to do
+- **Skill intent** (Dimension 2) — what the SKILL itself is supposed to do (per its frontmatter description + context + objective)
+
+## 1. Change intent achievement
 
 Did the change land its stated goal?
 
-The orchestrator passes the change's stated intent (from commit message, PR description, or user input) to every evaluator. Examples of intent:
+The orchestrator passes the change's stated intent (from PR description, commit message, or user input) to every evaluator. Examples:
 
 - "Trim file by 30-40%" → check actual delta vs target
 - "Extract X to a sibling for reuse" → check sibling is created correctly and referenced from AFTER
 - "Make agent more deterministic about Y" → check the new rule/cue actually constrains Y better than BEFORE
-- "Fix bug where agent does Z" → check the AFTER would no longer reproduce Z given the same input
+- "Fix bug where agent does Z" → check AFTER would no longer reproduce Z given the same input
 
 Score:
 - **PASS** — intent achieved cleanly; no obvious gap between goal and result
@@ -22,7 +30,40 @@ Score:
 
 **Concerns flag:** delta below target, extraction incomplete, new rule still permits the bad behavior, side-effect changes that weren't part of the intent.
 
-If intent is unclear or absent: report "Intent not provided — skipping Dimension 1, scoring 2-7 as defensive eval only."
+If intent is unclear or absent: report "Change intent not provided — skipping Dimension 1, scoring 2-8 as defensive eval only."
+
+## 2. Skill intent coherence
+
+Does the skill body (and any modified methodology/sibling) still deliver on what the SKILL.md frontmatter `description:` + `<context>` + `<objective>` promise?
+
+This is a **drift check** — separate from change intent. A change can land its goal (Dim 1 = PASS) but still drift the skill away from its stated purpose (Dim 2 = FAIL). Example: a perf trim that achieves -34% lines but accidentally drops a step that the description promised the skill performs.
+
+### Method
+
+**Step A — extract the skill's intent.** Read SKILL.md (parent or self):
+- `description:` (frontmatter) — one-line statement of purpose
+- `<context>` block — extended purpose, when to use, integration with pipeline
+- `<objective>` block — input → output contract, agent responsibilities
+
+Compose a one-sentence **skill intent statement** from these.
+
+**Step B — check coherence in AFTER.**
+- Does the AFTER file (or AFTER methodology + parent SKILL.md as a pair) deliver on the skill intent statement?
+- If the file under eval IS the SKILL.md itself: did the description/context/objective change? If yes, was the change intentional and does it match the body change? If no, did the body drift from the unchanged description?
+- If the file is methodology/sibling: parent SKILL.md description is unchanged — does the modified methodology still implement what the description promises?
+
+**Step C — check for drift across BEFORE → AFTER.**
+- BEFORE: was the skill already coherent? (If not, the issue predates the change — note it but don't blame the change.)
+- AFTER: did this change improve, preserve, or degrade coherence?
+
+Score:
+- **PASS** — AFTER body delivers on the skill intent; description/context/objective unchanged or coherently updated
+- **CONCERNS** — minor drift (e.g., description mentions a feature the body now treats as optional, or vice versa)
+- **FAIL** — significant drift (description promises X, body now does Y; or description was edited without matching body changes)
+
+**Concerns flag:** description references a removed step; body adds a major behavior absent from description; objective output contract no longer matches what AFTER produces; trigger phrases in description no longer match when the skill should fire.
+
+## 3. Role + execution mode preservation
 
 ## 2. Role + execution mode preservation
 
@@ -34,7 +75,7 @@ Does the agent still know what it is and when to apply different modes?
 
 **Concerns flag:** mode disambiguation softened, role drift, lost handling for an input the parent skill still passes.
 
-## 3. Methodology completeness
+## 4. Methodology completeness
 
 Every numbered step / decision point / phase still present?
 
@@ -44,7 +85,7 @@ Every numbered step / decision point / phase still present?
 
 **Concerns flag:** a step removed, a conditional collapsed, an input/output left implicit.
 
-## 4. Constraints + rules preservation
+## 5. Constraints + rules preservation
 
 Are binding rules still binding?
 
@@ -55,7 +96,7 @@ Are binding rules still binding?
 
 **Concerns flag:** a constraint dropped, severity softened (must → should), validation gate weakened.
 
-## 5. Output specification clarity
+## 6. Output specification clarity
 
 Can the agent still produce the expected deliverables without ambiguity?
 
@@ -67,7 +108,7 @@ Can the agent still produce the expected deliverables without ambiguity?
 
 **Concerns flag:** a deliverable's structure became implicit, a path got vague, schema dropped without recoverable description.
 
-## 6. Distilled references actionable
+## 7. Distilled references actionable
 
 Compressed reference lists (HIG, anti-patterns, scoring rubrics) still cue the right behavior?
 
@@ -78,7 +119,7 @@ Compressed reference lists (HIG, anti-patterns, scoring rubrics) still cue the r
 
 **Concerns flag:** asymmetric removal (kept fail cues, lost success cues), example removal that leaves a category unanchored, a pointer to a renamed/moved file.
 
-## 7. Quality standards preservation
+## 8. Quality standards preservation
 
 Explicit must-haves still present?
 
@@ -92,9 +133,16 @@ Explicit must-haves still present?
 
 ## Verdict definitions
 
-- **PASS** — All 7 dimensions PASS (or 6 PASS with Dimension 1 skipped due to no intent provided). The change is a net improvement; merge with confidence.
+- **PASS** — All 8 dimensions PASS (or 7 PASS with Dimension 1 skipped due to no change intent provided). The change is a net improvement; merge with confidence.
 - **CONCERNS** — One or more dimensions flagged but with surgical restoration possible. Specify the exact text to restore (typically a single bullet, sentence, or rubric anchor). Recommendation: apply restoration, then merge.
-- **FAIL** — Either Dimension 1 is FAIL (intent not achieved), OR substantive content lost that can't be quickly restored. Revert the affected section before merging. Note: FAIL is rare for Dimensions 2-7 — most "concerns" are restorable with a 1-2 line change. Dimension 1 FAIL means redesigning the change itself.
+- **FAIL** — Either Dimension 1 is FAIL (change intent not achieved), Dimension 2 is FAIL (skill drifted from its stated purpose), OR substantive content lost in 3-8 that can't be quickly restored. Revert the affected section before merging.
+
+**Distinct FAIL semantics:**
+- Dim 1 FAIL → redesign the change itself (intent unmet)
+- Dim 2 FAIL → align skill description ↔ body (either revert body or update description coherently)
+- Dims 3-8 FAIL → revert the cut that lost substance
+
+Most concerns are restorable with a 1-2 line change. FAIL is rare and consequential.
 
 ## Findings format
 
