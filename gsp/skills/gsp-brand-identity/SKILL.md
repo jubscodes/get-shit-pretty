@@ -109,14 +109,15 @@ The agent writes 5 chunks + INDEX.md (creative decisions only — no technical e
 
 ## Step 3.5: Enrich with domain skills (parallel)
 
-After the creative-director finishes, invoke all 4 domain skills in parallel — they operate on separate chunks with zero dependencies:
+After the creative-director finishes, invoke all 5 domain skills in parallel — they operate on separate chunks with zero dependencies:
 
 - **`/gsp-logo --enrich`** — reads `logo-directions.md`, enriches with construction geometry, variation specs, clear space rules, minimum size calculations.
 - **`/gsp-color --enrich`** — reads `color-system.md`, generates OKLCH palettes via tints.dev, calculates WCAG contrast, writes `palettes.json`, enriches with contrast ratios and semantic mapping.
 - **`/gsp-typography --enrich`** — reads `typography.md`, generates mathematical type scale, adds fluid type formulas, enriches with font loading instructions.
-- **`/gsp-visuals --imagery --enrich`** — reads `imagery-style.md`, adds icon library specifics, CSS texture/treatment recipes, enriches with technical implementation details.
+- **`/gsp-visuals --imagery --enrich`** — reads `imagery-style.md`, enriches with photography/illustration direction, CSS texture/treatment recipes, image processing implementation. Icons are NOT covered here — `gsp-icons` owns them.
+- **`/gsp-icons --enrich`** — defines the icon system: library selection, stroke standardization, size system, container treatments, custom SVG direction.
 
-Invoke all 4 using the Skill tool simultaneously. Each skill loads its own domain references on-demand — no upfront context cost.
+Invoke all 5 using the Skill tool simultaneously. Each skill loads its own domain references on-demand — no upfront context cost.
 
 ## Step 4: Perspective check
 
