@@ -219,6 +219,7 @@ Internal development tools live in `dev/` (versioned in repo, never installed to
 | `dev/scripts/token-proxy-start.sh` | Live token proxy — mitmproxy addon for measuring real API usage |
 | `dev/scripts/benchmark.sh` | Token budget benchmarking — capture snapshots, compare against release baseline |
 | `dev/skills/gspdev-benchmark/` | Interactive benchmark skill — wraps benchmark.sh with analysis and suggestions |
+| `dev/skills/gspdev-eval-changes/` | Quality eval for skill/agent/methodology changes — parallel evaluators against parent SKILL.md, 6-dimension rubric. Run before merging non-trivial trims/refactors |
 | `dev/benchmarks/` | JSON snapshots — one per release, plus working comparisons |
 
 ### Running tests
