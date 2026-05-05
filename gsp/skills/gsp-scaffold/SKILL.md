@@ -179,6 +179,19 @@ When using the `@import "tailwindcss"` directive, scope the source to the app's 
 
 This limits scanning to `src/` and its siblings rather than the entire repo. Note that `shadcn init` may overwrite `globals.css` — if it does, verify its output still compiles. shadcn v4+ handles source scoping correctly in its own CSS output.
 
+## Step 3.9: Install configured icon library
+
+Read `preferences.icon_library` from project config (defaults to `lucide`).
+
+| Library | Action |
+|---------|--------|
+| `lucide` | No install — ships with shadcn (`lucide-react`) |
+| `phosphor` | `cd {APP_PATH} && {pkg-manager} add @phosphor-icons/react` |
+| `heroicons` | `cd {APP_PATH} && {pkg-manager} add @heroicons/react` |
+| `tabler` | `cd {APP_PATH} && {pkg-manager} add @tabler/icons-react` |
+
+If `shadcn info` already reports a different `iconLibrary` than the project config, log the divergence and use the project config's value (project config is the source of truth). Skip if `app_path` is empty (no codebase to install into).
+
 ## Step 4: Install components from manifest
 
 Read `{PROJECT_PATH}/brief/install-manifest.md` if it exists.

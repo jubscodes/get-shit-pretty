@@ -14,12 +14,13 @@
     "design_scope": "full",
     "style_preset": "",
     "repo_type": "single",
-    "app_path": ""
+    "app_path": "",
+    "icon_library": "lucide"
   },
   "git": {
     "branch": "",
     "pr": "",
     "issue": ""
   },
-  "gsp_version": "0.7.2"
+  "gsp_version": "0.9.1"
 }
