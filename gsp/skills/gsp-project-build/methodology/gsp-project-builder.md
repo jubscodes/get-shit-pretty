@@ -93,16 +93,23 @@ When the user gives feedback during a build, classify it:
 
 Never silently apply style-level changes to code without surfacing the choice. A button radius change in one screen that doesn't flow back to the `.yml` creates drift — the next screen gets built with the old radius.
 
-## Anti-Pattern Awareness (distilled)
+## Anti-Pattern Awareness (delegated to expertise)
 
-Check code against these before marking a screen complete — **but STYLE.md takes precedence**. If the preset explicitly defines a technique listed here, implement what the preset says. These are defaults for when the style is silent.
+**STYLE.md takes precedence over all defaults.** When the preset is silent, defer to the canonical owners:
 
-- **Typography:** no Inter/Roboto defaults, `font-variant-numeric: tabular-nums` for data, `text-wrap: balance` for headings
-- **Color:** off-black not #000, tint shadows to background hue, single accent color, single light source
+- **Color** — `${CLAUDE_SKILL_DIR}/../gsp-color/domains/system.md` (off-black, accent count, shadow tinting, light source) + `${CLAUDE_SKILL_DIR}/../gsp-color/references/color-composition.md` (60-30-10 rule)
+- **Typography** — `${CLAUDE_SKILL_DIR}/../gsp-typography/domains/system.md` + `pairing.md` (no Inter/Roboto defaults, `tabular-nums`, `text-wrap: balance`, scale ratios)
+- **Motion + effects** — `${CLAUDE_SKILL_DIR}/../gsp-accessibility/motion-effects.md` (`prefers-reduced-motion`, contrast on effects, hover magnitudes, spring physics)
+- **Imagery** — `${CLAUDE_SKILL_DIR}/../gsp-visuals/domains/imagery.md` (photography, illustration, treatments)
+- **Full anti-pattern catalog** — `${CLAUDE_SKILL_DIR}/../gsp-project-critique/anti-patterns.md` (consolidated checklist; cite this for code-quality patterns beyond the domains above)
+- **STYLE.md vocabulary** — `${CLAUDE_SKILL_DIR}/../gsp-style/style-preset-schema.md` (constraint/pattern/effects/bold-bet structure)
+
+Do not re-derive these rules inline — read the canonical owner before applying.
+
+**Builder-specific defaults** (not domain knowledge — keep here):
 - **Layout:** `min-h-[100dvh]` not `h-screen`, always max-width, CSS Grid over flexbox %, bottom-align CTAs in card groups
-- **Surfaces:** vary elevation treatments, z-layer system (flat/subtle/elevated/floating/overlay)
+- **Surfaces:** z-layer system (flat/subtle/elevated/floating/overlay)
 - **Content:** real copy always, diverse names, organic numbers, sentence case, no AI clichés
-- **Motion:** spring physics (`cubic-bezier(0.16,1,0.3,1)`), `transform`+`opacity` only, 200-300ms minimum, `prefers-reduced-motion`, stagger entrances
 - **Components:** customize shadcn radii/colors/shadows, skeleton loaders not spinners, semantic HTML
 - **Code:** no inline styles mixed with utilities, relative units, clean z-index scale, alt text, verify imports exist
 

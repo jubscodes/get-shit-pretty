@@ -457,19 +457,4 @@ Beyond basic glassmorphism — simulating realistic glass edge refraction and de
 
 ## Accessibility
 
-All visual effects must degrade gracefully:
-
-```css
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-```
-
-- Glow/shadow: ensure text contrast meets WCAG AA without effects
-- Backdrop-blur: `@supports not (backdrop-filter: blur(1px))` solid bg fallback
-- Gradient text: test contrast ratio of gradient endpoints, not just midpoint
-- Hover transforms: keep magnitude small (2-4px translate, 1.02-1.05 scale) to avoid disorientation
+Canonical motion + effects accessibility guidance lives in `${CLAUDE_SKILL_DIR}/../gsp-accessibility/motion-effects.md` — owned by `gsp-accessibility`. Builder must read it before applying any effect from this reference. Covers `prefers-reduced-motion`, contrast on glow/shadow/gradient text, backdrop-filter fallbacks, and hover-transform magnitudes.
