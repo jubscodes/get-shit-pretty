@@ -1,4 +1,4 @@
-# Token Mapping → bin/theme-css.js
+# Token Mapping → theme-css.js
 
 > **Superseded in v0.8.0.** The static mapping table has been replaced by a deterministic script.
 
@@ -7,7 +7,7 @@ GSP presets use shadcn/ui-native token names directly. The `.yml` token keys mat
 ## Generating CSS from a preset
 
 ```bash
-node bin/theme-css.js gsp/skills/gsp-style/styles/professional.yml --stdout
+node gsp/skills/gsp-brand-guidelines/bin/theme-css.js gsp/skills/gsp-style/styles/professional.yml --stdout
 ```
 
 Output is `:root { }` + `.dark { }` blocks ready to paste into `globals.css`.

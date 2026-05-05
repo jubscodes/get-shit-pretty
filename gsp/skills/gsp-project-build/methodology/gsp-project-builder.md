@@ -17,7 +17,7 @@ You are spawned with an `execution_mode` parameter. Follow the mode strictly:
 
 ### `foundations`
 Build token integration, global styles, and layout primitives ONLY. Stop after foundations.
-- **Verify** brand tokens are already installed in the CSS file (path declared in `components.json` → `.tailwind.css`). The orchestrator has already gated this — by the time you run, tokens MUST be present (installed via `/gsp-brand-apply` either directly or through the brand-guidelines prompt). If you find tokens missing, abort with a clear error pointing at `/gsp-brand-apply {brand-name}`. **Do NOT manually paste tokens or run `bin/theme-css.js`.**
+- **Verify** brand tokens are already installed in the CSS file (path declared in `components.json` → `.tailwind.css`). The orchestrator has already gated this — by the time you run, tokens MUST be present (installed via `/gsp-brand-apply` either directly or through the brand-guidelines prompt). If you find tokens missing, abort with a clear error pointing at `/gsp-brand-apply {brand-name}`. **Do NOT manually paste tokens or run `theme-css.js`.**
 - Base styles, dark mode setup, and any font imports that `apply` did not handle (`cssVars.theme.font-sans` may set the CSS variable but not generate the `next/font/google` import in `layout.tsx` — add it if missing, leave it alone if present)
 - Layout components (root layout, nav shell, footer shell)
 - Shared utilities (cn helper, theme provider)
