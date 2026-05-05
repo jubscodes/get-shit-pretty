@@ -1,0 +1,54 @@
+---
+title: "v0.9.0 -- Brand as a shadcn preset"
+date: "2026-05-04T18:00:00"
+excerpt: "The brand pipeline now emits a registry:theme artifact and installs it via shadcn's own apply path — no more nova defaults written first and brand tokens pasted on top."
+tags: ["brand", "shadcn", "build"]
+slug: "v0-9-0"
+---
+
+## The rework that's gone
+
+Until this release, every brand build wrote tokens twice. `shadcn init` would scaffold with the `nova` preset — writing its own `:root` cssVars to `globals.css` and Geist fonts to `layout.tsx`. The foundations agent then ran `bin/theme-css.js`, generated the brand's OKLCH tokens, and pasted them on top of nova's. Two writes to the same files, two build verifications, fragile if anything went out of order.
+
+The fix is to make the brand a first-class shadcn artifact and let shadcn's own CLI install it. The brand pipeline now emits `{brand}.theme.json` (a `registry:theme` registry-item.json), and the new `/gsp-brand-apply` skill installs it via `shadcn apply --only theme --preset <url>`. One write, one verified build, no manual paste anywhere.
+
+## `/gsp-brand-apply`
+
+The new install primitive. Single responsibility: install a brand theme into a shadcn codebase.
+
+```bash
+/gsp-brand-apply lyra
+```
+
+Resolves the brand, finds the project, spins up an ephemeral localhost server (shadcn's `--preset` accepts HTTP URLs only — `file://` is rejected), runs the apply, kills the server, verifies the brand's signature OKLCH value landed. Multi-brand safe: if a different brand is currently installed, you're prompted before replacing it.
+
+Two safety checks specific to customized projects:
+
+- **Pre-flight check (Step 0.5).** `shadcn apply --only theme` is not strictly cssVars-only — its preflight bumps dep versions in `package.json`, regenerates `package-lock.json`, and rewrites `components.json`. The skill refuses to proceed if any of those have uncommitted work, so you can review the dep changes via `git diff` afterward instead of being surprised by them.
+
+- **`var(--*)` indirection warning (Step 2.5).** Design systems that map shadcn semantic tokens to their own tokens (e.g. `--background: var(--brand-bg);`) get those `var()` references replaced with literal OKLCH values during apply. The skill detects this pattern and prompts before proceeding. Greenfield projects skip the prompt silently.
+
+Both behaviors are documented as known limitations in the changelog and tracked at [#156](https://github.com/jubscodes/get-shit-pretty/issues/156) and [#157](https://github.com/jubscodes/get-shit-pretty/issues/157). Upstream feature request for `apply --skip-install-deps` is filed at [shadcn-ui/ui#10554](https://github.com/shadcn-ui/ui/issues/10554).
+
+## What changed in the existing pipeline
+
+- **`gsp-brand-guidelines`** now emits `{brand}.theme.json` alongside the `.yml` preset and `STYLE.md`. After generating, it asks once whether to install the new theme into the active project — never auto-installs over an existing brand.
+- **`gsp-brand-refine`** regenerates `.theme.json` on each refinement pass and offers to push the refresh through `/gsp-brand-apply`. Surgical updates: only cssVars change, components untouched.
+- **`gsp-project-build` foundations agent** no longer pastes tokens. The orchestrator gates between scaffold and foundations: if brand tokens aren't present in the target CSS file, it prompts you to run `/gsp-brand-apply` first.
+
+## New scripts
+
+- `bin/theme-css.js --registry` — the existing token generator now also emits the registry-item.json shape, wrapping the OKLCH `:root`/`.dark` output in shadcn's preset schema.
+- `bin/serve-preset.js` — small zero-dep Node script. Listens on a random localhost port, serves a JSON file, exits on SIGTERM with a 60s safety net. Used by `/gsp-brand-apply` to satisfy shadcn's HTTP-only `--preset` URL fetch.
+
+## Pipeline mental model after this release
+
+| Skill | Owns |
+|---|---|
+| `/gsp-scaffold` | Stack only — init, components.json, build verify |
+| `/gsp-brand-guidelines` | Emit brand spec + prompt to install |
+| `/gsp-brand-apply` | Install theme into a shadcn codebase |
+| `/gsp-brand-refine` | Refine tokens + prompt to re-install |
+| `/gsp-project-build` | Layout primitives + screens (verifies tokens, never pastes) |
+
+Each phase has one responsibility, and theme installation is its own concern that anyone can re-run on demand.

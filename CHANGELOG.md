@@ -4,6 +4,8 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+## [0.9.0] — 2026-05-04
+
 ### Added
 - **`/gsp-brand-apply` skill** — universal theme-install primitive that runs `shadcn apply --only theme` against a `{brand}.theme.json` registry artifact. Multi-brand-safe: prompts before overwriting an existing brand theme
 - **`bin/theme-css.js --registry` flag** — emits the brand as a shadcn `registry:theme` registry-item.json, consumed by `/gsp-brand-apply`

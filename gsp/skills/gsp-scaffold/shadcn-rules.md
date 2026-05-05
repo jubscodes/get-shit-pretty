@@ -398,7 +398,7 @@ Check `base` from `npx shadcn@latest info` before writing any component code. Th
 <DialogTrigger render={<Button />}>Open</DialogTrigger>
 ```
 
-For full API differences with code examples, read `${CLAUDE_SKILL_DIR}/../../gsp-scaffold/shadcn-theming.md` or run `npx shadcn@latest docs <component>`.
+For full API differences with code examples, read `${CLAUDE_SKILL_DIR}/shadcn-theming.md` or run `npx shadcn@latest docs <component>`.
 
 ---
 
