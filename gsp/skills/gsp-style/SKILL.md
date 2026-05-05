@@ -28,7 +28,7 @@ Apply a named style preset to produce production-ready design tokens and foundat
 
 <execution_context>
 @${CLAUDE_SKILL_DIR}/styles/INDEX.yml
-@${CLAUDE_SKILL_DIR}/../gsp-brand-guidelines/design-tokens.md
+@${CLAUDE_SKILL_DIR}/style-preset-schema.md
 @${CLAUDE_SKILL_DIR}/chunk-format.md
 @${CLAUDE_SKILL_DIR}/../../templates/phases/patterns.md
 </execution_context>
@@ -36,7 +36,7 @@ Apply a named style preset to produce production-ready design tokens and foundat
 <rules>
 - Always use `AskUserQuestion` for user interaction — never prompt via plain text
 - One decision per question — never batch multiple questions in a single message
-- Token values in `.yml` presets follow W3C Design Tokens format from `gsp-brand-guidelines/design-tokens.md`
+- Token values in `.yml` presets use shadcn-native flat schema from `style-preset-schema.md` (1:1 CSS variable mapping, no W3C translation layer)
 - When mixing styles, later style values override earlier ones (last-wins precedence)
 - Never mix clashing styles — check the compatibility matrix first
 </rules>
