@@ -33,28 +33,19 @@ A constraint violation caps that dimension at 1. Any dimension at 1 = automatic 
 
 ### 3. Usability (Nielsen-scored)
 
-Score each heuristic 1-5. Total X/50. This is the core quality bar.
-
-Evaluate both the heuristic principle AND the task flows it implies — don't score in the abstract. Walk through real user tasks and note where each heuristic breaks.
+Score each heuristic 1-5. Total X/50. This is the core quality bar. Walk real user tasks — don't score in the abstract.
 
 | Score | Meaning |
 |-------|---------|
-| 1 | Usability catastrophe — must fix before ship |
-| 2 | Major problem — high priority |
-| 3 | Minor problem — low priority |
-| 4 | Cosmetic only — fix if time allows |
-| 5 | No usability problem |
+| 1 | Catastrophe — must fix |
+| 2 | Major — high priority |
+| 3 | Minor — low priority |
+| 4 | Cosmetic |
+| 5 | No problem |
 
-1. **Visibility of system status** — Score 1 if actions complete with no feedback. Score 5 if every state change has clear, immediate feedback (progress bars, loading states, confirmations).
-2. **Match between system and real world** — Score 1 if jargon or unnatural order. Score 5 if terminology matches user mental models and real-world conventions.
-3. **User control and freedom** — Score 1 if no undo, no cancel, no exits. Score 5 if undo/redo available, exits labeled, mistakes reversible.
-4. **Consistency and standards** — Score 1 if same actions behave differently across screens. Score 5 if internally consistent and follows platform conventions.
-5. **Error prevention** — Score 1 if no constraints, users easily slip. Score 5 if good defaults, smart constraints, confirmation on destructive actions.
-6. **Recognition over recall** — Score 1 if users must remember across screens. Score 5 if options and context are visible or easily retrieved.
-7. **Flexibility and efficiency** — Score 1 if one rigid path. Score 5 if accelerators for experts exist while invisible to novices.
-8. **Aesthetic and minimalist design** — Score 1 if cluttered. Score 5 if every element serves the primary goal, nothing competes with content.
-9. **Error recovery** — Score 1 if error codes or vague messages. Score 5 if plain-language errors with solutions.
-10. **Help and documentation** — Score 1 if no help or buried. Score 5 if searchable, contextual, action-oriented.
+Heuristics: (1) Visibility of system status (2) System ↔ real-world match (3) User control + freedom (4) Consistency + standards (5) Error prevention (6) Recognition over recall (7) Flexibility + efficiency (8) Aesthetic + minimalist (9) Error recovery (10) Help + documentation.
+
+For each: Score 1 if the heuristic fails (no feedback, jargon, no undo, inconsistent, no constraints, hidden context, rigid path, cluttered, vague errors, no help). Score 5 if well-handled (clear feedback, plain language, undo/cancel, consistency, smart defaults, visible context, accelerators, focused content, recoverable errors, contextual help).
 
 ### 4. Accessibility
 
@@ -76,24 +67,24 @@ Copy is design. Evaluate:
 
 ### 6. Implementation quality
 
-Flag these unless STYLE.md explicitly permits them:
-- **Layout:** centered-everything, generic 3-column equal cards, no max-width, cards without purpose, misaligned baselines
-- **Surfaces:** generic untinted box-shadow, flat textureless surfaces, inconsistent elevation
-- **Motion:** linear easing, animating layout properties, no prefers-reduced-motion, simultaneous mounting without stagger
-- **Components:** default shadcn without customization, pill badges everywhere, 3-card testimonial carousel, modal for everything
-- **Interaction:** missing hover/focus/active states, no loading skeletons, instant transitions (< 200ms)
-- **Responsive:** "it fits on mobile" isn't responsive design — mobile needs its own considered layout with touch-appropriate sizing
+Flag unless STYLE.md explicitly permits:
+- **Layout:** centered-everything, generic 3-col equal cards, no max-width, purposeless cards, misaligned baselines
+- **Surfaces:** untinted box-shadow, flat textureless, inconsistent elevation
+- **Motion:** linear easing, layout-property animation, no `prefers-reduced-motion`, no stagger
+- **Components:** vanilla shadcn, pill badges everywhere, modal for everything
+- **Interaction:** missing hover/focus/active, no skeletons, instant transitions (<200ms)
+- **Responsive:** "fits on mobile" ≠ responsive — mobile needs its own layout
 
 ### 7. Taste signals
 
-The gap between "correct" and "good." Evaluate:
-- **Intentionality** — does every decision feel deliberate, or are defaults showing through?
-- **Visual coherence** — one design language across all screens, not mixing incompatible styles
-- **Confidence in constraints** — doing less with more intention, restraint over decoration
-- **Craft in details** — tinted shadows, considered spacing rhythm, typographic hierarchy through weight+color+spacing not just size
-- **Would someone ask "who designed this?"** — or does it look like any other product?
+The gap between "correct" and "good":
+- **Intentionality** — every decision feels deliberate, no defaults showing
+- **Visual coherence** — one design language across screens
+- **Confidence in constraints** — restraint over decoration
+- **Craft in details** — tinted shadows, spacing rhythm, hierarchy via weight+color+spacing not just size
+- **Distinctiveness** — would someone ask "who designed this?"
 
-Full scoring via `skills/gsp-project-critique/visual-taste.md` (15 items, X/75) — Read when you want to produce a formal taste score.
+Full scoring via `skills/gsp-project-critique/visual-taste.md` (15 items, X/75) — Read for a formal taste score.
 
 ### Supplementary (Read from disk when needed)
 
@@ -102,15 +93,14 @@ Full scoring via `skills/gsp-project-critique/visual-taste.md` (15 items, X/75) 
 
 ### Synthesis
 
-10. **Prioritize fixes** — Severity: Critical (must fix) → Important (high priority) → Polish (if time). Anchor severity to user impact and strategy, not personal preference.
-11. **Propose alternatives** — 2 genuinely different redesign directions, not variations on the same theme.
-12. **Identify strengths** — What works and must be preserved. Critique without recognition is demolition.
+10. **Prioritize fixes** — Critical (must fix) → Important → Polish. Anchor to user impact, not preference.
+11. **Propose alternatives** — 2 genuinely different redesign directions
+12. **Identify strengths** — what works must be preserved; critique without recognition is demolition
 
 ## Quality Standards
-- Every score needs a specific example ("The checkout flow scores 2 because...")
-- Fixes must be actionable ("Change X to Y" not "Improve the thing")
+- Every score needs a specific example ("checkout flow scores 2 because...")
+- Fixes must be actionable ("Change X to Y", not "improve the thing")
 - Alternative directions should be genuinely different approaches
-- Balance criticism with recognition of what works well
 </methodology>
 
 <output>
