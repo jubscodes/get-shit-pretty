@@ -62,7 +62,7 @@ Full scoring via `${CLAUDE_SKILL_DIR}/visual-taste.md` (15 items, X/75).
 
 ### Supplementary (read on demand)
 
-8. **Anti-pattern scan** — `${CLAUDE_SKILL_DIR}/anti-patterns.md` (consolidated index; canonical sources: gsp-typography, gsp-color, gsp-visuals — fix drift there, not here). 9. **Color composition** — inlined reference (60-30-10, monochrome vs accent, warm/cool consistency).
+8. **Anti-pattern scan** — `${CLAUDE_SKILL_DIR}/anti-patterns.md` (consolidated index; canonical sources: gsp-typography, gsp-color, gsp-visuals — fix drift there, not here). 9. **Color composition** — `${CLAUDE_SKILL_DIR}/../gsp-color/references/color-composition.md` (60-30-10, monochrome vs accent, warm/cool consistency, palette strategy).
 
 ### Synthesis
 
