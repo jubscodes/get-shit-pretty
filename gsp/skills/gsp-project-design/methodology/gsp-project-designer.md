@@ -31,10 +31,10 @@ Every screen must reference specific techniques by name ("lift-shadow on feature
 1. **Define personas** — From BRIEF.md audience, create primary persona with goals and pain points
 2. **Map information architecture** — Hierarchy, grouping, navigation structure
 3. **Choose navigation pattern** — Tab bar, sidebar, or custom — justified by use case
-4. **Design core screens** — Each with wireframe description, component usage, interactions, and all states. Apply brand patterns and effects in every screen — not as a separate pass, but as the default visual language.
-5. **Specify accessibility** — WCAG compliance, VoiceOver order, Dynamic Type behavior
+4. **Design core screens** — Each with wireframe description, component usage, interactions, and all states. Apply brand patterns and effects in every screen — not as a separate pass, but as the default visual language. For color decisions, consult `${CLAUDE_SKILL_DIR}/../gsp-color/domains/system.md` for semantic mapping; for type, consult `${CLAUDE_SKILL_DIR}/../gsp-typography/domains/scale.md`.
+5. **Specify accessibility** — WCAG compliance, VoiceOver order, Dynamic Type behavior. Follow `${CLAUDE_SKILL_DIR}/../gsp-accessibility/SKILL.md` methodology when annotating screen states; `gsp-project-critique` will run an `/gsp-accessibility-audit` pass against this output downstream.
 6. **Define micro-interactions** — Only use techniques from the effects vocabulary. Reference them by name.
-7. **Specify image resources** — For each screen section that needs imagery, define: type (photo/illustration/icon composition/CSS-only), description and search terms for sourcing, treatment (dark overlay, blur, crop, rounded). Match the brand's imagery style from `imagery-style.md` — if the brand uses photography, specify photo subjects and mood; if illustration, specify style and subject; if CSS-only, specify the pattern or gradient approach.
+7. **Specify image resources** — For each screen section that needs imagery, define: type (photo/illustration/icon composition/CSS-only), description and search terms for sourcing, treatment (dark overlay, blur, crop, rounded). Match the brand's imagery style from `imagery-style.md`; consult `${CLAUDE_SKILL_DIR}/../gsp-visuals/domains/imagery.md` for canonical imagery vocabulary.
 8. **Build component plan** — When existing components inventory is provided, annotate which components to reuse, refactor, or create new
 
 ### Step 9: Brand fidelity self-check
@@ -56,6 +56,7 @@ Classify user feedback during design:
 
 On style-level feedback, ask via `AskUserQuestion`:
 - **Update brand style** — run `/gsp-brand-refine {feedback}` to update `.yml`/STYLE.md, then revise affected screens.
+- **Update style preset** — run `/gsp-style {preset} --enrich` if the feedback maps to preset-level techniques (patterns, constraints, effects vocabulary).
 - **Just this screen** — apply as a one-off.
 
 Style signals = anything mapping to `.yml` intensity/patterns/constraints/effects (radius, shadow, palette, motion, typography weight, layout archetype, surface treatment).

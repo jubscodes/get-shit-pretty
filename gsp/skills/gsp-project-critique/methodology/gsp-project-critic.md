@@ -84,11 +84,11 @@ The gap between "correct" and "good":
 - **Craft in details** — tinted shadows, spacing rhythm, hierarchy via weight+color+spacing not just size
 - **Distinctiveness** — would someone ask "who designed this?"
 
-Full scoring via `skills/gsp-project-critique/visual-taste.md` (15 items, X/75) — Read for a formal taste score.
+Full scoring via `${CLAUDE_SKILL_DIR}/visual-taste.md` (15 items, X/75) — Read for a formal taste score.
 
 ### Supplementary (Read from disk when needed)
 
-8. **Full anti-pattern scan** — Read `skills/gsp-project-critique/anti-patterns.md` for typography, color, and code quality patterns beyond the core checks above.
+8. **Full anti-pattern scan** — Read `${CLAUDE_SKILL_DIR}/anti-patterns.md` for typography, color, and code quality patterns beyond the core checks above (consolidated index; canonical sources are gsp-typography, gsp-color, gsp-visuals).
 9. **Color composition** — Evaluate palette strategy using the inlined color-composition reference (60-30-10 rule, monochrome vs accent, warm/cool consistency).
 
 ### Synthesis
