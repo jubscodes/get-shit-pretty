@@ -4,20 +4,12 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
-## [0.11.0] — 2026-06-05
-
-### Added
-- **Nested `CLAUDE.md` files** for path-scoped guidance — `gsp/CLAUDE.md` (context cost model + reference colocation), `gsp/skills/CLAUDE.md` (agent inlining + context optimization), `gsp/agents/CLAUDE.md` (lean stub convention + dynamic output paths). Auto-load when Claude works in their subtree, reducing always-on context cost ([#212](https://github.com/jubscodes/get-shit-pretty/pull/212))
-- **Must-always / Must-never block** at the top of `CLAUDE.md` — 6 verifiable rules covering source-vs-runtime editing, dependency policy, PR workflow, and output path conventions ([#212](https://github.com/jubscodes/get-shit-pretty/pull/212))
-- **Project-level `MEMORY.md`** for durable cross-session context — tracks active umbrellas, recently shipped milestones, and tracking conventions ([#212](https://github.com/jubscodes/get-shit-pretty/pull/212))
-- **`PreToolUse` hook template** (`claude-settings.template.json`) — opt-in blockers for edits to symlinked runtime dirs (`.claude/`, `.opencode/`, `.gemini/`, `.agents/`, `.codex/`) and `package.json` edits that would add production dependencies. Copy to `.claude/settings.json` and restart Claude Code to activate ([#215](https://github.com/jubscodes/get-shit-pretty/pull/215))
-
-### Changed
-- **`CLAUDE.md` trimmed from 245 to 192 lines** — procedural content moved to nested `CLAUDE.md` files; reduces always-on context cost for every conversation ([#212](https://github.com/jubscodes/get-shit-pretty/pull/212))
-- **`scripts/lint-check.sh` surfaces eslint diagnostics** — previously silenced (`2>/dev/null`), now logs `lint-check: eslint reported issues on <file>` to stderr while preserving the non-blocking exit 0 ([#215](https://github.com/jubscodes/get-shit-pretty/pull/215))
+## [0.10.1] — 2026-06-05
 
 ### Fixed
-- **`gsp-project-builder` theming reference path** — was `${CLAUDE_SKILL_DIR}/../../gsp-scaffold/shadcn-theming.md` (one `../` too many), causing the builder to silently fail to read the theming reference at runtime. Now correctly `${CLAUDE_SKILL_DIR}/../gsp-scaffold/shadcn-theming.md`. Surfaced by the new cross-reference resolution sensor ([#216](https://github.com/jubscodes/get-shit-pretty/pull/216))
+- **`gsp-project-builder` theming reference path** — was `${CLAUDE_SKILL_DIR}/../../gsp-scaffold/shadcn-theming.md` (one `../` too many), causing the builder to silently fail to read the theming reference at runtime when building or fixing themes. Now correctly `${CLAUDE_SKILL_DIR}/../gsp-scaffold/shadcn-theming.md` ([#216](https://github.com/jubscodes/get-shit-pretty/pull/216))
+
+> Note: this release is otherwise internal — see PRs [#212](https://github.com/jubscodes/get-shit-pretty/pull/212)–[#216](https://github.com/jubscodes/get-shit-pretty/pull/216) for the harness improvements landed in this cycle (CI gate, ESLint, `PreToolUse` hook template, cross-reference sensor, nested `CLAUDE.md` for source authoring). They don't change consumer behavior.
 
 ## [0.10.0] — 2026-05-05
 
