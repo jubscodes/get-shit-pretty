@@ -138,7 +138,7 @@ Published as `get-shit-pretty` on npm. Use `/gspdev-publish` — it runs the aud
 
 ### Dependencies rule
 
-The npm package must have **zero production dependencies**. The installer (`bin/install.js`) and scripts use only Node.js builtins. All deps stay in `devDependencies`. Never add to `dependencies` — every `pnpm dlx get-shit-pretty` user would pull them in for no reason. Enforced by CI (W2a) and `PreToolUse` hook (W3).
+The npm package must have **zero production dependencies**. The installer (`bin/install.js`) and scripts use only Node.js builtins. All deps stay in `devDependencies`. Never add to `dependencies` — every `pnpm dlx get-shit-pretty` user would pull them in for no reason.
 
 ## Dev tools
 

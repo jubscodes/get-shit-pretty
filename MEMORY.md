@@ -12,7 +12,7 @@ Durable context for fresh Claude Code sessions working on GSP itself. Update whe
 - **v0.10.0** (2026-05-05) — current release. CHANGELOG.md has full notes.
 - **gsp-accessibility --validate** (#191/#208) — WCAG gate for brand-guidelines
 - **project-build SKILL.md trim** (#205/#207) — 538→450L via 4 sibling extractions
-- **harness improvements (audit 2026-06)** — see `docs/superpowers/specs/2026-06-05-gsp-harness-improvements-design.md`
+- **harness improvements (audit 2026-06)** — Wave 1 shipped (CLAUDE.md trim + nested CLAUDE.md + MEMORY.md). W2 (CI + ESLint) and W3 (PreToolUse hooks) follow.
 
 ## Open known issues
 
@@ -21,4 +21,4 @@ Durable context for fresh Claude Code sessions working on GSP itself. Update whe
 ## Tracking conventions
 
 - Inspiration links: append to issue #70
-- Harness audit: re-run `/harness-doctor` after each wave merges; expected post-W3 scorecard in the design doc
+- Harness audit: re-run `/harness-doctor` after each wave merges to track scorecard progress
