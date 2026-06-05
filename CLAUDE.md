@@ -178,6 +178,7 @@ bash dev/scripts/audit-tests.sh installer    # installer correctness
 bash dev/scripts/audit-tests.sh runtime      # runtime compatibility
 bash dev/scripts/audit-tests.sh templates    # template coherence
 bash dev/scripts/audit-tests.sh tokenbudget  # token budget analysis
+bash dev/scripts/audit-tests.sh references   # cross-skill / template / hook ref resolution
 ```
 
 ### Using dev skills
