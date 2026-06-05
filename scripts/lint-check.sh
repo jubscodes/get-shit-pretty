@@ -19,11 +19,14 @@ case "$FILE_PATH" in
     ;;
 esac
 
-# Try project-local linter, fall back gracefully
+# Try project-local linter, fall back gracefully.
+# Surface eslint diagnostics on stderr — non-blocking is fine, silent is not.
 if [ -f "node_modules/.bin/eslint" ]; then
-  node_modules/.bin/eslint --fix --quiet "$FILE_PATH" 2>/dev/null
+  node_modules/.bin/eslint --fix --quiet "$FILE_PATH" \
+    || echo "lint-check: eslint reported issues on $FILE_PATH (non-blocking)" >&2
 elif command -v npx &>/dev/null && [ -f "package.json" ] && grep -q "eslint" package.json 2>/dev/null; then
-  npx --no-install eslint --fix --quiet "$FILE_PATH" 2>/dev/null
+  npx --no-install eslint --fix --quiet "$FILE_PATH" \
+    || echo "lint-check: eslint reported issues on $FILE_PATH (non-blocking)" >&2
 fi
 
 # Never block the agent

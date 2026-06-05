@@ -113,6 +113,18 @@ Key points:
 
 To reinstall after adding/removing files: `node bin/install.js --claude --local`
 
+## Claude Code settings
+
+`.claude/settings.json` is gitignored. The repo ships `claude-settings.template.json` with the project's hooks. To enable them locally:
+
+```bash
+cp claude-settings.template.json .claude/settings.json
+```
+
+Hooks shipped:
+- `scripts/check-runtime-edit.sh` — blocks `Edit`/`Write` on `.claude/`, `.opencode/`, `.gemini/`, `.agents/`, `.codex/` runtime dirs
+- `scripts/check-package-deps.sh` — blocks `package.json` edits that add a production dependency
+
 ## Editing rules
 
 - Agent source of truth: `gsp/agents/gsp-{name}.md`
