@@ -1,5 +1,14 @@
 # GSP — Get Shit Pretty
 
+## Must-always / Must-never
+
+- **Always** edit source under `gsp/` — never inside `.claude/`, `.opencode/`, `.gemini/`, `.agents/`, `.codex/` (symlinks or installer-managed).
+- **Always** put new package dependencies in `devDependencies` — the npm package ships zero prod deps.
+- **Always** ship changes via PR — `main` is protected, no direct push. Squash-merge via `gh pr merge --squash`.
+- **Never** edit inside `.design/` from a skill — it's user/agent output only.
+- **Never** add `model:` or `effort:` to skill frontmatter — model selection is the user's choice.
+- **Never** hardcode output paths in agents — use `"path provided by the skill that spawned you"`.
+
 Design engineering system for Claude Code, OpenCode, Gemini, and Codex.
 
 ## Git workflow
@@ -112,74 +121,6 @@ To reinstall after adding/removing files: `node bin/install.js --claude --local`
 - Agent output paths must be dynamic: `"path provided by the skill that spawned you"` (no hardcoded `.design/` paths)
 - Skills resolve shared files via `${CLAUDE_SKILL_DIR}/../../` for templates, and `${CLAUDE_SKILL_DIR}/../gsp-{skill}/` for colocated references (see reference colocation rule)
 
-### Agent input inlining rule
-
-**Skills must inline all content when spawning agents.** The skill reads input files during validation/context steps — pass that content directly in the agent prompt. Never pass file paths and expect the agent to re-read them. Each agent Read turn costs 18-35s depending on model.
-
-Pattern: `- **Content of** {file} (loaded in Step N)` in the spawn instruction.
-
-Exceptions — agents that legitimately need to read from disk:
-- `gsp-project-builder` (screen agents) — reads live codebase foundations
-- `gsp-project-reviewer` — Grep/Glob on actual source files
-- `gsp-accessibility-auditor` (code mode) — Grep/Glob on source files
-
-### Claude Code context cost model
-
-Understanding what loads when is critical for keeping sessions lean. These costs apply to every conversation, not just GSP workflows.
-
-**Session start (always loaded, every conversation):**
-- `.claude/agents/*.md` — agent stubs (frontmatter + one-line body, ~12 lines each, ~130 lines total)
-- `.claude/references/*.md` — full file content of every reference file
-- Skill descriptions — the `description:` line from each SKILL.md (negligible)
-- `CLAUDE.md` files — project and user-level
-
-**Skill invocation (loaded on demand):**
-- Full SKILL.md body — only when the skill is triggered
-- `@` references in `<execution_context>` — resolved and inlined when the skill runs
-- Sibling files in skill directories — **inert** until explicitly Read by the skill
-
-**Agent spawn (loaded on demand):**
-- Agent stub is already in context from session start (just tool permissions + name)
-- Methodology loaded by the spawning skill from `methodology/gsp-{agent}.md` sibling file
-- Agent gets its own context window with the spawning skill's prompt + inlined methodology
-
-**Implications for GSP:**
-- **`gsp/references/` is empty — all references live in skill directories.** Domain knowledge is colocated with the expertise skill that owns it. Pipeline skills read from expertise skills via cross-skill paths. Nothing installs to `.claude/references/`.
-- **Agent stubs are lean, methodology lives in skills.** Agent `.md` files contain only frontmatter (tools, model, hooks) + a one-line body. Full methodology lives in `gsp/skills/{skill}/methodology/gsp-{agent}.md` and is read by the skill at spawn time. This keeps session-start cost minimal (~130 lines for 12 agents vs ~1,500 for full definitions).
-- **Skill sibling files are free until used.** A skill directory with 74 `.yml` presets costs zero at session start. Use this for reference material, examples, methodology, and templates that the skill reads on demand.
-- **Cross-skill references use relative paths:** `${CLAUDE_SKILL_DIR}/../gsp-other-skill/ref.md` — this reads the file on demand with zero session-start cost.
-
-### Reference colocation rule
-
-Reference files live inside the skill directory that is their primary consumer, not in a shared `references/` directory. This ensures:
-1. Zero session-start context cost (sibling files are inert)
-2. Skills are self-contained and portable (standalone capability)
-3. References load only when the consuming skill runs
-
-**Single-owner references** go directly into the primary skill's directory.
-
-**Shared references** (consumed by 2-4 skills) go into the primary consumer's directory. Other skills read them via `${CLAUDE_SKILL_DIR}/../gsp-primary-skill/ref.md`.
-
-**Ubiquitous references** (consumed by 5+ skills, e.g. `chunk-format.md`, `phase-transitions.md`) are duplicated into each consuming skill's directory as sibling files. This costs disk space but ensures every skill is self-contained and works on all runtimes (no loose files at the skills root).
-
-### Context optimization rules
-
-These rules minimize token waste across the pipeline. Enforced by audit tests C12, I19.
-
-**Model selection is the user's choice.** Skills do not declare `model:` or `effort:` in frontmatter — the user controls which model runs each phase. Pipeline creative/technical skills include a hint in their `description:` field (e.g., "benefits from capable models") as passive guidance. The installer still strips any `model:`/`effort:` fields for non-Claude runtimes (backwards compat for forks).
-
-**Context fork for pure dispatchers:** Pipeline skills that have zero interactive steps (no `AskUserQuestion` before agent spawn) must use `context: fork` in frontmatter. This isolates execution_context references from the main conversation window. Currently forked: `project-design`, `project-critique`, `project-review`. Never fork skills with interactive steps — test C12 enforces this.
-
-**Double-dispatch is intentional:** Forked skills use the Agent tool inside the fork to spawn executors. Do NOT collapse this with the `agent:` frontmatter field. The fork isolates the orchestrator; the Agent tool gives the executor a clean start. The orchestrator owns validation, routing, and state updates — the agent owns creative/technical execution.
-
-**Execution context is for orchestrator-consumed content only.** Reference files that the orchestrator only passes through to agents must NOT be in `<execution_context>`. Instead, add a "Load references" step before the spawn that reads them from disk. This keeps orchestrator Steps 0-2 (validation, prerequisites) lean. Only keep templates and references the orchestrator itself consumes in execution_context.
-
-**Templates loaded at write time.** Skills that write artifacts from templates (e.g., `gsp-start` writing BRIEF.md, STATE.md) must read templates at the point of writing, not in execution_context. Pattern: `Read templates from ${CLAUDE_SKILL_DIR}/../../templates/{path}/ and write artifacts`.
-
-**SubagentStop hooks for all chunk-producing agents.** Every agent that writes deliverable chunks must have a SubagentStop hook in `gsp/hooks/hooks.json` that verifies expected outputs exist. Covered: `gsp-project-designer`, `gsp-project-critic`, `gsp-brand-creative-director`, `gsp-brand-engineer`, `gsp-project-builder`, `gsp-project-reviewer`.
-
-**Filesystem is the integration layer.** Phases consume prior-phase output from disk (`.design/`), never from conversation context. Forked phases write STATE.md and artifact files to disk — these persist across fork boundaries. No phase should rely on conversation history for prior-phase artifacts.
-
 ## Key files
 
 - `bin/install.js` — multi-runtime installer (symlinks for local Claude, copies for global/other runtimes)
@@ -193,18 +134,11 @@ These rules minimize token waste across the pipeline. Enforced by audit tests C1
 
 ## npm publication
 
-Published as `get-shit-pretty` on npm. Before publishing:
-
-1. Ensure VERSION and package.json versions agree
-2. Run `bash dev/scripts/audit-tests.sh` — all tests must pass
-3. Update CHANGELOG.md with the new version section
-4. `npm publish`
-
-The `files` field in package.json controls what's included: `.mcp.json`, `bin`, `scripts`, `gsp`.
+Published as `get-shit-pretty` on npm. Use `/gspdev-publish` — it runs the audit suite, bumps versions, updates CHANGELOG, and prompts `npm publish`. Manual steps in `dev/skills/gspdev-publish/SKILL.md`.
 
 ### Dependencies rule
 
-The npm package must have **zero production dependencies**. The installer (`bin/install.js`) and scripts use only Node.js builtins. All deps (Next.js, React, shadcn, MDX, etc.) are for the local website (`src/`) and must stay in `devDependencies`. Never add a package to `dependencies` — it would be pulled in by every `pnpm dlx get-shit-pretty` (or `bunx`) user for no reason.
+The npm package must have **zero production dependencies**. The installer (`bin/install.js`) and scripts use only Node.js builtins. All deps stay in `devDependencies`. Never add to `dependencies` — every `pnpm dlx get-shit-pretty` user would pull them in for no reason.
 
 ## Dev tools
 
