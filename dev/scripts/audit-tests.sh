@@ -996,6 +996,97 @@ if should_run templates; then
   fi
 fi
 
+# ── X: Cross-Reference Resolution ─────────────────────
+
+if should_run references; then
+  header "Cross-Reference Resolution"
+  X_BROKEN=0
+  X_CHECKED=0
+  X_FILES=0
+  # Skip refs containing template placeholders like {name}, {preset}, {path}
+  is_placeholder() { [[ "$1" == *"/{"*"}"* ]]; }
+
+  X_SOURCES=$(find gsp/skills gsp/agents -name "*.md" 2>/dev/null; echo gsp/hooks/hooks.json)
+
+  for src in $X_SOURCES; do
+    [[ -f "$src" ]] || continue
+    X_FILES=$((X_FILES + 1))
+    skill_dir=$(dirname "$src")
+
+    # X1: ${CLAUDE_SKILL_DIR}/../<rel> → gsp/skills/<rel>
+    while IFS= read -r ref; do
+      [[ -z "$ref" ]] && continue
+      is_placeholder "$ref" && continue
+      rel="${ref#\${CLAUDE_SKILL_DIR\}/../}"
+      target="gsp/skills/$rel"
+      X_CHECKED=$((X_CHECKED + 1))
+      if [[ ! -e "$target" ]]; then
+        fail "X1 broken cross-skill ref" "$src → $ref (expected $target)"
+        X_BROKEN=$((X_BROKEN + 1))
+      fi
+    done < <(grep -ohE '\$\{CLAUDE_SKILL_DIR\}/\.\./[^./"`\$\) ][^"`\$\) ]*' "$src" 2>/dev/null | sort -u)
+
+    # X2: ${CLAUDE_SKILL_DIR}/../../<rel> → gsp/<rel> OR repo root <rel>
+    while IFS= read -r ref; do
+      [[ -z "$ref" ]] && continue
+      is_placeholder "$ref" && continue
+      rel="${ref#\${CLAUDE_SKILL_DIR\}/../../}"
+      X_CHECKED=$((X_CHECKED + 1))
+      if [[ ! -e "gsp/$rel" && ! -e "$rel" ]]; then
+        fail "X2 broken root-level ref" "$src → $ref (expected gsp/$rel or $rel)"
+        X_BROKEN=$((X_BROKEN + 1))
+      fi
+    done < <(grep -ohE '\$\{CLAUDE_SKILL_DIR\}/\.\./\.\./[^"`\$\) ]+' "$src" 2>/dev/null | sort -u)
+
+    # X3: methodology/gsp-<name>.md → relative to skill_dir
+    # Exclude lines containing ${CLAUDE_SKILL_DIR} — those are Pattern 1 refs that
+    # happen to contain "methodology/" as a sub-path.
+    while IFS= read -r ref; do
+      [[ -z "$ref" ]] && continue
+      is_placeholder "$ref" && continue
+      target="$skill_dir/$ref"
+      X_CHECKED=$((X_CHECKED + 1))
+      if [[ ! -e "$target" ]]; then
+        fail "X3 broken methodology ref" "$src → $ref (expected $target)"
+        X_BROKEN=$((X_BROKEN + 1))
+      fi
+    done < <(grep -v '\$\{CLAUDE_SKILL_DIR\}' "$src" 2>/dev/null | grep -ohE 'methodology/gsp-[a-z-]+\.md' | sort -u)
+
+    # X4: SubagentStop matchers (hooks.json only) → gsp/agents/<matcher>.md
+    if [[ "$src" == "gsp/hooks/hooks.json" ]]; then
+      while IFS= read -r matcher; do
+        [[ -z "$matcher" ]] && continue
+        target="gsp/agents/$matcher.md"
+        X_CHECKED=$((X_CHECKED + 1))
+        if [[ ! -e "$target" ]]; then
+          fail "X4 broken hook matcher" "$src → $matcher (expected $target)"
+          X_BROKEN=$((X_BROKEN + 1))
+        fi
+      done < <(jq -r '.. | objects | select(.matcher) | .matcher' "$src" 2>/dev/null | grep -E '^gsp-' | sort -u)
+    fi
+
+    # X5: @<path> inside <execution_context> blocks (markdown only) → relative to skill_dir
+    if [[ "$src" == *.md ]]; then
+      while IFS= read -r ref; do
+        [[ -z "$ref" ]] && continue
+        is_placeholder "$ref" && continue
+        target="$skill_dir/$ref"
+        X_CHECKED=$((X_CHECKED + 1))
+        if [[ ! -e "$target" ]]; then
+          fail "X5 broken @-import" "$src → @$ref (expected $target)"
+          X_BROKEN=$((X_BROKEN + 1))
+        fi
+      done < <(awk '/<execution_context>/,/<\/execution_context>/' "$src" 2>/dev/null \
+        | grep -oE '@[^[:space:]\)\}]+\.(md|yml|json)' \
+        | sed 's/^@//' | sort -u)
+    fi
+  done
+
+  if [[ $X_BROKEN -eq 0 ]]; then
+    pass "X cross-reference resolution ($X_CHECKED refs checked across $X_FILES source files)"
+  fi
+fi
+
 # ── P: Prompt Quality ─────────────────────────────────
 
 if should_run prompts; then
