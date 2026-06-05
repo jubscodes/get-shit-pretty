@@ -4,6 +4,13 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+## [0.10.1] — 2026-06-05
+
+### Fixed
+- **`gsp-project-builder` theming reference path** — was `${CLAUDE_SKILL_DIR}/../../gsp-scaffold/shadcn-theming.md` (one `../` too many), causing the builder to silently fail to read the theming reference at runtime when building or fixing themes. Now correctly `${CLAUDE_SKILL_DIR}/../gsp-scaffold/shadcn-theming.md` ([#216](https://github.com/jubscodes/get-shit-pretty/pull/216))
+
+> Note: this release is otherwise internal — see PRs [#212](https://github.com/jubscodes/get-shit-pretty/pull/212)–[#216](https://github.com/jubscodes/get-shit-pretty/pull/216) for the harness improvements landed in this cycle (CI gate, ESLint, `PreToolUse` hook template, cross-reference sensor, nested `CLAUDE.md` for source authoring). They don't change consumer behavior.
+
 ## [0.10.0] — 2026-05-05
 
 ### Added
