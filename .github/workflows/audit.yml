@@ -38,5 +38,8 @@ jobs:
         with:
           node-version: '24'
           cache: 'npm'
-      - run: npm ci
+      # Use npm install (not npm ci): lockfile is generated on macOS arm64 and
+      # lacks some Linux wasm-fallback @emnapi entries that npm ci requires.
+      # Build smoke just verifies buildability, not strict reproducibility.
+      - run: npm install --no-audit --no-fund
       - run: npm run build
