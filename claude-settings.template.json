@@ -1,0 +1,23 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": "node .claude/hooks/statusline-dispatcher.js"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PROJECT_ROOT}/scripts/check-runtime-edit.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PROJECT_ROOT}/scripts/check-package-deps.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
