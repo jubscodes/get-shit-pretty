@@ -1,6 +1,6 @@
 ---
 name: gsp-brand-audit
-description: Audit an existing brand before evolving it
+description: Audit an existing brand before evolving it — use when: audit our brand, what do we have, before a rebrand, brand health check, current brand state, brand inventory
 user-invocable: true
 allowed-tools:
   - Read

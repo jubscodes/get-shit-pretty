@@ -1,6 +1,6 @@
 ---
 name: gsp-logo
-description: Design logo directions — concepts, variations, usage rules, and clear space
+description: Design logo directions — concepts, variations, usage rules, and clear space — use when: design the logo, logo concepts, logo variations, lockups, wordmark vs mark, clear space rules, logo usage
 user-invocable: true
 allowed-tools:
   - Read

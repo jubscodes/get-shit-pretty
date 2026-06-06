@@ -1,6 +1,6 @@
 ---
 name: gsp-add-reference
-description: Add reference material to a project
+description: Add reference material to a project — use when: add a reference, save inspiration, attach examples, link this site as reference, drop in a moodboard
 user-invocable: true
 allowed-tools:
   - Read

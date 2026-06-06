@@ -1,6 +1,6 @@
 ---
 name: gsp-art
-description: "Craft ASCII art interactively — you direct, the artist creates"
+description: "Craft ASCII art interactively — you direct, the artist creates — use when: make ASCII art, terminal art, decorative banner, splash screen, hero ASCII"
 user-invocable: true
 allowed-tools:
   - Read

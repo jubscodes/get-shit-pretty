@@ -1,6 +1,6 @@
 ---
 name: gsp-color
-description: "Design color systems — palettes, contrast, semantic mapping, dark mode"
+description: "Design color systems — palettes, contrast, semantic mapping, dark mode — use when: pick colors, build a palette, semantic tokens, dark mode pairings, brand color, accent color"
 user-invocable: true
 allowed-tools:
   - Read
