@@ -121,6 +121,19 @@ Show compact brand (single-line if complete) + full project pipeline flow. Then 
 
 Weave codebase signals into the greeting naturally when found.
 
+## Step 2.5: Output mode (project flows only)
+
+If the user is starting a **project pipeline** flow (Design project, Both, Quick project, or Continue project), ask one targeted question before routing:
+
+Use `AskUserQuestion`:
+- **Compact** *(recommended)* — "One file per phase, designer-readable. Good for focused refactors and single-feature work. The 80% case."
+- **Full** — "Chunk-per-axis (5-13 files per phase). Use for new multi-screen apps or large pivots where pivot-resilience matters."
+- **Chat** — "Plan in conversation only. Nothing persists to disk. Use for one-off exploration."
+
+Persist the answer to the project's `config.json` `preferences.project_size` when the project is created (default = `compact`). The brand pipeline ignores this field — brand always runs at full fidelity. See `${CLAUDE_SKILL_DIR}/../../policies/output-modes.md`.
+
+**Skip this step for brand-only flows** (New brand, Evolve existing brand) — brand pipeline is mode-independent.
+
 ## Step 3: Route
 
 From the greeting exchange, route to the right skill:

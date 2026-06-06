@@ -23,6 +23,7 @@ QA validate the codebase implementation against design intent.
 **Input:** BUILD-LOG.md + actual codebase files + `git diff` + design chunks + brand system
 **Output:** `{project}/review/` (acceptance-report.md + issues.md + INDEX.md) + exports/INDEX.md update
 **Agent:** `gsp-project-reviewer`
+**Output mode:** Honor `${CLAUDE_SKILL_DIR}/../../policies/output-modes.md` per `preferences.project_size` (default `compact`). Chunk file counts and consolidation rules live in the policy.
 </objective>
 
 <execution_context>

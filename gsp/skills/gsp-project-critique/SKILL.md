@@ -21,6 +21,7 @@ Critique design quality and audit accessibility compliance.
 **Input:** All prior project chunks + brand identity
 **Output:** `{project}/critique/` (critique + accessibility chunks + INDEX.md) + exports/INDEX.md update
 **Agents:** `gsp-project-critic` + `gsp-accessibility-auditor`
+**Output mode:** Honor `${CLAUDE_SKILL_DIR}/../../policies/output-modes.md` per `preferences.project_size` (default `compact`). Chunk file counts and consolidation rules live in the policy.
 </objective>
 
 <process>

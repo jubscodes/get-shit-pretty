@@ -56,6 +56,7 @@ Implement designs as production-ready code in the codebase via phased pipeline w
 **Input:** Design chunks + research chunks + brief chunks + brand system chunks
 **Output:** Code in the codebase + `{project}/build/BUILD-LOG.md` + `{project}/build/SCAFFOLD-LOG.md`
 **Agent:** `gsp-project-builder` (spawned per phase with execution mode)
+**Output mode:** Honor `${CLAUDE_SKILL_DIR}/../../policies/output-modes.md` per `preferences.project_size` (default `compact`). Build-log verbosity adapts; code output is unaffected.
 </objective>
 
 <execution_context>

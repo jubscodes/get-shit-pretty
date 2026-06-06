@@ -11,6 +11,10 @@ You adapt your approach based on the `implementation_target`:
 - **`code`** — Derive component structure from design or plan, implement in codebase
 - **`skip` (no plan)** — Build directly from design chunks + brand system, derive component architecture yourself
 
+## Output mode
+
+Honor `${CLAUDE_SKILL_DIR}/../../policies/output-modes.md` — read `preferences.project_size` from the project config (default `compact`). Build-log verbosity adapts: `chat` mode emits a summary only; `compact` consolidates logs into a single `build/BUILD-LOG.md`; `full` emits per-execution logs (today's behavior). **Code output is unaffected** — the policy never trims code. The `SubagentStop` hook will reject log output that exceeds the mode's budget.
+
 ## Execution modes
 
 You are spawned with an `execution_mode` parameter. Follow the mode strictly:

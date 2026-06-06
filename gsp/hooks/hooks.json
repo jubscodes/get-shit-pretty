@@ -18,6 +18,19 @@
           {
             "type": "prompt",
             "prompt": "The gsp-project-designer agent just finished. Verify: (1) at least one design/screen-*.md chunk was written, (2) design/INDEX.md was written. Report any missing deliverables to the user."
+          },
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PROJECT_ROOT}/scripts/check-artifact-size.sh gsp-project-designer"
+          }
+        ]
+      },
+      {
+        "matcher": "gsp-project-researcher",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PROJECT_ROOT}/scripts/check-artifact-size.sh gsp-project-researcher"
           }
         ]
       },
@@ -27,6 +40,10 @@
           {
             "type": "prompt",
             "prompt": "The gsp-project-critic agent just finished. Verify: (1) critique/critique.md was written with a heuristics score, (2) critique/prioritized-fixes.md was written, (3) critique/strengths.md was written. Report any missing deliverables to the user."
+          },
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PROJECT_ROOT}/scripts/check-artifact-size.sh gsp-project-critic"
           }
         ]
       },
@@ -54,6 +71,10 @@
           {
             "type": "prompt",
             "prompt": "The gsp-project-builder agent just finished. Verify: (1) a log file was written under build/logs/ (foundations.md, component-*.md, or screen-*.md depending on execution mode), (2) no files were left with TODO/FIXME placeholder code. Note: build/INDEX.md is written at finalize, not by individual agents — do not flag its absence. Report any missing deliverables to the user."
+          },
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PROJECT_ROOT}/scripts/check-artifact-size.sh gsp-project-builder"
           }
         ]
       },
@@ -63,6 +84,10 @@
           {
             "type": "prompt",
             "prompt": "The gsp-project-reviewer agent just finished. Verify: (1) acceptance-report.md was written, (2) issues.md was written, (3) review/INDEX.md was written, (4) verdict is clearly stated as Pass, Conditional Pass, or Fail. Report any issues to the user."
+          },
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PROJECT_ROOT}/scripts/check-artifact-size.sh gsp-project-reviewer"
           }
         ]
       },
@@ -72,6 +97,10 @@
           {
             "type": "prompt",
             "prompt": "The gsp-accessibility-auditor agent just finished. Verify: (1) accessibility-audit.md was written, (2) accessibility-fixes.md was written. Report any missing deliverables to the user."
+          },
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PROJECT_ROOT}/scripts/check-artifact-size.sh gsp-accessibility-auditor"
           }
         ]
       },

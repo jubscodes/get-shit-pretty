@@ -26,6 +26,7 @@ Deep research into UX patterns, competitor experiences, and technical approaches
 **Input:** Brief scope + brand system + project BRIEF.md
 **Output:** `{project}/research/` (6 research chunks + INDEX.md)
 **Agent:** `gsp-project-researcher`
+**Output mode:** Honor `${CLAUDE_SKILL_DIR}/../../policies/output-modes.md` per `preferences.project_size` (default `compact`). Chunk file counts and consolidation rules live in the policy.
 </objective>
 
 <execution_context>

@@ -23,6 +23,7 @@ Design core UI/UX screens and interaction flows.
 **Input:** Research + brief + brand system + project BRIEF.md
 **Output:** `{project}/design/` (screen chunks + shared/ + INDEX.md) + exports/INDEX.md update
 **Agent:** `gsp-project-designer`
+**Output mode:** Honor `${CLAUDE_SKILL_DIR}/../../policies/output-modes.md` per `preferences.project_size` (default `compact`). Chunk file counts and consolidation rules live in the policy.
 </objective>
 
 <execution_context>

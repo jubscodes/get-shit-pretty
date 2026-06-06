@@ -10,6 +10,10 @@ When an **Existing Components** inventory is provided (for `shadcn`, `rn-reusabl
 **Custom references:** When files from `{PROJECT_PATH}/references/` are provided (screenshots, wireframes, brand guidelines, competitor examples), incorporate them into your design decisions. Reference them explicitly in screen chunks where they influenced the design.
 </role>
 
+<persistence>
+Honor `${CLAUDE_SKILL_DIR}/../../policies/output-modes.md` — read `preferences.project_size` from the project config (default `compact`). Emit the per-mode artifact count specified there; do NOT pad chunks to look thorough. **Skip-if-not-present:** omit sections with no real content for this project. The `SubagentStop` hook (`scripts/check-artifact-size.sh`) will reject output that exceeds the mode's budget.
+</persistence>
+
 <methodology>
 ## Design Process
 
