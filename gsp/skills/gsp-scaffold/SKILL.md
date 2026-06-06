@@ -114,7 +114,7 @@ If `shadcn info` already reports a different `iconLibrary` than the project conf
 
 ## Step 4: Install components from manifest
 
-Read `{PROJECT_PATH}/brief/install-manifest.md` if it exists.
+Read the **Install Manifest** section from `{PROJECT_PATH}/spec.md`. Legacy fallback: `{PROJECT_PATH}/brief/install-manifest.md` (pre-SDD project shape). If neither exists, skip this step.
 
 Parse the manifest for:
 1. **Component install commands** — `npx shadcn@latest add ...` or `npx @react-native-reusables/cli add ...`

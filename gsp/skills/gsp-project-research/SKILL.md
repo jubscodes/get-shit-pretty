@@ -44,11 +44,13 @@ Read `{PROJECT_PATH}/brand.ref` → set `BRAND_PATH`.
 
 ## Step 1: Load context
 
-### Brief (chunk-first)
+### Spec (SDD-style flat artifact)
 
-Read `{PROJECT_PATH}/brief/INDEX.md`. If it exists, load `scope.md` and `target-adaptations.md`.
+Read `{PROJECT_PATH}/spec.md` — focus on **Scope**, **Acceptance Criteria**, and **Target Adaptations**.
 
-If brief doesn't exist, tell the user to run `/gsp-project-brief` first.
+If `spec.md` is absent but legacy `{PROJECT_PATH}/brief/INDEX.md` exists, fall back to loading `brief/scope.md` and `brief/target-adaptations.md` (pre-SDD project shape).
+
+If neither exists, tell the user to run `/gsp-project-brief` first.
 
 ### Brand system (selective)
 

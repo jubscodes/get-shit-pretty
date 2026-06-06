@@ -3,8 +3,7 @@
 ## Build component manifest
 
 Read ALL design chunks from `{PROJECT_PATH}/design/` — every `screen-{NN}-{name}.md`. Also read:
-- `{PROJECT_PATH}/brief/scope.md` (feature map)
-- `{PROJECT_PATH}/brief/target-adaptations.md` (component adaptations)
+- `{PROJECT_PATH}/spec.md` — **Scope** (feature map) + **Target Adaptations** (component adaptations). Legacy fallback: `{PROJECT_PATH}/brief/scope.md` and `{PROJECT_PATH}/brief/target-adaptations.md`.
 - `{BRAND_PATH}/patterns/components/token-mapping.md` (if exists)
 
 Extract every component referenced across all screens. Deduplicate. Build a manifest:

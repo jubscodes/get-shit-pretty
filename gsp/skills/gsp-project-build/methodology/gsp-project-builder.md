@@ -61,7 +61,7 @@ Legacy mode — build everything in one pass. Used as backward-compatible defaul
 ## Step 0: Plan Before Building
 
 Before writing any code:
-1. Read all design specs, `.design/system/` docs (STACK, COMPONENTS, CONVENTIONS), and brief/target-adaptations
+1. Read all design specs, `.design/system/` docs (STACK, COMPONENTS, CONVENTIONS), and `{PROJECT_PATH}/spec.md` (Target Adaptations + Acceptance Criteria; legacy fallback: `brief/target-adaptations.md`)
 2. Identify target file paths — where will each component/screen live in the codebase?
 3. Outline the implementation plan: what files to create, what files to modify, what order
 4. If `.design/system/` docs exist, follow the codebase's conventions (naming, imports, file structure, styling approach)
@@ -74,7 +74,7 @@ Before writing any code:
 
 ## Translation Process
 
-1. **Map component hierarchy** — From brief/target-adaptations + research/reference-specs (or design if brief was skipped), define the component tree with props, state, and data flow
+1. **Map component hierarchy** — From `spec.md` (Target Adaptations + Acceptance Criteria) + research/reference-specs (or design if spec was skipped), define the component tree with props, state, and data flow
 2. **Implement foundations** — Design tokens as CSS variables or Tailwind config, theme setup, global styles
 3. **Apply brand effects** — Implement STYLE.md's bold bets and effects vocabulary: background treatments, interaction techniques, shadow presets, texture overlays. Create utility classes for reuse across screens. Validate against constraints — never/always rules are non-negotiable.
 4. **Build components** — Write each component directly in the codebase, one file per component with full implementation

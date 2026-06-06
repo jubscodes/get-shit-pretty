@@ -47,7 +47,7 @@ Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`
 
 **Design:** Read `{PROJECT_PATH}/design/INDEX.md` → load all chunks.
 
-**Brief:** Read `{PROJECT_PATH}/brief/INDEX.md` → load all chunks (if exists).
+**Spec:** Read `{PROJECT_PATH}/spec.md` — the SDD contract. Critique verifies against the **Acceptance Criteria** section in particular. Fallback: legacy `brief/INDEX.md` → load all chunks (pre-SDD project shape).
 
 **Research:** Read `{PROJECT_PATH}/research/INDEX.md` → load `recommendations.md` (if exists).
 

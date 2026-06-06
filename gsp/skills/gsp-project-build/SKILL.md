@@ -176,7 +176,7 @@ Spawn `gsp-project-builder` agent with **execution_mode: foundations**.
 |------|---------|
 | `{BRAND_PATH}/patterns/{brand-name}.yml` | Token values only — used with token-mapping.md to generate CSS variables. Do NOT re-read patterns/constraints/effects from here — those are in STYLE.md. |
 | `{BRAND_PATH}/patterns/STYLE.md` | Design law — philosophy, patterns, constraints, effects, bold bets, implementation hints (if exists; fall back to `{brand-name}.md`) |
-| `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations for target |
+| `{PROJECT_PATH}/spec.md` (or legacy `{PROJECT_PATH}/brief/target-adaptations.md`) | SDD spec — read **Target Adaptations** section. Builder also verifies output against the spec's **Acceptance Criteria**. |
 | `.design/system/STACK.md` | Stack state (or `.design/system/stacks/{APP_NAME}.md` for monorepos) |
 | `.design/system/CONVENTIONS.md` | Codebase conventions (if exists) |
 | `.design/system/COMPONENTS.md` | Existing components (if exists) |
@@ -292,7 +292,7 @@ Context per component agent:
 | `{BRAND_PATH}/patterns/{brand-name}.yml` | Token values |
 | `{BRAND_PATH}/patterns/components/token-mapping.md` | Component-to-token mapping |
 | Design chunk excerpts (only sections referencing these components) | Usage context — how screens use them |
-| `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations for target |
+| `{PROJECT_PATH}/spec.md` (or legacy `{PROJECT_PATH}/brief/target-adaptations.md`) | SDD spec — read **Target Adaptations** section. Builder also verifies output against the spec's **Acceptance Criteria**. |
 | `{PROJECT_PATH}/config.json` | Tech stack, implementation target |
 | Visual effects, block patterns refs (loaded in Step 2.6) | Design patterns + CSS recipes |
 | Agent methodology (loaded in Step 2.5) | Builder role, process, quality standards |
@@ -332,7 +332,7 @@ Build all screens in parallel. Components exist in the codebase from Phase 4.
 |------|---------|
 | `{PROJECT_PATH}/design/screen-{NN}-{name}.md` | This screen's design chunk |
 | Component file paths from BUILD-LOG.md components section | Where to import from (paths only — agent reads codebase) |
-| `{PROJECT_PATH}/brief/target-adaptations.md` | Component adaptations |
+| `{PROJECT_PATH}/spec.md` (or legacy `{PROJECT_PATH}/brief/target-adaptations.md`) | SDD spec — **Target Adaptations** section + relevant **Acceptance Criteria** |
 | `{PROJECT_PATH}/research/reference-specs.md` (if exists) | Technical specs — include only sections relevant to this screen |
 | `{PROJECT_PATH}/critique/prioritized-fixes.md` (if exists) | Critique fixes — include only fixes tagged to this screen |
 | Build output template (from execution_context) | Build log structure |

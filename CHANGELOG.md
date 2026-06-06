@@ -4,6 +4,9 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+### Architecture
+- **SDD pivot — project pipeline now produces a flat `spec.md` contract.** `/gsp-project-brief` consolidates the five chunked outputs (`scope.md`, `target-adaptations.md`, `install-manifest.md`, `gap-analysis.md`, `file-references.md` + `brief/INDEX.md`) into a single `{PROJECT_PATH}/spec.md` artifact, and adds a required **Acceptance Criteria** section in EARS notation (`WHEN <trigger>, THE SYSTEM SHALL <behavior>`). Downstream skills (research, design, critique, build, review, scaffold) read `spec.md` and verify against the EARS criteria; legacy `brief/` subdirs still readable via fallback. First PR in the spec-driven-development refactor — see also planned merges of design+critique and build+review. ([#232](https://github.com/jubscodes/get-shit-pretty/pull/232))
+
 ### Added
 - **`/gsp-polish`** — detects and fixes AI-slop craft failures in the codebase (scrolling text without fade mask, default chart palettes, lorem placeholders, missing empty states, hardcoded hex outside tokens). Auto-runs after build; user-invocable anytime ([#222](https://github.com/jubscodes/get-shit-pretty/pull/222))
 - **User-declared output modes for the project pipeline** — `preferences.project_size` (`chat` / `compact` / `full`) caps how many chunks each project-phase agent writes. Enforced by the `check-artifact-size.sh` SubagentStop hook ([#221](https://github.com/jubscodes/get-shit-pretty/pull/221) covering [#211](https://github.com/jubscodes/get-shit-pretty/issues/211))

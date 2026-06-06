@@ -19,7 +19,7 @@ Spawn a single `gsp-project-builder` agent with:
 - `spec_only: true`
 - All design chunks from `{PROJECT_PATH}/design/` inlined
 - Brand system: `{BRAND_PATH}/patterns/STYLE.md` and `{BRAND_PATH}/patterns/{brand-name}.yml`
-- Brief: `{PROJECT_PATH}/brief/target-adaptations.md` and `{PROJECT_PATH}/brief/scope.md`
+- Spec: `{PROJECT_PATH}/spec.md` — **Target Adaptations**, **Scope**, **Acceptance Criteria**. Legacy fallback: `{PROJECT_PATH}/brief/target-adaptations.md` and `{PROJECT_PATH}/brief/scope.md`.
 - Agent methodology (loaded in Step 2.5 of main flow)
 
 Agent instructions:
