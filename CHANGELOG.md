@@ -4,6 +4,24 @@ All notable changes to get-shit-pretty are documented here.
 
 ## [Unreleased]
 
+### Added
+- **`/gsp-polish`** — detects and fixes AI-slop craft failures in the codebase (scrolling text without fade mask, default chart palettes, lorem placeholders, missing empty states, hardcoded hex outside tokens). Auto-runs after build; user-invocable anytime ([#222](https://github.com/jubscodes/get-shit-pretty/pull/222))
+- **User-declared output modes for the project pipeline** — `preferences.project_size` (`chat` / `compact` / `full`) caps how many chunks each project-phase agent writes. Enforced by the `check-artifact-size.sh` SubagentStop hook ([#221](https://github.com/jubscodes/get-shit-pretty/pull/221) covering [#211](https://github.com/jubscodes/get-shit-pretty/issues/211))
+- **WCAG validate audit trail** — `/gsp-accessibility --validate` now appends a timestamped pass/fail block to `<yml-dir>/wcag-validate.log` so the brand-guidelines pre-emit gate is post-hoc auditable. Stdout + exit-code contract unchanged ([#225](https://github.com/jubscodes/get-shit-pretty/pull/225) covering [#220](https://github.com/jubscodes/get-shit-pretty/issues/220))
+
+### Changed
+- **Merged `gsp-accessibility-audit` into `gsp-accessibility`** as a context-aware router. One canonical skill, six modes (`check`, `validate`, `tokens`, `design`, `code`, `statement`); the orchestrator picks the right mode from project state when invoked with no flags. Agent name (`gsp-accessibility-auditor`) preserved — SubagentStop hooks unchanged ([#228](https://github.com/jubscodes/get-shit-pretty/pull/228))
+- **WHEN-not-WHAT triggers on 12 skill descriptions** — every user-facing skill now lists `use when: <triggers>` so natural phrasing routes correctly. Affected: `gsp-brand-audit`, `gsp-brand-sync`, `gsp-color`, `gsp-typography`, `gsp-visuals`, `gsp-icons`, `gsp-logo`, `gsp-style`, `gsp-polish`, `gsp-add-reference`, `gsp-art`, `gsp-start` ([#229](https://github.com/jubscodes/get-shit-pretty/pull/229))
+- **Brand-phase skills now declare their prerequisites** — `gsp-brand-research`, `gsp-brand-strategy`, `gsp-brand-identity`, `gsp-brand-guidelines` each open with a `**Prerequisites:**` line spelling out the required upstream chain. Doc-only fix; runtime behavior unchanged ([#225](https://github.com/jubscodes/get-shit-pretty/pull/225) covering [#219](https://github.com/jubscodes/get-shit-pretty/issues/219))
+
+### Performance
+- **`gsp-doctor` body 400L → 149L** — moved the full check catalog (B1–B4, P1–P10, I1–I5, S1–S5, X1) verbatim into `checks.md` loaded on demand at Step 3. Token-budget score 400 → 149 ([#226](https://github.com/jubscodes/get-shit-pretty/pull/226) covering [#181](https://github.com/jubscodes/get-shit-pretty/issues/181))
+- **`gsp-scaffold` body 316L → 236L** — per-stack setup blocks extracted into `stacks/nextjs-shadcn.md`, `stacks/vite-react.md`, `stacks/react-native.md`, and shared `postcss-and-tailwind.md`, loaded on demand from a dispatch table ([#227](https://github.com/jubscodes/get-shit-pretty/pull/227) covering [#182](https://github.com/jubscodes/get-shit-pretty/issues/182))
+
+### Hardening
+- **PreToolUse runtime-dir guard wired into `gsp/hooks/hooks.json`** — the `check-runtime-edit.sh` block was previously template-only. Now lives in the canonical hook contract and covers `Edit|Write|MultiEdit` (was `Edit|Write`). Edits to `.claude/`, `.opencode/`, `.gemini/`, `.codex/`, `.agents/` runtime dirs now hook-blocked, not just prose ([#230](https://github.com/jubscodes/get-shit-pretty/pull/230))
+- **Harness enforcement gaps closed (w4)** — 7 gaps surfaced by the harness audit, plus shellcheck cleanup across `dev/scripts/` ([#224](https://github.com/jubscodes/get-shit-pretty/pull/224))
+
 ## [0.10.1] — 2026-06-05
 
 ### Fixed
