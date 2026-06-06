@@ -14,6 +14,8 @@ allowed-tools:
 Phase 4 of the GSP branding diamond. Transforms the brand identity into operational artifacts that designer and builder agents consume — the `.yml` preset (source of truth), STYLE.md (agent contract), component token mapping, and `guidelines.html` (what the user sees).
 
 Identity made the creative decisions. This phase makes them work in code.
+
+**Prerequisites:** `/gsp-start` → `/gsp-brand-research` → `/gsp-brand-strategy` → `/gsp-brand-identity` must complete first. Guidelines reads `identity/INDEX.md` and strategy chunks; if Phase 3 isn't complete, exits with a next-step prompt instead of running.
 </context>
 
 <objective>
@@ -224,6 +226,8 @@ Invoke `/gsp-accessibility --validate {BRAND_PATH}/patterns/{brand-name}.yml` (u
 
 - **Pass (exit 0):** continue to Step 4.75
 - **Fail (exit 1):** STOP. The skill prints failing token pairs + the recommended fix path. Surface the failures to the user with: `Theme emission blocked — {N} contrast failure(s). Run /gsp-brand-refine to fix the failing pairs, then re-run /gsp-brand-guidelines.` Do NOT emit theme.json. The pipeline is incomplete until validation passes
+
+The verdict (pass or fail) is appended to `{BRAND_PATH}/patterns/wcag-validate.log` — the audit trail proving the gate ran. Do not delete or rewrite this file; it accumulates across reruns.
 
 ## Step 4.75: Emit shadcn theme registry artifact
 

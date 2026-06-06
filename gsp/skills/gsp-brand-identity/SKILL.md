@@ -13,6 +13,8 @@ allowed-tools:
 ---
 <context>
 Phase 3 of the GSP branding diamond. Creates the visual identity — logo system, color, typography, imagery — grounded in the strategy and voice defined in Phase 2.
+
+**Prerequisites:** `/gsp-start` → `/gsp-brand-research` → `/gsp-brand-strategy` must complete first. Identity reads strategy chunks and BRIEF.md as required input; missing scaffolding or an incomplete Phase 2 exits with a next-step prompt.
 </context>
 
 <objective>
