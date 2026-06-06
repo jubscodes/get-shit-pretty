@@ -15,8 +15,12 @@ FORK_WEIGHT=300
 GREEN='\033[32m'
 YELLOW='\033[33m'
 RED='\033[31m'
+# Used by sourcing scripts (benchmark.sh, token-budget.sh)
+# shellcheck disable=SC2034
 BOLD='\033[1m'
+# shellcheck disable=SC2034
 DIM='\033[2m'
+# shellcheck disable=SC2034
 RESET='\033[0m'
 
 # ── Scoring Helpers ─────────────────────────────────
@@ -59,7 +63,8 @@ _load_agent_names() {
 
 score_skill() {
   local skill_dir="$1"
-  local skill_name=$(basename "$skill_dir")
+  local skill_name
+  skill_name=$(basename "$skill_dir")
   local skill_md="$skill_dir/SKILL.md"
 
   # 1. Body lines
@@ -71,7 +76,8 @@ score_skill() {
   # 2. Execution context lines from @ references
   local exec_context_lines=0
   if [[ -f "$skill_md" ]]; then
-    local exec_block=$(sed -n '/<execution_context>/,/<\/execution_context>/p' "$skill_md")
+    local exec_block
+    exec_block=$(sed -n '/<execution_context>/,/<\/execution_context>/p' "$skill_md")
     if [[ -n "$exec_block" ]]; then
       while IFS= read -r ref_line; do
         if [[ "$ref_line" =~ @\$\{CLAUDE_SKILL_DIR\}(.*) ]]; then
@@ -81,7 +87,8 @@ score_skill() {
           ref_path="${ref_path%% }"
           local resolved_ref="$skill_dir$ref_path"
           if [[ -f "$resolved_ref" ]]; then
-            local ref_lines=$(wc -l < "$resolved_ref" | tr -d ' ')
+            local ref_lines
+            ref_lines=$(wc -l < "$resolved_ref" | tr -d ' ')
             exec_context_lines=$((exec_context_lines + ref_lines))
           fi
         fi
@@ -104,7 +111,15 @@ score_skill() {
 
     local unique_agents=()
     for agent in "${found_agents[@]:-}"; do
-      if [[ ! " ${unique_agents[@]:-} " =~ " ${agent} " ]]; then
+      local already_seen=false
+      local seen
+      for seen in "${unique_agents[@]:-}"; do
+        if [[ "$seen" == "$agent" ]]; then
+          already_seen=true
+          break
+        fi
+      done
+      if [[ "$already_seen" == "false" ]]; then
         unique_agents+=("$agent")
       fi
     done
@@ -143,6 +158,8 @@ score_skill() {
 
 # ── Pipeline Definitions ────────────────────────────
 
+# Consumed by sourcing scripts (benchmark.sh, token-budget.sh)
+# shellcheck disable=SC2034
 PIPELINE_NAMES=(
   "brand_diamond"
   "project_diamond"
@@ -150,6 +167,7 @@ PIPELINE_NAMES=(
   "full_e2e"
 )
 
+# shellcheck disable=SC2034
 PIPELINE_DISPLAY=(
   "brand diamond"
   "project diamond"
@@ -157,6 +175,7 @@ PIPELINE_DISPLAY=(
   "full e2e"
 )
 
+# shellcheck disable=SC2034
 PIPELINE_SKILLS=(
   "gsp-start gsp-brand-brief gsp-brand-research gsp-brand-strategy gsp-brand-identity gsp-brand-guidelines"
   "gsp-project-brief gsp-project-research gsp-project-design gsp-project-critique gsp-project-build gsp-project-review"

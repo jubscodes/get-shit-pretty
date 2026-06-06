@@ -6,7 +6,7 @@ set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 LIB_ROOT="$ROOT"
-cd "$ROOT"
+cd "$ROOT" || exit 1
 
 BENCH_DIR="$ROOT/dev/benchmarks"
 SKIP_TESTS=false
@@ -18,7 +18,7 @@ source "$ROOT/dev/scripts/lib-scoring.sh"
 # ── Helpers ─────────────────────────────────────────
 
 get_version() {
-  cat "$ROOT/VERSION" 2>/dev/null | tr -d '[:space:]'
+  tr -d '[:space:]' < "$ROOT/VERSION" 2>/dev/null
 }
 
 get_branch() {
@@ -30,15 +30,15 @@ get_commit() {
 }
 
 latest_snapshot() {
-  ls -1 "$BENCH_DIR"/*.json 2>/dev/null | grep -v '\.release\.json$' | sort -V | tail -1
+  find "$BENCH_DIR" -maxdepth 1 -name '*.json' ! -name '*.release.json' 2>/dev/null | sort -V | tail -1
 }
 
 release_snapshot() {
-  ls -1 "$BENCH_DIR"/*.release.json 2>/dev/null | sort -V | tail -1
+  find "$BENCH_DIR" -maxdepth 1 -name '*.release.json' 2>/dev/null | sort -V | tail -1
 }
 
 previous_snapshot() {
-  ls -1 "$BENCH_DIR"/*.json 2>/dev/null | sort -V | tail -2 | head -1
+  find "$BENCH_DIR" -maxdepth 1 -name '*.json' 2>/dev/null | sort -V | tail -2 | head -1
 }
 
 # ── Test Results ────────────────────────────────────
@@ -56,6 +56,8 @@ capture_tests() {
 
   # Strip ANSI codes, parse summary line (macOS-compatible)
   local clean
+  # SC2001 false positive: bash parameter expansion cannot express this regex
+  # shellcheck disable=SC2001
   clean=$(echo "$output" | sed $'s/\033\[[0-9;]*m//g')
   local summary
   summary=$(echo "$clean" | grep "PASS.*WARN.*FAIL" || true)
@@ -72,17 +74,20 @@ capture_tests() {
 
 cmd_capture() {
   local label="${1:-}"
-  local version=$(get_version)
-  local branch=$(get_branch)
-  local commit=$(get_commit)
-  local date=$(date +%Y-%m-%d)
+  local version branch commit date
+  version=$(get_version)
+  branch=$(get_branch)
+  commit=$(get_commit)
+  date=$(date +%Y-%m-%d)
 
   mkdir -p "$BENCH_DIR"
 
   echo -e "${BOLD}Capturing benchmark...${RESET}\n"
 
   # Score all skills once — cache to temp file for pipeline/rate-limit reuse
-  local cache_file=$(mktemp)
+  local cache_file
+  cache_file=$(mktemp)
+  # shellcheck disable=SC2064  # expand $cache_file at trap-set time so cleanup uses correct path
   trap "rm -f '$cache_file'" EXIT
   local skills_json=""
   local total_weight=0
@@ -128,7 +133,8 @@ cmd_capture() {
     local heaviest_score=0
 
     for sname in $pskills; do
-      local cached=$(grep "|${sname}|" "$cache_file" || true)
+      local cached
+      cached=$(grep "|${sname}|" "$cache_file" || true)
       if [[ -n "$cached" ]]; then
         local s="${cached%%|*}"
         pscore=$((pscore + s))
@@ -148,7 +154,8 @@ cmd_capture() {
   # API conversations from cache
   local api_convos=0
   for sname in ${PIPELINE_SKILLS[3]}; do
-    local cached=$(grep "|${sname}|" "$cache_file" || true)
+    local cached
+    cached=$(grep "|${sname}|" "$cache_file" || true)
     if [[ -n "$cached" ]]; then
       IFS='|' read -r _ _ _ _ agents fork _ _ <<< "$cached"
       api_convos=$((api_convos + 1 + agents + fork))
@@ -156,10 +163,11 @@ cmd_capture() {
   done
 
   # Count assets
-  local num_skills=$(find "$ROOT/gsp/skills/gsp-"* -maxdepth 0 -type d 2>/dev/null | wc -l | tr -d ' ')
-  local num_agents=$(find "$ROOT/gsp/agents/gsp-"*.md -type f 2>/dev/null | wc -l | tr -d ' ')
-  local num_presets=$(find "$ROOT/gsp/skills/gsp-style/styles" -name "*.yml" -type f 2>/dev/null | wc -l | tr -d ' ')
-  local num_methods=$(find "$ROOT/gsp/skills" -path "*/methodology/*.md" -type f 2>/dev/null | wc -l | tr -d ' ')
+  local num_skills num_agents num_presets num_methods
+  num_skills=$(find "$ROOT/gsp/skills/gsp-"* -maxdepth 0 -type d 2>/dev/null | wc -l | tr -d ' ')
+  num_agents=$(find "$ROOT/gsp/agents/gsp-"*.md -type f 2>/dev/null | wc -l | tr -d ' ')
+  num_presets=$(find "$ROOT/gsp/skills/gsp-style/styles" -name "*.yml" -type f 2>/dev/null | wc -l | tr -d ' ')
+  num_methods=$(find "$ROOT/gsp/skills" -path "*/methodology/*.md" -type f 2>/dev/null | wc -l | tr -d ' ')
 
   # Test results
   if [[ "$SKIP_TESTS" == "true" ]]; then
@@ -230,7 +238,8 @@ ENDJSON
 # ── Release ─────────────────────────────────────────
 
 cmd_release() {
-  local version=$(get_version)
+  local version
+  version=$(get_version)
   local filename="${version}.release.json"
 
   echo -e "${BOLD}Capturing release baseline...${RESET}\n"
@@ -272,7 +281,7 @@ cmd_compare() {
 
   if [[ ! -f "$file_a" ]] || [[ ! -f "$file_b" ]]; then
     echo -e "${RED}Error:${RESET} Need at least 2 snapshots to compare."
-    echo "  Found: $(ls -1 "$BENCH_DIR"/*.json 2>/dev/null | wc -l | tr -d ' ') snapshot(s) in dev/benchmarks/"
+    echo "  Found: $(find "$BENCH_DIR" -maxdepth 1 -name '*.json' 2>/dev/null | wc -l | tr -d ' ') snapshot(s) in dev/benchmarks/"
     echo "  Run: bash dev/scripts/benchmark.sh capture"
     exit 1
   fi
@@ -386,9 +395,9 @@ print()
 # ── Trend ───────────────────────────────────────────
 
 cmd_trend() {
-  local snapshots
-  snapshots=$(ls -1 "$BENCH_DIR"/*.json 2>/dev/null | sort -V)
-  local count=$(echo "$snapshots" | grep -c . 2>/dev/null || echo "0")
+  local snapshots count
+  snapshots=$(find "$BENCH_DIR" -maxdepth 1 -name '*.json' 2>/dev/null | sort -V)
+  count=$(echo "$snapshots" | grep -c . 2>/dev/null || echo "0")
 
   if (( count == 0 )); then
     echo -e "${RED}Error:${RESET} No snapshots found. Run: bash dev/scripts/benchmark.sh capture"
@@ -437,9 +446,9 @@ print()
 # ── List ────────────────────────────────────────────
 
 cmd_list() {
-  local snapshots
-  snapshots=$(ls -1 "$BENCH_DIR"/*.json 2>/dev/null | sort -V)
-  local count=$(echo "$snapshots" | grep -c . 2>/dev/null || echo "0")
+  local snapshots count
+  snapshots=$(find "$BENCH_DIR" -maxdepth 1 -name '*.json' 2>/dev/null | sort -V)
+  count=$(echo "$snapshots" | grep -c . 2>/dev/null || echo "0")
 
   if (( count == 0 )); then
     echo "  No snapshots. Run: bash dev/scripts/benchmark.sh capture"

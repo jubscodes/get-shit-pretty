@@ -43,3 +43,20 @@ jobs:
       # Build smoke just verifies buildability, not strict reproducibility.
       - run: npm install --no-audit --no-fund
       - run: npm run build
+
+  shellcheck:
+    name: Shellcheck (guard + dev scripts)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      # Scope: user-facing guard scripts (scripts/*.sh) plus dev tooling
+      # (dev/scripts/*.sh). Guard scripts ship with the npm package and run on
+      # every Edit/Write — typos silently disable enforcement. Dev scripts
+      # were cleaned up in harness/w4 (gap-9 from the harness audit).
+      - name: Lint scripts/*.sh + dev/scripts/*.sh
+        run: |
+          shopt -s nullglob
+          set -e
+          shellcheck -x scripts/*.sh dev/scripts/*.sh
