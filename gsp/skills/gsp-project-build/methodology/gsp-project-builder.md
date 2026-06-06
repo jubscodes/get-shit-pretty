@@ -196,7 +196,7 @@ These rules are always enforced for shadcn targets. They reflect the official sh
 
 Full reference: `${CLAUDE_SKILL_DIR}/../gsp-project-critique/anti-patterns.md` (available via Read for the complete list with fixes).
 
-**Theming reference:** when building or fixing themes, read `${CLAUDE_SKILL_DIR}/../../gsp-scaffold/shadcn-theming.md` — full token table, dark mode setup, common theming bugs and fixes.
+**Theming reference:** when building or fixing themes, read `${CLAUDE_SKILL_DIR}/../gsp-scaffold/shadcn-theming.md` — full token table, dark mode setup, common theming bugs and fixes.
 
 ## Visual Quality Checklist
 
