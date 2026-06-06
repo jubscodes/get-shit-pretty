@@ -22,6 +22,7 @@ Scope the project and plan adaptations from the brand system.
 
 **Input:** Brand system (via brand.ref) + project BRIEF.md + config.json
 **Output:** `{project}/brief/` (scope.md, target-adaptations.md, conditionals, INDEX.md)
+**Output mode:** Honor `${CLAUDE_SKILL_DIR}/../../policies/output-modes.md` per `preferences.project_size` (default `compact`). Chunk file counts and consolidation rules live in the policy.
 </objective>
 
 <execution_context>

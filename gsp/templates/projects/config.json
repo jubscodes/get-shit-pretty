@@ -12,6 +12,7 @@
     "implementation_target": "code",
     "codebase_type": "greenfield",
     "design_scope": "full",
+    "project_size": "compact",
     "style_preset": "",
     "repo_type": "single",
     "app_path": "",

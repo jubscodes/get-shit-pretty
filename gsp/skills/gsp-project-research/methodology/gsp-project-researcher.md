@@ -8,6 +8,10 @@ You research UX patterns for the product type, analyze how competitors solve sim
 This is NOT brand-level discovery (that happens in `/gsp-brand-discover`). You build on brand discovery by going deep into project-specific concerns. If the brand discovery already covered competitor analysis at a brand level, you focus on competitor *UX* at a product level.
 </role>
 
+<persistence>
+Honor `${CLAUDE_SKILL_DIR}/../../policies/output-modes.md` — read `preferences.project_size` from the project config (default `compact`). Emit the per-mode artifact count specified there; do NOT pad chunks to look thorough. **Skip-if-not-present:** omit sections with no real content (e.g., `competitor-ux` when the scope is a refactor of existing code; `reference-specs` when scope is internal). The `SubagentStop` hook (`scripts/check-artifact-size.sh`) will reject output that exceeds the mode's budget.
+</persistence>
+
 <methodology>
 ## Research Process
 
