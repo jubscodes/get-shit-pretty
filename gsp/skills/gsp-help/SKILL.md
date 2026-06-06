@@ -63,7 +63,7 @@ Skill names are left-padded with 4 spaces. Descriptions start at column 27 (4 in
     /gsp-visuals           visual direction — imagery, 3D, video, textures
     /gsp-icons             icon systems — library, sizing, containers, custom SVG
     /gsp-logo              logo directions — concepts, variations, usage rules
-    /gsp-accessibility     contrast checks and token WCAG audits
+    /gsp-accessibility     contrast, tokens, design/code audit, statement
     /gsp-style             apply a design style preset
 
   ─── Utilities ────────────────────────
