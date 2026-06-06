@@ -43,7 +43,7 @@ Read `{PROJECT_PATH}/brand.ref` → set `BRAND_PATH`.
 
 Read `{PROJECT_PATH}/config.json` to get `implementation_target`, `design_scope`, `codebase_type`.
 
-**Prior code accessibility audit:** Check if `{PROJECT_PATH}/review/accessibility-audit.md` exists from a prior `/gsp-accessibility-audit --code` run. If yes, load it — the reviewer will reference these findings instead of performing inline a11y checks.
+**Prior code accessibility audit:** Check if `{PROJECT_PATH}/review/accessibility-audit.md` exists from a prior `/gsp-accessibility --code` run. If yes, load it — the reviewer will reference these findings instead of performing inline a11y checks.
 
 ### Load all artifacts
 

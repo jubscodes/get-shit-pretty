@@ -22,7 +22,7 @@ Two tiers of fix:
 - **`propose-diff`** / **`flag-only`** — fix is contextual or requires human input. Surfaced in `polish/proposed-fixes.md` for review.
 
 The skill does **not** overlap with:
-- `gsp-accessibility-audit` (WCAG concerns: focus, contrast, tap targets)
+- `gsp-accessibility` (WCAG concerns: focus, contrast, tap targets — any mode)
 - `gsp-project-review` (QA against design intent)
 - `gsp-typography` (font choices)
 - `gsp-brand-guidelines` (token system)

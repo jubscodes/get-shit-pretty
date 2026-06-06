@@ -39,5 +39,5 @@ Keep transforms small to avoid disorientation:
 ## Cross-references
 
 - `gsp-project-build/visual-effects.md` — CSS recipes for the effects this guidance constrains
-- `gsp-accessibility-audit/wcag-checklist.md` — broader WCAG 2.2 AA criteria
-- `gsp-accessibility/SKILL.md` — `--check`, `--tokens` modes for contrast validation
+- `gsp-accessibility/wcag-checklist.md` — broader WCAG 2.2 AA criteria
+- `gsp-accessibility/SKILL.md` — `--check`, `--tokens`, `--validate`, `--design`, `--code`, `--statement` modes

@@ -27,7 +27,7 @@ Cross-reference these against design specs to validate the implementation.
 4. **Screen coverage** — compare designed screens against implemented screens in the codebase
 5. **Component coverage** — compare designed components against implemented components
 6. **Token audit** — defer to canonical token rules at `${CLAUDE_SKILL_DIR}/../gsp-color/domains/system.md`; verify against `${CLAUDE_SKILL_DIR}/../gsp-style/style-preset-schema.md` for preset adherence. Flag hardcoded values, magic numbers, missing token references
-7. **Accessibility compliance** — invoke `/gsp-accessibility-audit --code` (via the orchestrator) instead of inline ARIA/keyboard Grep heuristics. Reference `${CLAUDE_SKILL_DIR}/../gsp-accessibility-audit/wcag-checklist.md` for code-mode criteria
+7. **Accessibility compliance** — invoke `/gsp-accessibility --code` (via the orchestrator) instead of inline ARIA/keyboard Grep heuristics. Reference `${CLAUDE_SKILL_DIR}/../gsp-accessibility/wcag-checklist.md` for code-mode criteria
 8. **Responsive verification** — confirm breakpoint behavior matches design intent
 9. **Imagery audit** — verify image resources match brand's imagery style; consult `${CLAUDE_SKILL_DIR}/../gsp-visuals/domains/imagery.md` for canonical vocabulary. Check for generic gray placeholders or mismatched imagery types
 10. **Typography verification** — verify type scale + pairing against `${CLAUDE_SKILL_DIR}/../gsp-typography/domains/scale.md` and `pairing.md`
