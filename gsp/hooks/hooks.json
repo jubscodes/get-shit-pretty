@@ -1,5 +1,16 @@
 {
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PROJECT_ROOT}/scripts/check-runtime-edit.sh"
+          }
+        ]
+      }
+    ],
     "SessionStart": [
       {
         "matcher": "compact",
