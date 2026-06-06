@@ -130,6 +130,15 @@
             "prompt": "The gsp-brand-strategist agent just finished. Verify: (1) strategy/INDEX.md was written, (2) strategy/positioning.md exists, (3) strategy/archetype.md exists, (4) strategy/brand-platform.md exists, (5) strategy/voice-and-tone.md exists, (6) strategy/messaging.md exists. Report any missing deliverables to the user."
           }
         ]
+      },
+      {
+        "matcher": "gsp-polisher",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "The gsp-polisher agent just finished. Verify: (1) polish/findings.md was written, (2) polish/INDEX.md was written. (3) If any safe-auto fixes were applied, verify scripts/polish-safety-wrap.sh was used (look for absence of orphaned .polish-stash-ref files in the project root). (4) Confirm any rolled-back findings appear in polish/findings.md with a rollback-reason. Report any missing deliverables or orphaned stash refs."
+          }
+        ]
       }
     ]
   }

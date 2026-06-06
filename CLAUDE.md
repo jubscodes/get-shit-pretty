@@ -63,8 +63,8 @@ The filesystem is the integration layer — skills produce artifacts to `.design
 
 | Directory | Contents |
 |-----------|----------|
-| `gsp/skills/` | 35 skills — each is a `gsp-<name>/SKILL.md` directory with optional `domains/` and `references/` siblings |
-| `gsp/agents/` | 12 subagents (`gsp-{name}.md`) |
+| `gsp/skills/` | 36 skills — each is a `gsp-<name>/SKILL.md` directory with optional `domains/` and `references/` siblings |
+| `gsp/agents/` | 13 subagents (`gsp-{name}.md`) |
 | `gsp/hooks/` | Hooks (`hooks.json`) |
 | `gsp/prompts/` | Reserved (agent methodology lives in skill `methodology/` directories) |
 | `gsp/templates/` | Project/brand config, state, brief, roadmap templates |
@@ -94,8 +94,8 @@ Cross-references between skills use `gsp-` prefixed paths: `${CLAUDE_SKILL_DIR}/
 
 | Runtime | Skills location | Agents | Bundle location |
 |---------|-----------------|--------|-----------------|
-| Claude Code | `.claude/skills/` | `.claude/agents/` (12) | `.claude/{prompts,templates}/` |
-| OpenCode | `.opencode/skills/` | `.opencode/agents/` (12) | `.opencode/{prompts,templates}/` |
+| Claude Code | `.claude/skills/` | `.claude/agents/` (13) | `.claude/{prompts,templates}/` |
+| OpenCode | `.opencode/skills/` | `.opencode/agents/` (13) | `.opencode/{prompts,templates}/` |
 | Gemini CLI | `.gemini/skills/` | `.gemini/agents/` (11, experimental) | `.gemini/{prompts,templates}/` |
 | Codex CLI | **`.agents/skills/`** (not `.codex/`) | **None** (not supported) | `.codex/{prompts,templates}/` |
 

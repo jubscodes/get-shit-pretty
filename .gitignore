@@ -24,6 +24,10 @@ plugin/
 test-results/
 tsconfig.tsbuildinfo
 
+# gsp-polish runtime artifacts (safety-wrap orphans if interrupted)
+.polish-stash-ref
+*.polish-backup
+
 # Next.js
 .next/
 out/

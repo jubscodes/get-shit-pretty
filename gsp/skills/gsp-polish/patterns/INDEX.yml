@@ -1,0 +1,77 @@
+# GSP Polish — Pattern Library
+# 10 mechanically-detectable craft failures in React/Tailwind/(shadcn) codebases
+# Each pattern is a self-contained .md file. Adding a pattern = drop a file here.
+
+patterns:
+  # ── Safe-auto (additive, reversible, guarded by tsc check) ────────────────
+  - name: mask-image-on-scrolling-text
+    file: mask-image-on-scrolling-text.md
+    tier: safe-auto
+    severity: low
+    category: scroll
+    vibe: "Scrolling text hard-clips at the edge — add a fade mask"
+
+  - name: default-recharts-palette
+    file: default-recharts-palette.md
+    tier: safe-auto
+    severity: medium
+    category: data-viz
+    vibe: "Charts use Recharts' default purple/green — swap for brand tokens"
+
+  - name: mobile-text-no-clamp
+    file: mobile-text-no-clamp.md
+    tier: safe-auto
+    severity: low
+    category: typography
+    vibe: "Hero text is fixed text-6xl — add responsive ramp + text-balance"
+
+  - name: internal-a-not-link
+    file: internal-a-not-link.md
+    tier: safe-auto
+    severity: medium
+    category: nextjs
+    vibe: "Internal href uses <a> not next/link — losing prefetch + client-side nav"
+
+  - name: image-fill-no-relative-parent
+    file: image-fill-no-relative-parent.md
+    tier: safe-auto
+    severity: medium
+    category: nextjs
+    vibe: "next/image with fill but parent isn't positioned — image will collapse"
+
+  # ── Propose-diff (contextual; user reviews before apply) ──────────────────
+  - name: transition-all-everywhere
+    file: transition-all-everywhere.md
+    tier: propose-diff
+    severity: medium
+    category: animation
+    vibe: "transition-all animates everything including layout — pick a property"
+
+  # ── Flag-only (no auto fix; human input required) ─────────────────────────
+  - name: lorem-and-placeholder-copy
+    file: lorem-and-placeholder-copy.md
+    tier: flag-only
+    severity: high
+    category: copy
+    vibe: "Lorem ipsum / John Doe / Click here shipped to prod"
+
+  - name: generic-loading-text
+    file: generic-loading-text.md
+    tier: flag-only
+    severity: medium
+    category: states
+    vibe: "Loading... text where a skeleton should be"
+
+  - name: missing-empty-state
+    file: missing-empty-state.md
+    tier: flag-only
+    severity: medium
+    category: states
+    vibe: "List renders nothing on empty array — no empty state"
+
+  - name: raw-hex-colors-outside-tokens
+    file: raw-hex-colors-outside-tokens.md
+    tier: flag-only
+    severity: high
+    category: tokens
+    vibe: "Raw hex values in className or style — bypasses the token system"

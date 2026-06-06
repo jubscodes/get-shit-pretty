@@ -431,6 +431,17 @@ Update `{PROJECT_PATH}/STATE.md`:
 - Record completion date
 - Update `## Screen Build Status` table — set Build Status per screen (complete/partial/pending)
 
+### Polish pass
+
+Auto-invoke `/gsp-polish --pipeline` via the Skill tool. Polish scans the `git diff` produced by the build (changed `.tsx`/`.jsx`/`.ts`/`.js` files), applies safe-auto craft fixes wrapped in a git-stash safety net, and writes proposed fixes for review-required findings to `{PROJECT_PATH}/polish/`.
+
+Polish is **opt-out**, not opt-in. If `preferences.skip_polish` is `true` in `config.json`, or the user passed `--skip-polish` to `/gsp-project-build`, skip this step and add a one-line note to BUILD-LOG.md.
+
+After polish completes, append a one-line summary to BUILD-LOG.md:
+```
+Polish: {N} findings, {auto} applied, {prop} proposed, {flag} flagged → see polish/INDEX.md
+```
+
 ### Phase transition output
 
 Invoke `/gsp-phase-transition` with phase `build` and output directory `{PROJECT_PATH}/build/`.
