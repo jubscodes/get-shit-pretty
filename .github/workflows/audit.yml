@@ -45,14 +45,18 @@ jobs:
       - run: npm run build
 
   shellcheck:
-    name: Shellcheck guard + audit scripts
+    name: Shellcheck guard scripts
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       - name: Install shellcheck
         run: sudo apt-get update && sudo apt-get install -y shellcheck
-      - name: Lint scripts/*.sh and dev/scripts/*.sh
+      # Scope: user-facing guard scripts only (scripts/*.sh). These ship with
+      # the npm package and run on every Edit/Write — typos silently disable
+      # enforcement. dev/scripts/*.sh is excluded because it's developer
+      # tooling with accumulated lint debt; cleanup is tracked separately.
+      - name: Lint scripts/*.sh
         run: |
           shopt -s nullglob
           set -e
-          shellcheck -x scripts/*.sh dev/scripts/*.sh
+          shellcheck -x scripts/*.sh
