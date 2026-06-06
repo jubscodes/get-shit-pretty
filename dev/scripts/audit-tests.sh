@@ -7,7 +7,7 @@
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-cd "$ROOT"
+cd "$ROOT" || exit 1
 
 SUITE="${1:-all}"
 PASS=0
@@ -69,8 +69,8 @@ if should_run versions; then
   $V5_OK && pass "V5 Template config versions match ($V_FILE)"
 
   # V6: CLAUDE.md counts match filesystem
-  ACTUAL_SKILLS=$(ls -d gsp/skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
-  ACTUAL_AGENTS=$(ls gsp/agents/gsp-*.md 2>/dev/null | wc -l | tr -d ' ')
+  ACTUAL_SKILLS=$(find gsp/skills -mindepth 2 -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+  ACTUAL_AGENTS=$(find gsp/agents -maxdepth 1 -name 'gsp-*.md' 2>/dev/null | wc -l | tr -d ' ')
   V6_OK=true
   if [[ -f CLAUDE.md ]]; then
     # Check source table counts
@@ -253,11 +253,9 @@ if should_run contracts; then
       fi
     fi
     # Must reference current bundle dirs (templates/)
-    for dir in templates; do
-      if ! grep -q "$dir/" "$UPDATE_SKILL"; then
-        C10_OK=false
-      fi
-    done
+    if ! grep -q "templates/" "$UPDATE_SKILL"; then
+      C10_OK=false
+    fi
     if $C10_OK; then
       pass "C10 Update skill aligned with installer"
     else
@@ -367,12 +365,10 @@ if should_run installer; then
 
   # I5: Bundle directories exist
   BUNDLE_OK=true
-  for dir in gsp/templates; do
-    if [[ ! -d "$dir" ]]; then
-      BUNDLE_OK=false
-      fail "I5 Missing bundle dir" "$dir"
-    fi
-  done
+  if [[ ! -d "gsp/templates" ]]; then
+    BUNDLE_OK=false
+    fail "I5 Missing bundle dir" "gsp/templates"
+  fi
   $BUNDLE_OK && pass "I5 Bundle directories present"
 
   # I6: package.json files field — all entries exist
@@ -530,7 +526,7 @@ if should_run installer; then
       # Resolve: CLAUDE_SKILL_DIR = gsp/skills/<dir>, so ../../ = gsp/
       resolved=$(echo "$ref" | sed "s|\${CLAUDE_SKILL_DIR}/\.\./\.\./|gsp/|" | sed "s|\${CLAUDE_SKILL_DIR}/\.\./|gsp/skills/|" | sed "s|\${CLAUDE_SKILL_DIR}/|gsp/skills/${dir}/|")
       # Strip trailing description after space (e.g. "file.md (index only — ...)")
-      resolved=$(echo "$resolved" | sed 's/ (.*//')
+      resolved="${resolved%% (*}"
       # Skip dynamic refs with {} placeholders
       echo "$resolved" | grep -q '{' && continue
       if [[ ! -e "$resolved" ]]; then
@@ -632,6 +628,7 @@ if should_run installer; then
     [[ -f "$f" ]] || continue
     # Find lines with bare `skills/gsp-` or `references/` paths that aren't preceded by ${CLAUDE_SKILL_DIR}/
     # Skip lines inside <context> blocks (descriptive) and lines with `dev/skills/` (dev-skill refs)
+    # shellcheck disable=SC2016  # literal ${CLAUDE_SKILL_DIR} / `skills/` and literal $ in regex
     while IFS=: read -r ln content; do
       # Skip if line has ${CLAUDE_SKILL_DIR} earlier in the same line
       [[ "$content" == *'${CLAUDE_SKILL_DIR}'* ]] && continue
@@ -661,7 +658,7 @@ if should_run installer; then
   I22_CANDIDATES=()
   PIPELINE_SKILLS=(gsp-brand-research gsp-brand-strategy gsp-brand-identity gsp-brand-guidelines gsp-project-brief gsp-project-research gsp-project-design gsp-project-critique gsp-project-build gsp-project-review)
   for skill in "${PIPELINE_SKILLS[@]}"; do
-    for f in gsp/skills/$skill/SKILL.md gsp/skills/$skill/methodology/*.md; do
+    for f in "gsp/skills/$skill/SKILL.md" "gsp/skills/$skill"/methodology/*.md; do
       [[ -f "$f" ]] || continue
       # Heuristic markers — concrete domain rules typically owned by expertise
       DOMAIN_HITS=$(grep -cE 'Inter/Roboto|off-black not #000|prefers-reduced-motion|tabular-nums|tint shadows|text-wrap: balance' "$f" 2>/dev/null || echo 0)
@@ -754,6 +751,7 @@ if should_run runtime; then
     # OpenCode: /gsp: → /gsp-
     grep -q '/gsp-' bin/install.js || BR_OK=false
     # Codex: /gsp: → $gsp-
+    # shellcheck disable=SC2016  # literal $gsp- pattern to grep
     grep -q '\$gsp-' bin/install.js || BR_OK=false
     if $BR_OK; then
       pass "R5 Command invocation replacements present"
@@ -921,7 +919,7 @@ if should_run templates; then
     done
   done
   if [[ ${#T8_MISSING[@]} -eq 0 ]]; then
-    PRESET_COUNT=$(ls "$STYLE_DIR"/*.yml 2>/dev/null | grep -v INDEX | wc -l | tr -d ' ')
+    PRESET_COUNT=$(find "$STYLE_DIR" -maxdepth 1 -name '*.yml' ! -name 'INDEX*' 2>/dev/null | wc -l | tr -d ' ')
     pass "T8 All $PRESET_COUNT presets have intensity+patterns+constraints+effects"
   else
     fail "T8 Presets missing schema blocks" "${T8_MISSING[*]}"
@@ -1014,6 +1012,7 @@ if should_run references; then
     skill_dir=$(dirname "$src")
 
     # X1: ${CLAUDE_SKILL_DIR}/../<rel> → gsp/skills/<rel>
+    # shellcheck disable=SC2016  # literal ${CLAUDE_SKILL_DIR} in regex
     while IFS= read -r ref; do
       [[ -z "$ref" ]] && continue
       is_placeholder "$ref" && continue
@@ -1158,10 +1157,10 @@ if should_run prompts; then
       HAS_ONE_Q=$(grep -ci 'one decision per question\|one.*question.*at a time' "$skill")
       HAS_ASK=$(grep -ci 'always use.*AskUserQuestion\|AskUserQuestion.*for user' "$skill")
       if [[ "$HAS_ONE_Q" -eq 0 || "$HAS_ASK" -eq 0 ]]; then
-        MISSING=""
-        [[ "$HAS_ONE_Q" -eq 0 ]] && MISSING="one-decision"
-        [[ "$HAS_ASK" -eq 0 ]] && MISSING="${MISSING:+$MISSING+}ask-rule"
-        P4_MISSING+=("$dir:$MISSING")
+        P4_MISSING_TAG=""
+        [[ "$HAS_ONE_Q" -eq 0 ]] && P4_MISSING_TAG="one-decision"
+        [[ "$HAS_ASK" -eq 0 ]] && P4_MISSING_TAG="${P4_MISSING_TAG:+$P4_MISSING_TAG+}ask-rule"
+        P4_MISSING+=("$dir:$P4_MISSING_TAG")
       fi
     fi
   done
@@ -1281,11 +1280,12 @@ if should_run unit; then
 
   # U4: serve-preset.js serves the file and exits on SIGTERM
   TMPJSON=$(mktemp).json
+  # shellcheck disable=SC2016  # literal $schema key in shadcn registry JSON
   echo '{"$schema":"https://ui.shadcn.com/schema/registry-item.json","name":"smoke","type":"registry:theme","cssVars":{"light":{},"dark":{}}}' > "$TMPJSON"
   SERVE_PRESET=gsp/skills/gsp-brand-apply/bin/serve-preset.js
   node "$SERVE_PRESET" "$TMPJSON" > /tmp/gsp-serve-url-$$.txt 2>/dev/null &
   SERVER_PID=$!
-  for i in 1 2 3 4 5; do sleep 0.2; [ -s /tmp/gsp-serve-url-$$.txt ] && break; done
+  for _ in 1 2 3 4 5; do sleep 0.2; [ -s /tmp/gsp-serve-url-$$.txt ] && break; done
   URL=$(head -1 /tmp/gsp-serve-url-$$.txt 2>/dev/null)
   if [[ -n "$URL" && "$URL" == http* ]]; then
     BODY=$(curl -fsS "$URL" 2>/dev/null)

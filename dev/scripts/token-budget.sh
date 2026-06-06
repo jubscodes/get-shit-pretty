@@ -7,7 +7,7 @@ set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 LIB_ROOT="$ROOT"
-cd "$ROOT"
+cd "$ROOT" || exit 1
 
 # ── Shared scoring lib ──────────────────────────────
 
@@ -63,7 +63,8 @@ main() {
       details="$details + $methodology_lines methodology"
     fi
 
-    local icon=$(risk_icon "$score")
+    local icon
+    icon=$(risk_icon "$score")
     printf "  %s %-35s %4d  (%s)\n" "$icon" "$skill_name" "$score" "$details"
   done
 
@@ -98,7 +99,8 @@ main() {
       fi
     done
 
-    local color=$(risk_color $((path_count > 0 ? path_score / path_count : 0)))
+    local color
+    color=$(risk_color $((path_count > 0 ? path_score / path_count : 0)))
     printf "  ${color}%-25s${RESET} %5d  (%d skills, heaviest: %s at %d)\n" \
       "$path_name" "$path_score" "$path_count" "$heaviest_skill" "$heaviest_score"
   done
