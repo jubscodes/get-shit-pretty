@@ -88,96 +88,16 @@ This workspace has a declared stack for this app. Enforce compliance before touc
 
 ## Step 3: Initialize stack
 
-Based on `tech_stack` and `implementation_target`, run the appropriate setup.
+Based on `tech_stack` and `implementation_target`, load the matching sibling and follow its setup commands. All shell commands run in `APP_PATH` (`cd {APP_PATH} && ...`). Check before overwriting — only create what's missing.
 
-**Important:** All shell commands in this step run in the `APP_PATH` working directory (`cd {APP_PATH} && ...`). Always check if config files already exist before overwriting. Only create what's missing.
+| Detected stack | Load |
+|----------------|------|
+| Next.js + shadcn (`codebase_type: greenfield` or `existing`) | `${CLAUDE_SKILL_DIR}/stacks/nextjs-shadcn.md` (covers both modes) |
+| Vite + React | `${CLAUDE_SKILL_DIR}/stacks/vite-react.md` |
+| React Native + NativeWind | `${CLAUDE_SKILL_DIR}/stacks/react-native.md` |
+| Any web stack using Tailwind | also load `${CLAUDE_SKILL_DIR}/postcss-and-tailwind.md` for PostCSS config + Tailwind v4 source scoping (shared) |
 
-### Next.js + shadcn (greenfield)
-
-First, try `create-next-app`:
-
-```bash
-npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias "@/*" --yes
-```
-
-**If `create-next-app` fails** (e.g., directory has existing files — common when the project lives inside an existing repo), fall back to manual setup:
-
-1. Install deps directly:
-```bash
-npm install --save-dev next react react-dom typescript @types/node @types/react @types/react-dom tailwindcss @tailwindcss/postcss postcss
-```
-
-2. Create config files (only if they don't exist):
-   - `next.config.mjs` — minimal Next.js config
-   - `tsconfig.json` — standard Next.js TypeScript config with `@/*` path alias pointing to `./src/*`
-   - `postcss.config.mjs` — see PostCSS section below
-
-3. Create minimal app structure:
-   - `src/app/layout.tsx` — root layout with metadata
-   - `src/app/page.tsx` — placeholder page
-   - `src/app/globals.css` — Tailwind import (see Tailwind v4 section below)
-
-4. Run `npx next build` to verify the base stack compiles before proceeding.
-
-Then initialize shadcn:
-```bash
-npx shadcn@latest init -d
-```
-
-### Next.js + shadcn (existing)
-
-```bash
-# Only init shadcn if components.json doesn't exist
-npx shadcn@latest init -d
-```
-
-### Vite + React
-
-```bash
-# Only if no vite.config exists
-npm create vite@latest . -- --template react-ts
-npm install
-npm install -D tailwindcss @tailwindcss/vite
-```
-
-### React Native + NativeWind
-
-```bash
-npm install nativewind tailwindcss
-npx @react-native-reusables/cli init
-```
-
-### PostCSS config
-
-If using Tailwind and no `postcss.config.mjs` exists, create it.
-
-Check the installed Tailwind version first (`node -e "console.log(require('tailwindcss/package.json').version)"`):
-
-- **Tailwind v4:** Use `@tailwindcss/postcss` plugin
-- **Tailwind v3:** Use `tailwindcss` and `autoprefixer` plugins
-
-```javascript
-// Tailwind v4
-/** @type {import('postcss-load-config').Config} */
-const config = {
-  plugins: {
-    "@tailwindcss/postcss": {},
-  },
-};
-export default config;
-```
-
-### Tailwind v4 source scoping
-
-**Critical:** Tailwind v4 auto-detects source files for class scanning. In repos that contain non-source files with CSS class names (e.g., `.design/` markdown specs, `gsp/` skill files that mention Tailwind utilities), the scanner will try to resolve arbitrary strings as modules and fail the build.
-
-When using the `@import "tailwindcss"` directive, scope the source to the app's source directory:
-
-```css
-@import "tailwindcss" source("../");
-```
-
-This limits scanning to `src/` and its siblings rather than the entire repo. Note that `shadcn init` may overwrite `globals.css` — if it does, verify its output still compiles. shadcn v4+ handles source scoping correctly in its own CSS output.
+Read the relevant sibling(s) at this step (not before) — they're scoped to the detected stack and stay out of context when not needed.
 
 ## Step 3.9: Install configured icon library
 
