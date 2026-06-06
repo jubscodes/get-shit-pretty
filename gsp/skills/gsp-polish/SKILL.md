@@ -1,6 +1,6 @@
 ---
 name: gsp-polish
-description: Detect and fix AI-slop craft failures in the codebase — scrolling text without fade mask, default chart palettes, lorem placeholders, missing empty states, hardcoded hex outside tokens. Auto-runs after build; user-invocable anytime.
+description: Detect and fix AI-slop craft failures in the codebase — auto-runs after build; user-invocable anytime — use when: polish the build, clean up AI slop, find lorem placeholders, missing empty states, default chart palettes, hardcoded hex outside tokens, scrolling text without fade mask
 user-invocable: true
 allowed-tools:
   - Read

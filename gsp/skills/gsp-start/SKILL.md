@@ -1,6 +1,6 @@
 ---
 name: gsp-start
-description: Start the GSP pipeline — use when starting a new feature, I want to build X, help me design, let's work on, or kicking off any new work
+description: Start the GSP pipeline — routes to the right entry point (brand brief, project brief, scaffold) — use when: starting a new feature, I want to build X, help me design, let's work on, kicking off new work, where do I start
 user-invocable: true
 allowed-tools:
   - Read

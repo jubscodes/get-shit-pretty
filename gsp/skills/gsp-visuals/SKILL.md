@@ -1,6 +1,6 @@
 ---
 name: gsp-visuals
-description: "Define visual direction — imagery, 3D, video, textures, and surface treatments"
+description: "Define visual direction — imagery, 3D, video, textures, and surface treatments — use when: pick imagery, set mood, choose visual treatment, 3D direction, video direction, texture and surface decisions"
 user-invocable: true
 allowed-tools:
   - Read

@@ -1,6 +1,6 @@
 ---
 name: gsp-typography
-description: "Design type systems — scale, pairing, fluid type, vertical rhythm"
+description: "Design type systems — scale, pairing, fluid type, vertical rhythm — use when: pick fonts, font pairing, type scale, vertical rhythm, fluid typography, body and heading sizes"
 user-invocable: true
 allowed-tools:
   - Read

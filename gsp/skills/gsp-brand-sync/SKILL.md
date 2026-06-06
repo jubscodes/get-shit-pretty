@@ -1,6 +1,6 @@
 ---
 name: gsp-brand-sync
-description: Sync brand to match a project's shipped state — tokens, voice, visual patterns, personality
+description: Sync brand to match a project's shipped state — tokens, voice, visual patterns, personality — use when: brand drifted from the app, reverse-engineer the brand, the code is ahead of the brand docs, sync brand to shipped, update brand from production
 user-invocable: true
 allowed-tools:
   - Read

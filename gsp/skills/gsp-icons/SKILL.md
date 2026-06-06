@@ -1,6 +1,6 @@
 ---
 name: gsp-icons
-description: Design icon systems — library selection, sizing, containers, custom SVG direction
+description: Design icon systems — library selection, sizing, containers, custom SVG direction — use when: pick an icon library, icon sizing rules, icon containers, custom SVG direction, swap icons, icon strategy
 user-invocable: true
 allowed-tools:
   - Read

@@ -1,6 +1,6 @@
 ---
 name: gsp-style
-description: Apply a design style — get tokens and foundations without the branding diamond
+description: Apply a design style preset — tokens and foundations without the full branding diamond — use when: just give me a style, quick tokens, skip branding, apply a preset, use the X style, swap to Y style
 user-invocable: true
 allowed-tools:
   - Read
