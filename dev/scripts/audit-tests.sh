@@ -29,7 +29,7 @@ should_run() { [[ "$SUITE" == "all" || "$SUITE" == "$1" ]]; }
 if should_run versions; then
   header "Version Sync"
 
-  V_FILE=$(cat VERSION 2>/dev/null | tr -d '[:space:]')
+  V_FILE=$(tr -d '[:space:]' < VERSION 2>/dev/null)
   V_PKG=$(node -e "process.stdout.write(require('./package.json').version)" 2>/dev/null)
 
   # V1: VERSION and package.json agree

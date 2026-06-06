@@ -18,7 +18,7 @@ source "$ROOT/dev/scripts/lib-scoring.sh"
 # ── Helpers ─────────────────────────────────────────
 
 get_version() {
-  cat "$ROOT/VERSION" 2>/dev/null | tr -d '[:space:]'
+  tr -d '[:space:]' < "$ROOT/VERSION" 2>/dev/null
 }
 
 get_branch() {
