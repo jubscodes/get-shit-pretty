@@ -160,7 +160,7 @@ Internal development tools live in `dev/` (versioned in repo, never installed to
 |------|---------|
 | `dev/skills/gspdev-audit/` | Pipeline integrity checker — contracts, installer, runtime compat, versions, templates |
 | `dev/skills/gspdev-runtime-compat/` | Fetch live runtime docs and flag drift against GSP installer |
-| `dev/scripts/audit-tests.sh` | Automated test suite (65 tests across 8 suites) |
+| `dev/scripts/audit-tests.sh` | Automated test suite across 9 suites (versions, contracts, installer, runtime, templates, unit, prompts, tokenbudget, references) |
 | `dev/scripts/token-budget.sh` | Static token budget analyzer — scores skills by estimated API weight |
 | `dev/scripts/token-proxy-start.sh` | Live token proxy — mitmproxy addon for measuring real API usage |
 | `dev/scripts/benchmark.sh` | Token budget benchmarking — capture snapshots, compare against release baseline |

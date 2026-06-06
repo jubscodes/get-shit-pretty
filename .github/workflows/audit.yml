@@ -43,3 +43,16 @@ jobs:
       # Build smoke just verifies buildability, not strict reproducibility.
       - run: npm install --no-audit --no-fund
       - run: npm run build
+
+  shellcheck:
+    name: Shellcheck guard + audit scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: Lint scripts/*.sh and dev/scripts/*.sh
+        run: |
+          shopt -s nullglob
+          set -e
+          shellcheck -x scripts/*.sh dev/scripts/*.sh

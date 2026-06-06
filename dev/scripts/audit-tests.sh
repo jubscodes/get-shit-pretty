@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # GSP Integrity Test Suite
 # Run from repo root: bash dev/scripts/audit-tests.sh [suite]
-# Suites: all, versions, contracts, installer, runtime, templates, unit, prompts, tokenbudget
+# Suites: all, versions, contracts, installer, runtime, templates, unit, prompts, tokenbudget, references
 # Exit code: number of failures
 
 set -uo pipefail
@@ -1347,6 +1347,116 @@ if should_run tokenbudget; then
     fi
   else
     fail "TB1 Token budget script missing" "dev/scripts/token-budget.sh not found"
+  fi
+fi
+
+# ── H: Hooks & Settings ──────────────────────────────
+
+if should_run hooks || should_run contracts || should_run all; then
+  header "Hooks & Settings"
+
+  HOOKS_JSON="gsp/hooks/hooks.json"
+  SETTINGS_TEMPLATE="claude-settings.template.json"
+
+  # H1: JSON validity of hooks.json and settings template
+  for f in "$HOOKS_JSON" "$SETTINGS_TEMPLATE"; do
+    if [[ ! -f "$f" ]]; then
+      fail "H1 Missing JSON file" "$f"
+      continue
+    fi
+    if node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" 2>/dev/null; then
+      pass "H1 Valid JSON ($f)"
+    else
+      fail "H1 Invalid JSON" "$f does not parse"
+    fi
+  done
+
+  # H2: every hook command's script path resolves
+  # Parses .hooks.*.hooks[].command from both JSON files, extracts the
+  # scripts/X.sh|dev/scripts/X.sh|.claude/hooks/X.js path, asserts it exists.
+  H2_MISSING=0
+  H2_CHECKED=0
+  for f in "$HOOKS_JSON" "$SETTINGS_TEMPLATE"; do
+    [[ -f "$f" ]] || continue
+    # Extract command strings from the .hooks subtree only (not .statusLine etc).
+    COMMANDS=$(node -e "
+      const j = JSON.parse(require('fs').readFileSync('$f','utf8'));
+      const out = new Set();
+      function walk(o) {
+        if (o && typeof o === 'object') {
+          if (typeof o.command === 'string') out.add(o.command);
+          for (const k in o) walk(o[k]);
+        }
+      }
+      walk(j.hooks || {});
+      for (const c of out) console.log(c);
+    " 2>/dev/null)
+    while IFS= read -r cmd; do
+      [[ -z "$cmd" ]] && continue
+      # Strip leading 'bash ' / 'node ' / 'sh ', then take first whitespace-delimited token.
+      # Use awk for portable alternation (BSD sed differs from GNU sed on -E groups).
+      stripped=$(echo "$cmd" | awk '{ if ($1 == "bash" || $1 == "node" || $1 == "sh") { print $2 } else { print $1 } }')
+      # Resolve placeholder ${CLAUDE_PROJECT_ROOT}/ to repo root
+      path="${stripped/\$\{CLAUDE_PROJECT_ROOT\}\//}"
+      # Filter for paths we own (avoid e.g. /bin/sh)
+      [[ "$path" =~ ^(scripts|dev/scripts|\.claude/hooks)/ ]] || continue
+      H2_CHECKED=$((H2_CHECKED + 1))
+      if [[ ! -f "$path" ]]; then
+        fail "H2 Hook script missing" "$f references $path"
+        H2_MISSING=$((H2_MISSING + 1))
+      fi
+    done <<< "$COMMANDS"
+  done
+  if [[ $H2_MISSING -eq 0 && $H2_CHECKED -gt 0 ]]; then
+    pass "H2 All hook command paths resolve ($H2_CHECKED checked)"
+  elif [[ $H2_CHECKED -eq 0 ]]; then
+    warn "H2 No hook commands found to check" "(unexpected — verify parsing)"
+  fi
+
+  # H3: every gsp-* agent has a SubagentStop matcher (or is allowlisted)
+  # Allowlist: agents that legitimately have no on-disk deliverables (none today).
+  H3_ALLOWLIST=""
+  H3_MISSING_AGENTS=()
+  if [[ -f "$HOOKS_JSON" ]]; then
+    MATCHERS=$(node -e "
+      const j = JSON.parse(require('fs').readFileSync('$HOOKS_JSON','utf8'));
+      const ms = new Set();
+      for (const ev in (j.hooks || {})) {
+        for (const entry of j.hooks[ev]) {
+          if (entry.matcher) ms.add(entry.matcher);
+        }
+      }
+      for (const m of ms) console.log(m);
+    " 2>/dev/null)
+    for af in gsp/agents/gsp-*.md; do
+      [[ -f "$af" ]] || continue
+      agent_name=$(basename "$af" .md)
+      [[ " $H3_ALLOWLIST " == *" $agent_name "* ]] && continue
+      if ! grep -qx "$agent_name" <<< "$MATCHERS"; then
+        H3_MISSING_AGENTS+=("$agent_name")
+      fi
+    done
+  fi
+  if [[ ${#H3_MISSING_AGENTS[@]} -eq 0 ]]; then
+    pass "H3 Every gsp-* agent has a SubagentStop matcher"
+  else
+    fail "H3 Agent without SubagentStop matcher" "${H3_MISSING_AGENTS[*]} (add to $HOOKS_JSON or allowlist)"
+  fi
+
+  # H4: no hardcoded .design/ paths in gsp/agents/gsp-*.md
+  # Per CLAUDE.md "Must-never": agents must say "path provided by the skill"
+  # Allowlist: gsp/agents/CLAUDE.md may document the rule + example paths
+  H4_VIOLATORS=()
+  for af in gsp/agents/gsp-*.md; do
+    [[ -f "$af" ]] || continue
+    if grep -qE '\.design/(branding|projects|system|.+/)' "$af"; then
+      H4_VIOLATORS+=("$af")
+    fi
+  done
+  if [[ ${#H4_VIOLATORS[@]} -eq 0 ]]; then
+    pass "H4 No hardcoded .design/ paths in agent files"
+  else
+    fail "H4 Hardcoded .design/ path in agent" "${H4_VIOLATORS[*]} — use 'path provided by the skill that spawned you'"
   fi
 fi
 
