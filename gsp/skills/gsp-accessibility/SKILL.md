@@ -46,7 +46,7 @@ Read `$ARGUMENTS` to determine the mode:
 |-------|------|--------|
 | `--check #FG #BG` | Quick contrast check | Display only |
 | `--tokens` | Token-only: contrast pairs, sizing, spacing | `critique/accessibility-token-audit.md` |
-| `--validate <yml-path>` | Pre-emit gate: validate a brand `.yml` for WCAG compliance | Exit 0 (pass) / exit 1 (fail) — failures to stdout, no file writes |
+| `--validate <yml-path>` | Pre-emit gate: validate a brand `.yml` for WCAG compliance | Exit 0 (pass) / exit 1 (fail) — verdict to stdout, audit trail appended to `<yml-dir>/wcag-validate.log` |
 | (no args) | Mode picker | Prompt user |
 
 Additional flag: `--level AAA` overrides conformance level (default: AA).
@@ -214,7 +214,7 @@ Display result and use `AskUserQuestion`:
 
 Pre-emit gate for `gsp-brand-guidelines` (and any caller that needs a yes/no contrast verdict on a brand `.yml` without project context).
 
-**Differs from `--tokens`:** no project resolution, no file writes, returns exit code instead of writing a chunk. Use when you need a hard PASS/FAIL gate before downstream emission.
+**Differs from `--tokens`:** no project resolution, no chunk file. Verdict is carried by exit code + stdout; an append-only audit log is written next to the validated `.yml` so post-hoc reviewers can confirm the gate ran. Use when you need a hard PASS/FAIL gate before downstream emission.
 
 ### Inputs
 
@@ -253,7 +253,24 @@ Skip the `--tokens` extras (touch targets, typography minimums) — those are no
   Fix via: /gsp-brand-refine "{token-name} contrast"
 ```
 
-**No file writes.** This mode is a callable gate — output goes to stdout, exit code carries the verdict. Stop here; no AskUserQuestion routing.
+### Audit log (both verdicts)
+
+After printing the stdout verdict, append an entry to `<dirname of yml-path>/wcag-validate.log` so the gate is auditable post-hoc (compliance claims need a trail). Create the file if it doesn't exist.
+
+Entry format:
+
+```
+─── {ISO 8601 timestamp} ─── WCAG 2.2 {level} ─── {PASS|FAIL} ───
+yml: {yml-name}
+pairs checked: {N}
+
+| Pair | FG | BG | Ratio | Required | Result |
+|------|----|----|-------|----------|--------|
+| {semantic name} | {fg hex} | {bg hex} | {ratio}:1 | {threshold}:1 | PASS/FAIL |
+...
+```
+
+One block per invocation; newest at the bottom. The log is the only file write in this mode — no chunks, no STATE.md updates. Stop here; no AskUserQuestion routing.
 
 ## Step 5: Update STATE.md
 

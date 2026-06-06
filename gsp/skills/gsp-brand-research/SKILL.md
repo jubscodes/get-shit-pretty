@@ -13,6 +13,8 @@ allowed-tools:
 ---
 <context>
 Phase 1 of the GSP branding diamond. Researches market landscape, competitive positioning, and design trends to inform brand strategy. Personas are already defined in BRIEF.md — this phase validates and enriches the market context around them.
+
+**Prerequisites:** `/gsp-start` must have run first to scaffold `.design/branding/{brand}/BRIEF.md` and `config.json`. Invoking this skill cold (no brand directory) exits with a one-line "run /gsp-start first" prompt — it does not bootstrap.
 </context>
 
 <objective>

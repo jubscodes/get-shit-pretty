@@ -13,6 +13,8 @@ allowed-tools:
 ---
 <context>
 Phase 2 of the GSP branding diamond. Interactive creative session — present research insights, collaborate on archetype and positioning, then produce full strategy including voice and messaging. This phase replaces the previous separate strategy + verbal phases.
+
+**Prerequisites:** `/gsp-start` scaffolds the brand directory, then `/gsp-brand-research` (Phase 1) produces the discover chunks this phase reads. Strategy will run on BRIEF.md alone if discover chunks are absent, but invoking it before `/gsp-start` exits with "run /gsp-start first" — it does not bootstrap.
 </context>
 
 <objective>
