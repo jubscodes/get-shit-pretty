@@ -24,13 +24,15 @@ Single source of truth for **project-pipeline** output adaptation. Pipeline skil
 
 The chunk *vocabulary* is preserved across all modes — only the **file partitioning** changes. A designer reading any mode sees the same H2 headers (Personas, IA, Component Spec, Microcopy, Accessibility, Visual Design, UX Flows, Responsive, Micro-interactions).
 
-### Brief
+### Brief (SDD spec)
+
+The brief phase is **outside this mode policy**. As of the SDD pivot (PR #232+), the brief always writes a single flat artifact `{PROJECT_PATH}/spec.md` regardless of `project_size`. Sections that have no project-specific content are omitted entirely (skip-if-not-present).
 
 | Mode | Files | Sections |
 |---|---|---|
-| `chat` | none (brief lives in conversation) | scope, target adaptations, install manifest, gap analysis, file references |
-| `compact` | `brief/PHASE.md` (≤300 lines) | same H2 sections |
-| `full` | 5 files: `scope.md`, `target-adaptations.md`, `install-manifest.md`, `gap-analysis.md`, `file-references.md` + `INDEX.md` | one file per concern |
+| any | `{PROJECT_PATH}/spec.md` (flat) | Scope, Acceptance Criteria (EARS), Target Adaptations, Install Manifest, Gap Analysis, File References, Issue Framing |
+
+Legacy projects with `brief/` subdirs still readable; new projects use the flat spec.
 
 ### Research
 

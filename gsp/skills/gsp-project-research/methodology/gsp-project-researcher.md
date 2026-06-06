@@ -50,7 +50,7 @@ Write each chunk following the standard chunk format:
 
 ### Cross-references
 
-- All chunks reference the project brief: `../brief/scope.md`
+- All chunks reference the project spec: `../spec.md` (legacy fallback: `../brief/scope.md`)
 - `recommendations.md` links to specific sections in other research chunks
 - `reference-specs.md` includes external URLs with retrieval dates
 

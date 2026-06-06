@@ -83,11 +83,13 @@ If not found, fall back to scanning `{BRAND_PATH}/patterns/` for a `.md` file th
 
 If neither found, proceed without it (older brands may not have this file).
 
-### Brief (chunk-first)
+### Spec (SDD-style flat artifact)
 
-Read `{PROJECT_PATH}/brief/INDEX.md`. If it exists, load `scope.md` and `target-adaptations.md`.
+Read `{PROJECT_PATH}/spec.md` — focus on **Scope**, **Acceptance Criteria** (each screen must support its relevant ACs), and **Target Adaptations**.
 
-If brief doesn't exist, proceed without it (brief is informative, not blocking).
+If `spec.md` is absent but legacy `{PROJECT_PATH}/brief/INDEX.md` exists, fall back to loading `brief/scope.md` and `brief/target-adaptations.md` (pre-SDD project shape).
+
+If neither exists, proceed without it (brief is informative, not blocking).
 
 ### Research (chunk-first)
 

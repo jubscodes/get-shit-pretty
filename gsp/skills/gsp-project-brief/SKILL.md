@@ -18,11 +18,11 @@ Works with the dual-diamond architecture: reads brand system from `.design/brand
 </context>
 
 <objective>
-Scope the project and plan adaptations from the brand system.
+Scope the project, capture testable acceptance criteria, and plan adaptations from the brand system.
 
 **Input:** Brand system (via brand.ref) + project BRIEF.md + config.json
-**Output:** `{project}/brief/` (scope.md, target-adaptations.md, conditionals, INDEX.md)
-**Output mode:** Honor `${CLAUDE_SKILL_DIR}/../../policies/output-modes.md` per `preferences.project_size` (default `compact`). Chunk file counts and consolidation rules live in the policy.
+**Output:** `{project}/spec.md` — single flat artifact (the SDD-style spec contract). Replaces the prior `brief/` subdirectory.
+**Output mode:** Spec is always written flat regardless of `preferences.project_size`. Verbosity within sections still honors the mode policy.
 </objective>
 
 <execution_context>
@@ -118,71 +118,95 @@ If this project modifies components from a sibling's manifest, note provenance.
 
 1. **Analyze brief** — what's being built, for whom, on what platforms
 2. **Define screen list** — prioritized screens from brief, user flows, success criteria
-3. **Map component scope** — which brand system components this project needs
-4. **Identify adaptations** — project-specific variants, overrides, or extensions to brand components
-5. **Map to implementation target** — connect design components to target primitives (shadcn, rn-reusables, existing, code)
-6. **Gap analysis** (existing codebases) — what's in the brand system but missing from the codebase
-7. **Generate install manifest** (shadcn/rn-reusables) — install commands for needed components
-8. **Issue framing** — suggest how to break the project into bounded, shippable issues
+3. **Write acceptance criteria in EARS notation** — each user-visible behavior becomes a testable `WHEN <trigger> THE SYSTEM SHALL <behavior>` line, grouped by feature area, numbered (AC-1.1, AC-1.2, …). These are the contract the design, build, and review phases verify against. Aim for 5–15 criteria total — enough to cover the happy paths and the critical edges, not every keystroke.
+4. **Map component scope** — which brand system components this project needs
+5. **Identify adaptations** — project-specific variants, overrides, or extensions to brand components
+6. **Map to implementation target** — connect design components to target primitives (shadcn, rn-reusables, existing, code)
+7. **Gap analysis** (existing codebases) — what's in the brand system but missing from the codebase
+8. **Generate install manifest** (shadcn/rn-reusables) — install commands for needed components
+9. **Issue framing** — suggest how to break the project into bounded, shippable issues
 
 ### Quality standards
 
 - Every screen has a clear purpose and priority level
+- Every acceptance criterion is testable (could be turned into a test) and unambiguous (no "the system shall be fast")
 - Component adaptations reference specific brand system components
 - Gap analysis is concrete (component names, token names)
 - Install manifests are copy-paste ready
 - Scope boundaries are explicit (what's in, what's out)
 
-### Write chunks to `{PROJECT_PATH}/brief/`
+## Step 3: Write `{PROJECT_PATH}/spec.md`
 
-Use the brief output template from execution_context for chunk formatting.
+Use the spec template from execution_context as the section skeleton.
 
-1. **`scope.md`** (~80-120 lines) — prioritized screen list, component scope, project boundaries, success criteria, dependencies, issue framing
-2. **`target-adaptations.md`** (~60-100 lines) — token overrides, component adaptations, platform considerations, implementation target mapping
-3. **`install-manifest.md`** (shadcn/rn-reusables only) — install commands for all needed components
-4. **`gap-analysis.md`** (existing target only) — components/tokens in brand system but not in codebase
-5. **`file-references.md`** (existing target only) — paths to existing components/tokens being used
+The artifact is **one flat file** at `{PROJECT_PATH}/spec.md` — no `brief/` subdirectory, no per-axis chunks, no `INDEX.md` cross-pollination. Sections that have no project-specific content are omitted entirely (skip-if-not-present doctrine).
 
-Cross-references: `target-adaptations.md` links to `{BRAND_PATH}/patterns/components/{name}.md`; `gap-analysis.md` links to brand system components and tokens; `scope.md` references the project BRIEF.md.
-
-### Write `INDEX.md`
+Section order:
 
 ```markdown
-# Brief
-> Phase: brief | Project: {name} | Generated: {DATE}
+# Spec: {project-name}
 
-## Scoping
+> Project: {name} | Brand: {brand} | Generated: {DATE}
+> Implementation target: {target} | Issue: {url if linked}
 
-| Chunk | File | ~Lines |
-|-------|------|--------|
-| Scope | [scope.md](./scope.md) | ~{N} |
-| Target Adaptations | [target-adaptations.md](./target-adaptations.md) | ~{N} |
-| Install Manifest | [install-manifest.md](./install-manifest.md) | ~{N} |
-| Gap Analysis | [gap-analysis.md](./gap-analysis.md) | ~{N} |
-| File References | [file-references.md](./file-references.md) | ~{N} |
+## Scope
+{2–3 paragraphs on what's being built, for whom, on what platforms.}
+
+### Screens
+| Screen | Priority | Purpose |
+|--------|---------:|---------|
+| ... | P0/P1/P2 | one-liner |
+
+### Boundaries
+**In scope:** …
+**Out of scope:** …
+
+## Acceptance Criteria
+Each criterion uses EARS notation. The design, build, and review phases verify against these.
+
+### {Feature area 1}
+- **AC-1.1** — WHEN <trigger>, THE SYSTEM SHALL <behavior>
+- **AC-1.2** — …
+
+### {Feature area 2}
+- **AC-2.1** — …
+
+## Target Adaptations
+Component adaptations + token overrides for {implementation_target}.
+
+| Component | Adaptation | Reason |
+|-----------|-----------|--------|
+| ... | what changes | why |
+
+## Install Manifest
+(shadcn / rn-reusables targets only — omit otherwise)
+
+\`\`\`bash
+npx shadcn@latest add button card dialog
+npm install lucide-react
+\`\`\`
+
+## Gap Analysis
+(existing codebases only — omit otherwise)
+
+Components/tokens in brand system but not in codebase: …
+
+## File References
+(existing target only — omit otherwise)
+
+| Component | Existing path | Reuse strategy |
+|-----------|---------------|----------------|
+| ... | path | keep / restyle / replace |
+
+## Issue Framing
+How to break this into bounded shippable PRs.
+1. ...
+2. ...
 ```
 
-Only include rows for chunks that were actually produced.
+Cross-references: Target Adaptations links to `{BRAND_PATH}/patterns/components/{name}.md`; Gap Analysis links to brand system components and tokens.
 
-## Step 3: Write exports
-
-Update `{PROJECT_PATH}/exports/INDEX.md`:
-- If INDEX.md doesn't exist, copy it from `templates/exports-index.md`
-- Replace everything between `<!-- BEGIN:brief -->` and `<!-- END:brief -->` with populated table:
-
-```markdown
-<!-- BEGIN:brief -->
-| Section | File |
-|---------|------|
-| Scope | [scope.md](../brief/scope.md) |
-| Target Adaptations | [target-adaptations.md](../brief/target-adaptations.md) |
-| Install Manifest | [install-manifest.md](../brief/install-manifest.md) |
-| Gap Analysis | [gap-analysis.md](../brief/gap-analysis.md) |
-| File References | [file-references.md](../brief/file-references.md) |
-<!-- END:brief -->
-```
-
-Only include rows for chunks that were actually produced.
+**Do not** write `{PROJECT_PATH}/brief/`, `{PROJECT_PATH}/brief/INDEX.md`, or update `{PROJECT_PATH}/exports/INDEX.md`. Those structures are deprecated by the flat-spec shape. If an existing `brief/` directory is present from a pre-SDD project, leave it untouched — `gsp-doctor` surfaces it as legacy.
 
 ## Step 4: Update state
 

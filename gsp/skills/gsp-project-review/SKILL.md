@@ -60,7 +60,7 @@ Also read `{BRAND_PATH}/patterns/{brand-name}.yml` (the brand's token/style sour
 
 **Brand identity (selective):** Read `{BRAND_PATH}/identity/imagery-style.md` (if exists) — needed for imagery audit.
 
-**Brief:** Read `{PROJECT_PATH}/brief/INDEX.md` → load scope and adaptations.
+**Spec:** Read `{PROJECT_PATH}/spec.md` → focus on **Scope**, **Acceptance Criteria** (review verifies each AC), and **Target Adaptations**. Fallback: legacy `brief/INDEX.md` → load scope and adaptations (pre-SDD project shape).
 
 **Research:** Read `{PROJECT_PATH}/research/INDEX.md` → load `reference-specs.md` (to verify specs were followed).
 

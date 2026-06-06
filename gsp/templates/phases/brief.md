@@ -1,53 +1,39 @@
-# Project Brief
+# Spec
 
-## Project: {PROJECT_NAME}
-**Brand:** {BRAND_NAME}
-**Date:** {DATE}
+> This phase produces a single flat artifact: `{PROJECT_PATH}/spec.md`. SDD-style contract that downstream phases read.
 
----
+## Artifact
 
-> This phase scopes the project. Produces planning chunks + INDEX.md in the `brief/` directory.
+`{PROJECT_PATH}/spec.md` — one file, sectioned. No subdirectory, no per-axis chunks, no INDEX. The earlier `brief/{scope,target-adaptations,install-manifest,gap-analysis,file-references}.md` structure is collapsed into sections of this file.
 
-## Chunk Mapping
+## Section reference
 
-### Brief Chunks (`brief/`)
+### `## Scope`
+What's being built, for whom, on what platforms. Followed by a **Screens** table (priority, purpose) and **Boundaries** lists (in scope / out of scope).
 
-| Chunk File | Content |
-|-----------|---------|
-| `scope.md` | Screen/component list, priorities, project boundaries |
-| `target-adaptations.md` | Project-specific component adaptations from the brand system |
-| `install-manifest.md` | Install commands for needed components (conditional — shadcn/rn-reusables only) |
-| `gap-analysis.md` | Components/tokens in design but not in codebase (conditional — existing target only) |
-| `file-references.md` | Paths to existing components/tokens being used (conditional — existing target only) |
+### `## Acceptance Criteria` (EARS)
+Testable, unambiguous behavior contract. Each line uses the form `WHEN <trigger>, THE SYSTEM SHALL <behavior>`. Grouped by feature area, numbered `AC-{N}.{M}`. Aim for 5–15 total — the happy paths + critical edges.
 
-## Content Reference
+These are what design verifies against ("does the screen support AC-2.3?"), what build tests against ("write the test for AC-2.3"), and what review checks ("AC-2.3 passes? Y/N").
 
-Each chunk follows the standard chunk format. Below is the structural reference for what each chunk should contain:
+### `## Target Adaptations`
+Project-specific token overrides and component adaptations. Each row points at the brand-system component being adapted and the project-specific reason.
 
-### scope.md
-- **Screen list:** prioritized list of screens to design and build
-- **Component scope:** which brand system components this project uses
-- **Project boundaries:** what's in scope and out of scope
-- **Success criteria:** measurable outcomes for the project
-- **Dependencies:** external systems, APIs, content needs
-- **Issue framing:** how this project maps to bounded issues/PRs
+### `## Install Manifest`
+(shadcn / rn-reusables targets only — omit otherwise)
+Copy-paste-ready install commands.
 
-### target-adaptations.md
-- **Token overrides:** project-specific token adjustments (if any)
-- **Component adaptations:** brand components that need project-specific variants
-- **Platform considerations:** platform-specific adjustments (mobile, desktop, etc.)
-- **Implementation target mapping:** design components → target primitives (shadcn, rn-reusables, existing, code)
-- Links to brand system components: `{BRAND_PATH}/patterns/components/{name}.md`
+### `## Gap Analysis`
+(existing codebases only — omit otherwise)
+What's in the brand system but missing from the codebase.
 
-### install-manifest.md
-- Install commands for all needed components
-- Only produced for shadcn/rn-reusables targets
+### `## File References`
+(existing target only — omit otherwise)
+Where existing components live, plus reuse strategy (keep / restyle / replace).
 
-### gap-analysis.md
-- Components in brand system but not in project codebase
-- Tokens in brand system but not in project codebase
-- Only produced for existing target codebases
+### `## Issue Framing`
+How to break the project into bounded shippable PRs.
 
-### file-references.md
-- Paths to all existing components/tokens being used
-- Only produced for existing target codebases
+## Skip-if-not-present
+
+Sections without project-specific content are omitted entirely. Do not write "_Nothing meaningful for this project._" Just leave the section out.
