@@ -34,6 +34,32 @@ Declare formulas, rounding rules, and source data for every computed value refer
 
 If a computed value is referenced in an AC but not declared here, downstream phases will invent the formula — and three phases will invent it three different ways.
 
+### `## Breakpoints`
+(only when an AC references viewport / responsive behavior — omit otherwise)
+
+Declare the project's breakpoints as numeric thresholds with names. ACs reference them by name (`breakpoints.mobile`, `breakpoints.desktop`) rather than bare `mobile`/`desktop` strings. Downstream phases (design, build) MUST NOT introduce breakpoints not declared here.
+
+Example (mobile + desktop only):
+
+```markdown
+| Name | Threshold | Notes |
+|------|-----------|-------|
+| `breakpoints.mobile` | `< 640px` | single column, touch-first |
+| `breakpoints.desktop` | `≥ 640px` | multi-column, hover-capable |
+```
+
+Example (mobile + tablet + desktop):
+
+```markdown
+| Name | Threshold | Notes |
+|------|-----------|-------|
+| `breakpoints.mobile` | `< 640px` | single column |
+| `breakpoints.tablet` | `640px – 1023px` | 2-column grid |
+| `breakpoints.desktop` | `≥ 1024px` | 3-column grid |
+```
+
+If only two tiers are declared (mobile + desktop), the design phase MUST NOT silently invent a tablet tier — surface the gap as a question rather than fill it in.
+
 ### `## Target Adaptations`
 Project-specific token overrides and component adaptations. Each row points at the brand-system component being adapted and the project-specific reason.
 

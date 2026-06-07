@@ -190,6 +190,14 @@ Each criterion uses EARS notation. The design, build, and review phases verify a
 |--------|---------|--------|----------|
 | ... | ... | ... | ... |
 
+## Breakpoints
+(only when an AC references viewport / responsive behavior — omit otherwise)
+
+| Name | Threshold | Notes |
+|------|-----------|-------|
+| `breakpoints.mobile` | `< 640px` | ... |
+| `breakpoints.desktop` | `≥ 640px` | ... |
+
 ## Target Adaptations
 Component adaptations + token overrides for {implementation_target}.
 
