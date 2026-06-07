@@ -60,6 +60,37 @@ Any AC that references a computed value needs a `## Numeric Inputs` section in t
 
 Any AC referencing responsive behavior requires a `## Breakpoints` section declaring numeric thresholds. Downstream phases must not introduce breakpoints not in that section.
 
+### Declared example — mobile + desktop only
+
+```markdown
+## Breakpoints
+
+| Name | Threshold | Notes |
+|------|-----------|-------|
+| `breakpoints.mobile` | `< 640px` | single column, touch-first |
+| `breakpoints.desktop` | `≥ 640px` | multi-column, hover-capable |
+```
+
+ACs reference these as `breakpoints.mobile` / `breakpoints.desktop`. If the design phase wants a tablet tier, it MUST surface that as a question — not silently invent a third tier. The spec's two tiers are the contract.
+
+### Declared example — mobile + tablet + desktop
+
+```markdown
+## Breakpoints
+
+| Name | Threshold | Notes |
+|------|-----------|-------|
+| `breakpoints.mobile` | `< 640px` | single column |
+| `breakpoints.tablet` | `640px – 1023px` | 2-column grid |
+| `breakpoints.desktop` | `≥ 1024px` | 3-column grid |
+```
+
+When three tiers are declared, every responsive AC SHOULD reference each tier it cares about (or explicitly note "applies to all tiers").
+
+### Common drift pattern (avoid)
+
+Design produces `responsive.md` with a 2-column tablet layout when the spec only declared mobile + desktop. Build inherits the tablet styles. Critique can't flag it because the spec is silent — it has nothing to fail against. The fix is upstream: declare all breakpoints the project cares about in the spec, not in the design phase.
+
 ---
 
 ## 5. Behavior + semantics pairs — every UI-rendering AC needs an a11y companion
