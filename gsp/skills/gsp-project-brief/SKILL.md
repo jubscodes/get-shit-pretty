@@ -119,6 +119,14 @@ If this project modifies components from a sibling's manifest, note provenance.
 1. **Analyze brief** — what's being built, for whom, on what platforms
 2. **Define screen list** — prioritized screens from brief, user flows, success criteria
 3. **Write acceptance criteria in EARS notation** — each user-visible behavior becomes a testable `WHEN <trigger> THE SYSTEM SHALL <behavior>` line, grouped by feature area, numbered (AC-1.1, AC-1.2, …). These are the contract the design, build, and review phases verify against. Aim for 5–15 criteria total — enough to cover the happy paths and the critical edges, not every keystroke.
+
+   **Before writing**, read `${CLAUDE_SKILL_DIR}/references/ears-quality.md` for the hedge-word → tight-form patterns. Every AC containing `distinct`, `easily`, `quickly`, `within … cycle`, a bare `mobile`/`desktop`, `savings`/`discounted` without a formula, or `visible focus` without dimensions must be tightened before moving on. The reference's "Quick check" table is the gate.
+
+   When an AC references a **computed value** (savings %, totals, discounts), either inline the formula or declare it in the spec's `## Numeric Inputs` section so downstream phases don't each invent it.
+
+   When an AC references a **viewport / responsive behavior**, reference declared breakpoints by name (e.g. `breakpoints.mobile`) — never `the mobile breakpoint` without a number.
+
+   For every AC that produces visible UI, write a paired **semantics AC** covering keyboard, screen-reader, and contrast contracts when not already implied by the behavior AC (see reference §5).
 4. **Map component scope** — which brand system components this project needs
 5. **Identify adaptations** — project-specific variants, overrides, or extensions to brand components
 6. **Map to implementation target** — connect design components to target primitives (shadcn, rn-reusables, existing, code)
@@ -129,7 +137,9 @@ If this project modifies components from a sibling's manifest, note provenance.
 ### Quality standards
 
 - Every screen has a clear purpose and priority level
-- Every acceptance criterion is testable (could be turned into a test) and unambiguous (no "the system shall be fast")
+- Every acceptance criterion passes the hedge-word check in `references/ears-quality.md` — no `distinct`, `easily`, `quickly`, `within … cycle`, `mobile`/`desktop` without a declared breakpoint, `savings` without a formula, or `visible focus` without dimensions
+- Every AC referencing a computed value has its formula either inlined or declared in `## Numeric Inputs`
+- Every AC referencing responsive behavior cites a declared entry in `## Breakpoints`
 - Component adaptations reference specific brand system components
 - Gap analysis is concrete (component names, token names)
 - Install manifests are copy-paste ready
@@ -170,6 +180,13 @@ Each criterion uses EARS notation. The design, build, and review phases verify a
 
 ### {Feature area 2}
 - **AC-2.1** — …
+
+## Numeric Inputs
+(only when an AC references a computed value — omit otherwise)
+
+| Symbol | Formula | Source | Rounding |
+|--------|---------|--------|----------|
+| ... | ... | ... | ... |
 
 ## Target Adaptations
 Component adaptations + token overrides for {implementation_target}.
