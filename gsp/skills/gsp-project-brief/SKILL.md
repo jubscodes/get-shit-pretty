@@ -126,7 +126,7 @@ If this project modifies components from a sibling's manifest, note provenance.
 
    When an AC references a **viewport / responsive behavior**, reference declared breakpoints by name (e.g. `breakpoints.mobile`) — never `the mobile breakpoint` without a number.
 
-   For every AC that produces visible UI, write a paired **semantics AC** covering keyboard, screen-reader, and contrast contracts when not already implied by the behavior AC (see reference §5).
+   **Paired semantics ACs are required for every UI-rendering AC.** An AC is UI-rendering if it introduces, reveals, or restructures on-screen content or controls (table renders, dialog opens, badge shows, toggle appears). Navigation-only ACs (e.g. "SHALL navigate to /signup") do not need a pair. For each UI-rendering AC, write a paired `AC-N.Ma` declaring: ARIA role / label / heading semantics, keyboard model where interactive, and SR-perceivable text equivalents for non-text content. See reference §5 for pair patterns by element kind (table, toggle, button, dialog, image, live region). If any UI-rendering AC lacks a pair, the spec is not done.
 4. **Map component scope** — which brand system components this project needs
 5. **Identify adaptations** — project-specific variants, overrides, or extensions to brand components
 6. **Map to implementation target** — connect design components to target primitives (shadcn, rn-reusables, existing, code)
@@ -140,6 +140,7 @@ If this project modifies components from a sibling's manifest, note provenance.
 - Every acceptance criterion passes the hedge-word check in `references/ears-quality.md` — no `distinct`, `easily`, `quickly`, `within … cycle`, `mobile`/`desktop` without a declared breakpoint, `savings` without a formula, or `visible focus` without dimensions
 - Every AC referencing a computed value has its formula either inlined or declared in `## Numeric Inputs`
 - Every AC referencing responsive behavior cites a declared entry in `## Breakpoints`
+- Every UI-rendering AC (renders, opens, populates, reveals, restructures) has a paired `AC-N.Ma` semantics AC covering ARIA role/label/heading, keyboard model, and SR text equivalents — see reference §5 for pair patterns
 - Component adaptations reference specific brand system components
 - Gap analysis is concrete (component names, token names)
 - Install manifests are copy-paste ready
@@ -176,6 +177,7 @@ Each criterion uses EARS notation. The design, build, and review phases verify a
 
 ### {Feature area 1}
 - **AC-1.1** — WHEN <trigger>, THE SYSTEM SHALL <behavior>
+- **AC-1.1a** — THE SYSTEM SHALL <semantics: role / label / keyboard / SR text> (when AC-1.1 is UI-rendering)
 - **AC-1.2** — …
 
 ### {Feature area 2}

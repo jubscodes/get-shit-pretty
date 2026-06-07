@@ -18,7 +18,7 @@ These are what design verifies against ("does the screen support AC-2.3?"), what
 
 Hedge words (`distinct`, `easily`, `quickly`, `within … cycle`, bare `mobile`/`desktop`, `savings` without a formula, `visible focus` without dimensions) fail the contract — downstream phases will each invent their own answer. See the brief skill's `references/ears-quality.md` for tight-form patterns.
 
-For every AC that produces visible UI, pair it with a **semantics AC** covering keyboard, screen-reader, and contrast contracts when not implied by the behavior AC (e.g. `AC-3.1` renders the table; `AC-3.1a` declares the row/col headers + cell SR labels).
+**Paired semantics ACs are required for every UI-rendering AC.** An AC is UI-rendering if it introduces, reveals, or restructures on-screen content or controls (table renders, dialog opens, badge shows, toggle appears). Navigation-only ACs don't need a pair. Numbering convention: behavior is `AC-N.M`, paired semantics is `AC-N.Ma`. Each pair declares: ARIA role / label / heading semantics, keyboard model where interactive, and SR-perceivable text equivalents for non-text content. See `references/ears-quality.md` §5 for pair patterns by element kind (table, toggle, button, dialog, image, live region).
 
 ### `## Numeric Inputs`
 (only when an AC references a computed value — omit otherwise)

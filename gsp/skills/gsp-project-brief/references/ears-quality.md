@@ -64,16 +64,47 @@ Any AC referencing responsive behavior requires a `## Breakpoints` section decla
 
 ## 5. Behavior + semantics pairs — every UI-rendering AC needs an a11y companion
 
-**Loose:**
-> AC-3.1 — WHEN the comparison table renders, THE SYSTEM SHALL list every feature as a row with one column per tier indicating included / excluded / limited.
+### What counts as a UI-rendering AC
 
-**Why it fails:** Visual contract is clear. A11y contract is missing — critique will invent `<th scope="col">`, build will invent ARIA. Three phases, three answers.
+An AC is **UI-rendering** if it introduces, reveals, or restructures on-screen content or controls — table renders, dialog opens, list populates, toggle appears, badge shows, error banner inserts. ACs that only trigger navigation (e.g. *"WHEN the visitor activates the CTA, THE SYSTEM SHALL navigate to /signup"*) do not need an a11y pair on this side of the boundary — the destination route owns its own spec.
 
-**Tight (paired):**
+If an AC is UI-rendering, pair it. Numbering convention: behavior is `AC-N.M`, paired semantics is `AC-N.Ma` (same number + lowercase `a`). For interactive controls that need separately verifiable keyboard contracts, use `AC-N.Mk`; for focus specifically, `AC-N.Mf`.
+
+### Pair patterns by element kind
+
+**Static content (table, list, definition list)** — pair declares row/col headers, scope, and SR labels for cells whose meaning is icon-only:
+
 > AC-3.1 — WHEN the comparison table renders, THE SYSTEM SHALL list every feature as a row with one column per tier indicating included / excluded / limited.
 > AC-3.1a — THE SYSTEM SHALL mark feature names as row headers (`<th scope="row">`), tier names as column headers (`<th scope="col">`), and announce excluded/limited cells via `aria-label` containing the cell's textual meaning (not just an icon).
 
-Pair the behavior AC (what renders) with a semantics AC (what assistive tech reads). When a UI element is interactive, also pair with a keyboard AC (`AC-N.Nk`) and a focus AC (`AC-N.Nf`).
+**Toggle / radio group (BillingToggle pattern)** — pair declares native semantics + group label + keyboard model:
+
+> AC-2.3 — WHEN a visitor changes billing from monthly to annual, THE SYSTEM SHALL update every tier card's displayed price in the next paint.
+> AC-2.3a — THE SYSTEM SHALL render the toggle as a `<fieldset>` with a `<legend>` describing the choice ("Billing period"), two `<input type="radio">` controls labeled "Monthly" and "Annual", reachable in tab order, with Space / Enter / Arrow keys producing the same state change as a pointer click.
+
+**Button with icon-only or icon+text** — pair declares accessible name source:
+
+> AC-4.4 — WHEN a visitor clicks the close button, THE SYSTEM SHALL dismiss the dialog.
+> AC-4.4a — THE SYSTEM SHALL render the close button as a `<button type="button">` with `aria-label="Close pricing dialog"` (icon-only) or a visible text label when icon+text. Decorative icons inside SHALL carry `aria-hidden="true"`.
+
+**Dialog / modal / popover** — pair declares focus management + dismiss semantics:
+
+> AC-6.1 — WHEN a visitor clicks the "Compare details" link, THE SYSTEM SHALL open a modal showing the full feature matrix.
+> AC-6.1a — THE SYSTEM SHALL render the modal with `role="dialog"`, `aria-modal="true"`, `aria-labelledby` pointing to the modal title, focus moved to the dialog on open and restored to the trigger on close, Escape dismisses, and focus trapped within the dialog while open.
+
+**Image / illustration carrying meaning** — pair declares alt or aria-hidden + decorative-vs-informative distinction:
+
+> AC-1.4 — WHEN the Pro tier renders, THE SYSTEM SHALL display a "Recommended" badge graphic.
+> AC-1.4a — THE SYSTEM SHALL render the badge graphic as either `<span>Recommended</span>` (text + styled background) or, if SVG, `<svg role="img" aria-label="Recommended">` — never an icon alone. Decorative ornament SVGs SHALL carry `aria-hidden="true"`.
+
+**Live region / status announcement** — pair declares `aria-live` politeness + content shape:
+
+> AC-2.4 — WHEN the billing period changes, THE SYSTEM SHALL re-announce the per-tier savings on each paid tier.
+> AC-2.4a — THE SYSTEM SHALL place the per-tier savings text in an `aria-live="polite"` region within each tier card, announcing the new savings amount on toggle change without interrupting the screen reader's current utterance.
+
+### Quick gate
+
+Before finalizing the spec, scan every AC. For each one that renders or restructures on-screen content/controls, confirm a paired `AC-N.Ma` exists with: assistive-tech semantics (role/label/heading/region), keyboard model where interactive, and SR-perceivable text equivalents for non-text content. If any pair is missing, the spec is not done.
 
 ---
 
